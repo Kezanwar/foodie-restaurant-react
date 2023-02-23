@@ -50,7 +50,7 @@ const LocationCard = ({
         <Box margin={0} color={theme.palette.primary.main}>
           <SvgColor
             src={`/assets/icons/navbar/ic_store.svg`}
-            sx={{ width: 24, height: 24 }}
+            sx={{ width: 24, height: 24, marginLeft: -0.3 }}
           />
         </Box>
         <Typography variant="body2">{nickname}</Typography>
@@ -64,7 +64,7 @@ const LocationCard = ({
         <Box margin={0} color={theme.palette.primary.main}>
           <SvgColor
             src={`/assets/icons/navbar/ic_chat.svg`}
-            sx={{ width: 24, height: 24 }}
+            sx={{ width: 24, height: 24, marginLeft: -0.3 }}
           />
         </Box>
         <Typography variant="body2">{email}</Typography>
