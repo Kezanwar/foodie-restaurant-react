@@ -14,7 +14,7 @@ const GREY = {
   600: '#637381',
   700: '#454F5B',
   800: '#212B36',
-  900: '#161C24',
+  900: '#161C24'
 };
 
 const PRIMARY = {
@@ -23,25 +23,25 @@ const PRIMARY = {
   main: '#f0692a',
   dark: '#ce5f2c',
   darker: '#c65c2b',
-  contrastText: '#FFFFFF',
+  contrastText: '#FFFFFF'
 };
 
 const SECONDARY = {
-  lighter: '#D6E4FF',
-  light: '#84A9FF',
-  main: '#3366FF',
-  dark: '#1939B7',
-  darker: '#091A7A',
-  contrastText: '#fff',
-};
-
-const INFO = {
   lighter: '#fcf0ff',
   light: '#e7aaf6',
   main: '#d67ded',
   dark: '#c860e2',
   darker: '#a63ac1',
-  contrastText: '#FFFFFF',
+  contrastText: '#FFFFFF'
+};
+
+const INFO = {
+  lighter: '#d5eeff',
+  light: '#72c4ff',
+  main: '#33aaff',
+  dark: '#237ab8',
+  darker: '#03375d',
+  contrastText: '#fff'
 };
 
 const SUCCESS = {
@@ -50,7 +50,7 @@ const SUCCESS = {
   main: '#36B37E',
   dark: '#1B806A',
   darker: '#0A5554',
-  contrastText: '#fff',
+  contrastText: '#fff'
 };
 
 const WARNING = {
@@ -59,7 +59,7 @@ const WARNING = {
   main: '#FFAB00',
   dark: '#B76E00',
   darker: '#7A4100',
-  contrastText: GREY[800],
+  contrastText: GREY[800]
 };
 
 const ERROR = {
@@ -68,7 +68,7 @@ const ERROR = {
   main: '#FF5630',
   dark: '#B71D18',
   darker: '#7A0916',
-  contrastText: '#fff',
+  contrastText: '#fff'
 };
 
 const COMMON = {
@@ -88,8 +88,8 @@ const COMMON = {
     disabledBackground: alpha(GREY[500], 0.24),
     focus: alpha(GREY[500], 0.24),
     hoverOpacity: 0.08,
-    disabledOpacity: 0.48,
-  },
+    disabledOpacity: 0.48
+  }
 };
 
 export default function palette(themeMode) {
@@ -99,13 +99,13 @@ export default function palette(themeMode) {
     text: {
       primary: GREY[800],
       secondary: GREY[600],
-      disabled: GREY[500],
+      disabled: GREY[500]
     },
     background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
     action: {
       ...COMMON.action,
-      active: GREY[600],
-    },
+      active: GREY[600]
+    }
   };
 
   const dark = {
@@ -114,17 +114,17 @@ export default function palette(themeMode) {
     text: {
       primary: '#fff',
       secondary: GREY[500],
-      disabled: GREY[600],
+      disabled: GREY[600]
     },
     background: {
       paper: GREY[800],
       default: GREY[900],
-      neutral: alpha(GREY[500], 0.16),
+      neutral: alpha(GREY[500], 0.16)
     },
     action: {
       ...COMMON.action,
-      active: GREY[500],
-    },
+      active: GREY[500]
+    }
   };
 
   return themeMode === 'light' ? light : dark;

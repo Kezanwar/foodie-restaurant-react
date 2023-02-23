@@ -9,7 +9,8 @@ import {
   Chip,
   duration,
   Stack,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
 import StoreIcon from '@mui/icons-material/Store';
@@ -29,6 +30,7 @@ import { countries, countryToFlag } from '../../../assets/data';
 import RouterLink from '../../../components/router-link/RouterLink';
 import { pageScrollToTop } from '../../../utils/scroll';
 import { varFade } from '../../../components/animate';
+import LocationCard from '../../../components/location-card/LocationCard';
 
 const NewRestaurantAddLocations = (props) => {
   const { getValues, trigger, getFieldState, setValue, resetField, watch } =
@@ -47,6 +49,15 @@ const NewRestaurantAddLocations = (props) => {
     const newLocationsArray = [...locations, newLocation];
     await setValue('locations', newLocationsArray);
     await resetField('add_location');
+  };
+
+  const onLocationDelete = async (index) => {
+    const locations = await getValues('locations');
+    const l = [...locations];
+    l.splice(index, 1);
+    setTimeout(async () => {
+      await setValue('locations', l);
+    }, 200);
   };
 
   const locations = watch('locations');
@@ -187,8 +198,12 @@ const NewRestaurantAddLocations = (props) => {
           </Alert>
         </InputWithInfoInfoContainer>
       </InputWithInfoStack>
+      <Subheader
+        sx={{ padding: 0, marginBottom: 16 }}
+        text={`Your Restaurant Locations (${locations.length})`}
+      />
       {locations.length ? (
-        <Stack mt={4} flexDirection={'row'} gap={2}>
+        <Stack mb={4} flexDirection={'row'} gap={3} flexWrap={'wrap'}>
           {locations.map((location, index) => {
             const {
               address_line_1,
@@ -209,14 +224,15 @@ const NewRestaurantAddLocations = (props) => {
               //     <Box mt={1}>{v}</Box>
               //   ))}
               // </Box>
-              <Chip
+              <LocationCard
+                {...location}
                 sx={{ width: 'max-content' }}
                 key={index + address_line_1}
                 label={`${nickname} - ${address_line_1}, ${postcode}, ${city}`}
                 variant="outlined"
                 // clickable
                 color="success"
-                onDelete={() => {}}
+                onDelete={() => onLocationDelete(index)}
                 // icon={<StoreIcon />}
                 // avatar={<StoreIcon back />}
               />
@@ -224,7 +240,12 @@ const NewRestaurantAddLocations = (props) => {
           })}
         </Stack>
       ) : (
-        ''
+        <Box mb={4}>
+          <Alert severity="warning">
+            You haven't added any locations yet - use the form above to get
+            started.
+          </Alert>
+        </Box>
       )}
     </m.div>
   );

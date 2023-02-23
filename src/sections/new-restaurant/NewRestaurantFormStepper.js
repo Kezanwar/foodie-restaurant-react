@@ -14,7 +14,7 @@ import NewRestaurantYourApplication from './forms/NewRestaurantYourApplication';
 import { NewRestaurantSchema } from './validation';
 
 export const NewRestaurantFormStepper = () => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(2);
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
 
   const defaultValues = useMemo(
@@ -44,7 +44,48 @@ export const NewRestaurantFormStepper = () => {
         linkedin: ''
       },
       // add location
-      locations: [],
+      locations: [
+        {
+          address_line_1: '2 Eversley Road',
+          address_line_2: 'Didsbury',
+          postcode: 'M20 2FL',
+          city: 'Manchester',
+          country: 'United Kingdom',
+          email: 'kezanwar@gmail.com',
+          phone_number: '07917620392',
+          nickname: 'dasdadaasdasd'
+        },
+        {
+          address_line_1: '2 Eversley Road',
+          address_line_2: 'Didsbury',
+          postcode: 'M20 2FL',
+          city: 'Manchester',
+          country: 'United Kingdom',
+          email: 'kezanwar@gmail.com',
+          phone_number: '07917620392',
+          nickname: 'dasdad'
+        },
+        {
+          address_line_1: '2 Eversley Road',
+          address_line_2: 'Didsbury',
+          postcode: 'M20 2FL',
+          city: 'Manchester',
+          country: 'United Kingdom',
+          email: 'kezanwar@gmail.com',
+          phone_number: '07917620392',
+          nickname: 'da34234ad'
+        },
+        {
+          address_line_1: '2 Eversley Road',
+          address_line_2: 'Didsbury',
+          postcode: 'M20 2FL',
+          city: 'Manchester',
+          country: 'United Kingdom',
+          email: 'kezanwar@gmail.com',
+          phone_number: '07917620392',
+          nickname: 'da342sasd34ad'
+        }
+      ],
       is_new_location: false,
       add_location: {
         address_line_1: '',
@@ -133,7 +174,10 @@ export const NewRestaurantFormStepper = () => {
 
       <MotionContainer>{FORM_STEPS[activeStep].form}</MotionContainer>
       {/* FORMS */}
-      <Button color="inherit" onClick={() => console.log(getValues())}>
+      <Button
+        color="inherit"
+        onClick={() => console.log(JSON.stringify(getValues('locations')))}
+      >
         get values
       </Button>
       {/* ACTIONS */}
