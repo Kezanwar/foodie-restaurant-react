@@ -1,17 +1,25 @@
-import { alpha, Box, Card, styled, CardActionArea } from '@mui/material';
+import { alpha, Box, Card, styled, CardActionArea, Stack } from '@mui/material';
+import { m } from 'framer-motion';
 
-export const LocationCardContainer = styled(Box)(({ theme }) => ({
+export const LocationCardStyled = styled(m.div)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
-  border: `1px solid ${alpha(theme.palette.primary.lighter, 0.75)}`,
+  border: `2px solid ${alpha(theme.palette.primary.lighter, 0.75)}`,
   //   boxShadow: theme.shadows[19],
-  width: `calc(25% - ${theme.spacing(2.25)})`,
+  width: `calc(33.33% - ${theme.spacing(2)})`,
   padding: theme.spacing(2.5),
   borderRadius: '10px',
   position: 'relative',
-  [theme.breakpoints.down('md')]: {
-    width: `calc(33.33% - ${theme.spacing(2)})`
+  [theme.breakpoints.down(1200)]: {
+    width: `calc(50% - ${theme.spacing(1.5)})`
   },
-  [theme.breakpoints.down('sm')]: {
-    width: `calc(50% - ${theme.spacing(2)})`
+  [theme.breakpoints.down(800)]: {
+    width: '100%'
   }
+}));
+
+export const LocationCardsContainer = styled(m.div)(({ theme }) => ({
+  marginbottom: 6,
+  flexDirection: 'row',
+  gap: 3,
+  flexWrap: 'wrap'
 }));

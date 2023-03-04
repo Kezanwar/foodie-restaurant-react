@@ -30,6 +30,7 @@ import {
 import RouterLink from '../../../components/router-link/RouterLink';
 import { pageScrollToTop } from '../../../utils/scroll';
 import { varFade } from '../../../components/animate';
+import Spacer from '../../../components/spacer/Spacer';
 
 const NewRestaurantCreateRestaurant = (props) => {
   const { isTablet, isMobile } = useCustomMediaQueries();
@@ -57,6 +58,7 @@ const NewRestaurantCreateRestaurant = (props) => {
             sx={{ flex: 1 }}
             name="name"
             label="Add your restaurant name"
+            variant={'filled'}
           />
           <Box flex={isTablet ? 0.7 : 1} display={'flex'}>
             {/* {storeName && (
@@ -132,6 +134,7 @@ const NewRestaurantCreateRestaurant = (props) => {
       <FormSectionStack>
         <RHFUpload name="cover_photo" label="" />
       </FormSectionStack>
+      <Spacer />
       <Subheader
         sx={{ padding: 0, marginBottom: 16 }}
         text={'Add a bio for customers to read (Max 500 characters)'}
@@ -139,31 +142,37 @@ const NewRestaurantCreateRestaurant = (props) => {
       <FormSectionStack>
         <RHFTextField
           multiline
+          variant={'filled'}
           rows={4}
           name="bio"
           label="Enter your restaurant biography"
         />
       </FormSectionStack>
+      <Spacer />
       <Subheader
         sx={{ padding: 0, marginBottom: 16 }}
         text={'Add your restaurants social media links (optional)'}
       />
       <FormSectionStack sx={{ marginBottom: 2 }} mobSx={{ marginBottom: 16 }}>
         <RHFTextField
+          variant={'filled'}
           name="social_media.instagram"
           label="Instagram URL (optional)"
         />{' '}
         <RHFTextField
+          variant={'filled'}
           name="social_media.facebook"
           label="Facebook URL (optional)"
         />{' '}
       </FormSectionStack>
       <FormSectionStack sx={{ marginTop: 0 }}>
         <RHFTextField
+          variant={'filled'}
           name="social_media.tiktok"
           label="TikTok URL (optional)"
         />{' '}
         <RHFTextField
+          variant={'filled'}
           name="social_media.linkedin"
           label="LinkedIn URL (optional)"
         />

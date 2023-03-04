@@ -7,7 +7,7 @@ import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 // ----------------------------------------------------------------------
 
 RHFCheckbox.propTypes = {
-  name: PropTypes.string,
+  name: PropTypes.string
 };
 
 export function RHFCheckbox({ name, ...other }) {
@@ -17,7 +17,12 @@ export function RHFCheckbox({ name, ...other }) {
     <Controller
       name={name}
       control={control}
-      render={({ field }) => <FormControlLabel control={<Checkbox {...field} checked={field.value} />} {...other} />}
+      render={({ field }) => (
+        <FormControlLabel
+          control={<Checkbox {...field} checked={!!field.value} />}
+          {...other}
+        />
+      )}
     />
   );
 }
@@ -26,7 +31,7 @@ export function RHFCheckbox({ name, ...other }) {
 
 RHFMultiCheckbox.propTypes = {
   name: PropTypes.string,
-  options: PropTypes.array,
+  options: PropTypes.array
 };
 
 export function RHFMultiCheckbox({ name, options, ...other }) {
@@ -38,7 +43,9 @@ export function RHFMultiCheckbox({ name, options, ...other }) {
       control={control}
       render={({ field }) => {
         const onSelected = (option) =>
-          field.value.includes(option) ? field.value.filter((value) => value !== option) : [...field.value, option];
+          field.value.includes(option)
+            ? field.value.filter((value) => value !== option)
+            : [...field.value, option];
 
         return (
           <FormGroup>

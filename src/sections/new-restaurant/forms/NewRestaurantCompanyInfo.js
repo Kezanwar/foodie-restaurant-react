@@ -25,6 +25,7 @@ import {
 import { countries, countryToFlag } from '../../../assets/data';
 import { pageScrollToTop } from '../../../utils/scroll';
 import { varFade } from '../../../components/animate';
+import Spacer from '../../../components/spacer/Spacer';
 
 const NewRestaurantCompanyInfo = (props) => {
   const { getFieldState, setValue } = useFormContext();
@@ -44,9 +45,18 @@ const NewRestaurantCompanyInfo = (props) => {
         text={'Company Information'}
       />
       <FormSectionStack>
-        <RHFTextField name="company_name" label="Registered company name" />
-        <RHFTextField name="company_number" label="Company number (Optional)" />
+        <RHFTextField
+          variant={'filled'}
+          name="company_name"
+          label="Registered company name"
+        />
+        <RHFTextField
+          variant={'filled'}
+          name="company_number"
+          label="Company number (Optional)"
+        />
       </FormSectionStack>
+      <Spacer />
       <Subheader
         sx={{ padding: 0, marginBottom: 16 }}
         text={'Company office address'}
@@ -55,24 +65,31 @@ const NewRestaurantCompanyInfo = (props) => {
         <InputWithInfoInputContainer>
           <Box mb={2}>
             <RHFTextField
+              variant={'filled'}
               name="company_address.address_line_1"
               label="Address line 1"
             />
           </Box>
           <Box mb={2}>
             <RHFTextField
+              variant={'filled'}
               name="company_address.address_line_2"
               label="Address line 2 (Optional)"
             />
           </Box>
           <Box mb={2}>
             <RHFTextField
+              variant={'filled'}
               name="company_address.postcode"
               label="Post / Zip code"
             />
           </Box>
           <Box mb={2}>
-            <RHFTextField name="company_address.city" label="City" />
+            <RHFTextField
+              variant={'filled'}
+              name="company_address.city"
+              label="City"
+            />
           </Box>
           <Box mb={2}>
             <Autocomplete
@@ -101,9 +118,11 @@ const NewRestaurantCompanyInfo = (props) => {
               renderInput={(params) => (
                 <TextField
                   label={'Country'}
+                  variant={'filled'}
                   {...params}
                   inputProps={{
-                    ...params.inputProps
+                    ...params.inputProps,
+                    autoComplete: 'disabled'
                   }}
                   onBlur={(e) => updateCountry(e.target.value)}
                   onChange={(e) => updateCountry(e.target.value)}

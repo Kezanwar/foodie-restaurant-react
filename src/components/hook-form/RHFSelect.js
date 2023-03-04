@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 // form
 import { useFormContext, Controller } from 'react-hook-form';
 // @mui
-import { TextField } from '@mui/material';
+import { Select, TextField } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
 RHFSelect.propTypes = {
   name: PropTypes.string,
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 export default function RHFSelect({ name, children, ...other }) {

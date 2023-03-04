@@ -45,46 +45,82 @@ export const NewRestaurantFormStepper = () => {
       },
       // add location
       locations: [
-        {
-          address_line_1: '2 Eversley Road',
-          address_line_2: 'Didsbury',
-          postcode: 'M20 2FL',
-          city: 'Manchester',
-          country: 'United Kingdom',
-          email: 'kezanwar@gmail.com',
-          phone_number: '07917620392',
-          nickname: 'dasdadaasdasd'
-        },
-        {
-          address_line_1: '2 Eversley Road',
-          address_line_2: 'Didsbury',
-          postcode: 'M20 2FL',
-          city: 'Manchester',
-          country: 'United Kingdom',
-          email: 'kezanwar@gmail.com',
-          phone_number: '07917620392',
-          nickname: 'dasdad'
-        },
-        {
-          address_line_1: '2 Eversley Road',
-          address_line_2: 'Didsbury',
-          postcode: 'M20 2FL',
-          city: 'Manchester',
-          country: 'United Kingdom',
-          email: 'kezanwar@gmail.com',
-          phone_number: '07917620392',
-          nickname: 'da34234ad'
-        },
-        {
-          address_line_1: '2 Eversley Road',
-          address_line_2: 'Didsbury',
-          postcode: 'M20 2FL',
-          city: 'Manchester',
-          country: 'United Kingdom',
-          email: 'kezanwar@gmail.com',
-          phone_number: '07917620392',
-          nickname: 'da342sasd34ad'
-        }
+        // {
+        //   address_line_1: '2 Eversley Road',
+        //   address_line_2: 'Didsbury',
+        //   postcode: 'M20 2FL',
+        //   city: 'Manchester',
+        //   country: 'United Kingdom',
+        //   email: 'kezanwar@gmail.com',
+        //   phone_number: '07917620392',
+        //   nickname: 'Arndale',
+        //   opening_times: {
+        //     mon: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     tue: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     wed: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     thu: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     fri: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     sat: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     sun: { is_open: true, open: '10:00 AM', close: '11:00 PM' }
+        //   }
+        // },
+        // {
+        //   address_line_1: '2 Eversley Road',
+        //   address_line_2: 'Didsbury',
+        //   postcode: 'M20 2FL',
+        //   city: 'Manchester',
+        //   country: 'United Kingdom',
+        //   email: 'kezanwar@gmail.com',
+        //   phone_number: '07917620392',
+        //   nickname: 'Burton Road',
+        //   opening_times: {
+        //     mon: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     tue: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     wed: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     thu: { is_open: false, open: '10:00 AM', close: '11:00 PM' },
+        //     fri: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     sat: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     sun: { is_open: true, open: '10:00 AM', close: '11:00 PM' }
+        //   }
+        // },
+        // {
+        //   address_line_1: '2 Eggy Road',
+        //   address_line_2: 'Didsbury',
+        //   postcode: 'M20 2FL',
+        //   city: 'Manchester',
+        //   country: 'United Kingdom',
+        //   email: 'sugopasta@kitchen.com',
+        //   phone_number: '07923620392',
+        //   nickname: 'Altrincham Markets',
+        //   opening_times: {
+        //     mon: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     tue: { is_open: false, open: '10:00 AM', close: '11:00 PM' },
+        //     wed: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     thu: { is_open: false, open: '10:00 AM', close: '11:00 PM' },
+        //     fri: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     sat: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     sun: { is_open: true, open: '10:00 AM', close: '11:00 PM' }
+        //   }
+        // },
+        // {
+        //   address_line_1: '2 Eversley Road',
+        //   address_line_2: 'Didsbury',
+        //   postcode: 'M20 2FL',
+        //   city: 'Manchester',
+        //   country: 'United Kingdom',
+        //   email: 'kezanwar@gmail.com',
+        //   phone_number: '07917620392',
+        //   nickname: 'Sale (Stanley SQ)',
+        //   opening_times: {
+        //     mon: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     tue: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     wed: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     thu: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     fri: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     sat: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        //     sun: { is_open: true, open: '10:00 AM', close: '11:00 PM' }
+        //   }
+        // }
       ],
       is_new_location: false,
       add_location: {
@@ -96,6 +132,15 @@ export const NewRestaurantFormStepper = () => {
         email: '',
         phone_number: '',
         nickname: ''
+      },
+      add_opening_times: {
+        mon: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        tue: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        wed: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        thu: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        fri: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        sat: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
+        sun: { is_open: true, open: '10:00 AM', close: '11:00 PM' }
       }
     }),
     [activeStep]
@@ -162,7 +207,13 @@ export const NewRestaurantFormStepper = () => {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       {/* STEPPER */}
-      <Box mb={6}>
+      <Box
+        sx={{
+          maxWidth: '100vw',
+          overflowX: 'auto'
+        }}
+        mb={6}
+      >
         <Stepper activeStep={activeStep}>
           {FORM_STEPS.map((f, index) => (
             <Step key={f.label}>
@@ -174,10 +225,7 @@ export const NewRestaurantFormStepper = () => {
 
       <MotionContainer>{FORM_STEPS[activeStep].form}</MotionContainer>
       {/* FORMS */}
-      <Button
-        color="inherit"
-        onClick={() => console.log(JSON.stringify(getValues('locations')))}
-      >
+      <Button color="inherit" onClick={() => console.log(getValues())}>
         get values
       </Button>
       {/* ACTIONS */}

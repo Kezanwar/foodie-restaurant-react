@@ -101,7 +101,12 @@ export default function palette(themeMode) {
       secondary: GREY[600],
       disabled: GREY[500]
     },
-    background: { paper: '#fff', default: '#fff', neutral: GREY[200] },
+    background: {
+      paper: '#fff',
+      default: '#fff',
+      neutral: GREY[200],
+      paperOpposite: GREY[800]
+    },
     action: {
       ...COMMON.action,
       active: GREY[600]
@@ -118,6 +123,7 @@ export default function palette(themeMode) {
     },
     background: {
       paper: GREY[800],
+      paperOpposite: GREY[100],
       default: GREY[900],
       neutral: alpha(GREY[500], 0.16)
     },

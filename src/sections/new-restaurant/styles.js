@@ -17,7 +17,7 @@ export const FormSectionStack = styled(Stack)(
   ({ sx, mobSx, theme, singleItem, matchGapMB, fullWidthMobile }) => ({
     gap: theme.spacing(3),
     flexDirection: 'row',
-    marginBottom: matchGapMB ? theme.spacing(3) : theme.spacing(5),
+    marginBottom: theme.spacing(2),
     width: singleItem ? `calc(50% - ${theme.spacing(1.5)})` : '',
     [theme.breakpoints.down('md')]: {
       gap: theme.spacing(2),
@@ -27,7 +27,7 @@ export const FormSectionStack = styled(Stack)(
           : singleItem && !fullWidthMobile
           ? `calc(50% - ${theme.spacing(1)})`
           : '',
-      marginBottom: matchGapMB ? theme.spacing(2) : theme.spacing(5),
+      // marginBottom: matchGapMB ? theme.spacing(2) : theme.spacing(5),
       ...mobSx
     },
     ...sx
@@ -54,6 +54,27 @@ export const InputWithInfoStack = styled(Stack)(({ theme, matchGapMB }) => ({
   }
 }));
 
+export const InputStack = styled(Stack)(({ theme, matchGapMB }) => ({
+  marginBottom: matchGapMB ? theme.spacing(2) : theme.spacing(3),
+  flexDirection: 'row',
+  gap: theme.spacing(3),
+  flex: 1,
+  [theme.breakpoints.down('md')]: {
+    flexDirection: 'column',
+    width: '100%'
+  },
+  '& > *': {
+    flex: 1
+  }
+}));
+
+export const InputStackSingleItemContainer = styled(Box)(({ theme }) => ({
+  width: `calc(50% - ${theme.spacing(1.5)})`,
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
+}));
+
 export const StoreUrlContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -73,4 +94,9 @@ export const InputWithInfoInputContainer = styled(Box)(({ theme }) => ({
 
 export const InputWithInfoInfoContainer = styled(Box)(({ theme }) => ({
   flex: 1
+}));
+
+export const CanDisableInputContainer = styled(Box)(({ theme, disabled }) => ({
+  filter: disabled ? 'greyscale(1.2)' : 'unset',
+  pointerEvents: disabled ? 'none' : 'all'
 }));
