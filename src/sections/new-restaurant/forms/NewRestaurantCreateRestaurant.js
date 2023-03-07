@@ -183,4 +183,4 @@ const NewRestaurantCreateRestaurant = (props) => {
 
 NewRestaurantCreateRestaurant.propTypes = {};
 
-export default NewRestaurantCreateRestaurant;
+export default React.memo(NewRestaurantCreateRestaurant);

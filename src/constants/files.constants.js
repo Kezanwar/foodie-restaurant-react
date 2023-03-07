@@ -1,1 +1,1 @@
-export const MAX_IMAGE = { size: 5000000, text: '5mb' };
+export const MAX_IMAGE = { size: 2000000, text: '2mb' };

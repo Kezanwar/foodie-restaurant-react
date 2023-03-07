@@ -20,15 +20,7 @@ import StoreIcon from '@mui/icons-material/Store';
 import PropTypes from 'prop-types';
 import { useFormContext, useWatch } from 'react-hook-form';
 import Subheader from '../../../components/subheader/Subheader';
-import {
-  CanDisableInputContainer,
-  FormSectionStack,
-  InputStack,
-  InputStackSingleItemContainer,
-  InputWithInfoInfoContainer,
-  InputWithInfoInputContainer,
-  InputWithInfoStack
-} from '../styles';
+import { CanDisableInputContainer, InputStack } from '../styles';
 import {
   RHFCheckbox,
   RHFSelect,
@@ -78,6 +70,7 @@ const NewRestaurantAddLocations = (props) => {
     const locations = await getValues('locations');
     const l = [...locations];
     l.splice(index, 1);
+    setValue('mob_view_location', 0);
     setTimeout(async () => {
       await setValue('locations', l);
     }, 200);
@@ -208,7 +201,7 @@ const NewRestaurantAddLocations = (props) => {
         />
         <Box />
       </InputStack>
-      <Spacer />
+      <Spacer sp={6} />
       <Subheader
         sx={{ padding: 0, marginBottom: 16 }}
         text={'Location Contact Details'}
@@ -225,10 +218,10 @@ const NewRestaurantAddLocations = (props) => {
           label="Contact number"
         />
       </InputStack>
-      <Spacer />
+      <Spacer sp={6} />
       <Subheader
         sx={{ padding: 0, marginBottom: 16 }}
-        text={'Add Location Nickname'}
+        text={'Location Nickname'}
       />
 
       <InputStack>
@@ -239,10 +232,10 @@ const NewRestaurantAddLocations = (props) => {
         />
         <Box />
       </InputStack>
-      <Spacer />
+      <Spacer sp={6} />
       <Subheader
         sx={{ padding: 0, marginBottom: 20 }}
-        text={'Add Location Opening Times'}
+        text={'Location Opening Times'}
       />
       <Box
         width={!isTablet ? `calc(50% - ${theme.spacing(1.5)})` : '100%'}
@@ -415,4 +408,4 @@ const NewRestaurantAddLocations = (props) => {
 
 NewRestaurantAddLocations.propTypes = {};
 
-export default NewRestaurantAddLocations;
+export default React.memo(NewRestaurantAddLocations);

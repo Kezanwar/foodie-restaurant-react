@@ -12,6 +12,7 @@ export default function Overview() {
     <NewRestaurantLayout>
       <Helmet>
         <title> New Restaurant | Foodie</title>
+        <link rel="stylesheet" type="text/css" href="/styles/devices.css" />
       </Helmet>
       <Container maxWidth={'xl'}>
         <Typography variant="h3" component="h1" paragraph>

@@ -58,12 +58,24 @@ const LocationCard = ({
             sx={{ width: 24, height: 24, marginLeft: -0.3 }}
           />
         </Box>
-        <Typography variant="body2">{nickname}</Typography>
-        <Typography variant="body2">{address_line_1}</Typography>
-        <Typography variant="body2">{address_line_2}</Typography>
-        <Typography variant="body2">{postcode}</Typography>
-        <Typography variant="body2">{city}</Typography>
-        <Typography variant="body2">{country}</Typography>
+        <Typography fontWeight={600} variant="body2">
+          {nickname}
+        </Typography>
+        <Typography fontWeight={600} variant="body2">
+          {address_line_1}
+        </Typography>
+        <Typography fontWeight={600} variant="body2">
+          {address_line_2}
+        </Typography>
+        <Typography fontWeight={600} variant="body2">
+          {postcode}
+        </Typography>
+        <Typography fontWeight={600} variant="body2">
+          {city}
+        </Typography>
+        <Typography fontWeight={600} variant="body2">
+          {country}
+        </Typography>
       </Stack>
       <Stack mb={2} gap={0.25}>
         <Box margin={0} mb={1} color={theme.palette.primary.main}>
@@ -72,8 +84,12 @@ const LocationCard = ({
             sx={{ width: 24, height: 24, marginLeft: -0.3 }}
           />
         </Box>
-        <Typography variant="body2">{email}</Typography>
-        <Typography variant="body2">{phone_number}</Typography>
+        <Typography fontWeight={600} variant="body2">
+          {email}
+        </Typography>
+        <Typography fontWeight={600} variant="body2">
+          {phone_number}
+        </Typography>
       </Stack>
       <Stack gap={0.25}>
         <Box margin={0} mb={1} color={theme.palette.primary.main}>

@@ -6,6 +6,6 @@ export const StyledSubheader = styled(Typography)(({ theme, sx }) => ({
   textTransform: 'uppercase',
   letterSpacing: 0.75,
   fontWeight: '700',
-  color: theme.palette.text.secondary,
+  color: theme.palette.text.primary,
   ...sx
 }));

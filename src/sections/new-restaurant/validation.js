@@ -38,7 +38,7 @@ export const NewRestaurantSchema = Yup.object().shape({
     then: Yup.mixed()
       .required('Profile Image is required!')
       .test(
-        'fileSize',
+        'size',
         `Your file is too big, must be ${MAX_IMAGE.text} or less`,
         (value) => value && value.size <= MAX_IMAGE.size
       ),

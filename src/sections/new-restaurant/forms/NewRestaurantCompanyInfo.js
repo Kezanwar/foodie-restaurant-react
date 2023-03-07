@@ -151,4 +151,4 @@ const NewRestaurantCompanyInfo = (props) => {
 
 NewRestaurantCompanyInfo.propTypes = {};
 
-export default NewRestaurantCompanyInfo;
+export default React.memo(NewRestaurantCompanyInfo);
