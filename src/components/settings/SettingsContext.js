@@ -1,5 +1,11 @@
 import PropTypes from 'prop-types';
-import { createContext, useEffect, useContext, useMemo, useCallback } from 'react';
+import {
+  createContext,
+  useEffect,
+  useContext,
+  useMemo,
+  useCallback
+} from 'react';
 // hooks
 import useLocalStorage from '../../hooks/useLocalStorage';
 //
@@ -29,7 +35,7 @@ const initialState = {
   // Stretch
   onToggleStretch: () => {},
   // Reset
-  onResetSetting: () => {},
+  onResetSetting: () => {}
 };
 
 // ----------------------------------------------------------------------
@@ -39,7 +45,8 @@ export const SettingsContext = createContext(initialState);
 export const useSettingsContext = () => {
   const context = useContext(SettingsContext);
 
-  if (!context) throw new Error('useSettingsContext must be use inside SettingsProvider');
+  if (!context)
+    throw new Error('useSettingsContext must be use inside SettingsProvider');
 
   return context;
 };
@@ -47,13 +54,14 @@ export const useSettingsContext = () => {
 // ----------------------------------------------------------------------
 
 SettingsProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 export function SettingsProvider({ children }) {
   const [settings, setSettings] = useLocalStorage('settings', defaultSettings);
 
-  const langStorage = typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') : '';
+  const langStorage =
+    typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') : '';
 
   const isArabic = langStorage === 'ar';
 
@@ -111,7 +119,8 @@ export function SettingsProvider({ children }) {
 
   // Contrast
   const onToggleContrast = useCallback(() => {
-    const themeContrast = settings.themeContrast === 'default' ? 'bold' : 'default';
+    const themeContrast =
+      settings.themeContrast === 'default' ? 'bold' : 'default';
     setSettings({ ...settings, themeContrast });
   }, [setSettings, settings]);
 
@@ -165,7 +174,7 @@ export function SettingsProvider({ children }) {
       presetsOption,
       presetsColor: getPresets(settings.themeColorPresets),
       // Reset
-      onResetSetting,
+      onResetSetting
     }),
     [
       settings,
@@ -186,9 +195,13 @@ export function SettingsProvider({ children }) {
       // Color
       onChangeColorPresets,
       // Reset
-      onResetSetting,
+      onResetSetting
     ]
   );
 
-  return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;
+  return (
+    <SettingsContext.Provider value={value}>
+      {children}
+    </SettingsContext.Provider>
+  );
 }

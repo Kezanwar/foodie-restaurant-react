@@ -12,24 +12,24 @@ import { LocationCardStyled } from './styles';
 import SvgColor from '../svg-color/SvgColor';
 import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
 import { varFade } from '../animate';
+import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
+import Subheader from '../subheader/Subheader';
 
 const LocationCard = ({
-  address_line_1,
-  address_line_2,
-  postcode,
-  city,
-  country,
+  address: { address_line_1, address_line_2, postcode, city, country },
   email,
   phone_number,
   nickname,
   opening_times,
+  id,
   onDelete
 }) => {
   const theme = useTheme();
   const { isMobile } = useCustomMediaQueries();
-  const [first, setFirst] = useState(false);
+  const { data } = useRestaurantQuery();
+
   return (
-    <LocationCardStyled layout layoutScroll>
+    <LocationCardStyled layoutId={nickname} layout>
       <Box
         sx={{
           position: 'absolute',
@@ -39,9 +39,9 @@ const LocationCard = ({
         }}
       >
         <IconButton color="info" size="small">
-          <EditIcon onClick={() => setFirst(!first)} fontSize="small" />
+          <EditIcon onClick={() => {}} fontSize="small" />
         </IconButton>
-        <IconButton onClick={onDelete} color="secondary" size="small">
+        <IconButton onClick={() => onDelete(id)} color="secondary" size="small">
           <DeleteOutlineIcon fontSize="small" />
         </IconButton>
       </Box>
@@ -52,52 +52,77 @@ const LocationCard = ({
         }}
         mb={2}
       >
-        <Box margin={0} mb={1} color={theme.palette.primary.main}>
-          <SvgColor
-            src={`/assets/icons/navbar/ic_store.svg`}
-            sx={{ width: 24, height: 24, marginLeft: -0.3 }}
-          />
+        <Box mb={2} display={'flex'} alignItems={'center'}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            color={theme.palette.primary.main}
+          >
+            <SvgColor
+              src={`/assets/icons/navbar/ic_store.svg`}
+              sx={{ width: 24, height: 24, marginLeft: -0.3 }}
+            />
+          </Box>
+
+          <Typography ml={1} fontWeight={600} fontSize={13} variant="body2">
+            {data?.data?.name} ({nickname})
+          </Typography>
         </Box>
-        <Typography fontWeight={600} variant="body2">
-          {nickname}
-        </Typography>
-        <Typography fontWeight={600} variant="body2">
-          {address_line_1}
-        </Typography>
-        <Typography fontWeight={600} variant="body2">
-          {address_line_2}
-        </Typography>
-        <Typography fontWeight={600} variant="body2">
-          {postcode}
-        </Typography>
-        <Typography fontWeight={600} variant="body2">
-          {city}
-        </Typography>
-        <Typography fontWeight={600} variant="body2">
-          {country}
-        </Typography>
+
+        <Typography variant="body2">{address_line_1}</Typography>
+        <Typography variant="body2">{address_line_2}</Typography>
+        <Typography variant="body2">{postcode}</Typography>
+        <Typography variant="body2">{city}</Typography>
+        <Typography variant="body2">{country}</Typography>
       </Stack>
       <Stack mb={2} gap={0.25}>
-        <Box margin={0} mb={1} color={theme.palette.primary.main}>
-          <SvgColor
-            src={`/assets/icons/navbar/ic_chat.svg`}
-            sx={{ width: 24, height: 24, marginLeft: -0.3 }}
-          />
+        <Box mb={2} display={'flex'} alignItems={'center'}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            margin={0}
+            color={theme.palette.primary.main}
+          >
+            <SvgColor
+              src={`/assets/icons/navbar/ic_chat.svg`}
+              sx={{ width: 24, height: 24, marginLeft: -0.3 }}
+            />
+          </Box>
+          <Typography ml={1} fontWeight={600} fontSize={13} variant="body2">
+            Contact Details
+          </Typography>
         </Box>
-        <Typography fontWeight={600} variant="body2">
-          {email}
-        </Typography>
-        <Typography fontWeight={600} variant="body2">
-          {phone_number}
-        </Typography>
+
+        <Typography variant="body2">{email}</Typography>
+        <Typography variant="body2">{phone_number}</Typography>
       </Stack>
       <Stack gap={0.25}>
-        <Box margin={0} mb={1} color={theme.palette.primary.main}>
-          <SvgColor
-            src={`/assets/icons/navbar/ic_time.svg`}
-            sx={{ width: 24, height: 24, marginLeft: -0.3 }}
-          />
+        <Box mb={2} display={'flex'} alignItems={'center'}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            margin={0}
+            color={theme.palette.primary.main}
+          >
+            <SvgColor
+              src={`/assets/icons/navbar/ic_time.svg`}
+              sx={{ width: 24, height: 24, marginLeft: -0.3 }}
+            />
+          </Box>
+          <Typography ml={1} fontWeight={600} fontSize={13} variant="body2">
+            Opening Times
+          </Typography>
         </Box>
+
         {Object.entries(opening_times).map(([key, value]) => {
           return (
             <>
@@ -153,4 +178,4 @@ LocationCard.propTypes = {
   onDelete: PropTypes.func
 };
 
-export default LocationCard;
+export default React.memo(LocationCard);

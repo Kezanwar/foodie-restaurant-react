@@ -1,7 +1,8 @@
 import { alpha, Box, Card, styled, CardActionArea, Stack } from '@mui/material';
 import { m } from 'framer-motion';
+import MotionDivViewport from '../animate/MotionDivViewport';
 
-export const LocationCardStyled = styled(m.div)(({ theme }) => ({
+export const LocationCardStyled = styled(MotionDivViewport)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   border: `2px solid ${alpha(theme.palette.primary.lighter, 0.75)}`,
   //   boxShadow: theme.shadows[19],

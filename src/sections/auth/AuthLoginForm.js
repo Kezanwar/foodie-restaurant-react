@@ -11,6 +11,7 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 // components
 import Iconify from '../../components/iconify';
 import FormProvider, { RHFTextField } from '../../components/hook-form';
+import Spacer from '../../components/spacer/Spacer';
 
 // ----------------------------------------------------------------------
 
@@ -61,10 +62,6 @@ export default function AuthLoginForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2}>
-        {!!errors.afterSubmit && (
-          <Alert severity="error">{errors.afterSubmit.message}</Alert>
-        )}
-
         <RHFTextField name="email" label="Email address" />
 
         <RHFTextField
@@ -86,6 +83,12 @@ export default function AuthLoginForm() {
             )
           }}
         />
+        {!!errors.afterSubmit && (
+          <>
+            <Alert severity="error">{errors.afterSubmit.message}</Alert>
+            <Spacer />
+          </>
+        )}
       </Stack>
 
       <Stack alignItems="flex-end" sx={{ my: 2 }}>

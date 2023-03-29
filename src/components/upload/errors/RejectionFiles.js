@@ -16,7 +16,6 @@ RejectionFiles.propTypes = {
 };
 
 export default function RejectionFiles({ fileRejections }) {
-  console.log(fileRejections);
   if (!fileRejections.length) {
     return null;
   }

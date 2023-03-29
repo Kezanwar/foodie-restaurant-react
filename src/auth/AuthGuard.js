@@ -34,15 +34,15 @@ export default function AuthGuard({ children }) {
     return <Login />;
   }
 
-  if (pathname !== PATH_NEW_RESTAURANT.new_restaurant) {
-    if (
-      !initialRestaurantStatus ||
-      initialRestaurantStatus === RESTAURANT_STATUS.APPLICATION_PENDING ||
-      initialRestaurantStatus === RESTAURANT_STATUS.APPLICATION_PROCESSING
-    ) {
-      return <Navigate to={PATH_NEW_RESTAURANT.new_restaurant} />;
-    }
-  }
+  // if (pathname !== PATH_NEW_RESTAURANT.new_restaurant) {
+  //   if (
+  //     !initialRestaurantStatus ||
+  //     initialRestaurantStatus === RESTAURANT_STATUS.APPLICATION_PENDING ||
+  //     initialRestaurantStatus === RESTAURANT_STATUS.APPLICATION_PROCESSING
+  //   ) {
+  //     return <Navigate to={PATH_NEW_RESTAURANT.new_restaurant} />;
+  //   }
+  // }
 
   if (requestedLocation && pathname !== requestedLocation) {
     setRequestedLocation(null);

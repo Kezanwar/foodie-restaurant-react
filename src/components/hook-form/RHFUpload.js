@@ -94,7 +94,6 @@ export function RHFUpload({ name, multiple, ...other }) {
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => {
-        console.log(error);
         const isErrorWithSingle = !!error && error.value;
 
         const isErrorWithMultiple = !!error && !field.value?.length;

@@ -78,10 +78,6 @@ export default function AuthRegisterForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2}>
-        {!!errors.afterSubmit && (
-          <Alert severity="error">{errors.afterSubmit.message}</Alert>
-        )}
-
         <Stack direction="row" gap={2}>
           <RHFTextField name="first_name" label="First name" />
           <RHFTextField name="last_name" label="Last name" />
@@ -127,6 +123,9 @@ export default function AuthRegisterForm() {
             )
           }}
         />
+        {!!errors.afterSubmit && (
+          <Alert severity="error">{errors.afterSubmit.message}</Alert>
+        )}
       </Stack>
 
       <Stack alignItems="flex-end" sx={{ my: 2 }}>

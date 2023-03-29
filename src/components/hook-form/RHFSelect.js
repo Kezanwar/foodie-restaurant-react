@@ -13,7 +13,7 @@ RHFSelect.propTypes = {
 
 export default function RHFSelect({ name, children, ...other }) {
   const { control } = useFormContext();
-  console.log({ ...other });
+
   return (
     <Controller
       name={name}

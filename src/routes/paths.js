@@ -8,7 +8,7 @@ function path(root, sublink) {
 
 export const PATH_AUTH = {
   login: '/login',
-  register: '/register',
+  register: '/register'
 };
 
 // ----------------------------------------------------------------------
@@ -21,7 +21,7 @@ export const PATH_DASHBOARD = {
   vouchers: path(ROOTS_DASHBOARD, '/vouchers'),
   restaurant: path(ROOTS_DASHBOARD, '/restaurant'),
   users: path(ROOTS_DASHBOARD, '/users'),
-  subscription: path(ROOTS_DASHBOARD, '/subscription'),
+  subscription: path(ROOTS_DASHBOARD, '/subscription')
 
   // user: {
   //   root: path(ROOTS_DASHBOARD, '/user'),
@@ -33,6 +33,12 @@ export const PATH_DASHBOARD = {
 
 // ----------------------------------------------------------------------
 
+const ROOT_NEW_REST = '/new-restaurant';
+
 export const PATH_NEW_RESTAURANT = {
-  new_restaurant: '/new-restaurant',
+  new_restaurant: ROOT_NEW_REST,
+  step_1: path(ROOT_NEW_REST, '/step-1'),
+  step_2: path(ROOT_NEW_REST, '/step-2'),
+  step_3: path(ROOT_NEW_REST, '/step-3'),
+  step_4: path(ROOT_NEW_REST, '/step-4')
 };

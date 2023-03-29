@@ -8,13 +8,14 @@ import { MotionContainer, varBounce } from '../components/animate';
 import { ForbiddenIllustration } from '../assets/illustrations';
 //
 import { useAuthContext } from '../hooks/useAuthContext';
+import MotionDivViewport from '../components/animate/MotionDivViewport';
 
 // ----------------------------------------------------------------------
 
 RoleBasedGuard.propTypes = {
   children: PropTypes.node,
   hasContent: PropTypes.bool,
-  roles: PropTypes.arrayOf(PropTypes.string),
+  roles: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default function RoleBasedGuard({ hasContent, roles, children }) {
@@ -27,19 +28,21 @@ export default function RoleBasedGuard({ hasContent, roles, children }) {
   if (typeof roles !== 'undefined' && !roles.includes(currentRole)) {
     return hasContent ? (
       <Container component={MotionContainer} sx={{ textAlign: 'center' }}>
-        <m.div variants={varBounce().in}>
+        <MotionDivViewport variants={varBounce().in}>
           <Typography variant="h3" paragraph>
             Permission Denied
           </Typography>
-        </m.div>
+        </MotionDivViewport>
 
-        <m.div variants={varBounce().in}>
-          <Typography sx={{ color: 'text.secondary' }}>You do not have permission to access this page</Typography>
-        </m.div>
+        <MotionDivViewport variants={varBounce().in}>
+          <Typography sx={{ color: 'text.secondary' }}>
+            You do not have permission to access this page
+          </Typography>
+        </MotionDivViewport>
 
-        <m.div variants={varBounce().in}>
+        <MotionDivViewport variants={varBounce().in}>
           <ForbiddenIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
-        </m.div>
+        </MotionDivViewport>
       </Container>
     ) : null;
   }
