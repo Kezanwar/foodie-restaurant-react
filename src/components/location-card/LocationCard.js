@@ -22,14 +22,15 @@ const LocationCard = ({
   nickname,
   opening_times,
   id,
-  onDelete
+  onDelete,
+  onEdit
 }) => {
   const theme = useTheme();
   const { isMobile } = useCustomMediaQueries();
   const { data } = useRestaurantQuery();
 
   return (
-    <LocationCardStyled layoutId={nickname} layout>
+    <LocationCardStyled layout>
       <Box
         sx={{
           position: 'absolute',
@@ -38,8 +39,8 @@ const LocationCard = ({
           display: 'flex'
         }}
       >
-        <IconButton color="info" size="small">
-          <EditIcon onClick={() => {}} fontSize="small" />
+        <IconButton onClick={() => onEdit(id)} color="info" size="small">
+          <EditIcon fontSize="small" />
         </IconButton>
         <IconButton onClick={() => onDelete(id)} color="secondary" size="small">
           <DeleteOutlineIcon fontSize="small" />

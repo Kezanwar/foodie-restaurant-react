@@ -9,9 +9,9 @@ import React, {
 import { Helmet } from 'react-helmet-async';
 import 'leaflet/dist/leaflet.css';
 import { useNavigate } from 'react-router';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import { useTheme } from '@emotion/react';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Alert,
   AlertTitle,
@@ -21,6 +21,7 @@ import {
   TextField,
   Typography
 } from '@mui/material';
+import { capitalize } from 'lodash';
 import { useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
@@ -50,9 +51,17 @@ import { PATH_NEW_RESTAURANT } from '../../routes/paths';
 import MotionDivViewport from '../../components/animate/MotionDivViewport';
 import { RHFOpeningTime } from '../../components/hook-form/RHFOpeningTIme';
 
-import { addLocation, checkLocation, deleteLocation } from '../../utils/api';
+import {
+  addLocation,
+  checkEditLocation,
+  checkLocation,
+  deleteLocation,
+  editLocation
+} from '../../utils/api';
 import ConfirmLocationModal from '../../components/confirm-location-modal/ConfirmLocationModal';
 import AcceptDeclineModal from '../../components/accept-decline-modal/AcceptDeclineModal';
+import OpeningTimeInput from '../../components/opening-time-input/OpeningTimeInput';
+import useOpeningTimesForm from '../../hooks/useOpeningTimesForm';
 
 const NewRestaurantAddLocation = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
@@ -61,15 +70,29 @@ const NewRestaurantAddLocation = (props) => {
   const [deleteLocationLoading, setDeleteLocationLoading] = useState(false);
   const [addLocationModalOpen, setAddLocationModalOpen] = useState(false);
   const [deleteLocationModalOpen, setDeleteLocationModalOpen] = useState(false);
+  const [editLocationID, setEditLocationID] = useState(false);
+
+  const { data, isLoading, updateQuery } = useLocationsQuery();
+
+  const editLocationObj = useMemo(() => {
+    if (!editLocationID) return null;
+    return data?.data?.find((l) => l.id === editLocationID);
+  }, [editLocationID]);
+
   const [mapPosition, setMapPosition] = useState({
     lat: 53.41728238865921,
     lng: -2.235525662503866
   });
-  // const [checkLocation, setCheckLocation] = useState(null);
+
+  const {
+    openingTimes,
+    resetOpeningTimes,
+    updateOpeningTimes,
+    replaceOpeningTimes
+  } = useOpeningTimesForm();
 
   const idToDelete = useRef(null);
 
-  const { data, isLoading, updateQuery } = useLocationsQuery();
   const defaultValues = useMemo(
     () => ({
       locations: data?.data || [],
@@ -86,15 +109,6 @@ const NewRestaurantAddLocation = (props) => {
         email: '',
         phone_number: '',
         nickname: ''
-      },
-      add_opening_times: {
-        mon: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
-        tue: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
-        wed: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
-        thu: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
-        fri: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
-        sat: { is_open: true, open: '10:00 AM', close: '11:00 PM' },
-        sun: { is_open: true, open: '10:00 AM', close: '11:00 PM' }
       }
     }),
     [data?.data]
@@ -110,7 +124,8 @@ const NewRestaurantAddLocation = (props) => {
   const {
     watch,
     trigger,
-    resetField,
+
+    register,
     reset,
     setError,
     handleSubmit,
@@ -130,6 +145,14 @@ const NewRestaurantAddLocation = (props) => {
 
   const handleBack = () => {
     navigate(PATH_NEW_RESTAURANT.step_2);
+  };
+
+  const scrollToForm = () => {
+    window.scrollTo({
+      top: 450,
+      left: 0,
+      behavior: 'smooth'
+    });
   };
 
   const onSubmit = async (data) => {
@@ -161,18 +184,16 @@ const NewRestaurantAddLocation = (props) => {
     await trigger('add_location');
     const err = !!getFieldState('add_location').error;
     if (err) {
-      window.scrollTo({
-        top: 450,
-        left: 0,
-        behavior: 'smooth'
-      });
+      scrollToForm();
       await setValue('is_new_location', false);
       setAddLocationLoading(false);
       return;
     }
 
-    const opening_times = getValues('add_opening_times');
-    const newLocation = { ...getValues('add_location'), opening_times };
+    const newLocation = {
+      ...getValues('add_location'),
+      opening_times: openingTimes
+    };
 
     try {
       const res = await checkLocation(newLocation);
@@ -192,41 +213,112 @@ const NewRestaurantAddLocation = (props) => {
       });
       setAddLocationLoading(false);
     }
-  }, []);
+  }, [openingTimes]);
 
-  const onConfirmLocation = useCallback(async (long_lat) => {
-    const opening_times = getValues('add_opening_times');
+  const onSaveEditLocationClick = useCallback(async () => {
+    setAddLocationLoading(true);
+    await setValue('is_new_location', true);
+    await trigger('add_location');
+    const err = !!getFieldState('add_location').error;
+    if (err) {
+      scrollToForm();
+      await setValue('is_new_location', false);
+      setAddLocationLoading(false);
+      return;
+    }
+
     const newLocation = {
       ...getValues('add_location'),
-      opening_times,
-      long_lat
+      opening_times: openingTimes
     };
-    setConfirmLocationLoading(true);
-    try {
-      const res = await addLocation(newLocation);
-      const data = res?.data;
 
-      updateQuery(data);
-      setAddLocationModalOpen(false);
-      setConfirmLocationLoading(false);
-      setAddLocationLoading(false);
+    try {
+      const res = await checkEditLocation(newLocation, editLocationID);
+      const data = res?.data;
+      if (data) {
+        setMapPosition({
+          lng: data?.long_lat?.long,
+          lat: data?.long_lat?.lat
+        });
+        setAddLocationModalOpen(true);
+      }
     } catch (error) {
+      console.error(error);
       setError('afterSubmit', {
         ...error,
         message: error.message
       });
-      setAddLocationModalOpen(false);
-      setConfirmLocationLoading(false);
       setAddLocationLoading(false);
-      console.error(error);
     }
-  }, []);
+  }, [openingTimes, editLocationID]);
 
-  const onCancelLocationModal = useCallback(() => {
+  const onConfirmLocation = useCallback(
+    async (long_lat) => {
+      const newLocation = {
+        ...getValues('add_location'),
+        opening_times: openingTimes,
+        long_lat
+      };
+      setConfirmLocationLoading(true);
+      try {
+        const res = await addLocation(newLocation);
+        const data = res?.data;
+
+        updateQuery(data);
+        setAddLocationModalOpen(false);
+        setConfirmLocationLoading(false);
+        setAddLocationLoading(false);
+      } catch (error) {
+        setError('afterSubmit', {
+          ...error,
+          message: error.message
+        });
+        setAddLocationModalOpen(false);
+        setConfirmLocationLoading(false);
+        setAddLocationLoading(false);
+        console.error(error);
+      }
+    },
+    [openingTimes]
+  );
+
+  const onConfirmEditLocation = useCallback(
+    async (long_lat) => {
+      const newLocation = {
+        ...getValues('add_location'),
+        opening_times: openingTimes,
+        long_lat
+      };
+      setConfirmLocationLoading(true);
+      try {
+        const res = await editLocation(newLocation, editLocationID);
+        const data = res?.data;
+
+        updateQuery(data);
+        setAddLocationModalOpen(false);
+        setConfirmLocationLoading(false);
+        setAddLocationLoading(false);
+        setEditLocationID(false);
+        reset();
+      } catch (error) {
+        setError('afterSubmit', {
+          ...error,
+          message: error.message
+        });
+        setAddLocationModalOpen(false);
+        setConfirmLocationLoading(false);
+        setAddLocationLoading(false);
+        console.error(error);
+      }
+    },
+    [openingTimes]
+  );
+
+  const onCancelLocationModal = () => {
     setAddLocationModalOpen(false);
     setConfirmLocationLoading(false);
     setAddLocationLoading(false);
-  }, []);
+  };
 
   const onConfirmLocationDelete = useCallback(async () => {
     try {
@@ -246,14 +338,35 @@ const NewRestaurantAddLocation = (props) => {
     }
   }, []);
 
-  const onCancelDeleteLocationModal = useCallback(() => {
+  const onCancelDeleteLocationModal = () => {
     setDeleteLocationModalOpen(false);
-  }, []);
+  };
 
-  const onDeleteLocationClick = useCallback((id) => {
+  const onDeleteLocationClick = (id) => {
     idToDelete.current = id;
     setDeleteLocationModalOpen(true);
-  }, []);
+  };
+
+  const onEditLocationClick = (id) => {
+    setEditLocationID(id);
+    const editLocation = data?.data?.find((l) => l.id === id);
+    if (editLocation) {
+      const { address, email, name, phone_number, nickname } = editLocation;
+      setValue('add_location', {
+        address,
+        email,
+        name,
+        phone_number,
+        nickname
+      });
+      // setValue('add_location.email', editLocation.email);
+      // setValue('add_location.phone_number', editLocation.phone_number);
+      // setValue('add_location.nickname', editLocation.nickname);
+      replaceOpeningTimes(editLocation.opening_times);
+
+      scrollToForm();
+    }
+  };
 
   const updateCountry = (val) => {
     setValue('add_location.country', val);
@@ -266,13 +379,18 @@ const NewRestaurantAddLocation = (props) => {
       return `Are you sure you want to delete ${l.nickname}, ${l.address.postcode}?`;
     }
     return '';
-  }, [idToDelete.current]);
+  }, [idToDelete.current, getValues]);
 
   const locations = watch('locations');
 
-  const opening_times = useMemo(() => getValues('add_opening_times'), []);
-
   const theme = useTheme();
+
+  const resetForm = () => {
+    if (setEditLocationID) setEditLocationID(false);
+    reset();
+    resetOpeningTimes();
+    scrollToForm();
+  };
 
   return (
     <>
@@ -307,7 +425,7 @@ const NewRestaurantAddLocation = (props) => {
                   <li>Contact Number</li>
                   <li>Nickname</li>
                   <li>Opening Times</li>
-                </Box>{' '}
+                </Box>
               </Box>
               <Box mt={1}>
                 Locations can be added, updated or removed{' '}
@@ -318,6 +436,29 @@ const NewRestaurantAddLocation = (props) => {
           <Typography mb={6} variant="h4">
             Add a single or multiple location/s (Minimum 1 required)
           </Typography>
+          {editLocationObj ? (
+            <Alert
+              sx={{
+                width: isTablet ? '100%' : 'calc(50% - 14px)',
+                pr: 4,
+                mb: 6
+              }}
+              icon={<EditIcon fontSize="12px" />}
+              severity={'warning'}
+            >
+              <AlertTitle>Edit location</AlertTitle>
+              You're editing: {editLocationObj.nickname},{' '}
+              {editLocationObj.address.address_line_1},{' '}
+              {editLocationObj.address.postcode}
+              {/* <Box mt={2}>
+                <ul>
+                  <li>{editLocation.nickname}</li>
+                  <li>{editLocation.address.address_line_1}</li>
+                  <li>{editLocation.address.postcode}</li>
+                </ul>
+              </Box> */}
+            </Alert>
+          ) : null}
           <Subheader
             sx={{ padding: 0, marginBottom: 16 }}
             text={'Location Address'}
@@ -430,11 +571,25 @@ const NewRestaurantAddLocation = (props) => {
             width={!isTablet ? `calc(50% - ${theme.spacing(1.5)})` : '100%'}
             mb={2}
           >
-            {Object.entries(opening_times).map(([key, value]) => {
+            {Object.entries(openingTimes).map(([key, value]) => {
               return (
-                <RHFOpeningTime
-                  key={`rhf-${key}`}
-                  name={`add_opening_times.${key}`}
+                <OpeningTimeInput
+                  key={`opening-times-form-${key}`}
+                  name={capitalize(key)}
+                  value={value}
+                  setIsOpen={() =>
+                    updateOpeningTimes(
+                      key,
+                      'is_open',
+                      !openingTimes[key].is_open
+                    )
+                  }
+                  onCloseChange={(value) =>
+                    updateOpeningTimes(key, 'close', value)
+                  }
+                  onOpenChange={(value) =>
+                    updateOpeningTimes(key, 'open', value)
+                  }
                 />
               );
             })}
@@ -442,14 +597,46 @@ const NewRestaurantAddLocation = (props) => {
 
           <Stack alignItems={'flex-end'} mb={8}>
             <Stack alignItems={'flex-end'}>
-              <LoadingButton
-                loading={addLocationLoading}
-                color="inherit"
-                onClick={onAddLocationClick}
-                variant="contained"
-              >
-                Add Location
-              </LoadingButton>
+              {editLocationID ? (
+                <Box>
+                  <Button
+                    sx={{ mr: 2 }}
+                    color="inherit"
+                    onClick={resetForm}
+                    variant="outlined"
+                  >
+                    Cancel edit
+                  </Button>
+                  <LoadingButton
+                    loading={addLocationLoading}
+                    color="primary"
+                    onClick={onSaveEditLocationClick}
+                    variant="contained"
+                  >
+                    Save location
+                  </LoadingButton>
+                </Box>
+              ) : (
+                <Box>
+                  <Button
+                    sx={{ mr: 2 }}
+                    color="inherit"
+                    onClick={resetForm}
+                    variant="outlined"
+                  >
+                    Reset form
+                  </Button>
+                  <LoadingButton
+                    loading={addLocationLoading}
+                    color="primary"
+                    onClick={onAddLocationClick}
+                    variant="contained"
+                  >
+                    Add Location
+                  </LoadingButton>
+                </Box>
+              )}
+
               {!!errors.afterSubmit && (
                 <>
                   <Spacer />
@@ -480,6 +667,7 @@ const NewRestaurantAddLocation = (props) => {
                     <LocationCard
                       {...location}
                       key={location.id}
+                      onEdit={onEditLocationClick}
                       onDelete={onDeleteLocationClick}
                     />
                   );
@@ -520,9 +708,12 @@ const NewRestaurantAddLocation = (props) => {
             <ConfirmLocationModal
               mapPosition={mapPosition}
               onCancel={onCancelLocationModal}
-              onSubmit={onConfirmLocation}
+              onSubmit={
+                editLocationID ? onConfirmEditLocation : onConfirmLocation
+              }
               submitLoading={confirmLocationLoading}
               isOpen={addLocationModalOpen}
+              openingTimes={openingTimes}
             />
           )}
           {deleteLocationModalOpen && (

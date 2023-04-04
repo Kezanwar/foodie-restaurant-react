@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Stack } from '@mui/system';
-import { capitalize } from 'lodash';
 import {
   FormControlLabel,
   Checkbox,
@@ -15,9 +14,9 @@ import { CanDisableInputContainer } from '../../sections/forms/styles';
 import { OPENING_TIMES_OPTIONS } from '../../constants/utils.constants';
 
 const OpeningTimeInput = ({
-  field,
+  value,
   name,
-  onCheck,
+  setIsOpen,
   onCloseChange,
   onOpenChange
 }) => {
@@ -36,19 +35,19 @@ const OpeningTimeInput = ({
       >
         <Box sx={{ width: '80px' }}>
           <FormControlLabel
-            label={capitalize(name.split('.')[1])}
+            label={name}
             control={
               <Checkbox
-                onClick={onCheck}
-                label={capitalize(name)}
-                checked={!!field?.value?.is_open}
+                onClick={setIsOpen}
+                label={name}
+                checked={!!value?.is_open}
               />
             }
           />
         </Box>
 
         <Typography
-          color={field?.value?.is_open ? 'success.main' : 'warning.main'}
+          color={value?.is_open ? 'success.main' : 'warning.main'}
           sx={{
             marginLeft: 'auto',
             fontSize: 12,
@@ -57,7 +56,7 @@ const OpeningTimeInput = ({
             fontWeight: 'bold'
           }}
         >
-          {field?.value?.is_open ? 'Open' : 'Closed'}
+          {value?.is_open ? 'Open' : 'Closed'}
         </Typography>
       </Stack>
       <Stack
@@ -66,18 +65,21 @@ const OpeningTimeInput = ({
         gap={isTablet ? 2 : 3}
         flex={1}
       >
-        <CanDisableInputContainer disabled={!field?.value?.is_open} flex={1}>
+        <CanDisableInputContainer disabled={!value?.is_open} flex={1}>
           <TextField
             select
             fullWidth
+            InputLabelProps={{ shrink: true }}
             SelectProps={{ native: true }}
             variant={'filled'}
             label="Open"
             defaultValue={'09:00am'}
-            onChange={onOpenChange}
-            value={field?.value?.open}
+            onChange={(e) => {
+              onOpenChange(e.target.value);
+            }}
+            value={value?.open}
           >
-            {field?.value?.is_open ? (
+            {value?.is_open ? (
               <>
                 {OPENING_TIMES_OPTIONS.map((otoption) => {
                   return (
@@ -92,18 +94,19 @@ const OpeningTimeInput = ({
             )}
           </TextField>
         </CanDisableInputContainer>
-        <CanDisableInputContainer disabled={!field?.value?.is_open} flex={1}>
+        <CanDisableInputContainer disabled={!value?.is_open} flex={1}>
           <TextField
             select
             fullWidth
+            InputLabelProps={{ shrink: true }}
             SelectProps={{ native: true }}
             variant={'filled'}
             label="Close"
             defaultValue={'11:00pm'}
-            onChange={onCloseChange}
-            value={field?.value?.close}
+            onChange={(e) => onCloseChange(e.target.value)}
+            value={value?.close}
           >
-            {field?.value?.is_open ? (
+            {value?.is_open ? (
               <>
                 {OPENING_TIMES_OPTIONS.map((otoption) => {
                   return (

@@ -51,11 +51,12 @@ export default function NewRestaurantLayout() {
 
   return (
     <StyledRoot>
-      <Header />
       <Helmet>
         <title> New Restaurant | Foodie</title>
         <link rel="stylesheet" type="text/css" href="/styles/devices.css" />
       </Helmet>
+      <Header />
+
       <StyledContent>
         <Stack
           component={activeFormStep !== 2 ? MotionDivViewport : 'div'}

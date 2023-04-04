@@ -16,8 +16,12 @@ AuthGuard.propTypes = {
 };
 
 export default function AuthGuard({ children }) {
-  const { isAuthenticated, isInitialized, initialRestaurantStatus } =
-    useAuthContext();
+  const {
+    isAuthenticated,
+    isInitialized,
+    initialRestaurantStatus,
+    emailConfirmed
+  } = useAuthContext();
 
   const { pathname } = useLocation();
 
@@ -34,15 +38,7 @@ export default function AuthGuard({ children }) {
     return <Login />;
   }
 
-  // if (pathname !== PATH_NEW_RESTAURANT.new_restaurant) {
-  //   if (
-  //     !initialRestaurantStatus ||
-  //     initialRestaurantStatus === RESTAURANT_STATUS.APPLICATION_PENDING ||
-  //     initialRestaurantStatus === RESTAURANT_STATUS.APPLICATION_PROCESSING
-  //   ) {
-  //     return <Navigate to={PATH_NEW_RESTAURANT.new_restaurant} />;
-  //   }
-  // }
+  console.log(emailConfirmed);
 
   if (requestedLocation && pathname !== requestedLocation) {
     setRequestedLocation(null);

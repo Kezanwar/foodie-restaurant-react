@@ -1,5 +1,12 @@
 import PropTypes from 'prop-types';
-import { createContext, useEffect, useReducer, useCallback } from 'react';
+
+import {
+  createContext,
+  useEffect,
+  useReducer,
+  useCallback,
+  useMemo
+} from 'react';
 // utils
 import axios from '../utils/axios';
 //
@@ -110,7 +117,7 @@ export function AuthProvider({ children }) {
   }, [initialize]);
 
   // LOGIN
-  const login = async (email, password) => {
+  const login = useCallback(async (email, password) => {
     const response = await axios.post(AUTH_ENDPOINTS.login, {
       email,
       password
@@ -125,10 +132,10 @@ export function AuthProvider({ children }) {
         user
       }
     });
-  };
+  }, []);
 
   // REGISTER
-  const register = async (email, password, firstName, lastName) => {
+  const register = useCallback(async (email, password, firstName, lastName) => {
     const response = await axios.post(AUTH_ENDPOINTS.register, {
       email,
       password,
@@ -145,28 +152,27 @@ export function AuthProvider({ children }) {
         user
       }
     });
-  };
+  }, []);
 
   // LOGOUT
-  const logout = async () => {
+  const logout = useCallback(async () => {
     setSession(null);
     dispatch({
       type: 'LOGOUT'
     });
-  };
+  }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        ...state,
-        initialRestaurantStatus: state?.user?.restaurant?.status,
-        userRole: state?.user?.restaurant?.role,
-        login,
-        logout,
-        register
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  const values = useMemo(() => {
+    return {
+      ...state,
+      initialRestaurantStatus: state?.user?.restaurant?.status,
+      userRole: state?.user?.restaurant?.role,
+      emailConfirmed: state?.user?.email_confirmed,
+      login,
+      logout,
+      register
+    };
+  }, [state, login, logout, register]);
+
+  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 }

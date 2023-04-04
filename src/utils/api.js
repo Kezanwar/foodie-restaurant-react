@@ -10,7 +10,9 @@ const endpoints = {
 
   // locations
   checkLocation: '/locations/check',
+  checkEditLocation: '/locations/edit/check',
   addLocation: '/locations/add',
+  editLocation: '/locations/edit',
   deleteLocation: '/locations/delete',
 
   // options
@@ -47,8 +49,16 @@ export const checkLocation = (data) => {
   return axiosInstance.post(endpoints.checkLocation, data);
 };
 
+export const checkEditLocation = (data, id) => {
+  return axiosInstance.post(`${endpoints.checkEditLocation}/${id}`, data);
+};
+
 export const addLocation = (data) => {
   return axiosInstance.post(endpoints.addLocation, data);
+};
+
+export const editLocation = (data, id) => {
+  return axiosInstance.patch(`${endpoints.editLocation}/${id}`, data);
 };
 
 export const deleteLocation = (id) => {

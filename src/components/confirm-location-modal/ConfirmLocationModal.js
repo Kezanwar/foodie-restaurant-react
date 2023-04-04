@@ -18,7 +18,8 @@ const ConfirmLocationModal = ({
   mapPosition,
   onCancel,
   onSubmit,
-  submitLoading
+  submitLoading,
+  openingTimes
 }) => {
   const mapRef = useRef();
   const markerRef = useRef();
@@ -29,7 +30,7 @@ const ConfirmLocationModal = ({
 
   const { getValues } = useFormContext();
 
-  const { add_opening_times, add_location } = getValues();
+  const { add_location } = getValues();
 
   const isSmallMob = useMediaQuery((theme) => theme.breakpoints.down(420));
 
@@ -198,7 +199,7 @@ const ConfirmLocationModal = ({
                 Opening Times
               </Typography>
               <Spacer sp={1} />
-              {Object.entries(add_opening_times).map(([key, value]) => {
+              {Object.entries(openingTimes).map(([key, value]) => {
                 return (
                   <Stack
                     flexDirection={'row'}
