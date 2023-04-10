@@ -34,7 +34,7 @@ import { RHFTextField } from '../../components/hook-form';
 import { countries, countryToFlag } from '../../assets/data';
 import { pageScrollToTop } from '../../utils/scroll';
 import Spacer from '../../components/spacer/Spacer';
-import { InputStack } from '../../sections/forms/styles';
+import { InputStack } from '../../features/forms/styles';
 
 import { addLocationsSchema } from '../../validation/new-restaurant.validation';
 
@@ -56,12 +56,15 @@ import {
   checkEditLocation,
   checkLocation,
   deleteLocation,
-  editLocation
+  editLocation,
+  postLocationsStep
 } from '../../utils/api';
 import ConfirmLocationModal from '../../components/confirm-location-modal/ConfirmLocationModal';
 import AcceptDeclineModal from '../../components/accept-decline-modal/AcceptDeclineModal';
 import OpeningTimeInput from '../../components/opening-time-input/OpeningTimeInput';
 import useOpeningTimesForm from '../../hooks/useOpeningTimesForm';
+import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
+import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
 
 const NewRestaurantAddLocation = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
@@ -73,6 +76,8 @@ const NewRestaurantAddLocation = (props) => {
   const [editLocationID, setEditLocationID] = useState(false);
 
   const { data, isLoading, updateQuery } = useLocationsQuery();
+
+  const restaurantQuery = useRestaurantQuery();
 
   const editLocationObj = useMemo(() => {
     if (!editLocationID) return null;
@@ -90,6 +95,11 @@ const NewRestaurantAddLocation = (props) => {
     updateOpeningTimes,
     replaceOpeningTimes
   } = useOpeningTimesForm();
+
+  useCreateRestaurantGuard(
+    restaurantQuery?.data?.data,
+    PATH_NEW_RESTAURANT.step_3
+  );
 
   const idToDelete = useRef(null);
 
@@ -139,10 +149,6 @@ const NewRestaurantAddLocation = (props) => {
     reset(defaultValues);
   }, [defaultValues, setValue]);
 
-  const handleNext = () => {
-    setMapPosition([52.41728238865921, -1.235525662503866]);
-  };
-
   const handleBack = () => {
     navigate(PATH_NEW_RESTAURANT.step_2);
   };
@@ -155,12 +161,12 @@ const NewRestaurantAddLocation = (props) => {
     });
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     try {
-      // make dynamic api call
       setFormSubmitLoading(true);
-      // await FORM_STEPS[activeStep].API_CALL(data);
-      handleNext();
+      const updatedRestaurant = await postLocationsStep();
+      restaurantQuery.updateQuery(updatedRestaurant?.data);
+      navigate(PATH_NEW_RESTAURANT.step_4);
     } catch (error) {
       console.error(error);
       // reset();
@@ -413,10 +419,10 @@ const NewRestaurantAddLocation = (props) => {
               <Box mt={1}>
                 If you only have one location, the nickname will not be shown.
               </Box>
-              {/* <Box mt={1}>
-              This in turn helps us show vouchers within the customers desired
-              radius on the mobile app.
-            </Box> */}
+              <Box mt={1}>
+                This in turn helps us{' '}
+                <strong>show vouchers to customers in your local area.</strong>
+              </Box>
               <Box mt={1}>
                 Location details include;
                 <Box mt={1}>
@@ -450,13 +456,6 @@ const NewRestaurantAddLocation = (props) => {
               You're editing: {editLocationObj.nickname},{' '}
               {editLocationObj.address.address_line_1},{' '}
               {editLocationObj.address.postcode}
-              {/* <Box mt={2}>
-                <ul>
-                  <li>{editLocation.nickname}</li>
-                  <li>{editLocation.address.address_line_1}</li>
-                  <li>{editLocation.address.postcode}</li>
-                </ul>
-              </Box> */}
             </Alert>
           ) : null}
           <Subheader
@@ -688,13 +687,7 @@ const NewRestaurantAddLocation = (props) => {
               Back
             </Button>
             <Box sx={{ flexGrow: 1 }} />
-            <Button
-              color="inherit"
-              onClick={() => console.log(getValues())}
-              sx={{ mr: 1 }}
-            >
-              vals
-            </Button>
+
             <LoadingButton
               loading={formSubmitLoading}
               type="submit"

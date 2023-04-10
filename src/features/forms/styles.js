@@ -14,7 +14,7 @@ export const SetupFormWrapperStyled = styled(Paper)(({ theme }) => ({
 }));
 
 export const FormSectionStack = styled(Stack)(
-  ({ sx, mobSx, theme, singleItem, matchGapMB, fullWidthMobile }) => ({
+  ({ sx, theme, singleItem, matchGapMB, fullWidthMobile }) => ({
     gap: theme.spacing(3),
     flexDirection: 'row',
     marginBottom: theme.spacing(2),
@@ -26,9 +26,8 @@ export const FormSectionStack = styled(Stack)(
           ? '100%'
           : singleItem && !fullWidthMobile
           ? `calc(50% - ${theme.spacing(1)})`
-          : '',
+          : ''
       // marginBottom: matchGapMB ? theme.spacing(2) : theme.spacing(5),
-      ...mobSx
     },
     ...sx
   })

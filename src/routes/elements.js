@@ -65,9 +65,16 @@ export const NewRestaurantCreateRestaurant = Loadable(
 export const NewRestaurantAddLocations = Loadable(
   lazy(() => import('../pages/new-restaurant/NewRestaurantAddLocations'))
 );
+export const NewRestaurantYourApplication = Loadable(
+  lazy(() => import('../pages/new-restaurant/NewRestaurantYourApplication'))
+);
 
 // ----------------------------------------------------------------------
 
-// * 404 and Other Pages
+// * Miscellaneous pages
 
-export const Page404 = Loadable(lazy(() => import('../pages/Page404')));
+export const Page404 = Loadable(lazy(() => import('../pages/misc/Page404')));
+
+export const PageConfirmEmail = Loadable(
+  lazy(() => import('../pages/misc/PageConfirmEmail'))
+);

@@ -42,3 +42,10 @@ export const PATH_NEW_RESTAURANT = {
   step_3: path(ROOT_NEW_REST, '/step-3'),
   step_4: path(ROOT_NEW_REST, '/step-4')
 };
+
+// -----------------------------------------------------------------------
+
+export const PATH_MISC = {
+  four0four: '/404',
+  confirm_email: '/confirm-email'
+};

@@ -13,7 +13,7 @@ const Iphone14Pro = forwardRef(({ children }, ref) => {
 
   return (
     <div
-      style={{ zIndex: '20001' }}
+      style={{ zIndex: '20' }}
       ref={ref}
       className="device device-iphone-14-pro"
     >

@@ -1,9 +1,11 @@
 .device,
 .device::before,
-.device::after,
-.device *,
+.device::after
+
+/* .device *,
 .device *::before,
-.device *::after {
+.device *::after */
+    {
     box-sizing: border-box;
     display: block;
 }

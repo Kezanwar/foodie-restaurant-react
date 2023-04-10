@@ -20,12 +20,12 @@ export default function CompactLayout() {
       <Container component="main">
         <Stack
           sx={{
-            py: 12,
+            py: 16,
             m: 'auto',
-            maxWidth: 400,
+            maxWidth: 700,
             minHeight: '100vh',
             textAlign: 'center',
-            justifyContent: 'center',
+            justifyContent: 'start'
           }}
         >
           <Outlet />

@@ -10,7 +10,7 @@ import {
 
 import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
 
-import { CanDisableInputContainer } from '../../sections/forms/styles';
+import { CanDisableInputContainer } from '../../features/forms/styles';
 import { OPENING_TIMES_OPTIONS } from '../../constants/utils.constants';
 
 const OpeningTimeInput = ({

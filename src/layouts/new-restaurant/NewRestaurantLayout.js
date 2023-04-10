@@ -1,8 +1,7 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Image from 'mui-image';
 import {
-  Button,
   Container,
   Stack,
   Step,
@@ -27,6 +26,13 @@ import UndrawSVG from '../../assets/undraw-content-team-8.svg';
 import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
 import LoadingScreen from '../../components/loading-screen/LoadingScreen';
 import MotionDivViewport from '../../components/animate/MotionDivViewport';
+import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
+
+const disallowedRestStatusArr = Object.values(RESTAURANT_STATUS).filter(
+  (status) =>
+    status !== RESTAURANT_STATUS.APPLICATION_PENDING &&
+    status !== RESTAURANT_STATUS.APPLICATION_PROCESSING
+);
 
 export default function NewRestaurantLayout() {
   const navigate = useNavigate();
@@ -43,11 +49,21 @@ export default function NewRestaurantLayout() {
 
   const { data, isLoading } = useRestaurantQuery();
 
-  const { isMobile } = useCustomMediaQueries();
+  const { isMobile, isTablet } = useCustomMediaQueries();
 
   const restName = useMemo(() => {
     return data?.data?.name || data?.data?.company_info?.company_name;
   }, [data?.data?.name, data?.data?.company_info?.company_name]);
+
+  useEffect(() => {
+    if (data?.data) {
+      if (
+        disallowedRestStatusArr.some((status) => status === data?.data?.status)
+      ) {
+        navigate(PATH_DASHBOARD.overview);
+      }
+    }
+  }, [data?.data, navigate]);
 
   return (
     <StyledRoot>
@@ -60,14 +76,14 @@ export default function NewRestaurantLayout() {
       <StyledContent>
         <Stack
           component={activeFormStep !== 2 ? MotionDivViewport : 'div'}
-          layout
+          layout={'preserve-aspect'}
           transition={{ duration: 0.2 }}
           sx={{ width: 1 }}
         >
           <Container maxWidth={'lg'}>
             {activeFormStep !== -1 && (
               <>
-                <Box mb={isMobile ? 0 : 6}>
+                <Box mb={isMobile ? 2 : 6}>
                   <Box sx={{ display: 'flex' }}>
                     {isMobile ? null : (
                       <MotionDivViewport layoutId="undraw-svg">
@@ -81,10 +97,15 @@ export default function NewRestaurantLayout() {
                     )}
                     <Box ml={isMobile ? 0 : 2}>
                       <Box
-                        mb={0.5}
-                        sx={{ display: 'flex', alignItems: 'baseline' }}
+                        mb={isTablet ? 2 : 0.5}
+                        // sx={{ display: 'flex', alignItems: 'baseline' }}
                       >
-                        <Typography variant="h3" component="h3">
+                        <Typography
+                          variant="h3"
+                          component="h3"
+                          // fontSize={isTablet ? '1.2rem' : '1.5rem'} d
+                          display={'inline'}
+                        >
                           {restName
                             ? `${restName} Application`
                             : 'New Restaurant Application'}
@@ -93,8 +114,10 @@ export default function NewRestaurantLayout() {
                         <Typography
                           variant="h3"
                           component="h3"
+                          // fontSize={isTablet ? '1.2rem' : '1.5rem'}
                           color={'primary'}
                           ml={1}
+                          display={'inline'}
                         >
                           Step {activeFormStep + 1}
                         </Typography>
@@ -103,7 +126,6 @@ export default function NewRestaurantLayout() {
                       <Typography
                         variant="body2"
                         color={'text.secondary'}
-                        pb={4}
                         gutterBottom
                       >
                         Create your Foodie application, then start creating

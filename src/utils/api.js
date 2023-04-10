@@ -6,7 +6,9 @@ const endpoints = {
 
   // create new restaurant
   postCompanyInfo: '/create-restaurant/company-info',
-  postRestaurantDetails: 'create-restaurant/details',
+  postRestaurantDetails: '/create-restaurant/details',
+  postLocationsStep: '/create-restaurant/locations',
+  postSubmitApplication: 'create-restaurant/submit-application',
 
   // locations
   checkLocation: '/locations/check',
@@ -41,6 +43,15 @@ export const postRestaurantDetails = (data) => {
   return axiosInstance.post(endpoints.postRestaurantDetails, data, {
     headers: { 'Content-Type': 'multipart/form-data' }
   });
+};
+// step3
+export const postLocationsStep = () => {
+  return axiosInstance.post(endpoints.postLocationsStep);
+};
+
+// step4
+export const postSubmitApplicationStep = (data) => {
+  return axiosInstance.post(endpoints.postSubmitApplication, data);
 };
 
 //* ----------------- Locations -----------------

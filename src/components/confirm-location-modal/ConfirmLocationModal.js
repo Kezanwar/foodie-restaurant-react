@@ -202,6 +202,7 @@ const ConfirmLocationModal = ({
               {Object.entries(openingTimes).map(([key, value]) => {
                 return (
                   <Stack
+                    key={`modal${key}`}
                     flexDirection={'row'}
                     alignItems={'center'}
                     mb={key !== 'sun' ? 1 : 0}
@@ -237,7 +238,7 @@ const ConfirmLocationModal = ({
               onClick={onCancel}
               sx={{ flex: 1 }}
               variant="outlined"
-              color="inherit"
+              // color="inherit"
             >
               Cancel
             </Button>

@@ -25,7 +25,9 @@ export const restaurantDetailsSchema = Yup.object().shape({
       ),
     otherwise: Yup.mixed()
   }),
-  cuisines: Yup.array().min(1, 'Must choose atleast one cuisine'),
+  cuisines: Yup.array()
+    .min(1, 'Must choose atleast one cuisine')
+    .max(4, 'Can only choose up to four cuisines'),
   cover_photo: Yup.mixed().when(['is_new_cover'], {
     is: (isNewCoverPhoto) => !!isNewCoverPhoto,
     then: Yup.mixed()
@@ -65,4 +67,13 @@ export const addLocationsSchema = Yup.object().shape({
     }),
     otherwise: Yup.object()
   })
+});
+
+export const submitApplicationSchema = Yup.object().shape({
+  terms_and_conditions: Yup.boolean()
+    .required('The terms and conditions must be accepted.')
+    .oneOf([true], 'The terms and conditions must be accepted.'),
+  privacy_policy: Yup.boolean()
+    .required('The privacy policy must be accepted.')
+    .oneOf([true], 'The privacy policy must be accepted.')
 });

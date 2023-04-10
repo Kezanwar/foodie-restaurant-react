@@ -18,15 +18,22 @@ import {
   PageFive,
   LoginPage,
   PageThree,
-  RegisterPage
+  RegisterPage,
+  NewRestaurantYourApplication,
+  NewRestaurantGetStarted,
+  NewRestaurantCompanyInfo,
+  NewRestaurantCreateRestaurant,
+  NewRestaurantAddLocations,
+  PageConfirmEmail
 } from './elements';
-import { PATH_AUTH, PATH_DASHBOARD, PATH_NEW_RESTAURANT } from './paths';
+import {
+  PATH_AUTH,
+  PATH_DASHBOARD,
+  PATH_MISC,
+  PATH_NEW_RESTAURANT
+} from './paths';
 import { usePathAfterLogin } from '../hooks/usePathAfterLogin';
 import NewRestaurantLayout from '../layouts/new-restaurant/NewRestaurantLayout';
-import NewRestaurantGetStarted from '../pages/new-restaurant/NewRestaurantGetStarted';
-import NewRestaurantCompanyInfo from '../pages/new-restaurant/NewRestaurantCompanyInfo';
-import NewRestaurantCreateRestaurant from '../pages/new-restaurant/NewRestaurantCreateRestaurant';
-import NewRestaurantAddLocations from '../pages/new-restaurant/NewRestaurantAddLocations';
 
 // ----------------------------------------------------------------------
 
@@ -84,7 +91,7 @@ export default function Router() {
         { path: 'step-1', element: <NewRestaurantCompanyInfo /> },
         { path: 'step-2', element: <NewRestaurantCreateRestaurant /> },
         { path: 'step-3', element: <NewRestaurantAddLocations /> },
-        { path: 'step-4', element: <Box /> },
+        { path: 'step-4', element: <NewRestaurantYourApplication /> },
         { path: 'subscription', element: <Box /> }
       ]
     },
@@ -98,8 +105,11 @@ export default function Router() {
     // },
     {
       element: <CompactLayout />,
-      children: [{ path: '404', element: <Page404 /> }]
+      children: [
+        { path: PATH_MISC.four0four, element: <Page404 /> },
+        { path: PATH_MISC.confirm_email, element: <PageConfirmEmail /> }
+      ]
     },
-    { path: '*', element: <Navigate to="/404" replace /> }
+    { path: '*', element: <Navigate to={PATH_MISC.four0four} replace /> }
   ]);
 }

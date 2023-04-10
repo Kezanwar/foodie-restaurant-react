@@ -30,7 +30,7 @@ import {
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
   InputWithInfoStack
-} from '../../sections/forms/styles';
+} from '../../features/forms/styles';
 
 import { restaurantDetailsSchema } from '../../validation/new-restaurant.validation';
 
@@ -47,11 +47,14 @@ import { getFormDataFromObject } from '../../utils/formData';
 import MotionDivViewport from '../../components/animate/MotionDivViewport';
 import useOptionsQuery from '../../hooks/queries/useOptionsQuery';
 import RHFMultipleAutocomplete from '../../components/hook-form/RHFMultipleAutoComplete';
+import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
 
 const NewRestaurantCreateRestaurant = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const { data, updateQuery } = useRestaurantQuery();
   const options = useOptionsQuery();
+
+  useCreateRestaurantGuard(data?.data, PATH_NEW_RESTAURANT.step_2);
 
   const cuisineOptions = options?.data?.data?.cuisines;
   const dietaryOptions = options?.data?.data?.dietary_requirements;
@@ -104,13 +107,6 @@ const NewRestaurantCreateRestaurant = (props) => {
     getFieldState,
     setValue
   } = methods;
-
-  const updateCountry = useCallback(
-    (val) => {
-      setValue('company_address.country', val);
-    },
-    [methods]
-  );
 
   useEffect(() => {
     pageScrollToTop();
@@ -185,217 +181,204 @@ const NewRestaurantCreateRestaurant = (props) => {
   }, [cover_photo?.preview, getValues, setValue]);
 
   return (
-    <>
+    <MotionDivViewport
+      layout={'preserve-aspect'}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+    >
       <Helmet>
         <title> Step 2 | Foodie</title>
       </Helmet>
+      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+        <Subheader
+          sx={{ padding: 0, marginBottom: 16 }}
+          text={'your restaurants name'}
+        />
 
-      <MotionDivViewport
-        layout={'preserve-aspect'}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 1 }}
-      >
-        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={'your restaurants name'}
-          />
-
-          <InputWithInfoStack>
-            <InputWithInfoInputContainer>
-              <RHFTextField
-                sx={{ flex: 1 }}
-                name="name"
-                label="Add your restaurant name"
-                variant={'filled'}
-              />
-              <Box flex={isTablet ? 0.7 : 1} display={'flex'}>
-                {/* {storeName && (
+        <InputWithInfoStack>
+          <InputWithInfoInputContainer>
+            <RHFTextField
+              sx={{ flex: 1 }}
+              name="name"
+              label="Add your restaurant name"
+              variant={'filled'}
+            />
+            <Box flex={isTablet ? 0.7 : 1} display={'flex'}>
+              {/* {storeName && (
             <AvailabilityIndicator
               success={storeNameAvailable}
               resultName={'name'}
               isLoading={nameAvailabilityLoading}
             />
           )} */}
-              </Box>
-            </InputWithInfoInputContainer>
-            <InputWithInfoInfoContainer>
-              <Alert icon={<HelpIcon />} severity={'success'}>
-                <AlertTitle>How is this used?</AlertTitle>
-                Your Restaurant name is what shows up in the search for vouchers
-                and restaurants, if you are a chain, when you add multiple
-                locations the name will show up followed by the locations
-                provided nickname in brackets. e.g -{' '}
-                <strong>Rudy's (Ancoats Sq)</strong>
-              </Alert>
-            </InputWithInfoInfoContainer>
-          </InputWithInfoStack>
+            </Box>
+          </InputWithInfoInputContainer>
+          <InputWithInfoInfoContainer>
+            <Alert icon={<HelpIcon />} severity={'success'}>
+              <AlertTitle>How is this used?</AlertTitle>
+              Your Restaurant name is what shows up in the search for vouchers
+              and restaurants, if you are a chain, when you add multiple
+              locations the name will show up followed by the locations provided
+              nickname in brackets. e.g - <strong>Rudy's (Ancoats Sq)</strong>
+            </Alert>
+          </InputWithInfoInfoContainer>
+        </InputWithInfoStack>
 
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={'Upload your Restaurant Avatar'}
-          />
-          <InputWithInfoStack>
-            <InputWithInfoInputContainer
-              sx={{
+        <Subheader
+          sx={{ padding: 0, marginBottom: 16 }}
+          text={'Upload your Restaurant Avatar'}
+        />
+        <InputWithInfoStack>
+          <InputWithInfoInputContainer
+            sx={{
+              '& > *': {
                 '& > *': {
-                  '& > *': {
-                    margin: 'unset!important'
-                  }
-                },
-                '& .MuiFormHelperText-root': {
-                  textAlign: 'left'
+                  margin: 'unset!important'
                 }
-              }}
-            >
-              <RHFUploadAvatar margin={0} name="avatar" label="" />
-            </InputWithInfoInputContainer>
-            <InputWithInfoInfoContainer>
-              <Alert icon={<HelpIcon />} severity={'success'}>
-                <AlertTitle>Where are these images shown?</AlertTitle>
-                Your Restaurant Avatar acts as a profile image for your
-                Restaurant, your cover photo is used as the back drop.
-                <Box mt={1}>
-                  If an image isn't provided for a new voucher, the voucher
-                  image will default to your Restaurant Cover Photo.
-                </Box>
-                <Box mt={1}>
-                  Images can be updated <strong>at any time.</strong>
-                </Box>
-              </Alert>
-            </InputWithInfoInfoContainer>
-          </InputWithInfoStack>
-
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={'Upload your restaurant cover photo'}
-          />
-          <FormSectionStack>
-            <RHFUpload name="cover_photo" label="" />
-          </FormSectionStack>
-          <Spacer />
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={'Add your cuisines (Choose multiple or one)'}
-          />
-
-          <InputWithInfoStack>
-            <InputWithInfoInputContainer>
-              {cuisineOptions && (
-                <RHFMultipleAutocomplete
-                  options={cuisineOptions}
-                  name={'cuisines'}
-                  label="Select cuisines"
-                  placeholder="Start typing or choose from the dropdown"
-                />
-              )}
-            </InputWithInfoInputContainer>
-            <InputWithInfoInfoContainer>
-              <Alert icon={<HelpIcon />} severity={'success'}>
-                <AlertTitle>How do we use this?</AlertTitle>
-                Our mobile app allows your customers to favourite cuisine types
-                and filter by cuisine within their searches.
-              </Alert>
-            </InputWithInfoInfoContainer>
-          </InputWithInfoStack>
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={
-              'Add dietary requirements you cater for (Choose multiple or one)'
-            }
-          />
-
-          <InputWithInfoStack>
-            <InputWithInfoInputContainer>
-              {dietaryOptions && (
-                <RHFMultipleAutocomplete
-                  options={dietaryOptions}
-                  name={'dietary_requirements'}
-                  label="Select dietary requirements"
-                  placeholder="Start typing or choose from the dropdown"
-                />
-              )}
-            </InputWithInfoInputContainer>
-            <InputWithInfoInfoContainer>
-              <Alert icon={<HelpIcon />} severity={'success'}>
-                <AlertTitle>Why do we need this?</AlertTitle>
-                We want to provide a pleasant user experience for customers by
-                letting them filter searches by their particular dietary
-                requirements.
-              </Alert>
-            </InputWithInfoInfoContainer>
-          </InputWithInfoStack>
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={'Add a bio for customers to read (Max 500 characters)'}
-          />
-          <FormSectionStack>
-            <RHFTextField
-              multiline
-              variant={'filled'}
-              rows={4}
-              name="bio"
-              label="Enter your restaurant biography"
-            />
-          </FormSectionStack>
-          <Spacer />
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={'Add your restaurants social media links (optional)'}
-          />
-          <FormSectionStack
-            sx={{ marginBottom: 2 }}
-            mobSx={{ marginBottom: 16 }}
+              },
+              '& .MuiFormHelperText-root': {
+                textAlign: 'left'
+              }
+            }}
           >
-            <RHFTextField
-              variant={'filled'}
-              name="social_media.instagram"
-              label="Instagram URL (optional)"
-            />
-            <RHFTextField
-              variant={'filled'}
-              name="social_media.facebook"
-              label="Facebook URL (optional)"
-            />
-          </FormSectionStack>
-          <FormSectionStack sx={{ marginTop: 0 }}>
-            <RHFTextField
-              variant={'filled'}
-              name="social_media.tiktok"
-              label="TikTok URL (optional)"
-            />
-            <RHFTextField
-              variant={'filled'}
-              name="social_media.linkedin"
-              label="LinkedIn URL (optional)"
-            />
-          </FormSectionStack>
-          {/* ACTIONS */}
-          <Box mt={4} sx={{ display: 'flex' }}>
-            <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
-              Back
-            </Button>
-            <Button
-              color="inherit"
-              onClick={() => console.log(getValues())}
-              sx={{ mr: 1 }}
-            >
-              values
-            </Button>
-            <Box sx={{ flexGrow: 1 }} />
-            <LoadingButton
-              loading={formSubmitLoading}
-              type="submit"
-              variant="contained"
-            >
-              Next
-            </LoadingButton>
-          </Box>
-        </FormProvider>
-      </MotionDivViewport>
-    </>
+            <RHFUploadAvatar margin={0} name="avatar" label="" />
+          </InputWithInfoInputContainer>
+          <InputWithInfoInfoContainer>
+            <Alert icon={<HelpIcon />} severity={'success'}>
+              <AlertTitle>Where are these images shown?</AlertTitle>
+              Your Restaurant Avatar acts as a profile image for your
+              Restaurant, your cover photo is used as the back drop.
+              <Box mt={1}>
+                If an image isn't provided for a new voucher, the voucher image
+                will default to your Restaurant Cover Photo.
+              </Box>
+              <Box mt={1}>
+                Images can be updated <strong>at any time.</strong>
+              </Box>
+            </Alert>
+          </InputWithInfoInfoContainer>
+        </InputWithInfoStack>
+
+        <Subheader
+          sx={{ padding: 0, marginBottom: 16 }}
+          text={'Upload your restaurant cover photo'}
+        />
+        <FormSectionStack>
+          <RHFUpload name="cover_photo" label="" />
+        </FormSectionStack>
+        <Spacer />
+        <Subheader
+          sx={{ padding: 0, marginBottom: 16 }}
+          text={'Add your cuisines (Choose multiple or one)'}
+        />
+
+        <InputWithInfoStack>
+          <InputWithInfoInputContainer>
+            {cuisineOptions && (
+              <RHFMultipleAutocomplete
+                options={cuisineOptions}
+                name={'cuisines'}
+                label="Select cuisines"
+                placeholder="Start typing or choose from the dropdown"
+              />
+            )}
+          </InputWithInfoInputContainer>
+          <InputWithInfoInfoContainer>
+            <Alert icon={<HelpIcon />} severity={'success'}>
+              <AlertTitle>How do we use this?</AlertTitle>
+              Our mobile app allows your customers to favourite cuisine types
+              and filter by cuisine within their searches.
+            </Alert>
+          </InputWithInfoInfoContainer>
+        </InputWithInfoStack>
+        <Subheader
+          sx={{ padding: 0, marginBottom: 16 }}
+          text={
+            'Add dietary requirements you cater for (Choose multiple or one)'
+          }
+        />
+
+        <InputWithInfoStack>
+          <InputWithInfoInputContainer>
+            {dietaryOptions && (
+              <RHFMultipleAutocomplete
+                options={dietaryOptions}
+                name={'dietary_requirements'}
+                label="Select dietary requirements"
+                placeholder="Start typing or choose from the dropdown"
+              />
+            )}
+          </InputWithInfoInputContainer>
+          <InputWithInfoInfoContainer>
+            <Alert icon={<HelpIcon />} severity={'success'}>
+              <AlertTitle>Why do we need this?</AlertTitle>
+              We want to provide a pleasant user experience for customers by
+              letting them filter searches by their particular dietary
+              requirements.
+            </Alert>
+          </InputWithInfoInfoContainer>
+        </InputWithInfoStack>
+        <Subheader
+          sx={{ padding: 0, marginBottom: 16 }}
+          text={'Add a bio for customers to read (Max 500 characters)'}
+        />
+        <FormSectionStack>
+          <RHFTextField
+            multiline
+            variant={'filled'}
+            rows={4}
+            name="bio"
+            label="Enter your restaurant biography"
+          />
+        </FormSectionStack>
+        <Spacer />
+        <Subheader
+          sx={{ padding: 0, marginBottom: 16 }}
+          text={'Add your restaurants social media links (optional)'}
+        />
+        <FormSectionStack sx={{ marginBottom: 2 }}>
+          <RHFTextField
+            variant={'filled'}
+            name="social_media.instagram"
+            label="Instagram URL (optional)"
+          />
+          <RHFTextField
+            variant={'filled'}
+            name="social_media.facebook"
+            label="Facebook URL (optional)"
+          />
+        </FormSectionStack>
+        <FormSectionStack sx={{ marginTop: 0 }}>
+          <RHFTextField
+            variant={'filled'}
+            name="social_media.tiktok"
+            label="TikTok URL (optional)"
+          />
+          <RHFTextField
+            variant={'filled'}
+            name="social_media.linkedin"
+            label="LinkedIn URL (optional)"
+          />
+        </FormSectionStack>
+        {/* ACTIONS */}
+        <Box mt={4} sx={{ display: 'flex' }}>
+          <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
+            Back
+          </Button>
+
+          <Box sx={{ flexGrow: 1 }} />
+          <LoadingButton
+            loading={formSubmitLoading}
+            type="submit"
+            variant="contained"
+          >
+            Next
+          </LoadingButton>
+        </Box>
+      </FormProvider>
+    </MotionDivViewport>
   );
 };
 
