@@ -45,7 +45,7 @@ export const UtilityContext = createContext(null);
 // ----------------------------------------------------------------------
 
 const UtilityProvider = ({ children }) => {
-  const [isBatteryLow, setIsBatteryLow] = useState(false);
+  const [isBatteryLow, setIsBatteryLow] = useState(true);
   let mounted = true;
   let battery = null;
 
@@ -65,12 +65,14 @@ const UtilityProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    navigator.getBattery().then((bat) => {
-      if (mounted) {
-        battery = bat;
-        onBattery();
-      }
-    });
+    if (navigator?.getBattery) {
+      navigator.getBattery().then((bat) => {
+        if (mounted) {
+          battery = bat;
+          onBattery();
+        }
+      });
+    }
 
     return () => {
       mounted = false;
