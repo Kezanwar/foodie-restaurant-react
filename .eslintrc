@@ -27,7 +27,7 @@
     "no-console": 0,
     "react/jsx-key": 1,
     "import/no-cycle": 0,
-    "arrow-body-style": 1,
+    "arrow-body-style": "off",
     "react/prop-types": 1,
     "no-param-reassign": 0,
     "no-nested-ternary": 0,

@@ -87,14 +87,14 @@ RHFUpload.propTypes = {
 };
 
 export function RHFUpload({ name, multiple, ...other }) {
-  const { control, setValue } = useFormContext();
+  const { control, setValue, clearErrors } = useFormContext();
 
   return (
     <Controller
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => {
-        const isErrorWithSingle = !!error && !field.value;
+        const isErrorWithSingle = !!error && error.value;
 
         const isErrorWithMultiple = !!error && !field.value?.length;
 
@@ -111,7 +111,7 @@ export function RHFUpload({ name, multiple, ...other }) {
                 </FormHelperText>
               )
             }
-            onRHFChange={(e) => {
+            onRHFChange={async (e) => {
               e.forEach(async (f) => {
                 try {
                   const preview = Object.assign(f, {

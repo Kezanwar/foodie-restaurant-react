@@ -8,42 +8,67 @@ import { HEADER } from '../../config';
 import { bgBlur } from '../../utils/cssStyles';
 // components
 import Logo from '../../components/logo';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import AccountPopover from './AccountPopover';
+import ModeOptions from '../../components/settings/drawer/ModeOptions';
+import useResponsive from '../../hooks/useResponsive';
 
 // ----------------------------------------------------------------------
 
 Header.propTypes = {
-  isOffset: PropTypes.bool,
+  isOffset: PropTypes.bool
 };
 
 export default function Header({ isOffset }) {
   const theme = useTheme();
 
+  const { isAuthenticated } = useAuthContext();
+
+  const isDesktop = useResponsive('up', 'lg');
+
   return (
-    <AppBar color="transparent" sx={{ boxShadow: 0 }}>
+    <AppBar
+      color="transparent"
+      sx={{
+        boxShadow: 'none',
+        ...bgBlur({
+          color: theme.palette.background.default
+        })
+      }}
+    >
       <Toolbar
         sx={{
-          justifyContent: 'space-between',
-          height: {
-            xs: HEADER.H_MOBILE,
-            md: HEADER.H_MAIN_DESKTOP,
-          },
           transition: theme.transitions.create(['height', 'background-color'], {
             easing: theme.transitions.easing.easeInOut,
-            duration: theme.transitions.duration.shorter,
+            duration: theme.transitions.duration.shorter
           }),
           ...(isOffset && {
             ...bgBlur({ color: theme.palette.background.default }),
             height: {
-              md: HEADER.H_MAIN_DESKTOP - 16,
-            },
-          }),
+              md: HEADER.H_MAIN_DESKTOP - 16
+            }
+          })
         }}
       >
-        <Logo />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%',
+            px: 1,
+            py: isDesktop ? 2 : 1
+          }}
+        >
+          <Logo />
 
-        <Link variant="subtitle2" color="inherit">
-          Need Help?
-        </Link>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+            {/* <Link variant="subtitle2" color="inherit">
+            Need Help?
+          </Link> */}
+            <ModeOptions />
+            {isAuthenticated ? <AccountPopover /> : null}
+          </Box>
+        </Box>
       </Toolbar>
 
       {isOffset && <Shadow />}
@@ -54,7 +79,7 @@ export default function Header({ isOffset }) {
 // ----------------------------------------------------------------------
 
 Shadow.propTypes = {
-  sx: PropTypes.object,
+  sx: PropTypes.object
 };
 
 function Shadow({ sx, ...other }) {
@@ -71,7 +96,7 @@ function Shadow({ sx, ...other }) {
         position: 'absolute',
         width: `calc(100% - 48px)`,
         boxShadow: (theme) => theme.customShadows.z8,
-        ...sx,
+        ...sx
       }}
       {...other}
     />

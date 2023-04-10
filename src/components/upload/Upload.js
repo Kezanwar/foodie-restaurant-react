@@ -12,6 +12,7 @@ import Iconify from '../iconify';
 import RejectionFiles from './errors/RejectionFiles';
 import MultiFilePreview from './preview/MultiFilePreview';
 import SingleFilePreview from './preview/SingleFilePreview';
+import { MAX_IMAGE } from '../../constants/files.constants';
 
 // ----------------------------------------------------------------------
 
@@ -75,6 +76,7 @@ export default function Upload({
     multiple,
     disabled,
     onDrop: onRHFChange,
+    maxSize: MAX_IMAGE.size,
     ...other
   });
 

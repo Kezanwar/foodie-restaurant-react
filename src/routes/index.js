@@ -1,4 +1,5 @@
 import { Navigate, useRoutes } from 'react-router-dom';
+import { Box } from '@mui/material';
 // auth
 import AuthGuard from '../auth/AuthGuard';
 import GuestGuard from '../auth/GuestGuard';
@@ -18,20 +19,32 @@ import {
   LoginPage,
   PageThree,
   RegisterPage,
-  NewRestaurantPage
+  NewRestaurantYourApplication,
+  NewRestaurantGetStarted,
+  NewRestaurantCompanyInfo,
+  NewRestaurantCreateRestaurant,
+  NewRestaurantAddLocations,
+  PageConfirmEmail
 } from './elements';
-import { PATH_AUTH, PATH_NEW_RESTAURANT } from './paths';
+import {
+  PATH_AUTH,
+  PATH_DASHBOARD,
+  PATH_MISC,
+  PATH_NEW_RESTAURANT
+} from './paths';
 import { usePathAfterLogin } from '../hooks/usePathAfterLogin';
+import NewRestaurantLayout from '../layouts/new-restaurant/NewRestaurantLayout';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const pathAfterLogin = usePathAfterLogin();
+
   return useRoutes([
     {
       path: '/',
       children: [
-        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+        { element: <Navigate to={pathAfterLogin} replace />, index: true },
         {
           path: PATH_AUTH.login,
           element: (
@@ -58,7 +71,7 @@ export default function Router() {
         </AuthGuard>
       ),
       children: [
-        { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
+        { element: <Navigate to={pathAfterLogin} replace />, index: true },
         { path: 'overview', element: <Overview /> },
         { path: 'vouchers', element: <PageTwo /> },
         { path: 'restaurant', element: <PageThree /> },
@@ -70,14 +83,33 @@ export default function Router() {
       path: PATH_NEW_RESTAURANT.new_restaurant,
       element: (
         <AuthGuard>
-          <NewRestaurantPage />
+          <NewRestaurantLayout />
         </AuthGuard>
-      )
+      ),
+      children: [
+        { element: <NewRestaurantGetStarted />, index: true },
+        { path: 'step-1', element: <NewRestaurantCompanyInfo /> },
+        { path: 'step-2', element: <NewRestaurantCreateRestaurant /> },
+        { path: 'step-3', element: <NewRestaurantAddLocations /> },
+        { path: 'step-4', element: <NewRestaurantYourApplication /> },
+        { path: 'subscription', element: <Box /> }
+      ]
     },
+    // {
+    //   path: PATH_NEW_RESTAURANT.new_restaurant,
+    //   element: (
+    //     <AuthGuard>
+    //       <NewRestaurantPage />
+    //     </AuthGuard>
+    //   )
+    // },
     {
       element: <CompactLayout />,
-      children: [{ path: '404', element: <Page404 /> }]
+      children: [
+        { path: PATH_MISC.four0four, element: <Page404 /> },
+        { path: PATH_MISC.confirm_email, element: <PageConfirmEmail /> }
+      ]
     },
-    { path: '*', element: <Navigate to="/404" replace /> }
+    { path: '*', element: <Navigate to={PATH_MISC.four0four} replace /> }
   ]);
 }

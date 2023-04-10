@@ -7,7 +7,8 @@ import LoadingScreen from '../components/loading-screen';
 import Login from '../pages/guest/LoginPage';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { RESTAURANT_STATUS } from '../constants/restaurants.constants';
-import { PATH_NEW_RESTAURANT } from '../routes/paths';
+import { PATH_MISC, PATH_NEW_RESTAURANT } from '../routes/paths';
+import PageConfirmEmail from '../pages/misc/PageConfirmEmail';
 
 // ----------------------------------------------------------------------
 
@@ -16,8 +17,12 @@ AuthGuard.propTypes = {
 };
 
 export default function AuthGuard({ children }) {
-  const { isAuthenticated, isInitialized, initialRestaurantStatus } =
-    useAuthContext();
+  const {
+    isAuthenticated,
+    isInitialized,
+    initialRestaurantStatus,
+    emailConfirmed
+  } = useAuthContext();
 
   const { pathname } = useLocation();
 
@@ -34,14 +39,8 @@ export default function AuthGuard({ children }) {
     return <Login />;
   }
 
-  if (pathname !== PATH_NEW_RESTAURANT.new_restaurant) {
-    if (
-      !initialRestaurantStatus ||
-      initialRestaurantStatus === RESTAURANT_STATUS.APPLICATION_PENDING ||
-      initialRestaurantStatus === RESTAURANT_STATUS.APPLICATION_PROCESSING
-    ) {
-      return <Navigate to={PATH_NEW_RESTAURANT.new_restaurant} />;
-    }
+  if (isAuthenticated && !emailConfirmed) {
+    return <Navigate to={PATH_MISC.confirm_email} />;
   }
 
   if (requestedLocation && pathname !== requestedLocation) {

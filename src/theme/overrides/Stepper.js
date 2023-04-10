@@ -40,6 +40,9 @@ export default function Stepper(theme) {
         label: {
           [theme.breakpoints.down('md')]: {
             textAlign: 'center'
+          },
+          [theme.breakpoints.down('sm')]: {
+            fontSize: 12
           }
         }
       }

@@ -15,28 +15,66 @@ const Loadable = (Component) => (props) =>
 
 // * Guest Pages
 
-export const LoginPage = Loadable(lazy(() => import('../pages/guest/LoginPage')));
-export const RegisterPage = Loadable(lazy(() => import('../pages/guest/RegisterPage')));
+export const LoginPage = Loadable(
+  lazy(() => import('../pages/guest/LoginPage'))
+);
+export const RegisterPage = Loadable(
+  lazy(() => import('../pages/guest/RegisterPage'))
+);
 
 // ----------------------------------------------------------------------
 
 // * Dashboard Pages
 
-export const Overview = Loadable(lazy(() => import('../pages/dashboard/Overview')));
-export const PageTwo = Loadable(lazy(() => import('../pages/dashboard/PageTwo')));
-export const PageThree = Loadable(lazy(() => import('../pages/dashboard/PageThree')));
-export const PageFour = Loadable(lazy(() => import('../pages/dashboard/PageFour')));
-export const PageFive = Loadable(lazy(() => import('../pages/dashboard/PageFive')));
-export const PageSix = Loadable(lazy(() => import('../pages/dashboard/PageSix')));
+export const Overview = Loadable(
+  lazy(() => import('../pages/dashboard/Overview'))
+);
+export const PageTwo = Loadable(
+  lazy(() => import('../pages/dashboard/PageTwo'))
+);
+export const PageThree = Loadable(
+  lazy(() => import('../pages/dashboard/PageThree'))
+);
+export const PageFour = Loadable(
+  lazy(() => import('../pages/dashboard/PageFour'))
+);
+export const PageFive = Loadable(
+  lazy(() => import('../pages/dashboard/PageFive'))
+);
+export const PageSix = Loadable(
+  lazy(() => import('../pages/dashboard/PageSix'))
+);
 
 // ----------------------------------------------------------------------
 
 // * New Restaurant Pages
 
-export const NewRestaurantPage = Loadable(lazy(() => import('../pages/new-restaurant/NewRestaurant')));
+// export const NewRestaurantPage = Loadable(lazy(() => import('../pages/new-restaurant/NewRestaurant')));
+
+export const NewRestaurantGetStarted = Loadable(
+  lazy(() => import('../pages/new-restaurant/NewRestaurantGetStarted'))
+);
+export const NewRestaurantCompanyInfo = Loadable(
+  lazy(() => import('../pages/new-restaurant/NewRestaurantCompanyInfo'))
+);
+
+export const NewRestaurantCreateRestaurant = Loadable(
+  lazy(() => import('../pages/new-restaurant/NewRestaurantCreateRestaurant'))
+);
+
+export const NewRestaurantAddLocations = Loadable(
+  lazy(() => import('../pages/new-restaurant/NewRestaurantAddLocations'))
+);
+export const NewRestaurantYourApplication = Loadable(
+  lazy(() => import('../pages/new-restaurant/NewRestaurantYourApplication'))
+);
 
 // ----------------------------------------------------------------------
 
-// * 404 and Other Pages
+// * Miscellaneous pages
 
-export const Page404 = Loadable(lazy(() => import('../pages/Page404')));
+export const Page404 = Loadable(lazy(() => import('../pages/misc/Page404')));
+
+export const PageConfirmEmail = Loadable(
+  lazy(() => import('../pages/misc/PageConfirmEmail'))
+);

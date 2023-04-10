@@ -1,5 +1,12 @@
 import PropTypes from 'prop-types';
-import { createContext, useEffect, useReducer, useCallback } from 'react';
+
+import {
+  createContext,
+  useEffect,
+  useReducer,
+  useCallback,
+  useMemo
+} from 'react';
 // utils
 import axios from '../utils/axios';
 //
@@ -12,7 +19,7 @@ const ACTION_TYPES = {
   INITIALIZE: 'INITIALIZE',
   REGISTER: 'REGISTER',
   LOGIN: 'LOGIN',
-  LOGOUT: 'LOGOUT',
+  LOGOUT: 'LOGOUT'
 };
 
 // ----------------------------------------------------------------------
@@ -20,7 +27,7 @@ const ACTION_TYPES = {
 const initialState = {
   isInitialized: false,
   isAuthenticated: false,
-  user: null,
+  user: null
 };
 
 const reducer = (state, action) => {
@@ -30,20 +37,20 @@ const reducer = (state, action) => {
       return {
         isInitialized: true,
         isAuthenticated: action.payload.isAuthenticated,
-        user: action.payload.user,
+        user: action.payload.user
       };
     case ACTION_TYPES.LOGIN:
     case ACTION_TYPES.REGISTER:
       return {
         isInitialized: true,
         isAuthenticated: true,
-        user: action.payload.user,
+        user: action.payload.user
       };
     case ACTION_TYPES.LOGOUT:
       return {
         isInitialized: true,
         isAuthenticated: false,
-        user: null,
+        user: null
       };
     default:
       return state;
@@ -57,7 +64,7 @@ export const AuthContext = createContext(null);
 // ----------------------------------------------------------------------
 
 AuthProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 export function AuthProvider({ children }) {
@@ -65,7 +72,10 @@ export function AuthProvider({ children }) {
 
   const initialize = useCallback(async () => {
     try {
-      const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
+      const accessToken =
+        typeof window !== 'undefined'
+          ? localStorage.getItem('accessToken')
+          : '';
 
       if (accessToken) {
         setSession(accessToken);
@@ -78,16 +88,16 @@ export function AuthProvider({ children }) {
           type: ACTION_TYPES.INITIALIZE,
           payload: {
             isAuthenticated: !!user,
-            user,
-          },
+            user
+          }
         });
       } else {
         dispatch({
           type: ACTION_TYPES.INITIALIZE,
           payload: {
             isAuthenticated: false,
-            user: null,
-          },
+            user: null
+          }
         });
       }
     } catch (error) {
@@ -96,8 +106,8 @@ export function AuthProvider({ children }) {
         type: ACTION_TYPES.INITIALIZE,
         payload: {
           isAuthenticated: false,
-          user: null,
-        },
+          user: null
+        }
       });
     }
   }, []);
@@ -106,13 +116,11 @@ export function AuthProvider({ children }) {
     initialize();
   }, [initialize]);
 
-  console.log(state);
-
   // LOGIN
-  const login = async (email, password) => {
+  const login = useCallback(async (email, password) => {
     const response = await axios.post(AUTH_ENDPOINTS.login, {
       email,
-      password,
+      password
     });
     const { accessToken, user } = response.data;
 
@@ -121,51 +129,50 @@ export function AuthProvider({ children }) {
     dispatch({
       type: 'LOGIN',
       payload: {
-        user,
-      },
+        user
+      }
     });
-  };
+  }, []);
 
   // REGISTER
-  const register = async (email, password, firstName, lastName) => {
+  const register = useCallback(async (email, password, firstName, lastName) => {
     const response = await axios.post(AUTH_ENDPOINTS.register, {
       email,
       password,
-      firstName,
-      lastName,
+      first_name: firstName,
+      last_name: lastName
     });
     const { accessToken, user } = response.data;
 
-    localStorage.setItem('accessToken', accessToken);
+    setSession(accessToken);
 
     dispatch({
       type: 'REGISTER',
       payload: {
-        user,
-      },
+        user
+      }
     });
-  };
+  }, []);
 
   // LOGOUT
-  const logout = async () => {
+  const logout = useCallback(async () => {
     setSession(null);
     dispatch({
-      type: 'LOGOUT',
+      type: 'LOGOUT'
     });
-  };
+  }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        ...state,
-        initialRestaurantStatus: state?.user?.restaurant?.status,
-        userRole: state?.user?.restaurant?.role,
-        login,
-        logout,
-        register,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  const values = useMemo(() => {
+    return {
+      ...state,
+      initialRestaurantStatus: state?.user?.restaurant?.status,
+      userRole: state?.user?.restaurant?.role,
+      emailConfirmed: state?.user?.email_confirmed,
+      login,
+      logout,
+      register
+    };
+  }, [state, login, logout, register]);
+
+  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 }

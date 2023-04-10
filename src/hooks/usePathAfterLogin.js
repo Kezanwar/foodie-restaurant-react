@@ -1,11 +1,10 @@
-import React from 'react';
 import { RESTAURANT_STATUS } from '../constants/restaurants.constants';
 import { PATH_DASHBOARD, PATH_NEW_RESTAURANT } from '../routes/paths';
 import { useAuthContext } from './useAuthContext';
 
 export const usePathAfterLogin = () => {
-  const { isAuthenticated, isInitialized, initialRestuarantStatus } =
-    useAuthContext();
+  const { initialRestuarantStatus } = useAuthContext();
+
   let pathAfterLogin;
 
   switch (initialRestuarantStatus) {

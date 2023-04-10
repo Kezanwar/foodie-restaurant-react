@@ -9,6 +9,7 @@ import Iconify from '../iconify';
 //
 import RejectionFiles from './errors/RejectionFiles';
 import AvatarPreview from './preview/AvatarPreview';
+import { MAX_IMAGE } from '../../constants/files.constants';
 
 // ----------------------------------------------------------------------
 
@@ -73,6 +74,7 @@ export default function UploadAvatar({
     multiple: false,
     disabled,
     onDrop: onRHFChange,
+    maxSize: MAX_IMAGE.size,
     ...other
   });
 

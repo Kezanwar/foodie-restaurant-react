@@ -14,22 +14,22 @@ export default function Autocomplete(theme) {
             lineHeight: '24px',
             textAlign: 'center',
             borderRadius: theme.shape.borderRadius,
-            backgroundColor: alpha(theme.palette.grey[500], 0.16),
-          },
+            backgroundColor: alpha(theme.palette.grey[500], 0.16)
+          }
         },
         paper: {
-          boxShadow: theme.customShadows.dropdown,
+          boxShadow: theme.customShadows.dropdown
         },
         listbox: {
-          padding: theme.spacing(0, 1),
+          padding: theme.spacing(0, 1)
         },
         option: {
           ...theme.typography.body2,
           padding: theme.spacing(1),
           margin: theme.spacing(0.75, 0),
-          borderRadius: theme.shape.borderRadius,
-        },
-      },
-    },
+          borderRadius: theme.shape.borderRadius
+        }
+      }
+    }
   };
 }
