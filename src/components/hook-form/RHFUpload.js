@@ -25,9 +25,9 @@ export function RHFUploadAvatar({ name, ...other }) {
         return (
           <div>
             <UploadAvatar
-              accept={{
-                'image/*': []
-              }}
+              // accept={{
+              //   'image/*': []
+              // }}
               error={isError}
               file={field.value}
               {...other}
@@ -101,7 +101,7 @@ export function RHFUpload({ name, multiple, ...other }) {
         return multiple ? (
           <Upload
             multiple
-            accept={{ 'image/*': [] }}
+            // accept={{ 'image/*': [] }}
             files={field.value}
             error={isErrorWithMultiple}
             helperText={
@@ -127,7 +127,7 @@ export function RHFUpload({ name, multiple, ...other }) {
           />
         ) : (
           <Upload
-            accept={{ 'image/*': [] }}
+            // accept={{ 'image/*': [] }}
             file={field.value}
             error={isErrorWithSingle}
             helperText={

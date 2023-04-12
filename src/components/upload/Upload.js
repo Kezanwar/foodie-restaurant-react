@@ -77,6 +77,10 @@ export default function Upload({
     disabled,
     onDrop: onRHFChange,
     maxSize: MAX_IMAGE.size,
+    accept: {
+      'image/png': ['.png'],
+      'image/jpeg': ['.jpeg', '.jpg']
+    },
     ...other
   });
 

@@ -75,8 +75,15 @@ export default function UploadAvatar({
     disabled,
     onDrop: onRHFChange,
     maxSize: MAX_IMAGE.size,
+    accept: {
+      'image/png': ['.png'],
+      'image/jpeg': ['.jpeg', '.jpg']
+    },
+
     ...other
   });
+
+  console.log(getInputProps());
 
   const hasFile = !!file;
 
@@ -110,7 +117,7 @@ export default function UploadAvatar({
           ...sx
         }}
       >
-        <input {...getInputProps()} onChange={(e) => onRHFChange(e)} />
+        <input {...getInputProps()} />
 
         {hasFile && <AvatarPreview file={file} />}
 

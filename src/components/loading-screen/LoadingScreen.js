@@ -48,7 +48,7 @@ export default function LoadingScreen() {
         <Box
           component={m.div}
           animate={{
-            scale: [1.6, 1, 1, 1.6, 1.6],
+            scale: [1.2, 1, 1, 1.2, 1.2],
             rotate: [270, 0, 0, 270, 270],
             opacity: [0.25, 1, 1, 1, 0.25],
             borderRadius: ['25%', '25%', '50%', '50%', '25%']
