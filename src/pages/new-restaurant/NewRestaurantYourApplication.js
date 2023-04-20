@@ -1,21 +1,10 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useMemo,
-  useCallback
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stack } from '@mui/system';
-import { capitalize } from 'lodash';
-import SelectInput from '@mui/material/Select/SelectInput';
 import {
   Alert,
   AlertTitle,
   Typography,
   Box,
-  TextField,
-  Select,
-  NativeSelect,
   Button,
   useMediaQuery
 } from '@mui/material';
@@ -28,10 +17,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet-async';
 
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+// import FacebookIcon from '@mui/icons-material/Facebook';
+// import InstagramIcon from '@mui/icons-material/Instagram';
+// import LinkedInIcon from '@mui/icons-material/LinkedIn';
+// import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import { useTheme } from '@emotion/react';
 
@@ -42,7 +31,6 @@ import { pageScrollToTop } from '../../utils/scroll';
 import Subheader from '../../components/subheader/Subheader';
 import Spacer from '../../components/spacer/Spacer';
 
-import SvgColor from '../../components/svg-color/SvgColor';
 import MotionDivViewport from '../../components/animate/MotionDivViewport';
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 import useLocationsQuery from '../../hooks/queries/useLocationsQuery';
@@ -52,20 +40,12 @@ import { PATH_NEW_RESTAURANT } from '../../routes/paths';
 import FormProvider from '../../components/hook-form/FormProvider';
 import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
 
-import {
-  restaurantDetailsSchema,
-  submitApplicationSchema
-} from '../../validation/new-restaurant.validation';
+import { submitApplicationSchema } from '../../validation/new-restaurant.validation';
 import { RHFCheckbox } from '../../components/hook-form';
 
 import { postSubmitApplicationStep } from '../../utils/api';
 
-import {
-  RESTAURANT_REG_STEPS,
-  RESTAURANT_STATUS
-} from '../../constants/restaurants.constants';
-import AcceptDeclineModal from '../../components/accept-decline-modal/AcceptDeclineModal';
-import SuccessModal from '../../components/success-modal/SuccessModal';
+import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
 
 const NewRestaurantYourApplication = (props) => {
   const { isTablet, isMobile } = useCustomMediaQueries();
@@ -252,25 +232,7 @@ const NewRestaurantYourApplication = (props) => {
             )}
           </Box>
           <Spacer sp={isMobile ? 0 : 6} />
-          <Stack
-            flex={1}
-            //   zIndex={'0'}
-            sx={
-              isMobile
-                ? {
-                    '& .device': {
-                      transform: isSmallMobile ? 'scale(0.8)' : 'scale(0.85)'
-                    },
-                    marginTop: -4,
-                    marginBottom: -4
-                  }
-                : {}
-            }
-            justifyContent={'center'}
-            alignItems={'center'}
-          >
-            <RestaurantProfileIphone />
-          </Stack>
+          <RestaurantProfileIphone />
         </Stack>
         <Spacer sp={isMobile ? 0 : 6} />
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -304,16 +266,6 @@ const NewRestaurantYourApplication = (props) => {
           </Box>
         </FormProvider>
       </Stack>
-      {/* {successModalOpen && (
-        <SuccessModal
-          isOpen={successModalOpen}
-          title={'Thanks!'}
-          subtitle={
-            "Your application was submitted succesfully - You will receive an email once we've finished processing your application."
-          }
-          onThanksCTA={onThanksClick}
-        />
-      )} */}
     </MotionDivViewport>
   );
 };

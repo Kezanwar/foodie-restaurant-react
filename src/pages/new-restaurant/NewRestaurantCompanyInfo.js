@@ -26,6 +26,7 @@ import { varFade } from '../../components/animate';
 import Spacer from '../../components/spacer/Spacer';
 import {
   FormSectionStack,
+  InputStack,
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
   InputWithInfoStack
@@ -158,7 +159,7 @@ const NewRestaurantCompanyInfo = (props) => {
             sx={{ padding: 0, marginBottom: 16 }}
             text={'Company Information'}
           />
-          <FormSectionStack>
+          <InputStack>
             <RHFTextField
               variant={'filled'}
               name="company_name"
@@ -169,7 +170,7 @@ const NewRestaurantCompanyInfo = (props) => {
               name="company_number"
               label="Company number (Optional)"
             />
-          </FormSectionStack>
+          </InputStack>
           <Spacer />
           <Subheader
             sx={{ padding: 0, marginBottom: 16 }}
