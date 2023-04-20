@@ -58,7 +58,7 @@ export const InputStack = styled(Stack)(({ theme, matchGapMB }) => ({
   flexDirection: 'row',
   gap: theme.spacing(3),
   flex: 1,
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down('sm')]: {
     flexDirection: 'column',
     width: '100%'
   },

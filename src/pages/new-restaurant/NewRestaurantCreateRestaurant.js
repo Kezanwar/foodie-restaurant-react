@@ -27,6 +27,7 @@ import { varFade } from '../../components/animate';
 import Spacer from '../../components/spacer/Spacer';
 import {
   FormSectionStack,
+  InputStack,
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
   InputWithInfoStack
@@ -338,7 +339,7 @@ const NewRestaurantCreateRestaurant = (props) => {
           sx={{ padding: 0, marginBottom: 16 }}
           text={'Add your restaurants social media links (optional)'}
         />
-        <FormSectionStack sx={{ marginBottom: 2 }}>
+        <InputStack sx={{ marginBottom: 2 }}>
           <RHFTextField
             variant={'filled'}
             name="social_media.instagram"
@@ -349,8 +350,8 @@ const NewRestaurantCreateRestaurant = (props) => {
             name="social_media.facebook"
             label="Facebook URL (optional)"
           />
-        </FormSectionStack>
-        <FormSectionStack sx={{ marginTop: 0 }}>
+        </InputStack>
+        <InputStack sx={{ marginTop: 0 }}>
           <RHFTextField
             variant={'filled'}
             name="social_media.tiktok"
@@ -361,7 +362,7 @@ const NewRestaurantCreateRestaurant = (props) => {
             name="social_media.linkedin"
             label="LinkedIn URL (optional)"
           />
-        </FormSectionStack>
+        </InputStack>
         {/* ACTIONS */}
         <Box mt={4} sx={{ display: 'flex' }}>
           <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
