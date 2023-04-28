@@ -49,6 +49,8 @@ import MotionDivViewport from '../../components/animate/MotionDivViewport';
 import useOptionsQuery from '../../hooks/queries/useOptionsQuery';
 import RHFMultipleAutocomplete from '../../components/hook-form/RHFMultipleAutoComplete';
 import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
+import CustomTooltip from '../../components/custom-tooltip/CustomTooltip';
+import { image_tooltip } from '../../constants/tooltips.constants';
 
 const NewRestaurantCreateRestaurant = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
@@ -227,10 +229,14 @@ const NewRestaurantCreateRestaurant = (props) => {
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>
 
-        <Subheader
-          sx={{ padding: 0, marginBottom: 16 }}
-          text={'Upload your Restaurant Avatar'}
-        />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }} mb={2}>
+          <CustomTooltip tooltipText={image_tooltip.tooltip} />
+          <Subheader
+            sx={{ padding: 0 }}
+            text={'Upload your Restaurant Avatar'}
+          />
+        </Box>
+
         <InputWithInfoStack>
           <InputWithInfoInputContainer
             sx={{
@@ -262,10 +268,14 @@ const NewRestaurantCreateRestaurant = (props) => {
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>
 
-        <Subheader
-          sx={{ padding: 0, marginBottom: 16 }}
-          text={'Upload your restaurant cover photo'}
-        />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }} mb={2}>
+          <CustomTooltip tooltipText={image_tooltip.tooltip} />
+          <Subheader
+            sx={{ padding: 0 }}
+            text={'Upload your restaurant cover photo'}
+          />
+        </Box>
+
         <FormSectionStack>
           <RHFUpload name="cover_photo" label="" />
         </FormSectionStack>

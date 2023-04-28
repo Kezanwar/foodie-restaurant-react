@@ -49,16 +49,6 @@ const RestaurantProfileIphone = () => {
 
   const { company_address, company_name, company_number } = company_info || {};
 
-  console.log({
-    avatar,
-    name,
-    bio,
-    company_info,
-
-    cover_photo,
-    social_media
-  });
-
   const height = iphoneRef?.current?.height || 1;
   const width = iphoneRef?.current?.width || 1;
 
@@ -75,12 +65,17 @@ const RestaurantProfileIphone = () => {
         isMobile
           ? {
               '& .device': {
-                transform: isSmallMobile ? 'scale(0.8)' : 'scale(0.85)'
+                transform: isSmallMobile ? 'scale(0.7)' : 'scale(0.75)'
               },
               marginTop: -4,
               marginBottom: -4
             }
-          : {}
+          : {
+              '& .device': {
+                transform: 'scale(0.8)',
+                marginTop: -10
+              }
+            }
       }
       justifyContent={'center'}
       alignItems={'center'}

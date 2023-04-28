@@ -4,11 +4,8 @@ import mixpanel from 'mixpanel-browser';
 // but it's recommended you remove it for production
 
 export const MIXPANEL_EVENTS = {
-  home_guest_page_rendered: 'home_guest_page_rendered',
-  about_us_guest_page_rendered: 'about_us_guest_page_rendered',
-  pricing_guest_page_rendered: 'pricing_guest_page_rendered',
-  register_guest_page_rendered: 'register_guest_page_rendered',
-  login_guest_page_rendered: 'login_guest_page_rendered',
+  register_landed: 'register_landed',
+  login_landed: 'login_landed',
   register_success: 'register_success',
   register_failed: 'register_failed',
   login_success: 'login_success',

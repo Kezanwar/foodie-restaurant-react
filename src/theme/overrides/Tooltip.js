@@ -7,12 +7,14 @@ export default function Tooltip(theme) {
     MuiTooltip: {
       styleOverrides: {
         tooltip: {
-          backgroundColor: theme.palette.grey[isLight ? 800 : 700],
+          padding: '1rem',
+          fontSize: '12px',
+          backgroundColor: theme.palette.grey[isLight ? 800 : 700]
         },
         arrow: {
-          color: theme.palette.grey[isLight ? 800 : 700],
-        },
-      },
-    },
+          color: theme.palette.grey[isLight ? 800 : 700]
+        }
+      }
+    }
   };
 }

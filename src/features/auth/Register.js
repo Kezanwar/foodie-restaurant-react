@@ -15,7 +15,9 @@ export default function Register() {
   return (
     <AuthLayout>
       <Stack spacing={2} sx={{ mb: 2, position: 'relative' }}>
-        <Typography variant="h3">Register as a Foodie Restaurant</Typography>
+        <Typography variant="h3">
+          Register as a Foodie Restaurant Partner
+        </Typography>
 
         <Stack alignItems="center" direction="row" spacing={0.5}>
           <Typography variant="body2">Already a restaurant?</Typography>{' '}
