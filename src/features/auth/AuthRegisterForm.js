@@ -18,9 +18,10 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 // components
 import Iconify from '../../components/iconify';
 import FormProvider, { RHFTextField } from '../../components/hook-form';
+import CustomTooltip from '../../components/custom-tooltip/CustomTooltip';
+
 import { RegisterSchema } from '../../validation/auth.validation';
 import { auth_tooltips } from '../../constants/tooltips.constants';
-import CustomTooltip from '../../components/custom-tooltip/CustomTooltip';
 
 // ----------------------------------------------------------------------
 
@@ -125,7 +126,7 @@ export default function AuthRegisterForm() {
       <Stack
         flexDirection={'row'}
         justifyContent={'space-between'}
-        sx={{ my: 2 }}
+        sx={{ mt: 2, mb: 4 }}
       >
         <CustomTooltip
           tooltipText={auth_tooltips.password_requirements.tooltip}

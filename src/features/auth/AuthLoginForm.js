@@ -84,7 +84,7 @@ export default function AuthLoginForm() {
         )}
       </Stack>
 
-      <Stack alignItems="flex-end" sx={{ my: 2 }}>
+      <Stack alignItems="flex-end" sx={{ mt: 2, mb: 4 }}>
         <Link variant="body2" color="inherit" underline="always">
           Forgot password?
         </Link>
