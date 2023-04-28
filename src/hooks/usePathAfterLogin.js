@@ -1,14 +1,22 @@
 import { RESTAURANT_STATUS } from '../constants/restaurants.constants';
-import { PATH_DASHBOARD, PATH_NEW_RESTAURANT } from '../routes/paths';
+import {
+  PATH_AUTH,
+  PATH_DASHBOARD,
+  PATH_NEW_RESTAURANT
+} from '../routes/paths';
 import { useAuthContext } from './useAuthContext';
 
 export const usePathAfterLogin = () => {
-  const { initialRestuarantStatus } = useAuthContext();
+  const { isAuthenticated, initialRestuarantStatus } = useAuthContext();
 
   let pathAfterLogin;
 
   switch (initialRestuarantStatus) {
     case undefined:
+      pathAfterLogin = isAuthenticated
+        ? PATH_NEW_RESTAURANT.new_restaurant
+        : PATH_AUTH.login;
+      break;
     case RESTAURANT_STATUS.APPLICATION_PENDING:
     case RESTAURANT_STATUS.APPLICATION_PROCESSING:
       pathAfterLogin = PATH_NEW_RESTAURANT.new_restaurant;
