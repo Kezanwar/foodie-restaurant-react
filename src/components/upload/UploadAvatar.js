@@ -83,8 +83,6 @@ export default function UploadAvatar({
     ...other
   });
 
-  console.log(getInputProps());
-
   const hasFile = !!file;
 
   const isError = isDragReject || !!error;

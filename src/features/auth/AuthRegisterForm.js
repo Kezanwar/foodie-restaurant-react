@@ -1,16 +1,26 @@
 import { useState } from 'react';
-import * as Yup from 'yup';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Link, Stack, Alert, IconButton, InputAdornment } from '@mui/material';
+import {
+  Link,
+  Stack,
+  Alert,
+  IconButton,
+  InputAdornment,
+  Typography,
+  Tooltip
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // auth
 import { useAuthContext } from '../../hooks/useAuthContext';
 // components
 import Iconify from '../../components/iconify';
 import FormProvider, { RHFTextField } from '../../components/hook-form';
+import { RegisterSchema } from '../../validation/auth.validation';
+import { auth_tooltips } from '../../constants/tooltips.constants';
+import CustomTooltip from '../../components/custom-tooltip/CustomTooltip';
 
 // ----------------------------------------------------------------------
 
@@ -18,22 +28,6 @@ export default function AuthRegisterForm() {
   const { register } = useAuthContext();
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const RegisterSchema = Yup.object().shape({
-    first_name: Yup.string().required('First name is required'),
-    last_name: Yup.string().required('Last name is required'),
-    email: Yup.string()
-      .required('Email is required')
-      .email('Email must be a valid email address'),
-    password: Yup.string()
-      .matches(/[@$!%*#?&]+/, 'Must have special character')
-      .matches(/\d+/, 'Must have one number')
-      .matches(/[a-z]+/, 'Must have one lowercase character')
-      .matches(/[A-Z]+/, 'Must have uppercase character'),
-    confirm_password: Yup.string()
-      .required('Must retype your password')
-      .oneOf([Yup.ref('password'), null], 'Passwords must match')
-  });
 
   const defaultValues = {
     email: '',
@@ -128,7 +122,16 @@ export default function AuthRegisterForm() {
         )}
       </Stack>
 
-      <Stack alignItems="flex-end" sx={{ my: 2 }}>
+      <Stack
+        flexDirection={'row'}
+        justifyContent={'space-between'}
+        sx={{ my: 2 }}
+      >
+        <CustomTooltip
+          tooltipText={auth_tooltips.password_requirements.tooltip}
+          text={auth_tooltips.password_requirements.text}
+        />
+
         <Link variant="body2" color="inherit" underline="always">
           Forgot password?
         </Link>

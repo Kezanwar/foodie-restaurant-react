@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import * as Yup from 'yup';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,6 +11,7 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import Iconify from '../../components/iconify';
 import FormProvider, { RHFTextField } from '../../components/hook-form';
 import Spacer from '../../components/spacer/Spacer';
+import { LoginSchema } from '../../validation/auth.validation';
 
 // ----------------------------------------------------------------------
 
@@ -19,13 +19,6 @@ export default function AuthLoginForm() {
   const { login } = useAuthContext();
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const LoginSchema = Yup.object().shape({
-    email: Yup.string()
-      .email('Email must be a valid email address')
-      .required('Email is required'),
-    password: Yup.string().required('Password is required')
-  });
 
   const defaultValues = {
     email: '',
