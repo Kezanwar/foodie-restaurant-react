@@ -111,13 +111,7 @@ const NewRestaurantYourApplication = (props) => {
   if (!data?.data || !locations) return <LoadingScreen />;
 
   return (
-    <MotionDivViewport
-      layout={'preserve-aspect'}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 1 }}
-    >
+    <Box>
       <Helmet>
         <title> Step 4 | Submit Application - Foodie</title>
       </Helmet>
@@ -266,7 +260,7 @@ const NewRestaurantYourApplication = (props) => {
           </Box>
         </FormProvider>
       </Stack>
-    </MotionDivViewport>
+    </Box>
   );
 };
 

@@ -72,8 +72,9 @@ const RestaurantProfileIphone = () => {
             }
           : {
               '& .device': {
-                transform: 'scale(0.8)',
-                marginTop: -10
+                transform: 'scale(0.85)',
+                marginTop: -6,
+                marginBottom: -6
               }
             }
       }
@@ -189,7 +190,7 @@ const RestaurantProfileIphone = () => {
               mb={3}
             >
               <Spacer sp={1} />
-              {locations ? (
+              {locations && selectedLocationID ? (
                 <TextField
                   label="Location"
                   select

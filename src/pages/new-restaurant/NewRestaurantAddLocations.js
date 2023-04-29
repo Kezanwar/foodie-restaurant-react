@@ -22,7 +22,7 @@ import {
   Typography
 } from '@mui/material';
 import { capitalize } from 'lodash';
-import { useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
 import HelpIcon from '@mui/icons-material/Help';
@@ -49,7 +49,6 @@ import LoadingScreen from '../../components/loading-screen/LoadingScreen';
 
 import { PATH_NEW_RESTAURANT } from '../../routes/paths';
 import MotionDivViewport from '../../components/animate/MotionDivViewport';
-import { RHFOpeningTime } from '../../components/hook-form/RHFOpeningTIme';
 
 import {
   addLocation,
@@ -403,7 +402,7 @@ const NewRestaurantAddLocation = (props) => {
       <Helmet>
         <title> Step 3 | Foodie</title>
       </Helmet>
-      <MotionDivViewport>
+      <Box>
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Box mb={6}>
             <Alert icon={<HelpIcon />} severity={'success'}>
@@ -720,7 +719,7 @@ const NewRestaurantAddLocation = (props) => {
             />
           )}
         </FormProvider>
-      </MotionDivViewport>
+      </Box>
     </>
   );
 };
