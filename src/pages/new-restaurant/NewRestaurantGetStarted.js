@@ -100,12 +100,7 @@ const NewRestaurantGetStarted = (props) => {
     data?.data?.status === RESTAURANT_STATUS.APPLICATION_PROCESSING;
 
   return (
-    <MotionDivViewport
-      initial={{ translateY: 10 }}
-      animate={{ translateY: 0 }}
-      exit={{ translateY: 50 }}
-      transition={{ duration: 0.4 }}
-    >
+    <Box>
       <Container maxWidth={'lg'}>
         <Stack justifyContent={'center'} alignItems={'center'} mt={0}>
           {!hasSubmit && (
@@ -170,7 +165,7 @@ const NewRestaurantGetStarted = (props) => {
           )}
         </Stack>
       </Container>
-    </MotionDivViewport>
+    </Box>
   );
 };
 
