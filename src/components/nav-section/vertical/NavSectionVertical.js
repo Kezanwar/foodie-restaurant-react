@@ -11,7 +11,7 @@ import NavList from './NavList';
 
 NavSectionVertical.propTypes = {
   sx: PropTypes.object,
-  data: PropTypes.array,
+  data: PropTypes.array
 };
 
 export default function NavSectionVertical({ data, sx, ...other }) {
@@ -24,10 +24,19 @@ export default function NavSectionVertical({ data, sx, ...other }) {
 
         return (
           <List key={key} disablePadding sx={{ px: 2 }}>
-            {group.subheader && <StyledSubheader disableSticky>{translate(group.subheader)}</StyledSubheader>}
+            {group.subheader && (
+              <StyledSubheader disableSticky>
+                {translate(group.subheader)}
+              </StyledSubheader>
+            )}
 
             {group.items.map((list) => (
-              <NavList key={list.title + list.path} data={list} depth={1} hasChild={!!list.children} />
+              <NavList
+                key={list.title + list.path}
+                data={list}
+                depth={1}
+                hasChild={!!list.children}
+              />
             ))}
           </List>
         );

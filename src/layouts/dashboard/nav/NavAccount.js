@@ -1,3 +1,4 @@
+import { capitalCase } from 'change-case';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
@@ -13,7 +14,7 @@ const StyledRoot = styled('div')(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(2, 2.5),
   borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: alpha(theme.palette.grey[500], 0.12),
+  backgroundColor: alpha(theme.palette.grey[500], 0.12)
 }));
 
 // ----------------------------------------------------------------------
@@ -23,15 +24,23 @@ export default function NavAccount() {
 
   return (
     <StyledRoot>
-      <CustomAvatar src={user?.photoURL} alt={user?.first_name} name={user?.first_name} />
+      <CustomAvatar
+        src={user?.photoURL}
+        alt={user?.first_name}
+        name={user?.first_name}
+      />
 
       <Box sx={{ ml: 2, minWidth: 0 }}>
-        <Typography variant="body1" noWrap>
+        <Typography variant="body1" fontWeight={'500'} noWrap>
           {`${user?.first_name} ${user?.last_name}`}
         </Typography>
 
-        <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
-          {user?.restaurant?.role}
+        <Typography
+          variant="body2"
+          noWrap
+          sx={{ color: 'text.secondary', fontSize: '0.75rem' }}
+        >
+          {capitalCase(user?.restaurant?.role.replace(/_/g, ' '))}
         </Typography>
       </Box>
     </StyledRoot>

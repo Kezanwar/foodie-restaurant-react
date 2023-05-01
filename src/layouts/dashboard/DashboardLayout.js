@@ -43,6 +43,10 @@ export default function DashboardLayout() {
 
   return isLoading ? (
     <LoadingScreen />
+  ) : isFetched &&
+    data?.data.status === RESTAURANT_STATUS.APPLICATION_REJECTED ? (
+    // TODO - ADD APPLICATION REJECTED PAGE
+    <Box>application rejected</Box>
   ) : (
     <>
       <Header onOpenNav={handleOpen} />
