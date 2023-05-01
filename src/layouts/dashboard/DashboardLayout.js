@@ -7,8 +7,10 @@ import Main from './Main';
 import Header from './header';
 import NavVertical from './nav/NavVertical';
 
-import { usePathAfterLogin } from '../../hooks/usePathAfterLogin';
 import { PATH_NEW_RESTAURANT } from '../../routes/paths';
+import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
+import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
+import LoadingScreen from '../../components/loading-screen/LoadingScreen';
 
 // ----------------------------------------------------------------------
 
@@ -16,12 +18,16 @@ export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const pathAfterLogin = usePathAfterLogin();
+  const { isLoading, data, isFetched } = useRestaurantQuery();
 
   useEffect(() => {
-    if (pathAfterLogin === PATH_NEW_RESTAURANT.new_restaurant)
-      navigate(pathAfterLogin);
-  }, []);
+    if (
+      (isFetched && !data?.data.status) ||
+      data?.data.status === RESTAURANT_STATUS.APPLICATION_PENDING ||
+      data?.data.status === RESTAURANT_STATUS.APPLICATION_PROCESSING
+    )
+      navigate(PATH_NEW_RESTAURANT.new_restaurant);
+  }, [isFetched, data?.data.status, navigate]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -35,7 +41,9 @@ export default function DashboardLayout() {
     <NavVertical openNav={open} onCloseNav={handleClose} />
   );
 
-  return (
+  return isLoading ? (
+    <LoadingScreen />
+  ) : (
     <>
       <Header onOpenNav={handleOpen} />
 
