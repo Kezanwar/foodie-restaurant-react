@@ -13,7 +13,7 @@ import NavItem from './NavItem';
 NavList.propTypes = {
   data: PropTypes.object,
   depth: PropTypes.number,
-  hasChild: PropTypes.bool,
+  hasChild: PropTypes.bool
 };
 
 export default function NavList({ data, depth, hasChild }) {
@@ -62,14 +62,20 @@ export default function NavList({ data, depth, hasChild }) {
 
 NavSubList.propTypes = {
   data: PropTypes.array,
-  depth: PropTypes.number,
+  depth: PropTypes.number
 };
 
-function NavSubList({ data, depth }) {
+function NavSubList({ data, depth, isChildren }) {
   return (
     <>
       {data.map((list) => (
-        <NavList key={list.title + list.path} data={list} depth={depth + 1} hasChild={!!list.children} />
+        <NavList
+          isChildren={isChildren}
+          key={list.title + list.path}
+          data={list}
+          depth={depth + 1}
+          hasChild={!!list.children}
+        />
       ))}
     </>
   );

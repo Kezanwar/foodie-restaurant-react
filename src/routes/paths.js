@@ -19,6 +19,9 @@ export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   overview: path(ROOTS_DASHBOARD, '/overview'),
   vouchers: path(ROOTS_DASHBOARD, '/vouchers'),
+  vouchers_all: path(ROOTS_DASHBOARD, '/vouchers/all'),
+  vouchers_create: path(ROOTS_DASHBOARD, '/vouchers/create'),
+  vouchers_single: path(ROOTS_DASHBOARD, '/vouchers'),
   restaurant: path(ROOTS_DASHBOARD, '/restaurant'),
   users: path(ROOTS_DASHBOARD, '/users'),
   subscription: path(ROOTS_DASHBOARD, '/subscription')

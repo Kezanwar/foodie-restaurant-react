@@ -165,7 +165,6 @@ export function AuthProvider({ children }) {
   const values = useMemo(() => {
     return {
       ...state,
-      initialRestaurantStatus: state?.user?.restaurant?.status,
       userRole: state?.user?.restaurant?.role,
       emailConfirmed: state?.user?.email_confirmed,
       login,

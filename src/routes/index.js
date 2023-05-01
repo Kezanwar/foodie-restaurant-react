@@ -73,7 +73,20 @@ export default function Router() {
       children: [
         { element: <Navigate to={pathAfterLogin} replace />, index: true },
         { path: 'overview', element: <Overview /> },
-        { path: 'vouchers', element: <PageTwo /> },
+        // { path: 'vouchers', element: <PageTwo /> },
+        {
+          path: 'vouchers',
+          children: [
+            {
+              element: <Navigate to={PATH_DASHBOARD.vouchers_all} replace />,
+              index: true
+            },
+            { path: 'all', element: <PageFour /> },
+            { path: 'create', element: <PageFive /> },
+            { path: ':id', element: <PageSix /> },
+            { path: 'edit/:id', element: <PageSix /> }
+          ]
+        },
         { path: 'restaurant', element: <PageThree /> },
         { path: 'users', element: <PageThree /> },
         { path: 'subscription', element: <PageThree /> }

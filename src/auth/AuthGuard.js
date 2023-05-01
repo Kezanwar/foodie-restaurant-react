@@ -17,12 +17,7 @@ AuthGuard.propTypes = {
 };
 
 export default function AuthGuard({ children }) {
-  const {
-    isAuthenticated,
-    isInitialized,
-    initialRestaurantStatus,
-    emailConfirmed
-  } = useAuthContext();
+  const { isAuthenticated, isInitialized, emailConfirmed } = useAuthContext();
 
   const { pathname } = useLocation();
 

@@ -61,6 +61,8 @@ const RestaurantProfileIphone = () => {
   return (
     <Stack
       flex={1}
+      maxWidth={'100vw'}
+      overflow={'hidden'}
       sx={
         isMobile
           ? {
