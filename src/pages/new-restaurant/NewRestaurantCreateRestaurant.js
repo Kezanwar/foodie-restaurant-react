@@ -229,13 +229,12 @@ const NewRestaurantCreateRestaurant = (props) => {
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }} mb={2}>
-          <CustomTooltip tooltipText={image_tooltip.tooltip} />
-          <Subheader
-            sx={{ padding: 0 }}
-            text={'Upload your Restaurant Avatar'}
-          />
-        </Box>
+        <CustomTooltip mb={1} tooltipText={image_tooltip.tooltip} />
+
+        <Subheader
+          sx={{ padding: 0, marginBottom: 16 }}
+          text={'Upload your Restaurant Avatar'}
+        />
 
         <InputWithInfoStack>
           <InputWithInfoInputContainer
@@ -267,14 +266,12 @@ const NewRestaurantCreateRestaurant = (props) => {
             </Alert>
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>
+        <CustomTooltip tooltipText={image_tooltip.tooltip} mb={1} />
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }} mb={2}>
-          <CustomTooltip tooltipText={image_tooltip.tooltip} />
-          <Subheader
-            sx={{ padding: 0 }}
-            text={'Upload your restaurant cover photo'}
-          />
-        </Box>
+        <Subheader
+          sx={{ padding: 0, marginBottom: 16 }}
+          text={'Upload your restaurant cover photo'}
+        />
 
         <FormSectionStack>
           <RHFUpload name="cover_photo" label="" />

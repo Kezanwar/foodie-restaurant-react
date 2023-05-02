@@ -29,11 +29,13 @@ const RestaurantProfileIphone = () => {
 
   const locations = locationsQuery?.data?.data || null;
 
+  console.log(locations);
+
   const [selectedLocationID, setSelectedLocationID] = useState('');
 
   const selectedLocation = useMemo(() => {
     if (selectedLocationID && locations?.length)
-      return locations.find((loc) => loc.id === selectedLocationID);
+      return locations.find((loc) => loc._id === selectedLocationID);
     return null;
   }, [locations, selectedLocationID]);
 
@@ -54,7 +56,7 @@ const RestaurantProfileIphone = () => {
 
   useEffect(() => {
     if (locations?.length) {
-      setSelectedLocationID(locations[0].id);
+      setSelectedLocationID(locations[0]._id);
     }
   }, [locations, setSelectedLocationID]);
 

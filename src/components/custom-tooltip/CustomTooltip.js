@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Tooltip, Typography } from '@mui/material';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 
 const TooltipText = React.forwardRef(({ text, ...rest }, ref) => {
   return (
@@ -12,20 +12,23 @@ const TooltipText = React.forwardRef(({ text, ...rest }, ref) => {
         display: 'flex',
         alignItems: 'center',
         gap: 1,
-        cursor: 'pointer'
+        cursor: 'pointer',
+        color: 'info.main'
       }}
     >
-      <HelpOutlineIcon />
+      <ContactSupportIcon />
       {text && <Typography fontSize={'14px'}>{text}</Typography>}
     </Box>
   );
 });
 
-const CustomTooltip = ({ tooltipText, text }) => {
+const CustomTooltip = ({ tooltipText, text, ...rest }) => {
   return (
-    <Tooltip title={tooltipText}>
-      <TooltipText text={text} />
-    </Tooltip>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }} {...rest}>
+      <Tooltip enterTouchDelay={0} color="primary" title={tooltipText}>
+        <TooltipText text={text} />
+      </Tooltip>
+    </Box>
   );
 };
 
