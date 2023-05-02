@@ -81,7 +81,7 @@ const NewRestaurantAddLocation = (props) => {
 
   const editLocationObj = useMemo(() => {
     if (!editLocationID) return null;
-    return data?.data?.find((l) => l.id === editLocationID);
+    return data?.data?.find((l) => l._id === editLocationID);
   }, [editLocationID]);
 
   const [mapPosition, setMapPosition] = useState({
@@ -348,14 +348,14 @@ const NewRestaurantAddLocation = (props) => {
     setDeleteLocationModalOpen(false);
   };
 
-  const onDeleteLocationClick = (id) => {
-    idToDelete.current = id;
+  const onDeleteLocationClick = (_id) => {
+    idToDelete.current = _id;
     setDeleteLocationModalOpen(true);
   };
 
-  const onEditLocationClick = (id) => {
-    setEditLocationID(id);
-    const editLocation = data?.data?.find((l) => l.id === id);
+  const onEditLocationClick = (_id) => {
+    setEditLocationID(_id);
+    const editLocation = data?.data?.find((l) => l._id === _id);
     if (editLocation) {
       const { address, email, name, phone_number, nickname } = editLocation;
       setValue('add_location', {
@@ -381,8 +381,8 @@ const NewRestaurantAddLocation = (props) => {
   const deleteModalText = useMemo(() => {
     if (idToDelete.current) {
       const locations = getValues('locations');
-      const l = locations.find((lts) => lts.id === idToDelete.current);
-      return `Are you sure you want to delete ${l.nickname}, ${l.address.postcode}?`;
+      const l = locations.find((lts) => lts._id === idToDelete.current);
+      return `Are you sure you want to delete ${l?.nickname}, ${l?.address?.postcode}?`;
     }
     return '';
   }, [idToDelete.current, getValues]);
@@ -665,7 +665,7 @@ const NewRestaurantAddLocation = (props) => {
                   return (
                     <LocationCard
                       {...location}
-                      key={location.id}
+                      key={location._id}
                       onEdit={onEditLocationClick}
                       onDelete={onDeleteLocationClick}
                     />

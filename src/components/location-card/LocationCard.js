@@ -21,7 +21,7 @@ const LocationCard = ({
   phone_number,
   nickname,
   opening_times,
-  id,
+  _id,
   onDelete,
   onEdit
 }) => {
@@ -39,10 +39,14 @@ const LocationCard = ({
           display: 'flex'
         }}
       >
-        <IconButton onClick={() => onEdit(id)} color="info" size="small">
+        <IconButton onClick={() => onEdit(_id)} color="info" size="small">
           <EditIcon fontSize="small" />
         </IconButton>
-        <IconButton onClick={() => onDelete(id)} color="secondary" size="small">
+        <IconButton
+          onClick={() => onDelete(_id)}
+          color="secondary"
+          size="small"
+        >
           <DeleteOutlineIcon fontSize="small" />
         </IconButton>
       </Box>

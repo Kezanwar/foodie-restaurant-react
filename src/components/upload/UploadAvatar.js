@@ -79,7 +79,6 @@ export default function UploadAvatar({
       'image/png': ['.png'],
       'image/jpeg': ['.jpeg', '.jpg']
     },
-
     ...other
   });
 
