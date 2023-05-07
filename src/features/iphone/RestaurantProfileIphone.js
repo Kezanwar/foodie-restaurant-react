@@ -184,14 +184,7 @@ const RestaurantProfileIphone = () => {
               }}
               mb={3}
             />
-            <Box
-              sx={{
-                '& *': {
-                  display: 'initial'
-                }
-              }}
-              mb={3}
-            >
+            <Box mb={3}>
               <Spacer sp={1} />
               {locations ? (
                 <TextField
@@ -210,7 +203,10 @@ const RestaurantProfileIphone = () => {
                 >
                   {locations?.map((location) => {
                     return (
-                      <option key={`option-${location.id}`} value={location.id}>
+                      <option
+                        key={`option-${location._id}`}
+                        value={location._id}
+                      >
                         {location.nickname}
                       </option>
                     );
@@ -295,6 +291,12 @@ const RestaurantProfileIphone = () => {
                 </Typography>
                 <Typography sx={{ wordBreak: 'break-all' }} fontSize={12}>
                   {selectedLocation?.address?.postcode}
+                </Typography>
+                <Typography sx={{ wordBreak: 'break-all' }} fontSize={12}>
+                  {selectedLocation?.address?.city}
+                </Typography>
+                <Typography sx={{ wordBreak: 'break-all' }} fontSize={12}>
+                  {selectedLocation?.address?.country}
                 </Typography>
                 <Spacer sp={3} />
                 <SvgColor

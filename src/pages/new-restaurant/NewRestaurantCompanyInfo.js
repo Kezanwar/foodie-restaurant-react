@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { m } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet-async';
@@ -47,6 +53,8 @@ const NewRestaurantCompanyInfo = (props) => {
 
   const { data, isLoading, updateQuery } = useRestaurantQuery();
 
+  const countryRef = useRef();
+
   useCreateRestaurantGuard(data?.data, PATH_NEW_RESTAURANT.step_1);
 
   const defaultValues = useMemo(
@@ -76,6 +84,8 @@ const NewRestaurantCompanyInfo = (props) => {
     ]
   );
 
+  console.log(data?.data);
+
   const methods = useForm({
     resolver: yupResolver(companyInfoSchema),
     defaultValues
@@ -91,12 +101,12 @@ const NewRestaurantCompanyInfo = (props) => {
     setValue
   } = methods;
 
-  const updateCountry = useCallback(
-    (val) => {
-      setValue('company_address.country', val);
-    },
-    [methods]
-  );
+  const updateCountry = () => {
+    setValue(
+      'company_address.country',
+      countryRef.current.querySelector('input').value
+    );
+  };
 
   useEffect(() => {
     pageScrollToTop();
@@ -209,7 +219,7 @@ const NewRestaurantCompanyInfo = (props) => {
               <Box mb={2}>
                 <Autocomplete
                   defaultValue={countries.find(
-                    (c) => c.label === 'United Kingdom'
+                    (c) => c.label === getValues().company_address.country
                   )}
                   fullWidth
                   autoHighlight
@@ -245,6 +255,7 @@ const NewRestaurantCompanyInfo = (props) => {
                         ...params.inputProps,
                         autoComplete: 'disabled'
                       }}
+                      ref={countryRef}
                       onBlur={(e) => updateCountry(e.target.value)}
                       onChange={(e) => updateCountry(e.target.value)}
                     />
