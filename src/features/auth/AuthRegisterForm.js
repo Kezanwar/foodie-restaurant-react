@@ -130,7 +130,6 @@ export default function AuthRegisterForm() {
       >
         <CustomTooltip
           tooltipText={auth_tooltips.password_requirements.tooltip}
-          text={auth_tooltips.password_requirements.text}
         />
 
         <Link variant="body2" color="inherit" underline="always">

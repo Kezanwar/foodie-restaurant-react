@@ -77,6 +77,8 @@ const NewRestaurantAddLocation = (props) => {
 
   const { data, isLoading, updateQuery } = useLocationsQuery();
 
+  const countryRef = useRef();
+
   const restaurantQuery = useRestaurantQuery();
 
   const editLocationObj = useMemo(() => {
@@ -186,6 +188,7 @@ const NewRestaurantAddLocation = (props) => {
 
   const onAddLocationClick = useCallback(async () => {
     setAddLocationLoading(true);
+    updateCountry();
     await setValue('is_new_location', true);
     await trigger('add_location');
     const err = !!getFieldState('add_location').error;
@@ -374,8 +377,11 @@ const NewRestaurantAddLocation = (props) => {
     }
   };
 
-  const updateCountry = (val) => {
-    setValue('add_location.country', val);
+  const updateCountry = () => {
+    setValue(
+      'add_location.address.country',
+      countryRef.current.querySelector('input').value
+    );
   };
 
   const deleteModalText = useMemo(() => {
@@ -521,7 +527,7 @@ const NewRestaurantAddLocation = (props) => {
                     ...params.inputProps,
                     autoComplete: 'disabled'
                   }}
-                  // ref={countryRef}
+                  ref={countryRef}
                   defaultValue={'United Kingdom'}
                   onBlur={(e) => updateCountry(e.target.value)}
                   onChange={(e) => updateCountry(e.target.value)}
@@ -687,7 +693,6 @@ const NewRestaurantAddLocation = (props) => {
               Back
             </Button>
             <Box sx={{ flexGrow: 1 }} />
-
             <LoadingButton
               loading={formSubmitLoading}
               type="submit"
