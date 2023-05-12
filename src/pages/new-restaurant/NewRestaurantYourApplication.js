@@ -46,6 +46,8 @@ import { RHFCheckbox } from '../../components/hook-form';
 import { postSubmitApplicationStep } from '../../utils/api';
 
 import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
+import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
+import { MIXPANEL_EVENTS } from '../../utils/mixpanel';
 
 const NewRestaurantYourApplication = (props) => {
   const { isTablet, isMobile } = useCustomMediaQueries();
@@ -108,16 +110,15 @@ const NewRestaurantYourApplication = (props) => {
   const hasSubmit =
     data?.data?.status === RESTAURANT_STATUS.APPLICATION_PROCESSING;
 
+  useRHFErrorMixpanelTracker(
+    MIXPANEL_EVENTS.create_restaurant_submit_application_errors,
+    formState?.errors
+  );
+
   if (!data?.data || !locations) return <LoadingScreen />;
 
   return (
-    <MotionDivViewport
-      layout={'preserve-aspect'}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 1 }}
-    >
+    <Box>
       <Helmet>
         <title> Step 4 | Submit Application - Foodie</title>
       </Helmet>
@@ -266,10 +267,10 @@ const NewRestaurantYourApplication = (props) => {
           </Box>
         </FormProvider>
       </Stack>
-    </MotionDivViewport>
+    </Box>
   );
 };
 
 NewRestaurantYourApplication.propTypes = {};
 
-export default React.memo(NewRestaurantYourApplication);
+export default NewRestaurantYourApplication;

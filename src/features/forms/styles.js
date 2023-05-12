@@ -99,3 +99,5 @@ export const CanDisableInputContainer = styled(Box)(({ theme, disabled }) => ({
   filter: disabled ? 'greyscale(1.2)' : 'unset',
   pointerEvents: disabled ? 'none' : 'all'
 }));
+
+export const subheaderSx = { padding: 0, marginBottom: 16 };

@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
-
-// @mui
 import { styled, alpha } from '@mui/material/styles';
-//
 import Iconify from '../iconify';
 
 // ----------------------------------------------------------------------
@@ -26,8 +23,6 @@ const StyledDropZone = styled('div')(({ theme }) => ({
     opacity: 0.72
   }
 }));
-
-// ----------------------------------------------------------------------
 
 UploadBox.propTypes = {
   sx: PropTypes.object,

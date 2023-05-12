@@ -51,6 +51,19 @@ import RHFMultipleAutocomplete from '../../components/hook-form/RHFMultipleAutoC
 import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
 import CustomTooltip from '../../components/custom-tooltip/CustomTooltip';
 import { image_tooltip } from '../../constants/tooltips.constants';
+import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
+import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
+
+const uploadAvatarSx = {
+  '& > *': {
+    '& > *': {
+      margin: 'unset!important'
+    }
+  },
+  '& .MuiFormHelperText-root': {
+    textAlign: 'left'
+  }
+};
 
 const NewRestaurantCreateRestaurant = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
@@ -149,14 +162,16 @@ const NewRestaurantCreateRestaurant = (props) => {
         social_media
       });
       const updatedRestaurant = await postRestaurantDetails(formData);
-      updateQuery(updatedRestaurant?.data);
+      mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_rest_profile_success, {});
+      updateQuery(updatedRestaurant.data);
       handleNext();
     } catch (error) {
-      console.error(error);
-
+      mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_rest_profile_failed, {
+        error: error?.mesage || JSON.stringify(error)
+      });
       setError('afterSubmit', {
         ...error,
-        message: error.message
+        message: error?.message || 'An unexpected error occured'
       });
     }
     setFormSubmitLoading(false);
@@ -183,22 +198,18 @@ const NewRestaurantCreateRestaurant = (props) => {
     }
   }, [cover_photo?.preview, getValues, setValue]);
 
+  useRHFErrorMixpanelTracker(
+    MIXPANEL_EVENTS.create_restaurant_rest_profile_errors,
+    errors
+  );
+
   return (
-    <MotionDivViewport
-      layout={'preserve-aspect'}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 1 }}
-    >
+    <Box>
       <Helmet>
         <title> Step 2 | Foodie</title>
       </Helmet>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-        <Subheader
-          sx={{ padding: 0, marginBottom: 16 }}
-          text={'your restaurants name'}
-        />
+        <Subheader text={'your restaurants name'} />
 
         <InputWithInfoStack>
           <InputWithInfoInputContainer>
@@ -231,24 +242,10 @@ const NewRestaurantCreateRestaurant = (props) => {
 
         <CustomTooltip mb={1} tooltipText={image_tooltip.tooltip} />
 
-        <Subheader
-          sx={{ padding: 0, marginBottom: 16 }}
-          text={'Upload your Restaurant Avatar'}
-        />
+        <Subheader text={'Upload your Restaurant Avatar'} />
 
         <InputWithInfoStack>
-          <InputWithInfoInputContainer
-            sx={{
-              '& > *': {
-                '& > *': {
-                  margin: 'unset!important'
-                }
-              },
-              '& .MuiFormHelperText-root': {
-                textAlign: 'left'
-              }
-            }}
-          >
+          <InputWithInfoInputContainer sx={uploadAvatarSx}>
             <RHFUploadAvatar margin={0} name="avatar" label="" />
           </InputWithInfoInputContainer>
           <InputWithInfoInfoContainer>
@@ -268,19 +265,13 @@ const NewRestaurantCreateRestaurant = (props) => {
         </InputWithInfoStack>
         <CustomTooltip tooltipText={image_tooltip.tooltip} mb={1} />
 
-        <Subheader
-          sx={{ padding: 0, marginBottom: 16 }}
-          text={'Upload your restaurant cover photo'}
-        />
+        <Subheader text={'Upload your restaurant cover photo'} />
 
         <FormSectionStack>
           <RHFUpload name="cover_photo" label="" />
         </FormSectionStack>
         <Spacer />
-        <Subheader
-          sx={{ padding: 0, marginBottom: 16 }}
-          text={'Add your cuisines (Choose multiple or one)'}
-        />
+        <Subheader text={'Add your cuisines (Choose multiple or one)'} />
 
         <InputWithInfoStack>
           <InputWithInfoInputContainer>
@@ -302,7 +293,6 @@ const NewRestaurantCreateRestaurant = (props) => {
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>
         <Subheader
-          sx={{ padding: 0, marginBottom: 16 }}
           text={
             'Add dietary requirements you cater for (Choose multiple or one)'
           }
@@ -329,7 +319,6 @@ const NewRestaurantCreateRestaurant = (props) => {
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>
         <Subheader
-          sx={{ padding: 0, marginBottom: 16 }}
           text={'Add a bio for customers to read (Max 500 characters)'}
         />
         <FormSectionStack>
@@ -343,7 +332,6 @@ const NewRestaurantCreateRestaurant = (props) => {
         </FormSectionStack>
         <Spacer />
         <Subheader
-          sx={{ padding: 0, marginBottom: 16 }}
           text={'Add your restaurants social media links (optional)'}
         />
         <InputStack sx={{ marginBottom: 2 }}>
@@ -386,10 +374,10 @@ const NewRestaurantCreateRestaurant = (props) => {
           </LoadingButton>
         </Box>
       </FormProvider>
-    </MotionDivViewport>
+    </Box>
   );
 };
 
 NewRestaurantCreateRestaurant.propTypes = {};
 
-export default React.memo(NewRestaurantCreateRestaurant);
+export default NewRestaurantCreateRestaurant;

@@ -1,13 +1,9 @@
 import PropTypes from 'prop-types';
-// form
 import { useFormContext, Controller } from 'react-hook-form';
-// @mui
 import { Switch, FormControlLabel } from '@mui/material';
 
-// ----------------------------------------------------------------------
-
 RHFSwitch.propTypes = {
-  name: PropTypes.string,
+  name: PropTypes.string
 };
 
 export default function RHFSwitch({ name, ...other }) {
@@ -17,7 +13,12 @@ export default function RHFSwitch({ name, ...other }) {
     <Controller
       name={name}
       control={control}
-      render={({ field }) => <FormControlLabel control={<Switch {...field} checked={field.value} />} {...other} />}
+      render={({ field }) => (
+        <FormControlLabel
+          control={<Switch {...field} checked={field.value} />}
+          {...other}
+        />
+      )}
     />
   );
 }

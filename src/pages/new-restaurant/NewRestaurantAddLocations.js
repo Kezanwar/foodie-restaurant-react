@@ -65,6 +65,15 @@ import OpeningTimeInput from '../../components/opening-time-input/OpeningTimeInp
 import useOpeningTimesForm from '../../hooks/useOpeningTimesForm';
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
+import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
+import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
+
+const motionStyles = {
+  display: 'flex',
+  marginBottom: '32px',
+  flexWrap: 'wrap',
+  gap: '24px'
+};
 
 const NewRestaurantAddLocation = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
@@ -136,8 +145,6 @@ const NewRestaurantAddLocation = (props) => {
   const {
     watch,
     trigger,
-
-    register,
     reset,
     setError,
     handleSubmit,
@@ -207,20 +214,25 @@ const NewRestaurantAddLocation = (props) => {
     try {
       const res = await checkLocation(newLocation);
       const data = res?.data;
+
       if (data) {
         setMapPosition({
           lng: data?.long_lat?.long,
           lat: data?.long_lat?.lat
         });
         setAddLocationModalOpen(true);
+        mixpanelTrack(MIXPANEL_EVENTS.check_location_success);
       }
     } catch (error) {
       console.error(error);
       setError('afterSubmit', {
         ...error,
-        message: error.message
+        message: error?.message
       });
       setAddLocationLoading(false);
+      mixpanelTrack(MIXPANEL_EVENTS.check_location_failed, {
+        error: error?.message
+      });
     }
   }, [openingTimes]);
 
@@ -228,7 +240,7 @@ const NewRestaurantAddLocation = (props) => {
     setAddLocationLoading(true);
     await setValue('is_new_location', true);
     await trigger('add_location');
-    const err = !!getFieldState('add_location').error;
+    const err = !!getFieldState('add_location')?.error;
     if (err) {
       scrollToForm();
       await setValue('is_new_location', false);
@@ -250,14 +262,16 @@ const NewRestaurantAddLocation = (props) => {
           lat: data?.long_lat?.lat
         });
         setAddLocationModalOpen(true);
+        mixpanelTrack(MIXPANEL_EVENTS.check_location_success);
       }
     } catch (error) {
       console.error(error);
       setError('afterSubmit', {
         ...error,
-        message: error.message
+        message: error?.message
       });
       setAddLocationLoading(false);
+      mixpanelTrack(MIXPANEL_EVENTS.check_location_failed);
     }
   }, [openingTimes, editLocationID]);
 
@@ -277,10 +291,14 @@ const NewRestaurantAddLocation = (props) => {
         setAddLocationModalOpen(false);
         setConfirmLocationLoading(false);
         setAddLocationLoading(false);
+        mixpanelTrack(MIXPANEL_EVENTS.add_location_success);
       } catch (error) {
         setError('afterSubmit', {
           ...error,
-          message: error.message
+          message: error?.message
+        });
+        mixpanelTrack(MIXPANEL_EVENTS.add_location_failed, {
+          error: error?.message
         });
         setAddLocationModalOpen(false);
         setConfirmLocationLoading(false);
@@ -304,6 +322,7 @@ const NewRestaurantAddLocation = (props) => {
         const data = res?.data;
 
         updateQuery(data);
+        mixpanelTrack(MIXPANEL_EVENTS.edit_location_success);
         setAddLocationModalOpen(false);
         setConfirmLocationLoading(false);
         setAddLocationLoading(false);
@@ -312,11 +331,15 @@ const NewRestaurantAddLocation = (props) => {
       } catch (error) {
         setError('afterSubmit', {
           ...error,
-          message: error.message
+          message: error?.message
+        });
+        mixpanelTrack(MIXPANEL_EVENTS.edit_location_failed, {
+          error: error?.message
         });
         setAddLocationModalOpen(false);
         setConfirmLocationLoading(false);
         setAddLocationLoading(false);
+
         console.error(error);
       }
     },
@@ -335,15 +358,19 @@ const NewRestaurantAddLocation = (props) => {
       const res = await deleteLocation(idToDelete.current);
       const data = res?.data;
       updateQuery(data);
+      mixpanelTrack(MIXPANEL_EVENTS.delete_location_success);
       setDeleteLocationLoading(false);
       setDeleteLocationModalOpen(false);
     } catch (error) {
       setError('afterSubmit', {
         ...error,
-        message: error.message
+        message: error?.message
       });
       setDeleteLocationLoading(false);
       setDeleteLocationModalOpen(false);
+      mixpanelTrack(MIXPANEL_EVENTS.delete_location_failed, {
+        error: error?.message
+      });
     }
   }, []);
 
@@ -368,11 +395,7 @@ const NewRestaurantAddLocation = (props) => {
         phone_number,
         nickname
       });
-      // setValue('add_location.email', editLocation.email);
-      // setValue('add_location.phone_number', editLocation.phone_number);
-      // setValue('add_location.nickname', editLocation.nickname);
       replaceOpeningTimes(editLocation.opening_times);
-
       scrollToForm();
     }
   };
@@ -404,12 +427,17 @@ const NewRestaurantAddLocation = (props) => {
     scrollToForm();
   };
 
+  useRHFErrorMixpanelTracker(
+    MIXPANEL_EVENTS.create_restaurant_add_locations_errors,
+    errors
+  );
+
   return (
     <>
       <Helmet>
         <title> Step 3 | Foodie</title>
       </Helmet>
-      <MotionDivViewport>
+      <Box>
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Box mb={6}>
             <Alert icon={<HelpIcon />} severity={'success'}>
@@ -459,15 +487,12 @@ const NewRestaurantAddLocation = (props) => {
               severity={'warning'}
             >
               <AlertTitle>Edit location</AlertTitle>
-              You're editing: {editLocationObj.nickname},{' '}
-              {editLocationObj.address.address_line_1},{' '}
-              {editLocationObj.address.postcode}
+              You're editing: {editLocationObj?.nickname},{' '}
+              {editLocationObj?.address?.address_line_1},{' '}
+              {editLocationObj?.address?.postcode}
             </Alert>
           ) : null}
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={'Location Address'}
-          />
+          <Subheader text={'Location Address'} />
 
           <InputStack>
             <RHFTextField
@@ -537,10 +562,7 @@ const NewRestaurantAddLocation = (props) => {
             <Box />
           </InputStack>
           <Spacer sp={6} />
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={'Location Contact Details'}
-          />
+          <Subheader text={'Location Contact Details'} />
           <InputStack>
             <RHFTextField
               variant={'filled'}
@@ -554,10 +576,7 @@ const NewRestaurantAddLocation = (props) => {
             />
           </InputStack>
           <Spacer sp={6} />
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={'Location Nickname'}
-          />
+          <Subheader text={'Location Nickname'} />
 
           <InputStack>
             <RHFTextField
@@ -569,7 +588,7 @@ const NewRestaurantAddLocation = (props) => {
           </InputStack>
           <Spacer sp={6} />
           <Subheader
-            sx={{ padding: 0, marginBottom: 20 }}
+            sx={{ marginBottom: 20 }}
             text={'Location Opening Times'}
           />
           <Box
@@ -651,20 +670,12 @@ const NewRestaurantAddLocation = (props) => {
             </Stack>
           </Stack>
 
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={`Your Restaurant Locations (${locations.length})`}
-          />
+          <Subheader text={`Your Restaurant Locations (${locations.length})`} />
           {locations.length ? (
             <MotionDivViewport
               key={'loctions-container'}
               layout
-              style={{
-                display: 'flex',
-                marginBottom: '32px',
-                flexWrap: 'wrap',
-                gap: '24px'
-              }}
+              style={motionStyles}
             >
               {locations
                 .map((location, index) => {
@@ -696,7 +707,6 @@ const NewRestaurantAddLocation = (props) => {
             <LoadingButton
               loading={formSubmitLoading}
               type="submit"
-              // color={'grey_palette'}
               variant="contained"
             >
               Next
@@ -725,11 +735,11 @@ const NewRestaurantAddLocation = (props) => {
             />
           )}
         </FormProvider>
-      </MotionDivViewport>
+      </Box>
     </>
   );
 };
 
 NewRestaurantAddLocation.propTypes = {};
 
-export default React.memo(NewRestaurantAddLocation);
+export default NewRestaurantAddLocation;

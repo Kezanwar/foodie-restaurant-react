@@ -3,15 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import {
-  Link,
-  Stack,
-  Alert,
-  IconButton,
-  InputAdornment,
-  Typography,
-  Tooltip
-} from '@mui/material';
+import { Link, Stack, Alert, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // auth
 import { useAuthContext } from '../../hooks/useAuthContext';
@@ -22,6 +14,8 @@ import CustomTooltip from '../../components/custom-tooltip/CustomTooltip';
 
 import { RegisterSchema } from '../../validation/auth.validation';
 import { auth_tooltips } from '../../constants/tooltips.constants';
+import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
+import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
 
 // ----------------------------------------------------------------------
 
@@ -58,17 +52,29 @@ export default function AuthRegisterForm() {
         data.first_name,
         data.last_name
       );
+      mixpanelTrack(MIXPANEL_EVENTS.register_success, {
+        email: data.email,
+        first_name: data.first_name,
+        last_name: data.last_name
+      });
     } catch (error) {
       console.error(error);
-
+      console.log(data);
+      mixpanelTrack(MIXPANEL_EVENTS.register_failed, {
+        email: data.email,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        error: error?.message || JSON.stringify(error)
+      });
       reset();
-
       setError('afterSubmit', {
         ...error,
         message: error.message || error
       });
     }
   };
+
+  useRHFErrorMixpanelTracker(MIXPANEL_EVENTS.register_form_errors, errors);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>

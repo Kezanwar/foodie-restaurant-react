@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { ListSubheader, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 export const StyledSubheader = styled(Typography)(({ theme, sx }) => ({
   fontSize: 12,
@@ -7,5 +7,7 @@ export const StyledSubheader = styled(Typography)(({ theme, sx }) => ({
   textTransform: 'uppercase',
   fontWeight: '700',
   color: theme.palette.text.primary,
+  padding: 0,
+  marginBottom: 16,
   ...sx
 }));

@@ -138,6 +138,7 @@ export function RHFUpload({ name, multiple, ...other }) {
               )
             }
             onRHFChange={(e) => {
+              console.log(e);
               e.forEach(async (f) => {
                 try {
                   const preview = Object.assign(f, {

@@ -22,12 +22,13 @@ export default function DashboardLayout() {
 
   useEffect(() => {
     if (
-      (isFetched && !data?.data.status) ||
-      data?.data.status === RESTAURANT_STATUS.APPLICATION_PENDING ||
-      data?.data.status === RESTAURANT_STATUS.APPLICATION_PROCESSING
+      (isFetched && !data?.data?.status) ||
+      data?.data?.status === RESTAURANT_STATUS.APPLICATION_PENDING ||
+      data?.data?.status === RESTAURANT_STATUS.APPLICATION_PROCESSING ||
+      data?.data?.status === RESTAURANT_STATUS.APPLICATION_REJECTED
     )
       navigate(PATH_NEW_RESTAURANT.new_restaurant);
-  }, [isFetched, data?.data.status, navigate]);
+  }, [isFetched, data?.data?.status, navigate]);
 
   const handleOpen = () => {
     setOpen(true);

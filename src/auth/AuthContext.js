@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useQueryClient } from 'react-query';
 
 import {
   createContext,
@@ -12,6 +13,7 @@ import axios from '../utils/axios';
 //
 import { setSession } from './utils';
 import { AUTH_ENDPOINTS } from '../constants/auth.constants';
+import { MIXPANEL_EVENTS, mixpanelTrack } from '../utils/mixpanel';
 
 // ----------------------------------------------------------------------
 
@@ -69,7 +71,7 @@ AuthProvider.propTypes = {
 
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  const queryClient = useQueryClient();
   const initialize = useCallback(async () => {
     try {
       const accessToken =
@@ -157,10 +159,13 @@ export function AuthProvider({ children }) {
   // LOGOUT
   const logout = useCallback(async () => {
     setSession(null);
+    queryClient.clear();
+    mixpanelTrack(MIXPANEL_EVENTS.logout_success, { user: state.user });
     dispatch({
       type: 'LOGOUT'
     });
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.user?.first_name]);
 
   const values = useMemo(() => {
     return {

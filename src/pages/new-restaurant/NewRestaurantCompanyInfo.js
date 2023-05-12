@@ -47,6 +47,8 @@ import { postCompanyInfo } from '../../utils/api';
 import { PATH_NEW_RESTAURANT } from '../../routes/paths';
 import MotionDivViewport from '../../components/animate/MotionDivViewport';
 import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
+import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
+import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
 
 const NewRestaurantCompanyInfo = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
@@ -83,8 +85,6 @@ const NewRestaurantCompanyInfo = (props) => {
       data?.data?.company_info?.company_address?.country
     ]
   );
-
-  console.log(data?.data);
 
   const methods = useForm({
     resolver: yupResolver(companyInfoSchema),
@@ -131,12 +131,18 @@ const NewRestaurantCompanyInfo = (props) => {
       // make dynamic api call
       setFormSubmitLoading(true);
       const updatedRestaurant = await postCompanyInfo(data);
-
+      mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_company_info_success, {
+        data
+      });
       updateQuery(updatedRestaurant.data);
       handleNext();
     } catch (error) {
       console.error(error);
       // reset();
+      mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_company_info_failed, {
+        data,
+        error: error?.message || JSON.stringify(error)
+      });
       setError('afterSubmit', {
         ...error,
         message: error.message
@@ -145,14 +151,13 @@ const NewRestaurantCompanyInfo = (props) => {
     setFormSubmitLoading(false);
   };
 
+  useRHFErrorMixpanelTracker(
+    MIXPANEL_EVENTS.create_restaurant_company_info_errors,
+    errors
+  );
+
   return (
-    <MotionDivViewport
-      layout={'preserve-aspect'}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 1, delay: 0.1 }}
-    >
+    <Box>
       <Helmet>
         <title> Step 1 | Foodie</title>
       </Helmet>
@@ -165,10 +170,7 @@ const NewRestaurantCompanyInfo = (props) => {
           }}
           mb={6}
         >
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={'Company Information'}
-          />
+          <Subheader text={'Company Information'} />
           <InputStack>
             <RHFTextField
               variant={'filled'}
@@ -182,10 +184,7 @@ const NewRestaurantCompanyInfo = (props) => {
             />
           </InputStack>
           <Spacer />
-          <Subheader
-            sx={{ padding: 0, marginBottom: 16 }}
-            text={'Company office address'}
-          />
+          <Subheader text={'Company office address'} />
           <InputWithInfoStack>
             <InputWithInfoInputContainer>
               <Box mb={2}>
@@ -297,10 +296,10 @@ const NewRestaurantCompanyInfo = (props) => {
           </Box>
         </Box>
       </FormProvider>
-    </MotionDivViewport>
+    </Box>
   );
 };
 
 NewRestaurantCompanyInfo.propTypes = {};
 
-export default React.memo(NewRestaurantCompanyInfo);
+export default NewRestaurantCompanyInfo;

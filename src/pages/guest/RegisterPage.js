@@ -10,7 +10,7 @@ export default function RegisterPage() {
   return (
     <>
       <Helmet>
-        <title> Login | Foodie</title>
+        <title> Register | Foodie</title>
       </Helmet>
 
       <Register />
