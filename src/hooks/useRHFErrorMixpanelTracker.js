@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { mixpanelTrack } from '../utils/mixpanel';
 import { useAuthContext } from './useAuthContext';
 
