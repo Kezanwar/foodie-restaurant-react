@@ -20,7 +20,7 @@ import NavAccount from './NavAccount';
 
 NavVertical.propTypes = {
   openNav: PropTypes.bool,
-  onCloseNav: PropTypes.func,
+  onCloseNav: PropTypes.func
 };
 
 export default function NavVertical({ openNav, onCloseNav }) {
@@ -42,8 +42,8 @@ export default function NavVertical({ openNav, onCloseNav }) {
         '& .simplebar-content': {
           height: 1,
           display: 'flex',
-          flexDirection: 'column',
-        },
+          flexDirection: 'column'
+        }
       }}
     >
       <Stack
@@ -52,7 +52,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
           pt: 3,
           pb: 2,
           px: 2.5,
-          flexShrink: 0,
+          flexShrink: 0
         }}
       >
         <Logo />
@@ -73,7 +73,7 @@ export default function NavVertical({ openNav, onCloseNav }) {
       component="nav"
       sx={{
         flexShrink: { lg: 0 },
-        width: { lg: NAV.W_DASHBOARD },
+        width: { lg: NAV.W_DASHBOARD }
       }}
     >
       {isDesktop ? (
@@ -84,8 +84,8 @@ export default function NavVertical({ openNav, onCloseNav }) {
             sx: {
               width: NAV.W_DASHBOARD,
               bgcolor: 'transparent',
-              borderRightStyle: 'dashed',
-            },
+              borderRightStyle: 'dashed'
+            }
           }}
         >
           {renderContent}
@@ -95,12 +95,12 @@ export default function NavVertical({ openNav, onCloseNav }) {
           open={openNav}
           onClose={onCloseNav}
           ModalProps={{
-            keepMounted: true,
+            keepMounted: true
           }}
           PaperProps={{
             sx: {
-              width: NAV.W_DASHBOARD,
-            },
+              width: NAV.W_DASHBOARD
+            }
           }}
         >
           {renderContent}

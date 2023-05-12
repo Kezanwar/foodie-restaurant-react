@@ -31,6 +31,17 @@ const NewRestaurantGetStarted = (props) => {
     const regStep = data?.data?.registration_step;
     const status = data?.data?.status;
 
+    if (status === RESTAURANT_STATUS.APPLICATION_REJECTED) {
+      return {
+        mainText:
+          'Your application was rejected, please check your email for further information.',
+        subText:
+          'You can contact support@thefoodie.app if you have any queries.',
+        strongText: '',
+        ctaText: 'Review application',
+        ctaTo: PATH_NEW_RESTAURANT.step_4
+      };
+    }
     if (status === RESTAURANT_STATUS.APPLICATION_PROCESSING) {
       return {
         mainText:
@@ -97,19 +108,15 @@ const NewRestaurantGetStarted = (props) => {
   const { mainText, subText, strongText, ctaText, ctaTo } = getContent();
 
   const hasSubmit =
-    data?.data?.status === RESTAURANT_STATUS.APPLICATION_PROCESSING;
+    data?.data?.status === RESTAURANT_STATUS.APPLICATION_PROCESSING ||
+    data?.data?.status === RESTAURANT_STATUS.APPLICATION_REJECTED;
 
   return (
-    <MotionDivViewport
-      initial={{ translateY: 10 }}
-      animate={{ translateY: 0 }}
-      exit={{ translateY: 50 }}
-      transition={{ duration: 0.4 }}
-    >
+    <Box>
       <Container maxWidth={'lg'}>
         <Stack justifyContent={'center'} alignItems={'center'} mt={0}>
           {!hasSubmit && (
-            <Box layoutId="undraw-svg" layout component={m.div}>
+            <Box>
               <Image
                 duration={200}
                 width={isMobile ? '80vw' : 400}
@@ -170,7 +177,7 @@ const NewRestaurantGetStarted = (props) => {
           )}
         </Stack>
       </Container>
-    </MotionDivViewport>
+    </Box>
   );
 };
 

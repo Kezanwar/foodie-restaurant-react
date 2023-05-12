@@ -1,14 +1,9 @@
 import PropTypes from 'prop-types';
 import { useDropzone } from 'react-dropzone';
-
-// @mui
 import { Box, Stack, Button, IconButton, Typography } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
-// assets
 import { UploadIllustration } from '../../assets/illustrations';
-//
 import Iconify from '../iconify';
-//
 import RejectionFiles from './errors/RejectionFiles';
 import MultiFilePreview from './preview/MultiFilePreview';
 import SingleFilePreview from './preview/SingleFilePreview';
@@ -45,7 +40,8 @@ Upload.propTypes = {
   onUpload: PropTypes.func,
   thumbnail: PropTypes.bool,
   helperText: PropTypes.node,
-  onRemoveAll: PropTypes.func
+  onRemoveAll: PropTypes.func,
+  onRHFChange: PropTypes.func
 };
 
 export default function Upload({

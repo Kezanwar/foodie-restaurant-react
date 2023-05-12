@@ -28,16 +28,14 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <AuthProvider>
-    <HelmetProvider>
-      <SettingsProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <App />
-        </BrowserRouter>
-      </SettingsProvider>
-    </HelmetProvider>
-  </AuthProvider>
+  <HelmetProvider>
+    <SettingsProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <App />
+      </BrowserRouter>
+    </SettingsProvider>
+  </HelmetProvider>
 );
 
 // If you want your app to work offline and load faster, you can change

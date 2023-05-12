@@ -52,7 +52,8 @@ UploadAvatar.propTypes = {
   error: PropTypes.bool,
   disabled: PropTypes.bool,
   helperText: PropTypes.node,
-  file: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  file: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  onRHFChange: PropTypes.func
 };
 
 export default function UploadAvatar({

@@ -16,10 +16,66 @@ import useLocationsQuery from '../../hooks/queries/useLocationsQuery';
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 import Spacer from '../../components/spacer/Spacer';
 import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
+import {
+  CoverPhotoContainer,
+  MainSection,
+  VoucherContainer,
+  VoucherIconBox,
+  VouchersSection
+} from './styles';
+
+const EXAMPLE_VOUCHERS = [
+  '20% Off Lunchtime Menu (Wed - Fri)',
+  '50% Off Drinks Menu (Sat before 5pm)',
+  '2 Courses for £25.00 (Mon - Fri)'
+];
+
+const AvatarStyles = {
+  width: '100px',
+  height: '100px',
+  borderRadius: '50px',
+  objectFit: 'cover',
+  marginBottom: '24px',
+  border: '2px solid white'
+};
+
+const TypographyWordBreak = { wordBreak: 'break-all' };
+
+const OpeningTimeText = ({ day, value }) => {
+  return (
+    <Stack
+      flexDirection={'row'}
+      alignItems={'center'}
+      mb={day !== 'sun' ? 1 : 0}
+    >
+      <Typography
+        mb={0.25}
+        mr={0.5}
+        width={'40px'}
+        fontSize={12}
+        variant="body2"
+      >
+        {capitalize(day)}
+      </Typography>
+      <Typography
+        color={value.is_open ? 'success.main' : 'warning.main'}
+        sx={{
+          textTransform: 'uppercase',
+          fontWeight: 'medium',
+          mt: '-1.5px',
+          fontSize: 12
+        }}
+        variant="body2"
+      >
+        {value.is_open ? `${value.open} - ${value.close}` : 'Closed'}{' '}
+      </Typography>
+    </Stack>
+  );
+};
 
 const RestaurantProfileIphone = () => {
   const iphoneRef = useRef(null);
-  const { isTablet, isMobile } = useCustomMediaQueries();
+  const { isMobile } = useCustomMediaQueries();
   const isSmallMobile = useMediaQuery((theme) => theme.breakpoints.down(390));
   const theme = useTheme();
 
@@ -29,8 +85,6 @@ const RestaurantProfileIphone = () => {
 
   const locations = locationsQuery?.data?.data || null;
 
-  console.log(locations);
-
   const [selectedLocationID, setSelectedLocationID] = useState('');
 
   const selectedLocation = useMemo(() => {
@@ -39,17 +93,7 @@ const RestaurantProfileIphone = () => {
     return null;
   }, [locations, selectedLocationID]);
 
-  const {
-    avatar,
-    name,
-    bio,
-    company_info,
-
-    cover_photo,
-    social_media
-  } = data?.data || {};
-
-  const { company_address, company_name, company_number } = company_info || {};
+  const { avatar, name, bio, cover_photo } = data?.data || {};
 
   const height = iphoneRef?.current?.height || 1;
   const width = iphoneRef?.current?.width || 1;
@@ -88,7 +132,6 @@ const RestaurantProfileIphone = () => {
         <Box
           sx={{
             height: height - 40,
-
             paddingBottom: 0,
             backgroundColor: theme.palette.background.paper,
             width: width - 38,
@@ -107,50 +150,10 @@ const RestaurantProfileIphone = () => {
             }
           }}
         >
-          <Box
-            sx={{
-              width: '100%',
-              borderTopRightRadius: '42px',
-              borderTopLeftRadius: '42px',
-              backgroundSize: 'cover!important',
-              height: '275px',
-              background: `url(${cover_photo.split('?')[0]})`,
-              display: 'flex!important',
-              alignItems: 'end',
-              padding: 3
-            }}
-          >
-            <img
-              style={{
-                width: '80px',
-                height: '80px',
-                borderRadius: '50px',
-                objectFit: 'cover',
-                marginBottom: '24px',
-                border: '2px solid white'
-              }}
-              src={avatar}
-              alt={'avatar'}
-            />
-          </Box>
-          <Box
-            sx={{
-              width: '100%',
-              marginTop: '-20px',
-              borderTopRightRadius: '12px',
-              borderTopLeftRadius: '12px',
-              // borderBottomRightRadius: '49px',
-              // borderBottomLeftRadius: '49px',
-              boxShadow: theme.shadows[4],
-              zIndex: '2000',
-              // height: '1000px',
-              borderBottomLeftRadius: '12px',
-              borderBottomRightRadius: '12px',
-              position: 'relative',
-              padding: 3,
-              backgroundColor: theme.palette.background.paper
-            }}
-          >
+          <CoverPhotoContainer url={`url(${cover_photo.split('?')[0]})`}>
+            <img style={AvatarStyles} src={avatar} alt={'avatar'} />
+          </CoverPhotoContainer>
+          <MainSection>
             <Box
               sx={{
                 display: 'flex!important',
@@ -232,43 +235,16 @@ const RestaurantProfileIphone = () => {
                   }}
                 />
                 <Spacer sp={1} />
+
                 {selectedLocation &&
                   Object.entries(selectedLocation?.opening_times).map(
                     ([key, value]) => {
                       return (
-                        <React.Fragment key={`iphone-${key}`}>
-                          <Stack
-                            flexDirection={'row'}
-                            alignItems={'center'}
-                            mb={key !== 'sun' ? 1 : 0}
-                          >
-                            <Typography
-                              mb={0.25}
-                              mr={0.5}
-                              width={'40px'}
-                              fontSize={12}
-                              variant="body2"
-                            >
-                              {capitalize(key)}
-                            </Typography>
-                            <Typography
-                              color={
-                                value.is_open ? 'success.main' : 'warning.main'
-                              }
-                              sx={{
-                                textTransform: 'uppercase',
-                                fontWeight: 'medium',
-                                mt: '-1.5px',
-                                fontSize: 12
-                              }}
-                              variant="body2"
-                            >
-                              {value.is_open
-                                ? `${value.open} - ${value.close}`
-                                : 'Closed'}{' '}
-                            </Typography>
-                          </Stack>
-                        </React.Fragment>
+                        <OpeningTimeText
+                          key={`iphone-${key}`}
+                          day={key}
+                          value={value}
+                        />
                       );
                     }
                   )}
@@ -283,19 +259,19 @@ const RestaurantProfileIphone = () => {
                   }}
                 />
                 <Spacer sp={1.1} />
-                <Typography sx={{ wordBreak: 'break-all' }} fontSize={12}>
+                <Typography sx={TypographyWordBreak} fontSize={12}>
                   {selectedLocation?.address?.address_line_1}
                 </Typography>
-                <Typography sx={{ wordBreak: 'break-all' }} fontSize={12}>
+                <Typography sx={TypographyWordBreak} fontSize={12}>
                   {selectedLocation?.address?.address_line_2}
                 </Typography>
-                <Typography sx={{ wordBreak: 'break-all' }} fontSize={12}>
+                <Typography sx={TypographyWordBreak} fontSize={12}>
                   {selectedLocation?.address?.postcode}
                 </Typography>
-                <Typography sx={{ wordBreak: 'break-all' }} fontSize={12}>
+                <Typography sx={TypographyWordBreak} fontSize={12}>
                   {selectedLocation?.address?.city}
                 </Typography>
-                <Typography sx={{ wordBreak: 'break-all' }} fontSize={12}>
+                <Typography sx={TypographyWordBreak} fontSize={12}>
                   {selectedLocation?.address?.country}
                 </Typography>
                 <Spacer sp={3} />
@@ -308,16 +284,16 @@ const RestaurantProfileIphone = () => {
                   }}
                 />
                 <Spacer sp={1.25} />
-                <Typography sx={{ wordBreak: 'break-all' }} fontSize={12}>
+                <Typography sx={TypographyWordBreak} fontSize={12}>
                   {selectedLocation?.phone_number}
                 </Typography>
-                <Typography sx={{ wordBreak: 'break-all' }} fontSize={12}>
+                <Typography sx={TypographyWordBreak} fontSize={12}>
                   {selectedLocation?.email}
                 </Typography>
               </Box>
             </Box>
-          </Box>
-          <Box
+          </MainSection>
+          <VouchersSection
             sx={{
               padding: 3,
               backgroundColor: theme.palette.background.paper
@@ -340,54 +316,13 @@ const RestaurantProfileIphone = () => {
               <Box>
                 <Spacer sp={3} />
                 <Box>
-                  {[
-                    '20% Off Lunchtime Menu (Wed - Fri)',
-                    '50% Off Drinks Menu (Sat before 5pm)',
-                    '2 Courses for £25.00 (Mon - Fri)'
-                  ].map((offer, i) => {
+                  {EXAMPLE_VOUCHERS.map((offer, i) => {
                     return (
-                      <Box
-                        key={offer}
-                        sx={{
-                          position: 'relative',
-                          display: 'flex!important',
-                          alignItems: 'center',
-                          backgroundColor: theme.palette.background.paper,
-                          // boxShadow: theme.shadows[1],
-                          justifyContent: 'space-between',
-                          border: `1.2px dashed ${theme.palette.primary.lighter}`,
-                          borderRadius: '10px',
-                          marginBottom: i !== 2 ? 3 : 0,
-                          padding: 2,
-                          cursor: 'pointer'
-                        }}
-                      >
+                      <VoucherContainer key={offer}>
                         <Typography variant="subtitle" fontSize={12}>
                           {offer}
                         </Typography>
-                        {/* <ArrowForwardIcon
-                              className="arrow"
-                              sx={{
-                                transition: 'all 200ms ease',
-                                opacity: 0
-                              }}
-                              fontSize="22px"
-                            /> */}
-                        <Box
-                          className="voucher-box"
-                          sx={{
-                            backgroundColor: theme.palette.background.paper,
-                            border: 'none',
-                            paddingRight: 0.7,
-                            paddingBottom: 0,
-                            position: 'absolute',
-                            left: '2px',
-                            top: '2px',
-                            color: theme.palette.primary.light,
-                            transform:
-                              'translateX(-50%) translateY(-50%) scale(0.75) '
-                          }}
-                        >
+                        <VoucherIconBox className="voucher-box">
                           <SvgColor
                             src={'/assets/icons/navbar/ic_voucher.svg'}
                             sx={{
@@ -395,14 +330,14 @@ const RestaurantProfileIphone = () => {
                               height: 24
                             }}
                           />
-                        </Box>
-                      </Box>
+                        </VoucherIconBox>
+                      </VoucherContainer>
                     );
                   })}
                 </Box>
               </Box>
             </Box>
-          </Box>
+          </VouchersSection>
         </Box>
       </Iphone14Pro>
     </Stack>

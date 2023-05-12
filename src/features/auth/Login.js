@@ -16,9 +16,7 @@ export default function Login() {
   return (
     <AuthLayout>
       <Stack spacing={2} sx={{ mb: 2, position: 'relative' }}>
-        <Typography variant="h3">
-          Sign in to your Restaurant Dashboard
-        </Typography>
+        <Typography variant="h3">Sign in to your Partner Dashboard</Typography>
 
         <Stack direction="row" alignItems="center" spacing={0.5}>
           <Typography variant="body2">New user?</Typography>

@@ -12,23 +12,19 @@ const Iphone14Pro = forwardRef(({ children }, ref) => {
   );
 
   return (
-    <div
-      style={{ zIndex: '20' }}
-      ref={ref}
-      className="device device-iphone-14-pro"
-    >
-      <div style={{ zIndex: '20001' }} className="device-frame">
-        {children}
-      </div>
-      <div style={{ zIndex: '20001' }} className="device-header" />
-      <div style={{ zIndex: '20001' }} className="device-sensors" />
-      <div style={{ zIndex: '20001' }} className="device-btns" />
-      <div style={{ zIndex: '20001' }} className="device-power" />
-      <div style={{ zIndex: '20001' }} className="device-home" />
+    <div ref={ref} className="device device-iphone-14-pro">
+      <div className="device-frame">{children}</div>
+      <div className="device-header" />
+      <div className="device-sensors" />
+      <div className="device-btns" />
+      <div className="device-power" />
+      <div className="device-home" />
     </div>
   );
 });
 
-Iphone14Pro.propTypes = {};
+Iphone14Pro.propTypes = {
+  children: PropTypes.element
+};
 
 export default Iphone14Pro;

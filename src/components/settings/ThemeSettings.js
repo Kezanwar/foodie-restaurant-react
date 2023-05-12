@@ -7,7 +7,7 @@ import SettingsDrawer from './drawer';
 // ----------------------------------------------------------------------
 
 ThemeSettings.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 export default function ThemeSettings({ children }) {

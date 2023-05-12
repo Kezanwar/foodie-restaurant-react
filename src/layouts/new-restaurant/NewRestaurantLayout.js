@@ -31,7 +31,8 @@ import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
 const disallowedRestStatusArr = Object.values(RESTAURANT_STATUS).filter(
   (status) =>
     status !== RESTAURANT_STATUS.APPLICATION_PENDING &&
-    status !== RESTAURANT_STATUS.APPLICATION_PROCESSING
+    status !== RESTAURANT_STATUS.APPLICATION_PROCESSING &&
+    status !== RESTAURANT_STATUS.APPLICATION_REJECTED
 );
 
 export default function NewRestaurantLayout() {
@@ -74,26 +75,21 @@ export default function NewRestaurantLayout() {
       <Header />
 
       <StyledContent>
-        <Stack
-          component={activeFormStep !== 2 ? MotionDivViewport : 'div'}
-          layout={'preserve-aspect'}
-          transition={{ duration: 0.2 }}
-          sx={{ width: 1 }}
-        >
+        <Stack sx={{ width: 1 }}>
           <Container maxWidth={'lg'}>
             {activeFormStep !== -1 && (
               <>
                 <Box mb={isMobile ? 2 : 6}>
                   <Box sx={{ display: 'flex' }}>
                     {isMobile ? null : (
-                      <MotionDivViewport layoutId="undraw-svg">
+                      <Box>
                         <Image
                           duration={100}
                           width={125}
                           src={UndrawSVG}
                           alt={'undraw'}
                         />
-                      </MotionDivViewport>
+                      </Box>
                     )}
                     <Box ml={isMobile ? 0 : 2}>
                       <Box
@@ -146,13 +142,7 @@ export default function NewRestaurantLayout() {
                 <Spacer sp={6} />
               </>
             )}
-            {isLoading ? (
-              <LoadingScreen />
-            ) : (
-              <MotionContainer>
-                <Outlet />
-              </MotionContainer>
-            )}
+            {isLoading ? <LoadingScreen /> : <Outlet />}
           </Container>
         </Stack>
       </StyledContent>

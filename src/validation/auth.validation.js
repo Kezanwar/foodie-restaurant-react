@@ -20,5 +20,5 @@ export const RegisterSchema = Yup.object().shape({
     .matches(/[A-Z]+/, 'Must have uppercase character'),
   confirm_password: Yup.string()
     .required('Must retype your password')
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .oneOf([Yup.ref('password')], 'Passwords must match')
 });

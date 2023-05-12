@@ -39,6 +39,10 @@ const useCreateRestaurantGuard = (restaurant, currentStep) => {
         return navigate(pathsArr[R_STEP_INDEX + 1]);
       }
     }
+
+    if (restStatus === RESTAURANT_STATUS.APPLICATION_REJECTED) {
+      return navigate(PATH_NEW_RESTAURANT.new_restaurant);
+    }
   }
 };
 
