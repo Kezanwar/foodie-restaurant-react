@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
-import { Box, Stack, Drawer } from '@mui/material';
+import { Box, Stack, Drawer, Typography } from '@mui/material';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 // config

@@ -21,23 +21,23 @@ export default function Alert(theme) {
           color: theme.palette[color][isLight ? 'darker' : 'lighter'],
           backgroundColor: theme.palette[color][isLight ? 'lighter' : 'darker'],
           '& .MuiAlert-icon': {
-            color: theme.palette[color][isLight ? 'main' : 'light'],
-          },
+            color: theme.palette[color][isLight ? 'main' : 'light']
+          }
         }),
         // FILLED
         ...(filledVariant && {
           color: theme.palette[color].contrastText,
-          backgroundColor: theme.palette[color].main,
+          backgroundColor: theme.palette[color].main
         }),
         // OUTLINED
         ...(outlinedVariant && {
           color: theme.palette[color][isLight ? 'dark' : 'light'],
           border: `solid 1px ${theme.palette[color].main}`,
           '& .MuiAlert-icon': {
-            color: theme.palette[color].main,
-          },
-        }),
-      }),
+            color: theme.palette[color].main
+          }
+        })
+      })
     }));
 
     return [...colorStyle];
@@ -50,23 +50,23 @@ export default function Alert(theme) {
           info: <InfoIcon />,
           success: <SuccessIcon />,
           warning: <WarningIcon />,
-          error: <ErrorIcon />,
-        },
+          error: <ErrorIcon />
+        }
       },
 
       styleOverrides: {
         root: ({ ownerState }) => rootStyle(ownerState),
         icon: {
-          opacity: 1,
-        },
-      },
+          opacity: 1
+        }
+      }
     },
     MuiAlertTitle: {
       styleOverrides: {
         root: {
-          marginBottom: theme.spacing(0.5),
-        },
-      },
-    },
+          marginBottom: theme.spacing(0.5)
+        }
+      }
+    }
   };
 }

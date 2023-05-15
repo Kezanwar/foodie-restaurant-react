@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 // @mui
 import { Box } from '@mui/material';
 // components
@@ -11,6 +12,8 @@ import { PATH_NEW_RESTAURANT } from '../../routes/paths';
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
 import LoadingScreen from '../../components/loading-screen/LoadingScreen';
+import NotSubscribedNotice from '../../components/not-subcribed-notice/NotSubscribedNotice';
+import Footer from '../../features/footer/Footer';
 
 // ----------------------------------------------------------------------
 
@@ -18,9 +21,12 @@ export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const { isLoading, data, isFetched } = useRestaurantQuery();
 
   useEffect(() => {
+    enqueueSnackbar('hello');
     if (
       (isFetched && !data?.data?.status) ||
       data?.data?.status === RESTAURANT_STATUS.APPLICATION_PENDING ||
@@ -42,16 +48,13 @@ export default function DashboardLayout() {
     <NavVertical openNav={open} onCloseNav={handleClose} />
   );
 
+  const isSubscribed = data?.data?.is_subscribed;
+
   return isLoading ? (
     <LoadingScreen />
-  ) : isFetched &&
-    data?.data.status === RESTAURANT_STATUS.APPLICATION_REJECTED ? (
-    // TODO - ADD APPLICATION REJECTED PAGE
-    <Box>application rejected</Box>
   ) : (
     <>
       <Header onOpenNav={handleOpen} />
-
       <Box
         sx={{
           display: { lg: 'flex' },
@@ -59,9 +62,10 @@ export default function DashboardLayout() {
         }}
       >
         {renderNavVertical}
-
         <Main>
+          {!isSubscribed && <NotSubscribedNotice />}
           <Outlet />
+          {/* <Footer /> */}
         </Main>
       </Box>
     </>

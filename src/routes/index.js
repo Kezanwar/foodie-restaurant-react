@@ -24,7 +24,8 @@ import {
   NewRestaurantCompanyInfo,
   NewRestaurantCreateRestaurant,
   NewRestaurantAddLocations,
-  PageConfirmEmail
+  PageConfirmEmail,
+  CreateVoucher
 } from './elements';
 import {
   PATH_AUTH,
@@ -82,7 +83,7 @@ export default function Router() {
               index: true
             },
             { path: 'all', element: <PageFour /> },
-            { path: 'create', element: <PageFive /> },
+            { path: 'create', element: <CreateVoucher /> },
             { path: ':id', element: <PageSix /> },
             { path: 'edit/:id', element: <PageSix /> }
           ]

@@ -4,8 +4,8 @@ export default function DatePicker() {
   return {
     MuiDatePicker: {
       defaultProps: {
-        inputFormat: 'dd/MM/yyyy',
-      },
-    },
+        // inputFormat: 'dd/MM/yyyy',
+      }
+    }
   };
 }

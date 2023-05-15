@@ -219,15 +219,6 @@ const NewRestaurantCreateRestaurant = (props) => {
               label="Add your restaurant name"
               variant={'filled'}
             />
-            <Box flex={isTablet ? 0.7 : 1} display={'flex'}>
-              {/* {storeName && (
-            <AvailabilityIndicator
-              success={storeNameAvailable}
-              resultName={'name'}
-              isLoading={nameAvailabilityLoading}
-            />
-          )} */}
-            </Box>
           </InputWithInfoInputContainer>
           <InputWithInfoInfoContainer>
             <Alert icon={<HelpIcon />} severity={'success'}>

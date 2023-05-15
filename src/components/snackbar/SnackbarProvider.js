@@ -13,13 +13,13 @@ import StyledNotistack from './styles';
 // ----------------------------------------------------------------------
 
 SnackbarProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 export default function SnackbarProvider({ children }) {
-  const { themeDirection } = useSettingsContext();
+  // const { themeDirection } = useSettingsContext();
 
-  const isRTL = themeDirection === 'rtl';
+  // const isRTL = themeDirection === 'rtl';
 
   const notistackRef = useRef(null);
 
@@ -37,14 +37,17 @@ export default function SnackbarProvider({ children }) {
         maxSnack={5}
         preventDuplicate
         autoHideDuration={3000}
-        TransitionComponent={isRTL ? Collapse : undefined}
         variant="success" // Set default variant
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         iconVariant={{
           info: <SnackbarIcon icon="eva:info-fill" color="info" />,
-          success: <SnackbarIcon icon="eva:checkmark-circle-2-fill" color="success" />,
-          warning: <SnackbarIcon icon="eva:alert-triangle-fill" color="warning" />,
-          error: <SnackbarIcon icon="eva:alert-circle-fill" color="error" />,
+          success: (
+            <SnackbarIcon icon="eva:checkmark-circle-2-fill" color="primary" />
+          ),
+          warning: (
+            <SnackbarIcon icon="eva:alert-triangle-fill" color="warning" />
+          ),
+          error: <SnackbarIcon icon="eva:alert-circle-fill" color="error" />
         }}
         // With close as default
         action={(key) => (
@@ -63,7 +66,14 @@ export default function SnackbarProvider({ children }) {
 
 SnackbarIcon.propTypes = {
   icon: PropTypes.string,
-  color: PropTypes.oneOf(['primary', 'secondary', 'info', 'success', 'warning', 'error']),
+  color: PropTypes.oneOf([
+    'primary',
+    'secondary',
+    'info',
+    'success',
+    'warning',
+    'error'
+  ])
 };
 
 function SnackbarIcon({ icon, color }) {
@@ -79,7 +89,7 @@ function SnackbarIcon({ icon, color }) {
         alignItems: 'center',
         justifyContent: 'center',
         color: `${color}.main`,
-        bgcolor: (theme) => alpha(theme.palette[color].main, 0.16),
+        bgcolor: (theme) => alpha(theme.palette[color].main, 0.16)
       }}
     >
       <Iconify icon={icon} width={24} />

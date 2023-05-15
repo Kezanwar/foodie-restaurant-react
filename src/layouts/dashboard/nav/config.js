@@ -39,7 +39,7 @@ const navConfig = [
         icon: ICONS.payments,
         children: [
           { title: 'All', path: PATH_DASHBOARD.vouchers_all },
-          { title: 'Add new', path: PATH_DASHBOARD.vouchers_create }
+          { title: 'Create', path: PATH_DASHBOARD.vouchers_create }
           // { title: 'Five', path: PATH_DASHBOARD.user.five },
           // { title: 'Six', path: PATH_DASHBOARD.user.six }
         ]
