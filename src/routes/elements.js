@@ -47,8 +47,8 @@ export const PageSix = Loadable(
 
 // * Dashboard Vouchers
 
-export const CreateVoucher = Loadable(
-  lazy(() => import('../pages/dashboard/Vouchers/CreateVoucher'))
+export const VouchersCreate = Loadable(
+  lazy(() => import('../pages/dashboard/Vouchers/VouchersCreate'))
 );
 
 // ----------------------------------------------------------------------

@@ -31,6 +31,7 @@ import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
 import Subheader from '../../../components/subheader/Subheader';
 import { MAX_VOUCHERS } from '../../../constants/vouchers.constants';
 import { DashboardTitleContainer } from '../styles';
+import DateRangePicker from '../../../components/date-range-picker/DateRangePicker';
 
 // import DateRangePicker from '../../../components/date-range-picker/DateRangePicker';
 
@@ -116,44 +117,33 @@ export default function AddNewVoucher() {
                   </Alert>
                 </InputWithInfoInfoContainer>
               </InputWithInfoStack>
-              <Subheader text={'Voucher start & end dates'} />
+              <Subheader text={'Voucher start - end dates'} />
               <InputWithInfoStack>
                 <InputWithInfoInputContainer>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Box sx={{ display: 'flex', gap: 3 }}>
+                    <Box
+                      onClick={() => console.log('yo')}
+                      sx={{
+                        display: 'flex',
+                        gap: 3
+                      }}
+                    >
                       <DatePicker
                         label="Start date"
-                        // value={filterStartDate}
-                        // onChange={onFilterStartDate}
                         renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            fullWidth
-                            sx={
-                              {
-                                // maxWidth: { md: INPUT_WIDTH }
-                              }
-                            }
-                          />
+                          <TextField {...params} fullWidth />
                         )}
                       />
                       <DatePicker
                         label="End date"
-                        // value={filterStartDate}
-                        // onChange={onFilterStartDate}
                         renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            fullWidth
-                            sx={
-                              {
-                                // maxWidth: { md: INPUT_WIDTH }
-                              }
-                            }
-                          />
+                          <TextField readOnly {...params} fullWidth />
                         )}
                       />
+                      {/* <Typography>12/05/2023 - 22/05/2023</Typography> */}
                     </Box>
+
+                    {/* <DateRangePicker open title="Select voucher date range" /> */}
                   </LocalizationProvider>
                 </InputWithInfoInputContainer>
                 <InputWithInfoInfoContainer>
