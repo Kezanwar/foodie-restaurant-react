@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Stack } from '@mui/system';
 import {
   Alert,
@@ -8,6 +8,7 @@ import {
   Button,
   useMediaQuery
 } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import Image from 'mui-image';
 import { useNavigate } from 'react-router';
 import HelpIcon from '@mui/icons-material/Help';
@@ -47,12 +48,17 @@ import { postSubmitApplicationStep } from '../../utils/api';
 
 import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
 import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
-import { MIXPANEL_EVENTS } from '../../utils/mixpanel';
+import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
+
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const NewRestaurantYourApplication = (props) => {
   const { isTablet, isMobile } = useCustomMediaQueries();
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const navigate = useNavigate();
+
+  const { enqueueSnackbar } = useSnackbar();
+  const { user } = useAuthContext();
 
   const isSmallMobile = useMediaQuery((theme) => theme.breakpoints.down(390));
 
@@ -110,9 +116,27 @@ const NewRestaurantYourApplication = (props) => {
   const hasSubmit =
     data?.data?.status === RESTAURANT_STATUS.APPLICATION_PROCESSING;
 
-  useRHFErrorMixpanelTracker(
-    MIXPANEL_EVENTS.create_restaurant_submit_application_errors,
-    formState?.errors
+  const onError = useCallback(
+    (errors) => {
+      const errArr = Object.entries(errors);
+      errArr.forEach(([name, value]) =>
+        value?.message
+          ? enqueueSnackbar(value.message, { variant: 'error' })
+          : null
+      );
+
+      const data = { ...errors };
+      if (user?.email) {
+        data.auth = user;
+      }
+      mixpanelTrack(
+        MIXPANEL_EVENTS.create_restaurant_submit_application_errors,
+        {
+          errors: data
+        }
+      );
+    },
+    [user?.email]
   );
 
   if (!data?.data || !locations) return <LoadingScreen />;
@@ -236,7 +260,10 @@ const NewRestaurantYourApplication = (props) => {
           <RestaurantProfileIphone />
         </Stack>
         <Spacer sp={isMobile ? 0 : 6} />
-        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+        <FormProvider
+          methods={methods}
+          onSubmit={handleSubmit(onSubmit, onError)}
+        >
           <Stack alignItems={'center'}>
             <RHFCheckbox
               isCentered={!isMobile}

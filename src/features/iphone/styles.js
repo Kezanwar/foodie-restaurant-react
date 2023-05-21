@@ -5,7 +5,7 @@ export const CoverPhotoContainer = styled(Box)(({ url, theme }) => ({
   borderTopRightRadius: '42px',
   borderTopLeftRadius: '42px',
   backgroundSize: 'cover!important',
-  height: '275px',
+  height: '300px',
   background: url,
   display: 'flex!important',
   alignItems: 'end',

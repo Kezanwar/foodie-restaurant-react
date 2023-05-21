@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState
 } from 'react';
+import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet-async';
 import 'leaflet/dist/leaflet.css';
 import { useNavigate } from 'react-router';
@@ -67,6 +68,7 @@ import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
 import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const motionStyles = {
   display: 'flex',
@@ -83,6 +85,9 @@ const NewRestaurantAddLocation = (props) => {
   const [addLocationModalOpen, setAddLocationModalOpen] = useState(false);
   const [deleteLocationModalOpen, setDeleteLocationModalOpen] = useState(false);
   const [editLocationID, setEditLocationID] = useState(false);
+
+  const { enqueueSnackbar } = useSnackbar();
+  const { user } = useAuthContext();
 
   const { data, isLoading, updateQuery } = useLocationsQuery();
 
@@ -427,9 +432,24 @@ const NewRestaurantAddLocation = (props) => {
     scrollToForm();
   };
 
-  useRHFErrorMixpanelTracker(
-    MIXPANEL_EVENTS.create_restaurant_add_locations_errors,
-    errors
+  const onError = useCallback(
+    (errors) => {
+      const errArr = Object.entries(errors);
+      errArr.forEach(([name, value]) =>
+        value?.message
+          ? enqueueSnackbar(value.message, { variant: 'error' })
+          : null
+      );
+
+      const data = { ...errors };
+      if (user?.email) {
+        data.auth = user;
+      }
+      mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_add_locations_errors, {
+        errors: data
+      });
+    },
+    [user?.email]
   );
 
   return (
@@ -438,7 +458,10 @@ const NewRestaurantAddLocation = (props) => {
         <title> Step 3 | Foodie</title>
       </Helmet>
       <Box>
-        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+        <FormProvider
+          methods={methods}
+          onSubmit={handleSubmit(onSubmit, onError)}
+        >
           <Box mb={6}>
             <Alert icon={<HelpIcon />} severity={'success'}>
               <AlertTitle>How do locations work?</AlertTitle>

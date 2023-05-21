@@ -33,6 +33,7 @@ export default function RHFMultipleAutocomplete({
               value={value}
               getOptionLabel={(option) => option.name}
               filterSelectedOptions
+              {...other}
               onChange={(e, values) => onChange(values)}
               renderInput={(params) => (
                 <TextField
