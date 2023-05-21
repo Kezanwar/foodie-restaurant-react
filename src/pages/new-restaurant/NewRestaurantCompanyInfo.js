@@ -197,11 +197,13 @@ const NewRestaurantCompanyInfo = (props) => {
               variant={'filled'}
               name="company_name"
               label="Registered company name"
+              placeholder={'e.g My Restaurant Ltd'}
             />
             <RHFTextField
               variant={'filled'}
               name="company_number"
-              label="Company number (Optional)"
+              label="Company number"
+              placeholder={'e.g 0277767632'}
             />
           </InputStack>
           <Spacer />
@@ -213,6 +215,7 @@ const NewRestaurantCompanyInfo = (props) => {
                   variant={'filled'}
                   name="company_address.address_line_1"
                   label="Address line 1"
+                  placeholder={'e.g 23 Red Baloon Street'}
                 />
               </Box>
               <Box mb={2}>
@@ -220,6 +223,7 @@ const NewRestaurantCompanyInfo = (props) => {
                   variant={'filled'}
                   name="company_address.address_line_2"
                   label="Address line 2 (Optional)"
+                  placeholder={'e.g Didsbury'}
                 />
               </Box>
               <Box mb={2}>
@@ -227,6 +231,7 @@ const NewRestaurantCompanyInfo = (props) => {
                   variant={'filled'}
                   name="company_address.postcode"
                   label="Post / Zip code"
+                  placeholder={'e.g M20 2FG'}
                 />
               </Box>
               <Box mb={2}>
@@ -234,6 +239,7 @@ const NewRestaurantCompanyInfo = (props) => {
                   variant={'filled'}
                   name="company_address.city"
                   label="City"
+                  placeholder={'e.g Manchester'}
                 />
               </Box>
               <Box mb={2}>

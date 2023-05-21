@@ -521,11 +521,13 @@ const NewRestaurantAddLocation = (props) => {
             <RHFTextField
               variant={'filled'}
               name="add_location.address.address_line_1"
+              placeholder={'e.g 23 Red Baloon Street'}
               label="Address line 1"
             />
             <RHFTextField
               variant={'filled'}
               name="add_location.address.address_line_2"
+              placeholder={'e.g Didsbury'}
               label="Address line 2 (Optional)"
             />
           </InputStack>
@@ -534,11 +536,13 @@ const NewRestaurantAddLocation = (props) => {
               variant={'filled'}
               name="add_location.address.postcode"
               label="Postcode"
+              placeholder={'e.g M20 2FG'}
             />
             <RHFTextField
               variant={'filled'}
               name="add_location.address.city"
               label="City"
+              placeholder={'e.g Manchester'}
             />
           </InputStack>
           <InputStack>
@@ -591,10 +595,12 @@ const NewRestaurantAddLocation = (props) => {
               variant={'filled'}
               name="add_location.email"
               label="E-mail address"
+              placeholder={'e.g your@email.com'}
             />
             <RHFTextField
               variant={'filled'}
               name="add_location.phone_number"
+              placeholder={'e.g 07917620399'}
               label="Contact number"
             />
           </InputStack>
@@ -605,6 +611,7 @@ const NewRestaurantAddLocation = (props) => {
             <RHFTextField
               variant={'filled'}
               name="add_location.nickname"
+              placeholder={'Ancoats NQ'}
               label="Nickname"
             />
             <Box />

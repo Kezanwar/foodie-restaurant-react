@@ -81,7 +81,11 @@ export default function AuthLoginForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit, onError)}>
       <Stack spacing={2}>
-        <RHFTextField name="email" label="Email address" />
+        <RHFTextField
+          placeholder={'e.g your@email.com'}
+          name="email"
+          label="Email address"
+        />
         <RHFTextField
           name="password"
           label="Password"

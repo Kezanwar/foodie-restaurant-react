@@ -95,11 +95,23 @@ export default function AuthRegisterForm() {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit, onError)}>
       <Stack spacing={2}>
         <Stack direction="row" gap={2}>
-          <RHFTextField name="first_name" label="First name" />
-          <RHFTextField name="last_name" label="Last name" />
+          <RHFTextField
+            placeholder={'e.g John'}
+            name="first_name"
+            label="First name"
+          />
+          <RHFTextField
+            name="last_name"
+            placeholder={'e.g Smith'}
+            label="Last name"
+          />
         </Stack>
 
-        <RHFTextField name="email" label="Email address" />
+        <RHFTextField
+          placeholder={'e.g your@email.com'}
+          name="email"
+          label="Email address"
+        />
 
         <RHFTextField
           name="password"
