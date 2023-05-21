@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useSnackbar } from 'notistack';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -21,6 +22,7 @@ import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
 
 export default function AuthRegisterForm() {
   const { register } = useAuthContext();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -74,10 +76,23 @@ export default function AuthRegisterForm() {
     }
   };
 
-  useRHFErrorMixpanelTracker(MIXPANEL_EVENTS.register_form_errors, errors);
+  const onError = useCallback((errors) => {
+    const errArr = Object.entries(errors);
+    errArr.forEach(([name, value]) =>
+      value?.message
+        ? enqueueSnackbar(value.message, { variant: 'error' })
+        : null
+    );
+
+    const data = { ...errors };
+
+    mixpanelTrack(MIXPANEL_EVENTS.register_form_errors, {
+      errors: data
+    });
+  }, []);
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit, onError)}>
       <Stack spacing={2}>
         <Stack direction="row" gap={2}>
           <RHFTextField name="first_name" label="First name" />

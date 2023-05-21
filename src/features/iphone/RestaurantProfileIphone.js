@@ -150,7 +150,7 @@ const RestaurantProfileIphone = () => {
             }
           }}
         >
-          <CoverPhotoContainer url={`url(${cover_photo.split('?')[0]})`}>
+          <CoverPhotoContainer url={`url(${cover_photo})`}>
             <img style={AvatarStyles} src={avatar} alt={'avatar'} />
           </CoverPhotoContainer>
           <MainSection>

@@ -9,6 +9,7 @@ import AuthLoginForm from './AuthLoginForm';
 import RouterLink from '../../components/router-link/RouterLink';
 
 import { PATH_AUTH } from '../../routes/paths';
+import UploadWithCrop from '../../components/upload/UploadWithCrop';
 
 // ----------------------------------------------------------------------
 

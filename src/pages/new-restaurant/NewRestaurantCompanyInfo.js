@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState
 } from 'react';
+import { useSnackbar } from 'notistack';
 import { m } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet-async';
@@ -49,10 +50,12 @@ import MotionDivViewport from '../../components/animate/MotionDivViewport';
 import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
 import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const NewRestaurantCompanyInfo = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
-
+  const { enqueueSnackbar } = useSnackbar();
+  const { user } = useAuthContext();
   const { data, isLoading, updateQuery } = useRestaurantQuery();
 
   const countryRef = useRef();
@@ -151,9 +154,24 @@ const NewRestaurantCompanyInfo = (props) => {
     setFormSubmitLoading(false);
   };
 
-  useRHFErrorMixpanelTracker(
-    MIXPANEL_EVENTS.create_restaurant_company_info_errors,
-    errors
+  const onError = useCallback(
+    (errors) => {
+      const errArr = Object.entries(errors);
+      errArr.forEach(([name, value]) =>
+        value?.message
+          ? enqueueSnackbar(value.message, { variant: 'error' })
+          : null
+      );
+
+      const data = { ...errors };
+      if (user?.email) {
+        data.auth = user;
+      }
+      mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_company_info_errors, {
+        errors: data
+      });
+    },
+    [user?.email]
   );
 
   return (
@@ -161,7 +179,10 @@ const NewRestaurantCompanyInfo = (props) => {
       <Helmet>
         <title> Step 1 | Foodie</title>
       </Helmet>
-      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <FormProvider
+        methods={methods}
+        onSubmit={handleSubmit(onSubmit, onError)}
+      >
         {/* STEPPER */}
         <Box
           sx={{

@@ -5,6 +5,7 @@ import { useFormContext, Controller } from 'react-hook-form';
 import { FormHelperText } from '@mui/material';
 //
 import { UploadAvatar, Upload, UploadBox } from '../upload';
+import UploadWithCrop from '../upload/UploadWithCrop';
 
 // ----------------------------------------------------------------------
 
@@ -114,7 +115,7 @@ export function RHFUpload({ name, multiple, ...other }) {
             onRHFChange={async (e) => {
               e.forEach(async (f) => {
                 try {
-                  const preview = Object.assign(f, {
+                  Object.assign(f, {
                     preview: URL.createObjectURL(f)
                   });
                   setValue(name, f);
@@ -141,7 +142,7 @@ export function RHFUpload({ name, multiple, ...other }) {
               console.log(e);
               e.forEach(async (f) => {
                 try {
-                  const preview = Object.assign(f, {
+                  Object.assign(f, {
                     preview: URL.createObjectURL(f)
                   });
                   setValue(name, f);
@@ -149,6 +150,44 @@ export function RHFUpload({ name, multiple, ...other }) {
                   console.error(error);
                 }
               });
+            }}
+            {...other}
+          />
+        );
+      }}
+    />
+  );
+}
+
+export function RHFUploadWithCrop({ name, multiple, ...other }) {
+  const { control, setValue, clearErrors } = useFormContext();
+
+  return (
+    <Controller
+      name={name}
+      control={control}
+      render={({ field, fieldState: { error } }) => {
+        const isError = !!error;
+        return (
+          <UploadWithCrop
+            file={field.value}
+            error={isError}
+            helperText={
+              isError && (
+                <FormHelperText error sx={{ px: 2 }}>
+                  {error?.message}
+                </FormHelperText>
+              )
+            }
+            onRHFChange={(file) => {
+              try {
+                Object.assign(file, {
+                  preview: URL.createObjectURL(file)
+                });
+                setValue(name, file);
+              } catch (error) {
+                console.error(error);
+              }
             }}
             {...other}
           />
