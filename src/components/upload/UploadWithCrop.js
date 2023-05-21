@@ -21,6 +21,7 @@ import RejectionFiles from './errors/RejectionFiles';
 import MultiFilePreview from './preview/MultiFilePreview';
 import SingleFilePreview from './preview/SingleFilePreview';
 import { MAX_IMAGE } from '../../constants/files.constants';
+import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
 
 // ----------------------------------------------------------------------
 
@@ -234,7 +235,7 @@ CropModal.propTypes = {
 
 function CropModal({ isOpen, img, onCropDone, onCancel }) {
   const [loading, setLoading] = useState(true);
-
+  const { isMobile } = useCustomMediaQueries();
   const cropperRef = useRef(null);
 
   const imgSrc = img ? URL.createObjectURL(img) : '';
@@ -260,18 +261,25 @@ function CropModal({ isOpen, img, onCropDone, onCancel }) {
     >
       <Box
         sx={{
-          padding: 2,
+          padding: isMobile ? 3 : 4,
+          borderRadius: 3,
           background: 'white',
-          maxHeight: '90vh',
-          maxWidth: '90vw'
+          height: isMobile ? '100vh' : 'auto',
+          maxHeight: isMobile ? '100vh' : '90vh',
+          maxWidth: isMobile ? '100vw' : '90vw'
         }}
       >
-        <Typography mb={1} variant="h5">
+        <Typography mb={1} variant="h4">
           Crop your image
         </Typography>
-        <Typography mb={3} variant="body2">
+        <Typography mb={1} variant="body2">
           Your image needs to fit our fixed crop ratio to fit nicely within the
-          customer mobile app.
+          customer mobile app, use the tool below to choose the fit you would
+          like.
+        </Typography>
+        <Typography mb={3} variant="body2">
+          You can zoom in or out, move and resize the crop area to fit your
+          desired position.
         </Typography>
         {loading && (
           <Skeleton
@@ -294,7 +302,7 @@ function CropModal({ isOpen, img, onCropDone, onCancel }) {
           }}
           ref={cropperRef}
         />
-        <Box mt={2} px={1} gap={4} display={'flex'} justifyContent={'center'}>
+        <Box mt={3} px={1} gap={4} display={'flex'} justifyContent={'center'}>
           <Button onClick={onCancel} variant="filled" color="inherit">
             Cancel
           </Button>

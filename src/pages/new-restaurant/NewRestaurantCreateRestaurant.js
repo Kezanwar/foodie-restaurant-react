@@ -245,6 +245,7 @@ const NewRestaurantCreateRestaurant = (props) => {
               sx={{ flex: 1 }}
               name="name"
               label="Add your restaurant name"
+              placeholder={'e.g Sugo Pasta Kitchen'}
               variant={'filled'}
             />
             <Box flex={isTablet ? 0.7 : 1} display={'flex'}>
@@ -370,6 +371,9 @@ const NewRestaurantCreateRestaurant = (props) => {
             variant={'filled'}
             rows={4}
             name="bio"
+            placeholder={
+              'e.g A Southern Italian Pasta Kitchen. Inspired by the Italian South. Made in Manche....'
+            }
             label="Enter your restaurant biography"
           />
         </FormSectionStack>
