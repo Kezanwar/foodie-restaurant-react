@@ -1,22 +1,26 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useSnackbar } from 'notistack';
 import { mixpanelTrack } from '../utils/mixpanel';
 import { useAuthContext } from './useAuthContext';
 
 const useRHFErrorMixpanelTracker = (evName, errors) => {
   const { user } = useAuthContext();
-  const { enqueueSnackbar } = useSnackbar();
 
-  const errArr = Object.entries(errors);
-  errArr.forEach(([name, value]) =>
-    enqueueSnackbar(value.message, { variant: 'error' })
-  );
+  const errorsArr = useMemo(() => {
+    if (!errors) return [];
+    return Object.entries(errors);
+  }, [errors]);
 
-  const data = { ...errors };
-  if (user?.email) {
-    data.auth = user;
-  }
-  mixpanelTrack(evName, { errors: data });
+  useEffect(() => {
+    if (!evName) return;
+    if (!errorsArr?.length) return;
+    const data = errorsArr.reduce((current, [name, err]) => {
+      return { ...current, [name]: err.message };
+    }, {});
+    if (user?.email) {
+      data.auth = user;
+    }
+    mixpanelTrack(evName, { errors: data });
+  }, [errorsArr, evName, user?.email]);
 
   return null;
 };
