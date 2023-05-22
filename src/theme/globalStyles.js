@@ -70,6 +70,9 @@ export default function GlobalStyles() {
         ul: {
           margin: 0,
           padding: 0
+        },
+        '.scroll-styles': {
+          ...scrollBarStyles
         }
       }}
     />
