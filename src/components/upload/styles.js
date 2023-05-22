@@ -1,12 +1,12 @@
 import { Box, styled } from '@mui/material';
 
 export const CropModalContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.background.default,
   padding: theme.spacing(4),
   borderRadius: theme.spacing(3),
   display: 'flex',
   flexDirection: 'column',
-  background: 'white',
-  overflowY: 'scroll',
+  overflowY: 'auto',
   height: 'auto',
   maxHeight: '95vh',
   maxWidth: '95vw',

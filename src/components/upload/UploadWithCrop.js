@@ -273,7 +273,7 @@ function CropModal({ isOpen, img, onCropDone, onCancel }) {
 
   return (
     <Modal sx={modalStyles} open={isOpen}>
-      <CropModalContainer>
+      <CropModalContainer className="scroll-styles">
         <Box>
           <Typography mb={1} variant="h4">
             Crop your image
