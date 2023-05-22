@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { Cropper } from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
@@ -12,7 +12,8 @@ import {
   IconButton,
   Typography,
   Modal,
-  Skeleton
+  Skeleton,
+  useMediaQuery
 } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import { UploadIllustration } from '../../assets/illustrations';
@@ -22,6 +23,7 @@ import MultiFilePreview from './preview/MultiFilePreview';
 import SingleFilePreview from './preview/SingleFilePreview';
 import { MAX_IMAGE } from '../../constants/files.constants';
 import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
+import { CropModalContainer } from './styles';
 
 // ----------------------------------------------------------------------
 
@@ -233,10 +235,29 @@ CropModal.propTypes = {
   onCancel: PropTypes.func
 };
 
+const modalStyles = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+};
+
 function CropModal({ isOpen, img, onCropDone, onCancel }) {
   const [loading, setLoading] = useState(true);
   const { isMobile } = useCustomMediaQueries();
   const cropperRef = useRef(null);
+
+  const smallHeight = useMediaQuery('(max-height:770px)');
+  const mediumHeight = useMediaQuery('(max-height:930px)');
+  const largerHeight = useMediaQuery('(min-height:931px)');
+
+  const canvasHeight = useMemo(() => {
+    if (smallHeight) return 380;
+    if (mediumHeight) return 500;
+    if (largerHeight) return 600;
+    return 400;
+  }, [smallHeight, mediumHeight, largerHeight]);
+
+  console.log(canvasHeight);
 
   const imgSrc = img ? URL.createObjectURL(img) : '';
 
@@ -251,36 +272,22 @@ function CropModal({ isOpen, img, onCropDone, onCancel }) {
   }, []);
 
   return (
-    <Modal
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-      open={isOpen}
-    >
-      <Box
-        sx={{
-          padding: isMobile ? 3 : 4,
-          borderRadius: 3,
-          background: 'white',
-          height: isMobile ? '100vh' : 'auto',
-          maxHeight: isMobile ? '100vh' : '90vh',
-          maxWidth: isMobile ? '100vw' : '90vw'
-        }}
-      >
-        <Typography mb={1} variant="h4">
-          Crop your image
-        </Typography>
-        <Typography mb={1} variant="body2">
-          Your image needs to fit our fixed crop ratio to fit nicely within the
-          customer mobile app, use the tool below to choose the fit you would
-          like.
-        </Typography>
-        <Typography mb={3} variant="body2">
-          You can zoom in or out, move and resize the crop area to fit your
-          desired position.
-        </Typography>
+    <Modal sx={modalStyles} open={isOpen}>
+      <CropModalContainer>
+        <Box>
+          <Typography mb={1} variant="h4">
+            Crop your image
+          </Typography>
+          <Typography mb={1} variant="body2">
+            Your image needs to fit our fixed crop ratio to fit nicely within
+            the customer mobile app, use the tool below to choose the fit you
+            would like.
+          </Typography>
+          <Typography mb={3} variant="body2">
+            You can zoom in or out, move and resize the crop area to fit your
+            desired position.
+          </Typography>
+        </Box>
         {loading && (
           <Skeleton
             variant="rounded"
@@ -291,11 +298,11 @@ function CropModal({ isOpen, img, onCropDone, onCancel }) {
         )}
         <Cropper
           src={imgSrc}
-          style={{ height: 500, width: '100%' }}
           // Cropper.js options
           background={false}
           initialAspectRatio={1}
           aspectRatio={1}
+          height={canvasHeight}
           guides={false}
           ready={() => {
             setLoading(false);
@@ -310,7 +317,7 @@ function CropModal({ isOpen, img, onCropDone, onCancel }) {
             Done
           </Button>
         </Box>
-      </Box>
+      </CropModalContainer>
     </Modal>
   );
 }
