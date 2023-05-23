@@ -1,10 +1,12 @@
 import mixpanel from 'mixpanel-browser';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 // routes
 import Router from './routes';
 
 // providers
+
 import { AuthProvider } from './auth/AuthContext';
 import ThemeProvider from './theme';
 import SnackbarProvider from './components/snackbar';
@@ -14,7 +16,7 @@ import UtilityProvider from './context/utility/UtilityContext';
 import { MotionLazyContainer } from './components/animate';
 
 // config
-import { ENVIRONMENT, MIXPANEL_API_KEY } from './config';
+import { ENVIRONMENT, GOOGLE_CLIENT_ID, MIXPANEL_API_KEY } from './config';
 
 // ----------------------------------------------------------------------
 
@@ -22,18 +24,20 @@ export default function App() {
   mixpanel.init(MIXPANEL_API_KEY, { debug: ENVIRONMENT === 'DEVELOPMENT' });
   const queryClient = new QueryClient();
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <UtilityProvider>
-          <MotionLazyContainer>
-            <ThemeProvider>
-              <SnackbarProvider>
-                <Router />
-              </SnackbarProvider>
-            </ThemeProvider>
-          </MotionLazyContainer>
-        </UtilityProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <UtilityProvider>
+            <MotionLazyContainer>
+              <ThemeProvider>
+                <SnackbarProvider>
+                  <Router />
+                </SnackbarProvider>
+              </ThemeProvider>
+            </MotionLazyContainer>
+          </UtilityProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </GoogleOAuthProvider>
   );
 }
