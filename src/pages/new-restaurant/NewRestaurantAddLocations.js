@@ -10,20 +10,12 @@ import { useSnackbar } from 'notistack';
 import { Helmet } from 'react-helmet-async';
 import 'leaflet/dist/leaflet.css';
 import { useNavigate } from 'react-router';
-import PropTypes, { object } from 'prop-types';
+
 import { useTheme } from '@emotion/react';
 import EditIcon from '@mui/icons-material/Edit';
-import {
-  Alert,
-  AlertTitle,
-  Autocomplete,
-  Button,
-  Stack,
-  TextField,
-  Typography
-} from '@mui/material';
+import { Alert, AlertTitle, Button, Stack, Typography } from '@mui/material';
 import { capitalize } from 'lodash';
-import { useFieldArray, useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
 import HelpIcon from '@mui/icons-material/Help';
@@ -32,10 +24,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Subheader from '../../components/subheader/Subheader';
 import { RHFTextField } from '../../components/hook-form';
 
-import { countries, countryToFlag } from '../../assets/data';
+import { countries } from '../../assets/data';
 import { pageScrollToTop } from '../../utils/scroll';
 import Spacer from '../../components/spacer/Spacer';
-import { InputStack } from '../../features/forms/styles';
+import {
+  InputStack,
+  InputStackSingleItemContainer
+} from '../../features/forms/styles';
 
 import { addLocationsSchema } from '../../validation/new-restaurant.validation';
 
@@ -50,7 +45,6 @@ import LoadingScreen from '../../components/loading-screen/LoadingScreen';
 
 import { PATH_NEW_RESTAURANT } from '../../routes/paths';
 import MotionDivViewport from '../../components/animate/MotionDivViewport';
-import { RHFOpeningTime } from '../../components/hook-form/RHFOpeningTIme';
 
 import {
   addLocation,
@@ -66,9 +60,11 @@ import OpeningTimeInput from '../../components/opening-time-input/OpeningTimeInp
 import useOpeningTimesForm from '../../hooks/useOpeningTimesForm';
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
-import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
+
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import RHFCountriesAutocomplete from '../../components/hook-form/RHFCountriesAutocomplete';
+import AddressAutocomplete from '../../components/address-autocomplete/AddressAutocomplete';
 
 const motionStyles = {
   display: 'flex',
@@ -90,8 +86,6 @@ const NewRestaurantAddLocation = (props) => {
   const { user } = useAuthContext();
 
   const { data, isLoading, updateQuery } = useLocationsQuery();
-
-  const countryRef = useRef();
 
   const restaurantQuery = useRestaurantQuery();
 
@@ -129,7 +123,7 @@ const NewRestaurantAddLocation = (props) => {
           address_line_2: '',
           postcode: '',
           city: '',
-          country: 'United Kingdom'
+          country: countries.find((el) => el.label === 'United Kingdom')
         },
 
         email: '',
@@ -200,7 +194,6 @@ const NewRestaurantAddLocation = (props) => {
 
   const onAddLocationClick = useCallback(async () => {
     setAddLocationLoading(true);
-    updateCountry();
     await setValue('is_new_location', true);
     await trigger('add_location');
     const err = !!getFieldState('add_location').error;
@@ -211,9 +204,12 @@ const NewRestaurantAddLocation = (props) => {
       return;
     }
 
+    const d = getValues('add_location');
+
     const newLocation = {
-      ...getValues('add_location'),
-      opening_times: openingTimes
+      ...d,
+      opening_times: openingTimes,
+      address: { ...d.address, country: d.address.country.label }
     };
 
     try {
@@ -253,9 +249,12 @@ const NewRestaurantAddLocation = (props) => {
       return;
     }
 
+    const d = getValues('add_location');
+
     const newLocation = {
-      ...getValues('add_location'),
-      opening_times: openingTimes
+      ...d,
+      opening_times: openingTimes,
+      address: { ...d.address, country: d.address.country.label }
     };
 
     try {
@@ -282,11 +281,14 @@ const NewRestaurantAddLocation = (props) => {
 
   const onConfirmLocation = useCallback(
     async (long_lat) => {
+      const d = getValues('add_location');
       const newLocation = {
-        ...getValues('add_location'),
+        ...d,
         opening_times: openingTimes,
+        address: { ...d.address, country: d?.address?.country?.label },
         long_lat
       };
+
       setConfirmLocationLoading(true);
       try {
         const res = await addLocation(newLocation);
@@ -316,11 +318,14 @@ const NewRestaurantAddLocation = (props) => {
 
   const onConfirmEditLocation = useCallback(
     async (long_lat) => {
+      const d = getValues('add_location');
       const newLocation = {
-        ...getValues('add_location'),
+        ...d,
         opening_times: openingTimes,
+        address: { ...d.address, country: d?.address?.country?.label },
         long_lat
       };
+
       setConfirmLocationLoading(true);
       try {
         const res = await editLocation(newLocation, editLocationID);
@@ -392,24 +397,24 @@ const NewRestaurantAddLocation = (props) => {
     setEditLocationID(_id);
     const editLocation = data?.data?.find((l) => l._id === _id);
     if (editLocation) {
-      const { address, email, name, phone_number, nickname } = editLocation;
+      const { address, email, phone_number, nickname } = editLocation;
+      // console.log(countries.find((c) => c.label === address.country));
       setValue('add_location', {
-        address,
+        address: {
+          ...address,
+          country: null
+        },
         email,
-        name,
         phone_number,
         nickname
       });
+      setValue(
+        'add_location.address.country',
+        countries.find((c) => c.label === address.country)
+      );
       replaceOpeningTimes(editLocation.opening_times);
       scrollToForm();
     }
-  };
-
-  const updateCountry = () => {
-    setValue(
-      'add_location.address.country',
-      countryRef.current.querySelector('input').value
-    );
   };
 
   const deleteModalText = useMemo(() => {
@@ -430,6 +435,20 @@ const NewRestaurantAddLocation = (props) => {
     reset();
     resetOpeningTimes();
     scrollToForm();
+  };
+
+  const handleOnAddressSelect = (address) => {
+    const { address_line_1, address_line_2, postcode, city, country } = address;
+
+    Object.entries({
+      address_line_1,
+      address_line_2,
+      postcode,
+      city,
+      country
+    }).forEach(([key, value]) => {
+      setValue(`add_location.address.${key}`, value);
+    });
   };
 
   const onError = useCallback(
@@ -515,7 +534,17 @@ const NewRestaurantAddLocation = (props) => {
               {editLocationObj?.address?.postcode}
             </Alert>
           ) : null}
-          <Subheader text={'Location Address'} />
+          <Subheader text={'Add Location Address'} />
+          <InputStackSingleItemContainer>
+            <AddressAutocomplete
+              handleOnAddressSelect={handleOnAddressSelect}
+            />
+          </InputStackSingleItemContainer>
+          <Box sx={{ mt: 3.5, mb: 3 }}>
+            <Typography variant="body2" color={'primary'}>
+              Or enter an address manually...
+            </Typography>
+          </Box>
 
           <InputStack>
             <RHFTextField
@@ -546,46 +575,7 @@ const NewRestaurantAddLocation = (props) => {
             />
           </InputStack>
           <InputStack>
-            <Autocomplete
-              fullWidth
-              autoHighlight
-              options={countries}
-              getOptionLabel={(option) => option.label}
-              //   inputValue={country}
-              defaultValue={countries.find((c) => c.label === 'United Kingdom')}
-              renderOption={(props, option) => (
-                <Box
-                  component="li"
-                  value={option.label}
-                  {...props}
-                  sx={{ px: '8px !important' }}
-                >
-                  <Box
-                    component="span"
-                    sx={{ flexShrink: 0, mr: 2, fontSize: 22 }}
-                  >
-                    {countryToFlag(option.code)}
-                  </Box>
-                  {option.label} ({option.code}) +{option.phone}
-                  <input value={option.label} style={{ display: 'none' }} />
-                </Box>
-              )}
-              renderInput={(params) => (
-                <TextField
-                  variant={'filled'}
-                  label={'Country'}
-                  {...params}
-                  inputProps={{
-                    ...params.inputProps,
-                    autoComplete: 'disabled'
-                  }}
-                  ref={countryRef}
-                  defaultValue={'United Kingdom'}
-                  onBlur={(e) => updateCountry(e.target.value)}
-                  onChange={(e) => updateCountry(e.target.value)}
-                />
-              )}
-            />
+            <RHFCountriesAutocomplete name={'add_location.address.country'} />
             <Box />
           </InputStack>
           <Spacer sp={6} />
@@ -732,6 +722,13 @@ const NewRestaurantAddLocation = (props) => {
           <Box mt={4} sx={{ display: 'flex' }}>
             <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
               Back
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => console.log(getValues())}
+              sx={{ mr: 1 }}
+            >
+              vals
             </Button>
             <Box sx={{ flexGrow: 1 }} />
             <LoadingButton

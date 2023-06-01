@@ -61,15 +61,9 @@ export const tokenExpired = (exp) => {
 export const setSession = (accessToken) => {
   if (accessToken) {
     localStorage.setItem('accessToken', accessToken);
-
     axios.defaults.headers['x-auth-token'] = accessToken;
-
-    // // This function below will handle when token is expired
-
-    // tokenExpired(exp);
   } else {
     localStorage.removeItem('accessToken');
-
     delete axios.defaults.headers['x-auth-token'];
   }
 };

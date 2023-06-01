@@ -11,9 +11,8 @@ import { LocationCardStyled } from './styles';
 
 import SvgColor from '../svg-color/SvgColor';
 import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
-import { varFade } from '../animate';
+
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
-import Subheader from '../subheader/Subheader';
 
 const LocationCard = ({
   address: { address_line_1, address_line_2, postcode, city, country },
@@ -30,7 +29,7 @@ const LocationCard = ({
   const { data } = useRestaurantQuery();
 
   return (
-    <LocationCardStyled layout>
+    <LocationCardStyled key={`location-card-${_id}`} layout>
       <Box
         sx={{
           position: 'absolute',
@@ -130,40 +129,27 @@ const LocationCard = ({
 
         {Object.entries(opening_times).map(([key, value]) => {
           return (
-            <>
-              <Stack
-                flexDirection={'row'}
-                alignItems={'center'}
-                mb={key !== 'sun' ? 1 : 0}
+            <Stack
+              key={`location-${key}`}
+              flexDirection={'row'}
+              alignItems={'center'}
+              mb={key !== 'sun' ? 1 : 0}
+            >
+              <Typography width={'50px'} mb={0.5} variant="body2">
+                {capitalize(key)}
+              </Typography>
+              <Typography
+                color={value.is_open ? 'success.main' : 'warning.main'}
+                sx={{
+                  textTransform: 'uppercase',
+                  fontWeight: 'bold',
+                  fontSize: 12
+                }}
+                variant="body2"
               >
-                <Typography width={'50px'} mb={0.5} variant="body2">
-                  {capitalize(key)}
-                </Typography>
-                <Typography
-                  color={value.is_open ? 'success.main' : 'warning.main'}
-                  sx={{
-                    textTransform: 'uppercase',
-                    fontWeight: 'bold',
-                    fontSize: 12
-                  }}
-                  variant="body2"
-                >
-                  {value.is_open ? `${value.open} - ${value.close}` : 'Closed'}{' '}
-                </Typography>
-              </Stack>
-              {/* {key !== 'sun' && !isMobile ? (
-                <Box
-                  mb={1}
-                  sx={{
-                    width: '100%',
-                    height: '0.5px',
-                    backgroundColor: theme.palette.divider
-                  }}
-                />
-              ) : (
-                ''
-              )} */}
-            </>
+                {value.is_open ? `${value.open} - ${value.close}` : 'Closed'}{' '}
+              </Typography>
+            </Stack>
           );
         })}
       </Stack>
