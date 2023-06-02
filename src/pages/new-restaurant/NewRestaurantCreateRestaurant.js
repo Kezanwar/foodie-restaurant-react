@@ -408,7 +408,7 @@ const NewRestaurantCreateRestaurant = (props) => {
         {/* ACTIONS */}
         <Box mt={4} sx={{ display: 'flex' }}>
           <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
-            Back
+            Go Back
           </Button>
 
           <Box sx={{ flexGrow: 1 }} />

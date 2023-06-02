@@ -5,14 +5,20 @@ import { Typography, Stack } from '@mui/material';
 import Logo from '../../components/logo';
 import Image from '../../components/image';
 //
-import { StyledRoot, StyledSectionBg, StyledSection, StyledContent } from './styles';
+import {
+  StyledRoot,
+  StyledSectionBg,
+  StyledSection,
+  StyledContent
+} from './styles';
+import LoadingScreen from '../../components/loading-screen/LoadingScreen';
 
 // ----------------------------------------------------------------------
 
 AuthLayout.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node,
-  illustration: PropTypes.string,
+  illustration: PropTypes.string
 };
 
 export default function AuthLayout({ children, illustration, title }) {
@@ -23,7 +29,7 @@ export default function AuthLayout({ children, illustration, title }) {
           zIndex: 9,
           position: 'absolute',
           mt: { xs: 1.5, md: 5 },
-          ml: { xs: 2, md: 5 },
+          ml: { xs: 2, md: 5 }
         }}
       />
 

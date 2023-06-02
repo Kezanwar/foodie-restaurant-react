@@ -204,7 +204,10 @@ const AddressAutocomplete = ({ handleOnAddressSelect }) => {
             return (
               <MenuItem
                 key={result?.properties?.place_id}
-                onClick={() => handleOnSelect(result.properties)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleOnSelect(result.properties);
+                }}
               >
                 {`${houseNum} ${result?.properties?.formatted}`}
               </MenuItem>

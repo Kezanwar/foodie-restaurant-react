@@ -5,6 +5,7 @@ import { Box } from '@mui/material';
 //
 import Logo from '../logo';
 import ProgressBar from '../progress-bar';
+import LoadinLottie from '../loading-lottie/LoadingLottie';
 
 // ----------------------------------------------------------------------
 
@@ -23,16 +24,26 @@ const StyledRoot = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
+const sx = {
+  marginTop: '-30px',
+  scale: '1.2',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column'
+};
+
 export default function LoadingScreen() {
   return (
     <>
       <ProgressBar />
 
       <StyledRoot>
-        <Box sx={{ scale: '0.6' }}>
+        <Box sx={sx}>
+          <LoadinLottie />
           <Logo />
         </Box>
-        <m.div
+        {/* <m.div
           animate={{
             scale: [1, 0.9, 0.9, 1, 1],
             opacity: [1, 0.48, 0.48, 1, 1]
@@ -83,7 +94,7 @@ export default function LoadingScreen() {
             border: (theme) =>
               `solid 4px ${alpha(theme.palette.primary.dark, 0.14)}`
           }}
-        />
+        /> */}
       </StyledRoot>
     </>
   );

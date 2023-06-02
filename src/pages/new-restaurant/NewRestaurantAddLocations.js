@@ -73,6 +73,63 @@ const motionStyles = {
   gap: '24px'
 };
 
+const TopAlert = () => {
+  return (
+    <Box mb={6}>
+      <Alert icon={<HelpIcon />} severity={'success'}>
+        <AlertTitle>How do locations work?</AlertTitle>
+        Your Restaurant can have one or multiple locations, when creating a
+        voucher you can choose which location the voucher can be used at.
+        <Box mt={1}>
+          We list your location on the users feed with your Restaurants name and
+          nickname in brackets after,{' '}
+          <strong>e.g - Nandos (Trafford Centre)</strong>
+        </Box>
+        <Box mt={1}>
+          If you only have one location, the nickname will not be shown.
+        </Box>
+        <Box mt={1}>
+          This in turn helps us{' '}
+          <strong>show vouchers to customers in your local area.</strong>
+        </Box>
+        <Box mt={1}>
+          Location details include;
+          <Box mt={1}>
+            <li>Address</li>
+            <li>Email Address</li>
+            <li>Contact Number</li>
+            <li>Nickname</li>
+            <li>Opening Times</li>
+          </Box>
+        </Box>
+        <Box mt={1}>
+          Locations can be added, updated or removed{' '}
+          <strong>at any time.</strong>
+        </Box>
+      </Alert>
+    </Box>
+  );
+};
+
+const EditAlert = ({ editLocationObj, isTablet }) => {
+  return (
+    <Alert
+      sx={{
+        width: isTablet ? '100%' : 'calc(50% - 14px)',
+        pr: 4,
+        mb: 6
+      }}
+      icon={<EditIcon fontSize="12px" />}
+      severity={'warning'}
+    >
+      <AlertTitle>Edit location</AlertTitle>
+      You're editing: {editLocationObj?.nickname},{' '}
+      {editLocationObj?.address?.address_line_1},{' '}
+      {editLocationObj?.address?.postcode}
+    </Alert>
+  );
+};
+
 const NewRestaurantAddLocation = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const [addLocationLoading, setAddLocationLoading] = useState(false);
@@ -477,62 +534,16 @@ const NewRestaurantAddLocation = (props) => {
         <title> Step 3 | Foodie</title>
       </Helmet>
       <Box>
+        <TopAlert />
         <FormProvider
           methods={methods}
           onSubmit={handleSubmit(onSubmit, onError)}
         >
-          <Box mb={6}>
-            <Alert icon={<HelpIcon />} severity={'success'}>
-              <AlertTitle>How do locations work?</AlertTitle>
-              Your Restaurant can have one or multiple locations, when creating
-              a voucher you can choose which location the voucher can be used
-              at.
-              <Box mt={1}>
-                We list your location on the users feed with your Restaurants
-                name and nickname in brackets after,{' '}
-                <strong>e.g - Nandos (Trafford Centre)</strong>
-              </Box>
-              <Box mt={1}>
-                If you only have one location, the nickname will not be shown.
-              </Box>
-              <Box mt={1}>
-                This in turn helps us{' '}
-                <strong>show vouchers to customers in your local area.</strong>
-              </Box>
-              <Box mt={1}>
-                Location details include;
-                <Box mt={1}>
-                  <li>Address</li>
-                  <li>Email Address</li>
-                  <li>Contact Number</li>
-                  <li>Nickname</li>
-                  <li>Opening Times</li>
-                </Box>
-              </Box>
-              <Box mt={1}>
-                Locations can be added, updated or removed{' '}
-                <strong>at any time.</strong>
-              </Box>
-            </Alert>
-          </Box>
           <Typography mb={6} variant="h4">
             Add a single or multiple location/s (Minimum 1 required)
           </Typography>
           {editLocationObj ? (
-            <Alert
-              sx={{
-                width: isTablet ? '100%' : 'calc(50% - 14px)',
-                pr: 4,
-                mb: 6
-              }}
-              icon={<EditIcon fontSize="12px" />}
-              severity={'warning'}
-            >
-              <AlertTitle>Edit location</AlertTitle>
-              You're editing: {editLocationObj?.nickname},{' '}
-              {editLocationObj?.address?.address_line_1},{' '}
-              {editLocationObj?.address?.postcode}
-            </Alert>
+            <EditAlert editLocationObj={editLocationObj} isTablet={isTablet} />
           ) : null}
           <Subheader text={'Add Location Address'} />
           <InputStackSingleItemContainer>
@@ -601,7 +612,7 @@ const NewRestaurantAddLocation = (props) => {
             <RHFTextField
               variant={'filled'}
               name="add_location.nickname"
-              placeholder={'Ancoats NQ'}
+              placeholder={'e.g Ancoats NQ'}
               label="Nickname"
             />
             <Box />
@@ -721,14 +732,7 @@ const NewRestaurantAddLocation = (props) => {
           {/* ACTIONS */}
           <Box mt={4} sx={{ display: 'flex' }}>
             <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
-              Back
-            </Button>
-            <Button
-              color="inherit"
-              onClick={() => console.log(getValues())}
-              sx={{ mr: 1 }}
-            >
-              vals
+              Go Back
             </Button>
             <Box sx={{ flexGrow: 1 }} />
             <LoadingButton

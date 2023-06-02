@@ -58,9 +58,6 @@ import RHFCountriesAutocomplete from '../../components/hook-form/RHFCountriesAut
 const NewRestaurantCompanyInfo = (props) => {
   const { data, isLoading, updateQuery } = useRestaurantQuery();
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
-  const [showFullAddressForm, setShowFullAddressForm] = useState(
-    !!data?.data?.company_info?.company_address?.address_line_1
-  );
 
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuthContext();
@@ -144,8 +141,6 @@ const NewRestaurantCompanyInfo = (props) => {
       console.log(key, value);
       setValue(`company_address.${key}`, value);
     });
-
-    setShowFullAddressForm(true);
   };
 
   const onSubmit = async (data) => {
@@ -240,60 +235,56 @@ const NewRestaurantCompanyInfo = (props) => {
                   handleOnAddressSelect={handleOnAddressSelect}
                 />
               </Box>
-              {!showFullAddressForm ? (
-                <Box
-                  sx={{
-                    mt: 4,
-                    display: 'flex',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <Button variant="outlined">
-                    Or enter address manually{' '}
-                    {/* <EastIcon fontSize="small" sx={{ ml: 1 }} /> */}
-                  </Button>
+              <Box
+                sx={{
+                  mt: 4,
+                  mb: 3,
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}
+              >
+                <Typography variant="body2" color={'primary'}>
+                  Or enter an address manually...
+                </Typography>
+              </Box>
+
+              <>
+                <Box my={2}>
+                  <RHFTextField
+                    variant={'filled'}
+                    name="company_address.address_line_1"
+                    label="Address line 1"
+                    placeholder={'e.g 23 Red Baloon Street'}
+                  />
                 </Box>
-              ) : (
-                <>
-                  <Box my={2}>
-                    <RHFTextField
-                      variant={'filled'}
-                      name="company_address.address_line_1"
-                      label="Address line 1"
-                      placeholder={'e.g 23 Red Baloon Street'}
-                    />
-                  </Box>
-                  <Box mb={2}>
-                    <RHFTextField
-                      variant={'filled'}
-                      name="company_address.address_line_2"
-                      label="Address line 2 (Optional)"
-                      placeholder={'e.g Didsbury'}
-                    />
-                  </Box>
-                  <Box mb={2}>
-                    <RHFTextField
-                      variant={'filled'}
-                      name="company_address.postcode"
-                      label="Post / Zip code"
-                      placeholder={'e.g M20 2FG'}
-                    />
-                  </Box>
-                  <Box mb={2}>
-                    <RHFTextField
-                      variant={'filled'}
-                      name="company_address.city"
-                      label="City"
-                      placeholder={'e.g Manchester'}
-                    />
-                  </Box>
-                  <Box mb={2}>
-                    <RHFCountriesAutocomplete
-                      name={'company_address.country'}
-                    />
-                  </Box>
-                </>
-              )}
+                <Box mb={2}>
+                  <RHFTextField
+                    variant={'filled'}
+                    name="company_address.address_line_2"
+                    label="Address line 2 (Optional)"
+                    placeholder={'e.g Didsbury'}
+                  />
+                </Box>
+                <Box mb={2}>
+                  <RHFTextField
+                    variant={'filled'}
+                    name="company_address.postcode"
+                    label="Post / Zip code"
+                    placeholder={'e.g M20 2FG'}
+                  />
+                </Box>
+                <Box mb={2}>
+                  <RHFTextField
+                    variant={'filled'}
+                    name="company_address.city"
+                    label="City"
+                    placeholder={'e.g Manchester'}
+                  />
+                </Box>
+                <Box mb={2}>
+                  <RHFCountriesAutocomplete name={'company_address.country'} />
+                </Box>
+              </>
             </InputWithInfoInputContainer>
             <InputWithInfoInfoContainer>
               <Alert icon={<HelpIcon />} severity={'success'}>
@@ -309,11 +300,9 @@ const NewRestaurantCompanyInfo = (props) => {
 
           <Box mt={4} sx={{ display: 'flex' }}>
             <Button color="inherit" onClick={handleBack}>
-              Back
+              Go Back
             </Button>
-            <Button color="inherit" onClick={() => console.log(getValues())}>
-              vals
-            </Button>
+
             <Box sx={{ flexGrow: 1 }} />
 
             <LoadingButton
