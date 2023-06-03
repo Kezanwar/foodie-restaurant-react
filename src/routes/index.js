@@ -35,6 +35,7 @@ import {
 } from './paths';
 import { usePathAfterLogin } from '../hooks/usePathAfterLogin';
 import NewRestaurantLayout from '../layouts/new-restaurant/NewRestaurantLayout';
+import Test from '../pages/misc/Test';
 
 // ----------------------------------------------------------------------
 
@@ -121,9 +122,11 @@ export default function Router() {
       element: <CompactLayout />,
       children: [
         { path: PATH_MISC.four0four, element: <Page404 /> },
-        { path: PATH_MISC.confirm_email, element: <PageConfirmEmail /> }
+        { path: PATH_MISC.confirm_email, element: <PageConfirmEmail /> },
+        { path: 'test', element: <Test /> }
       ]
     },
+
     { path: '*', element: <Navigate to={PATH_MISC.four0four} replace /> }
   ]);
 }

@@ -14,11 +14,11 @@ export const RegisterSchema = Yup.object().shape({
     .required('Email is required')
     .email('Email must be a valid email address'),
   password: Yup.string()
-    .matches(/[@$!%*#?&]+/, 'Must have special character')
-    .matches(/\d+/, 'Must have one number')
-    .matches(/[a-z]+/, 'Must have one lowercase character')
-    .matches(/[A-Z]+/, 'Must have uppercase character'),
+    .matches(/[@$!%*#?&]+/, 'Password must have special character')
+    .matches(/\d+/, 'Password must have one number')
+    .matches(/[a-z]+/, 'Password must have one lowercase character')
+    .matches(/[A-Z]+/, 'Password must have uppercase character'),
   confirm_password: Yup.string()
-    .required('Must retype your password')
+    .required('Must confirm your password')
     .oneOf([Yup.ref('password')], 'Passwords must match')
 });

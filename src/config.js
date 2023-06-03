@@ -3,6 +3,8 @@ import { PATH_DASHBOARD } from './routes/paths';
 
 export const ENVIRONMENT = process.env.REACT_APP_ENVIRONMENT;
 
+export const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
 // API
 // ----------------------------------------------------------------------
 

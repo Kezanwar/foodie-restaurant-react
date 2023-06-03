@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { m } from 'framer-motion';
 import PropTypes from 'prop-types';
+import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router';
 import {
   Alert,
@@ -38,7 +39,8 @@ import { restaurantDetailsSchema } from '../../validation/new-restaurant.validat
 import FormProvider from '../../components/hook-form/FormProvider';
 import {
   RHFUpload,
-  RHFUploadAvatar
+  RHFUploadAvatar,
+  RHFUploadWithCrop
 } from '../../components/hook-form/RHFUpload';
 import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
@@ -53,6 +55,7 @@ import CustomTooltip from '../../components/custom-tooltip/CustomTooltip';
 import { image_tooltip } from '../../constants/tooltips.constants';
 import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const uploadAvatarSx = {
   '& > *': {
@@ -65,10 +68,16 @@ const uploadAvatarSx = {
   }
 };
 
+const optEqVal = (option, value) => {
+  return option.slug === value.slug;
+};
+
 const NewRestaurantCreateRestaurant = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const { data, updateQuery } = useRestaurantQuery();
   const options = useOptionsQuery();
+  const { enqueueSnackbar } = useSnackbar();
+  const { user } = useAuthContext();
 
   useCreateRestaurantGuard(data?.data, PATH_NEW_RESTAURANT.step_2);
 
@@ -118,6 +127,7 @@ const NewRestaurantCreateRestaurant = (props) => {
     setError,
     handleSubmit,
     watch,
+
     formState: { errors, isSubmitting, isSubmitSuccessful },
     getValues,
     getFieldState,
@@ -198,9 +208,24 @@ const NewRestaurantCreateRestaurant = (props) => {
     }
   }, [cover_photo?.preview, getValues, setValue]);
 
-  useRHFErrorMixpanelTracker(
-    MIXPANEL_EVENTS.create_restaurant_rest_profile_errors,
-    errors
+  const onError = useCallback(
+    (errors) => {
+      const errArr = Object.entries(errors);
+      errArr.forEach(([name, value]) =>
+        value?.message
+          ? enqueueSnackbar(value.message, { variant: 'error' })
+          : null
+      );
+
+      const data = { ...errors };
+      if (user?.email) {
+        data.auth = user;
+      }
+      mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_rest_profile_errors, {
+        errors: data
+      });
+    },
+    [user?.email]
   );
 
   return (
@@ -208,7 +233,10 @@ const NewRestaurantCreateRestaurant = (props) => {
       <Helmet>
         <title> Step 2 | Foodie</title>
       </Helmet>
-      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <FormProvider
+        methods={methods}
+        onSubmit={handleSubmit(onSubmit, onError)}
+      >
         <Subheader text={'your restaurants name'} />
 
         <InputWithInfoStack>
@@ -217,6 +245,7 @@ const NewRestaurantCreateRestaurant = (props) => {
               sx={{ flex: 1 }}
               name="name"
               label="Add your restaurant name"
+              placeholder={'e.g Sugo Pasta Kitchen'}
               variant={'filled'}
             />
           </InputWithInfoInputContainer>
@@ -241,7 +270,7 @@ const NewRestaurantCreateRestaurant = (props) => {
           </InputWithInfoInputContainer>
           <InputWithInfoInfoContainer>
             <Alert icon={<HelpIcon />} severity={'success'}>
-              <AlertTitle>Where are these images shown?</AlertTitle>
+              <AlertTitle>How is the avatar used?</AlertTitle>
               Your Restaurant Avatar acts as a profile image for your
               Restaurant, your cover photo is used as the back drop.
               <Box mt={1}>
@@ -257,10 +286,23 @@ const NewRestaurantCreateRestaurant = (props) => {
         <CustomTooltip tooltipText={image_tooltip.tooltip} mb={1} />
 
         <Subheader text={'Upload your restaurant cover photo'} />
+        <InputWithInfoStack>
+          <InputWithInfoInputContainer>
+            <RHFUploadWithCrop name="cover_photo" label="" />
+          </InputWithInfoInputContainer>
+          <InputWithInfoInfoContainer>
+            <Alert icon={<HelpIcon />} severity={'success'}>
+              <AlertTitle>How is the cover photo used?</AlertTitle>
+              Your restaurant cover photo acts as a backdrop for your restaurant
+              profile screen and a fallback for vouchers if one isn't provided
+              for them.
+              <Box mt={1}>
+                Images can be updated <strong>at any time.</strong>
+              </Box>
+            </Alert>
+          </InputWithInfoInfoContainer>
+        </InputWithInfoStack>
 
-        <FormSectionStack>
-          <RHFUpload name="cover_photo" label="" />
-        </FormSectionStack>
         <Spacer />
         <Subheader text={'Add your cuisines (Choose multiple or one)'} />
 
@@ -268,6 +310,7 @@ const NewRestaurantCreateRestaurant = (props) => {
           <InputWithInfoInputContainer>
             {cuisineOptions && (
               <RHFMultipleAutocomplete
+                isOptionEqualToValue={optEqVal}
                 options={cuisineOptions}
                 name={'cuisines'}
                 label="Select cuisines"
@@ -293,6 +336,7 @@ const NewRestaurantCreateRestaurant = (props) => {
           <InputWithInfoInputContainer>
             {dietaryOptions && (
               <RHFMultipleAutocomplete
+                isOptionEqualToValue={optEqVal}
                 options={dietaryOptions}
                 name={'dietary_requirements'}
                 label="Select dietary requirements"
@@ -318,6 +362,9 @@ const NewRestaurantCreateRestaurant = (props) => {
             variant={'filled'}
             rows={4}
             name="bio"
+            placeholder={
+              'e.g A Southern Italian Pasta Kitchen. Inspired by the Italian South. Made in Manche....'
+            }
             label="Enter your restaurant biography"
           />
         </FormSectionStack>
@@ -352,7 +399,7 @@ const NewRestaurantCreateRestaurant = (props) => {
         {/* ACTIONS */}
         <Box mt={4} sx={{ display: 'flex' }}>
           <Button color="inherit" onClick={handleBack} sx={{ mr: 1 }}>
-            Back
+            Go Back
           </Button>
 
           <Box sx={{ flexGrow: 1 }} />

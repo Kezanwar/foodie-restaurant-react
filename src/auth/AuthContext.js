@@ -136,6 +136,41 @@ export function AuthProvider({ children }) {
     });
   }, []);
 
+  // LOGIN WITH GOOGLE
+
+  const loginWithGoogle = useCallback(async (token) => {
+    const response = await axios.post(AUTH_ENDPOINTS.loginWithGoogle, {
+      token
+    });
+    const { accessToken, user } = response.data;
+
+    setSession(accessToken);
+
+    dispatch({
+      type: 'LOGIN',
+      payload: {
+        user
+      }
+    });
+  }, []);
+
+  // REGISTER WITH GOOGLE
+  const registerWithGoogle = useCallback(async (token) => {
+    const response = await axios.post(AUTH_ENDPOINTS.registerWithGoogle, {
+      token
+    });
+    const { accessToken, user } = response.data;
+
+    setSession(accessToken);
+
+    dispatch({
+      type: 'REGISTER',
+      payload: {
+        user
+      }
+    });
+  }, []);
+
   // REGISTER
   const register = useCallback(async (email, password, firstName, lastName) => {
     const response = await axios.post(AUTH_ENDPOINTS.register, {
@@ -173,8 +208,10 @@ export function AuthProvider({ children }) {
       userRole: state?.user?.restaurant?.role,
       emailConfirmed: state?.user?.email_confirmed,
       login,
+      loginWithGoogle,
       logout,
-      register
+      register,
+      registerWithGoogle
     };
   }, [state, login, logout, register]);
 

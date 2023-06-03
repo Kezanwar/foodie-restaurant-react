@@ -1,5 +1,7 @@
 export const AUTH_ENDPOINTS = {
   login: '/auth/login',
+  loginWithGoogle: '/auth/login-google',
   register: '/auth/register',
-  intialize: '/auth/initialize',
+  registerWithGoogle: '/auth/register-google',
+  intialize: '/auth/initialize'
 };

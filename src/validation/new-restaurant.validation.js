@@ -2,25 +2,29 @@ import * as Yup from 'yup';
 import { MAX_IMAGE } from '../constants/files.constants';
 
 export const companyInfoSchema = Yup.object().shape({
-  company_name: Yup.string().required('Required'),
-  company_number: Yup.string().required('Required'),
+  company_name: Yup.string().required('Company name is required'),
+  company_number: Yup.string(),
   company_address: Yup.object({
-    address_line_1: Yup.string().required('Required'),
-    postcode: Yup.string().required('Required'),
-    city: Yup.string().required('Required'),
-    country: Yup.string().required('Required')
+    address_line_1: Yup.string().required('Address line 1 is required'),
+    postcode: Yup.string().required('Postcode is required'),
+    city: Yup.string().required('City is required'),
+    country: Yup.object()
+      .test('Country', 'Country is required', (value) => {
+        return !!value?.label;
+      })
+      .nullable()
   })
 });
 
 export const restaurantDetailsSchema = Yup.object().shape({
-  name: Yup.string().required('Required'),
+  name: Yup.string().required('Restaurant name is required'),
   avatar: Yup.mixed().when(['is_new_avatar'], {
     is: (isNewAvatar) => !!isNewAvatar,
     then: Yup.mixed()
-      .required('Profile Image is required!')
+      .required('Avatar is required!')
       .test(
         'size',
-        `Your file is too big, must be ${MAX_IMAGE.text} or less`,
+        `Your avatar file is too big, must be ${MAX_IMAGE.text} or less`,
         (value) => value && value.size <= MAX_IMAGE.size
       ),
     otherwise: Yup.mixed()
@@ -40,9 +44,9 @@ export const restaurantDetailsSchema = Yup.object().shape({
     otherwise: Yup.mixed()
   }),
   bio: Yup.string()
-    .required('Required')
-    .min(140, 'Minimum 140 characters')
-    .max(500, 'Maximum 500 characters')
+    .required('Restaurant bio is required')
+    .min(140, 'Bio is minimum 140 characters')
+    .max(500, 'Bio is max 500 characters')
 });
 
 export const addLocationsSchema = Yup.object().shape({
@@ -54,16 +58,20 @@ export const addLocationsSchema = Yup.object().shape({
     is: (locations, isNewLocation) => locations.length === 0 || isNewLocation,
     then: Yup.object({
       address: Yup.object({
-        address_line_1: Yup.string().required('Required'),
-        postcode: Yup.string().required('Required'),
-        city: Yup.string().required('Required'),
-        country: Yup.string().required('Required')
+        address_line_1: Yup.string().required('Address line 1 is required'),
+        postcode: Yup.string().required('Postcode is required'),
+        city: Yup.string().required('City is required'),
+        country: Yup.object()
+          .test('Country', 'Country is required', (value) => {
+            return !!value?.label;
+          })
+          .nullable()
       }),
       email: Yup.string()
         .required('Email is required')
         .email('Email must be a valid email address'),
-      phone_number: Yup.string().required('Required'),
-      nickname: Yup.string().required('Required')
+      phone_number: Yup.string().required('Phone number is required'),
+      nickname: Yup.string().required('Nickname is required')
     }),
     otherwise: Yup.object()
   })
