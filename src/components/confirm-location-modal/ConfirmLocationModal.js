@@ -162,7 +162,7 @@ const ConfirmLocationModal = ({
                 fontSize={12}
                 variant="body2"
               >
-                {add_location.address.country}
+                {add_location.address.country.label}
               </Typography>
               <Spacer sp={3} />
               <Typography

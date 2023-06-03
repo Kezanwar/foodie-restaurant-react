@@ -8,7 +8,11 @@ export const companyInfoSchema = Yup.object().shape({
     address_line_1: Yup.string().required('Address line 1 is required'),
     postcode: Yup.string().required('Postcode is required'),
     city: Yup.string().required('City is required'),
-    country: Yup.string().required('Country is required')
+    country: Yup.object()
+      .test('Country', 'Country is required', (value) => {
+        return !!value?.label;
+      })
+      .nullable()
   })
 });
 
@@ -57,7 +61,11 @@ export const addLocationsSchema = Yup.object().shape({
         address_line_1: Yup.string().required('Address line 1 is required'),
         postcode: Yup.string().required('Postcode is required'),
         city: Yup.string().required('City is required'),
-        country: Yup.string().required('Country is required')
+        country: Yup.object()
+          .test('Country', 'Country is required', (value) => {
+            return !!value?.label;
+          })
+          .nullable()
       }),
       email: Yup.string()
         .required('Email is required')

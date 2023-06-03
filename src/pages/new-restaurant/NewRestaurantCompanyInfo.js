@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState
 } from 'react';
+import EastIcon from '@mui/icons-material/East';
 import { useSnackbar } from 'notistack';
 import { m } from 'framer-motion';
 import PropTypes from 'prop-types';
@@ -51,14 +52,15 @@ import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
 import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
 import { useAuthContext } from '../../hooks/useAuthContext';
+import AddressAutocomplete from '../../components/address-autocomplete/AddressAutocomplete';
+import RHFCountriesAutocomplete from '../../components/hook-form/RHFCountriesAutocomplete';
 
 const NewRestaurantCompanyInfo = (props) => {
+  const { data, isLoading, updateQuery } = useRestaurantQuery();
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
+
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuthContext();
-  const { data, isLoading, updateQuery } = useRestaurantQuery();
-
-  const countryRef = useRef();
 
   useCreateRestaurantGuard(data?.data, PATH_NEW_RESTAURANT.step_1);
 
@@ -75,7 +77,10 @@ const NewRestaurantCompanyInfo = (props) => {
         postcode: data?.data?.company_info?.company_address?.postcode || '',
         city: data?.data?.company_info?.company_address?.city || '',
         country:
-          data?.data?.company_info?.company_address?.country || 'United Kingdom'
+          countries.find(
+            (el) =>
+              el.label === data?.data?.company_info?.company_address?.country
+          ) || countries.find((el) => el.label === 'United Kingdom')
       }
     }),
     [
@@ -101,15 +106,9 @@ const NewRestaurantCompanyInfo = (props) => {
     formState: { errors, isSubmitting, isSubmitSuccessful },
     getValues,
     getFieldState,
-    setValue
+    setValue,
+    watch
   } = methods;
-
-  const updateCountry = () => {
-    setValue(
-      'company_address.country',
-      countryRef.current.querySelector('input').value
-    );
-  };
 
   useEffect(() => {
     pageScrollToTop();
@@ -129,11 +128,32 @@ const NewRestaurantCompanyInfo = (props) => {
     navigate(PATH_NEW_RESTAURANT.new_restaurant);
   };
 
+  const handleOnAddressSelect = (address) => {
+    const { address_line_1, address_line_2, postcode, city, country } = address;
+
+    Object.entries({
+      address_line_1,
+      address_line_2,
+      postcode,
+      city,
+      country
+    }).forEach(([key, value]) => {
+      console.log(key, value);
+      setValue(`company_address.${key}`, value);
+    });
+  };
+
   const onSubmit = async (data) => {
     try {
       // make dynamic api call
       setFormSubmitLoading(true);
-      const updatedRestaurant = await postCompanyInfo(data);
+      const updatedRestaurant = await postCompanyInfo({
+        ...data,
+        company_address: {
+          ...data.company_address,
+          country: data?.company_address.country?.label
+        }
+      });
       mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_company_info_success, {
         data
       });
@@ -210,89 +230,61 @@ const NewRestaurantCompanyInfo = (props) => {
           <Subheader text={'Company office address'} />
           <InputWithInfoStack>
             <InputWithInfoInputContainer>
-              <Box mb={2}>
-                <RHFTextField
-                  variant={'filled'}
-                  name="company_address.address_line_1"
-                  label="Address line 1"
-                  placeholder={'e.g 23 Red Baloon Street'}
+              <Box>
+                <AddressAutocomplete
+                  handleOnAddressSelect={handleOnAddressSelect}
                 />
               </Box>
-              <Box mb={2}>
-                <RHFTextField
-                  variant={'filled'}
-                  name="company_address.address_line_2"
-                  label="Address line 2 (Optional)"
-                  placeholder={'e.g Didsbury'}
-                />
+              <Box
+                sx={{
+                  mt: 4,
+                  mb: 3,
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}
+              >
+                <Typography variant="body2" color={'primary'}>
+                  Or enter an address manually...
+                </Typography>
               </Box>
-              <Box mb={2}>
-                <RHFTextField
-                  variant={'filled'}
-                  name="company_address.postcode"
-                  label="Post / Zip code"
-                  placeholder={'e.g M20 2FG'}
-                />
-              </Box>
-              <Box mb={2}>
-                <RHFTextField
-                  variant={'filled'}
-                  name="company_address.city"
-                  label="City"
-                  placeholder={'e.g Manchester'}
-                />
-              </Box>
-              <Box mb={2}>
-                <Autocomplete
-                  defaultValue={countries.find(
-                    (c) => c.label === getValues().company_address.country
-                  )}
-                  fullWidth
-                  autoHighlight
-                  options={countries}
-                  getOptionLabel={(option) => option.label}
-                  renderOption={(props, option) => (
-                    <Box
-                      component="li"
-                      value={option.label}
-                      {...props}
-                      sx={{ px: '8px !important' }}
-                    >
-                      <Box
-                        component="span"
-                        sx={{ flexShrink: 0, mr: 2, fontSize: 22 }}
-                      >
-                        {countryToFlag(option.code)}
-                      </Box>
-                      {option.label} ({option.code}) +{option.phone}
-                      <input
-                        readOnly
-                        value={option.label}
-                        style={{ display: 'none' }}
-                      />
-                    </Box>
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      label={'Country'}
-                      variant={'filled'}
-                      {...params}
-                      inputProps={{
-                        ...params.inputProps,
-                        autoComplete: 'disabled'
-                      }}
-                      ref={countryRef}
-                      onBlur={(e) => updateCountry(e.target.value)}
-                      onChange={(e) => updateCountry(e.target.value)}
-                    />
-                  )}
-                />
-                {getFieldState('company_address.country')?.error?.message && (
-                  <Typography fontSize={12} mt={1} pl={2} color={'error'}>
-                    {getFieldState('company_address.country')?.error?.message}
-                  </Typography>
-                )}
-              </Box>
+
+              <>
+                <Box my={2}>
+                  <RHFTextField
+                    variant={'filled'}
+                    name="company_address.address_line_1"
+                    label="Address line 1"
+                    placeholder={'e.g 23 Red Baloon Street'}
+                  />
+                </Box>
+                <Box mb={2}>
+                  <RHFTextField
+                    variant={'filled'}
+                    name="company_address.address_line_2"
+                    label="Address line 2 (Optional)"
+                    placeholder={'e.g Didsbury'}
+                  />
+                </Box>
+                <Box mb={2}>
+                  <RHFTextField
+                    variant={'filled'}
+                    name="company_address.postcode"
+                    label="Post / Zip code"
+                    placeholder={'e.g M20 2FG'}
+                  />
+                </Box>
+                <Box mb={2}>
+                  <RHFTextField
+                    variant={'filled'}
+                    name="company_address.city"
+                    label="City"
+                    placeholder={'e.g Manchester'}
+                  />
+                </Box>
+                <Box mb={2}>
+                  <RHFCountriesAutocomplete name={'company_address.country'} />
+                </Box>
+              </>
             </InputWithInfoInputContainer>
             <InputWithInfoInfoContainer>
               <Alert icon={<HelpIcon />} severity={'success'}>
@@ -308,8 +300,9 @@ const NewRestaurantCompanyInfo = (props) => {
 
           <Box mt={4} sx={{ display: 'flex' }}>
             <Button color="inherit" onClick={handleBack}>
-              Back
+              Go Back
             </Button>
+
             <Box sx={{ flexGrow: 1 }} />
 
             <LoadingButton

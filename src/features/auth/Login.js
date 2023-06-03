@@ -1,5 +1,5 @@
 // @mui
-import { Alert, Stack, Typography, Link } from '@mui/material';
+import { Alert, Stack, Typography, Link, Select, Menu } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
 // layouts
 import AuthLayout from '../../layouts/auth';
@@ -9,7 +9,6 @@ import AuthLoginForm from './AuthLoginForm';
 import RouterLink from '../../components/router-link/RouterLink';
 
 import { PATH_AUTH } from '../../routes/paths';
-import UploadWithCrop from '../../components/upload/UploadWithCrop';
 
 // ----------------------------------------------------------------------
 
