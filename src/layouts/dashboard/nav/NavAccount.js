@@ -28,7 +28,7 @@ export default function NavAccount() {
   return (
     <StyledRoot>
       <CustomAvatar
-        src={user?.photoURL}
+        src={user?.avatar}
         alt={user?.first_name}
         name={user?.first_name}
       />

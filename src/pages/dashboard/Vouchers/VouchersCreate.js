@@ -1,11 +1,12 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-// import { DatePicker } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
 
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { StaticDateRangePicker } from '@mui/x-date-pickers-pro/StaticDateRangePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro';
+import dayjs from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
@@ -26,20 +27,51 @@ import {
   InputWithInfoInputContainer,
   InputWithInfoStack
 } from '../../../features/forms/styles';
-import { RHFTextField } from '../../../components/hook-form';
+import { RHFAutocomplete, RHFTextField } from '../../../components/hook-form';
 import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
 import Subheader from '../../../components/subheader/Subheader';
 import { MAX_VOUCHERS } from '../../../constants/vouchers.constants';
 import { DashboardTitleContainer } from '../styles';
 import DateRangePicker from '../../../components/date-range-picker/DateRangePicker';
-
-// import DateRangePicker from '../../../components/date-range-picker/DateRangePicker';
+import RHFMultipleAutocomplete from '../../../components/hook-form/RHFMultipleAutoComplete';
+import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
+import Spacer from '../../../components/spacer/Spacer';
 
 // components
 
+function getElementsByText(str, tag = 'div') {
+  return Array.prototype.slice
+    .call(document.getElementsByTagName(tag))
+    .filter((el) => el.textContent.trim() === str.trim());
+}
+
+function removeLicenseEl() {
+  getElementsByText('MUI X Missing license key').forEach((el) => el.remove());
+}
+
+const datePickerSx = {
+  backgroundColor: 'transparent',
+  padding: 0,
+
+  '.MuiDialogActions-root': {
+    display: 'none'
+  },
+  '.MuiPickersToolbar-root': {
+    padding: 0,
+    'span.MuiTypography-overline': {
+      display: 'none'
+    }
+  },
+  '.MuiDateRangeCalendar-monthContainer': {
+    border: '1px solid #f0f0f0',
+    borderRadius: '8px',
+    marginTop: '16px'
+  }
+};
+
 // ----------------------------------------------------------------------
 
-export default function AddNewVoucher() {
+export default function VouchersCreate() {
   const { isTablet } = useCustomMediaQueries();
   const defaultValues = useMemo(
     () => ({
@@ -69,6 +101,25 @@ export default function AddNewVoucher() {
   } = methods;
 
   const onSubmit = async () => {};
+
+  useEffect(() => {
+    removeLicenseEl();
+  }, []);
+
+  const { data } = useLocationsQuery();
+
+  const locationOptions = useMemo(() => {
+    const locs = data?.data;
+    if (!locs?.length) return [];
+    return locs.map((l) => {
+      return {
+        name: `${l.nickname}, ${l.address.address_line_1}, ${l.address.postcode}`,
+        _id: l._id
+      };
+    });
+  }, [data?.data?.length]);
+
+  const [date, setDate] = useState('');
   return (
     <>
       <Helmet>
@@ -78,7 +129,7 @@ export default function AddNewVoucher() {
       <Container maxWidth={'xl'}>
         <DashboardTitleContainer>
           <DashboardTitle title="Create a new voucher" />
-          <Typography variant="body1">
+          <Typography variant="body2" color={'text.secondary'}>
             Use this form to create a new voucher, you're allowed to have a{' '}
             <strong>maximum of {MAX_VOUCHERS} active vouchers </strong> at one
             time. You can manage your vouchers here.
@@ -87,7 +138,7 @@ export default function AddNewVoucher() {
         <Box>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Box>
-              <Subheader text={'Add voucher name & description'} />
+              <Subheader text={'Give your deal a name & description'} />
               <InputWithInfoStack>
                 <InputWithInfoInputContainer>
                   <RHFTextField
@@ -105,55 +156,56 @@ export default function AddNewVoucher() {
                     name="description"
                     label="Enter your voucher description (max 140 characters)"
                   />
-                </InputWithInfoInputContainer>
-                <InputWithInfoInfoContainer>
-                  <Alert icon={<HelpIcon />} severity={'success'}>
-                    <AlertTitle>How is this used?</AlertTitle>
-                    Your Restaurant name is what shows up in the search for
-                    vouchers and restaurants, if you are a chain, when you add
-                    multiple locations the name will show up followed by the
-                    locations provided nickname in brackets. e.g -{' '}
-                    <strong>Rudy's (Ancoats Sq)</strong>
-                  </Alert>
-                </InputWithInfoInfoContainer>
-              </InputWithInfoStack>
-              <Subheader text={'Voucher start - end dates'} />
-              <InputWithInfoStack>
-                <InputWithInfoInputContainer>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Box
-                      onClick={() => console.log('yo')}
-                      sx={{
-                        display: 'flex',
-                        gap: 3
-                      }}
-                    >
-                      <DatePicker
-                        label="Start date"
-                        renderInput={(params) => (
-                          <TextField {...params} fullWidth />
-                        )}
-                      />
-                      <DatePicker
-                        label="End date"
-                        renderInput={(params) => (
-                          <TextField readOnly {...params} fullWidth />
-                        )}
-                      />
-                      {/* <Typography>12/05/2023 - 22/05/2023</Typography> */}
-                    </Box>
+                  <Spacer />
+                  <Subheader
+                    text={'Select 1 or more locations for this deal'}
+                  />
+                  <RHFMultipleAutocomplete
+                    isOptionEqualToValue={(option, value) => {
+                      return option.name === value.name;
+                    }}
+                    options={locationOptions}
+                    name={'locations'}
+                    label="Select 1 or more locations"
+                    placeholder="Start typing or choose from the dropdown"
+                  />
+                  <Spacer />
+                  <Subheader
+                    sx={{ marginBottom: 8 }}
+                    text={'How long do you want to advertise this deal for?'}
+                  />
+                  <Typography mb={1} variant="body2" color={'text.secondary'}>
+                    Must choose a location first, each individual deal can only
+                    exist in one timezone.
+                  </Typography>
 
-                    {/* <DateRangePicker open title="Select voucher date range" /> */}
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <StaticDateRangePicker
+                      disablePast
+                      sx={datePickerSx}
+                      onChange={(v) => console.log(v)}
+                    />
                   </LocalizationProvider>
                 </InputWithInfoInputContainer>
                 <InputWithInfoInfoContainer>
                   <Alert icon={<HelpIcon />} severity={'success'}>
-                    <AlertTitle>How is this used?</AlertTitle>
-                    Your Restaurant name is what shows up in the search for
-                    vouchers and restaurants, if you are a chain, when you add
-                    multiple locations the name will show up followed by the
-                    locations provided nickname in brackets. e.g -{' '}
-                    <strong>Rudy's (Ancoats Sq)</strong>
+                    <AlertTitle>How do deals work?</AlertTitle>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. At
+                    neque minima sit doloribus harum soluta necessitatibus hic?
+                    Dolorum, pariatur eligendi{' '}
+                    <strong>Siganti et il gido!</strong>
+                    <br />
+                    <br />
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Unde temporibus hic vel minima incidunt rem similique
+                    placeat voluptatibus omnis ipsam quia eligendi dolor
+                    consequatur dolorem, ipsa magni!
+                    <br />
+                    <br />
+                    Sapiente neque, suscipit deserunt porro explicabo iusto
+                    doloribus? Molestiae voluptatum facilis tenetur aperiam
+                    doloribus officiis architecto. Dolor minus sit, obcaecati
+                    reiciendis culpa inventore.
                   </Alert>
                 </InputWithInfoInfoContainer>
               </InputWithInfoStack>
