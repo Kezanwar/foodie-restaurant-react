@@ -21,7 +21,7 @@ import DashboardTitle from '../../../components/dashboard-title/DashboardTitle';
 import FormProvider from '../../../components/hook-form/FormProvider';
 
 import { companyInfoSchema } from '../../../validation/new-restaurant.validation';
-import { newVoucherSchema } from '../../../validation/vouchers.validation';
+import { newDealSchema } from '../../../validation/deals.validation';
 import {
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
@@ -30,7 +30,7 @@ import {
 import { RHFAutocomplete, RHFTextField } from '../../../components/hook-form';
 import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
 import Subheader from '../../../components/subheader/Subheader';
-import { MAX_VOUCHERS } from '../../../constants/vouchers.constants';
+import { MAX_DEALS } from '../../../constants/deals.constants';
 import { DashboardTitleContainer } from '../styles';
 import DateRangePicker from '../../../components/date-range-picker/DateRangePicker';
 import RHFMultipleAutocomplete from '../../../components/hook-form/RHFMultipleAutoComplete';
@@ -71,7 +71,7 @@ const datePickerSx = {
 
 // ----------------------------------------------------------------------
 
-export default function VouchersCreate() {
+export default function DealsCreate() {
   const { isTablet } = useCustomMediaQueries();
   const defaultValues = useMemo(
     () => ({
@@ -86,7 +86,7 @@ export default function VouchersCreate() {
   );
 
   const methods = useForm({
-    resolver: yupResolver(newVoucherSchema),
+    resolver: yupResolver(newDealSchema),
     defaultValues
   });
 
@@ -123,16 +123,16 @@ export default function VouchersCreate() {
   return (
     <>
       <Helmet>
-        <title> Create a new voucher | Foodie</title>
+        <title> Create a new deal | Foodie</title>
       </Helmet>
 
       <Container maxWidth={'xl'}>
         <DashboardTitleContainer>
-          <DashboardTitle title="Create a new voucher" />
+          <DashboardTitle title="Create a new deal" />
           <Typography variant="body2" color={'text.secondary'}>
-            Use this form to create a new voucher, you're allowed to have a{' '}
-            <strong>maximum of {MAX_VOUCHERS} active vouchers </strong> at one
-            time. You can manage your vouchers here.
+            Use this form to create a new deal, you're allowed to have a{' '}
+            <strong>maximum of {MAX_DEALS} active deals </strong> at one time.
+            You can manage your deals here.
           </Typography>
         </DashboardTitleContainer>
         <Box>
@@ -144,7 +144,7 @@ export default function VouchersCreate() {
                   <RHFTextField
                     sx={{ flex: 1, marginBottom: 3 }}
                     name="name"
-                    label="Give your voucher a name"
+                    label="Give your deal a name"
                     placeholder="e.g 2 for 1 Lunch Menu (Mon - Fri)"
                     variant={'filled'}
                   />
@@ -154,7 +154,7 @@ export default function VouchersCreate() {
                     rows={4}
                     placeholder="e.g Enjoy a taste of our menu at a 2 fo 1 discount during weekday lunch hours. Perfect for business meeting and lunchbreaks... "
                     name="description"
-                    label="Enter your voucher description (max 140 characters)"
+                    label="Enter your deal description (max 140 characters)"
                   />
                   <Spacer />
                   <Subheader

@@ -34,12 +34,12 @@ const navConfig = [
         icon: ICONS.analytics
       },
       {
-        title: 'Vouchers',
-        path: PATH_DASHBOARD.vouchers,
+        title: 'Deals',
+        path: PATH_DASHBOARD.deals,
         icon: ICONS.payments,
         children: [
-          { title: 'All', path: PATH_DASHBOARD.vouchers_all },
-          { title: 'Create', path: PATH_DASHBOARD.vouchers_create }
+          { title: 'All', path: PATH_DASHBOARD.deals_all },
+          { title: 'Create', path: PATH_DASHBOARD.deals_create }
           // { title: 'Five', path: PATH_DASHBOARD.user.five },
           // { title: 'Six', path: PATH_DASHBOARD.user.six }
         ]

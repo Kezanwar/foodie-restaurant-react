@@ -25,7 +25,7 @@ import {
   NewRestaurantCreateRestaurant,
   NewRestaurantAddLocations,
   PageConfirmEmail,
-  VouchersCreate
+  DealsCreate
 } from './elements';
 import {
   PATH_AUTH,
@@ -75,16 +75,16 @@ export default function Router() {
       children: [
         { element: <Navigate to={pathAfterLogin} replace />, index: true },
         { path: 'overview', element: <Overview /> },
-        // { path: 'vouchers', element: <PageTwo /> },
+        // { path: 'deals', element: <PageTwo /> },
         {
-          path: 'vouchers',
+          path: 'deals',
           children: [
             {
-              element: <Navigate to={PATH_DASHBOARD.vouchers_all} replace />,
+              element: <Navigate to={PATH_DASHBOARD.deals_all} replace />,
               index: true
             },
             { path: 'all', element: <PageFour /> },
-            { path: 'create', element: <VouchersCreate /> },
+            { path: 'create', element: <DealsCreate /> },
             { path: ':id', element: <PageSix /> },
             { path: 'edit/:id', element: <PageSix /> }
           ]

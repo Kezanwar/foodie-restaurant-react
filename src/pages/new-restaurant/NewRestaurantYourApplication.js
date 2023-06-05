@@ -191,7 +191,7 @@ const NewRestaurantYourApplication = (props) => {
                 must{' '}
                 <strong>
                   {' '}
-                  setup your subscription before creating a voucher{' '}
+                  setup your subscription before creating a deal{' '}
                 </strong>
               </li>
             </Box>

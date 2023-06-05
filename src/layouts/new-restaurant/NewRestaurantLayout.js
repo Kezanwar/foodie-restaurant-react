@@ -125,7 +125,7 @@ export default function NewRestaurantLayout() {
                         gutterBottom
                       >
                         Create your Foodie application, then start creating
-                        vouchers and tapping into our Foodie userbase!
+                        deals and tapping into our Foodie userbase!
                       </Typography>
                     </Box>
                   </Box>

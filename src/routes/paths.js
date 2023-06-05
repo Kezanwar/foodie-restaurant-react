@@ -18,10 +18,10 @@ const ROOTS_DASHBOARD = '/dashboard';
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   overview: path(ROOTS_DASHBOARD, '/overview'),
-  vouchers: path(ROOTS_DASHBOARD, '/vouchers'),
-  vouchers_all: path(ROOTS_DASHBOARD, '/vouchers/all'),
-  vouchers_create: path(ROOTS_DASHBOARD, '/vouchers/create'),
-  vouchers_single: path(ROOTS_DASHBOARD, '/vouchers'),
+  deals: path(ROOTS_DASHBOARD, '/deals'),
+  deals_all: path(ROOTS_DASHBOARD, '/deals/all'),
+  deals_create: path(ROOTS_DASHBOARD, '/deals/create'),
+  deals_single: path(ROOTS_DASHBOARD, '/deals'),
   restaurant: path(ROOTS_DASHBOARD, '/restaurant'),
   users: path(ROOTS_DASHBOARD, '/users'),
   subscription: path(ROOTS_DASHBOARD, '/subscription')

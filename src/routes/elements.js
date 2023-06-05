@@ -45,10 +45,10 @@ export const PageSix = Loadable(
   lazy(() => import('../pages/dashboard/PageSix'))
 );
 
-// * Dashboard Vouchers
+// * Dashboard Deals
 
-export const VouchersCreate = Loadable(
-  lazy(() => import('../pages/dashboard/Vouchers/VouchersCreate'))
+export const DealsCreate = Loadable(
+  lazy(() => import('../pages/dashboard/Deals/DealsCreate'))
 );
 
 // ----------------------------------------------------------------------

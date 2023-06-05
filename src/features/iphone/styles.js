@@ -26,12 +26,12 @@ export const MainSection = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper
 }));
 
-export const VouchersSection = styled(Box)(({ theme }) => ({
+export const DealsSection = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
   backgroundColor: theme.palette.background.paper
 }));
 
-export const VoucherContainer = styled(Box)(({ theme, i }) => ({
+export const DealContainer = styled(Box)(({ theme, i }) => ({
   position: 'relative',
   display: 'flex!important',
   alignItems: 'center',
@@ -44,7 +44,7 @@ export const VoucherContainer = styled(Box)(({ theme, i }) => ({
   cursor: 'pointer'
 }));
 
-export const VoucherIconBox = styled(Box)(({ theme }) => ({
+export const DealIconBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   border: 'none',
   paddingRight: 0.7,

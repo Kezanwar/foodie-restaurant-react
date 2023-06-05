@@ -78,8 +78,8 @@ const TopAlert = () => {
     <Box mb={6}>
       <Alert icon={<HelpIcon />} severity={'success'}>
         <AlertTitle>How do locations work?</AlertTitle>
-        Your Restaurant can have one or multiple locations, when creating a
-        voucher you can choose which location the voucher can be used at.
+        Your Restaurant can have one or multiple locations, when creating a deal
+        you can choose which location the deal can be used at.
         <Box mt={1}>
           We list your location on the users feed with your Restaurants name and
           nickname in brackets after,{' '}
@@ -90,7 +90,7 @@ const TopAlert = () => {
         </Box>
         <Box mt={1}>
           This in turn helps us{' '}
-          <strong>show vouchers to customers in your local area.</strong>
+          <strong>show deals to customers in your local area.</strong>
         </Box>
         <Box mt={1}>
           Location details include;

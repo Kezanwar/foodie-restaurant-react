@@ -19,12 +19,12 @@ import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
 import {
   CoverPhotoContainer,
   MainSection,
-  VoucherContainer,
-  VoucherIconBox,
-  VouchersSection
+  DealContainer,
+  DealIconBox,
+  DealsSection
 } from './styles';
 
-const EXAMPLE_VOUCHERS = [
+const EXAMPLE_DEALS = [
   '20% Off Lunchtime Menu (Wed - Fri)',
   '50% Off Drinks Menu (Sat before 5pm)',
   '2 Courses for £25.00 (Mon - Fri)'
@@ -293,7 +293,7 @@ const RestaurantProfileIphone = () => {
               </Box>
             </Box>
           </MainSection>
-          <VouchersSection
+          <DealsSection
             sx={{
               padding: 3,
               backgroundColor: theme.palette.background.paper
@@ -316,28 +316,28 @@ const RestaurantProfileIphone = () => {
               <Box>
                 <Spacer sp={3} />
                 <Box>
-                  {EXAMPLE_VOUCHERS.map((offer, i) => {
+                  {EXAMPLE_DEALS.map((offer, i) => {
                     return (
-                      <VoucherContainer key={offer}>
+                      <DealContainer key={offer}>
                         <Typography variant="subtitle" fontSize={12}>
                           {offer}
                         </Typography>
-                        <VoucherIconBox className="voucher-box">
+                        <DealIconBox className="deal-box">
                           <SvgColor
-                            src={'/assets/icons/navbar/ic_voucher.svg'}
+                            src={'/assets/icons/navbar/ic_deal.svg'}
                             sx={{
                               width: 24,
                               height: 24
                             }}
                           />
-                        </VoucherIconBox>
-                      </VoucherContainer>
+                        </DealIconBox>
+                      </DealContainer>
                     );
                   })}
                 </Box>
               </Box>
             </Box>
-          </VouchersSection>
+          </DealsSection>
         </Box>
       </Iphone14Pro>
     </Stack>

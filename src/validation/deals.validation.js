@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-export const newVoucherSchema = Yup.object().shape({
+export const newDealSchema = Yup.object().shape({
   name: Yup.string().required('Required'),
   description: Yup.string().required('Required'),
   start_date: Yup.string().required('Required'),
