@@ -1,14 +1,13 @@
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 // utils
-import { bgGradient } from '../../utils/cssStyles';
 
 // ----------------------------------------------------------------------
 
 export const StyledRoot = styled('main')(() => ({
-  height: '100%',
+  minHeight: '60%',
   display: 'flex',
-  position: 'relative',
+  position: 'relative'
 }));
 
 export const StyledSection = styled('div')(({ theme }) => ({
@@ -19,33 +18,19 @@ export const StyledSection = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column',
-  },
-}));
-
-export const StyledSectionBg = styled('div')(({ theme }) => ({
-  ...bgGradient({
-    color: alpha(theme.palette.background.default, theme.palette.mode === 'light' ? 0.9 : 0.94),
-    imgUrl: '/assets/background/overlay_2.jpg',
-  }),
-  top: 0,
-  left: 0,
-  zIndex: -1,
-  width: '100%',
-  height: '100%',
-  position: 'absolute',
-  transform: 'scaleX(-1)',
+    flexDirection: 'column'
+  }
 }));
 
 export const StyledContent = styled('div')(({ theme }) => ({
   width: 800,
   margin: 'auto',
   display: 'flex',
-  minHeight: '100vh',
   justifyContent: 'center',
-  padding: theme.spacing(15, 2),
+  padding: theme.spacing(20, 2),
+  paddingBottom: theme.spacing(10),
   [theme.breakpoints.up('md')]: {
     flexShrink: 0,
-    padding: theme.spacing(20, 8, 0, 8),
-  },
+    padding: theme.spacing(20, 8, 0, 8)
+  }
 }));

@@ -5,7 +5,12 @@ import SvgColor from '../../../components/svg-color';
 
 // ----------------------------------------------------------------------
 
-const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
+const icon = (name) => (
+  <SvgColor
+    src={`/assets/icons/navbar/${name}.svg`}
+    sx={{ width: 1, height: 1 }}
+  />
+);
 
 const ICONS = {
   user: icon('ic_user'),
@@ -14,7 +19,7 @@ const ICONS = {
   credit: icon('ic_credit'),
   menuItem: icon('ic_menu_item'),
   store: icon('ic_store'),
-  payments: icon('ic_payments'),
+  payments: icon('ic_payments')
 };
 
 const navConfig = [
@@ -23,14 +28,18 @@ const navConfig = [
   {
     subheader: 'Restaurant Dashboard',
     items: [
-      { title: 'Overview', path: PATH_DASHBOARD.overview, icon: ICONS.analytics },
-      { title: 'Vouchers', path: PATH_DASHBOARD.vouchers, icon: ICONS.payments },
+      {
+        title: 'Overview',
+        path: PATH_DASHBOARD.overview,
+        icon: ICONS.analytics
+      },
+      { title: 'Deals', path: PATH_DASHBOARD.deals, icon: ICONS.payments },
       {
         title: 'Restaurant',
         path: PATH_DASHBOARD.restaurant,
-        icon: ICONS.store,
-      },
-    ],
+        icon: ICONS.store
+      }
+    ]
   },
 
   // MANAGEMENT
@@ -41,7 +50,7 @@ const navConfig = [
       {
         title: 'users',
         path: PATH_DASHBOARD.users,
-        icon: ICONS.user,
+        icon: ICONS.user
         // children: [
         //   { title: 'Four', path: PATH_DASHBOARD.user.four },
         //   { title: 'Five', path: PATH_DASHBOARD.user.five },
@@ -51,14 +60,14 @@ const navConfig = [
       {
         title: 'subscription',
         path: PATH_DASHBOARD.subscription,
-        icon: ICONS.credit,
+        icon: ICONS.credit
         // children: [
         //   { title: 'Four', path: PATH_DASHBOARD.user.four },
         //   { title: 'Five', path: PATH_DASHBOARD.user.five },
         //   { title: 'Six', path: PATH_DASHBOARD.user.six },
         // ],
-      },
-    ],
-  },
+      }
+    ]
+  }
 ];
 export default navConfig;

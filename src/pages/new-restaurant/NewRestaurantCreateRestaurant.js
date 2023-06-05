@@ -248,23 +248,14 @@ const NewRestaurantCreateRestaurant = (props) => {
               placeholder={'e.g Sugo Pasta Kitchen'}
               variant={'filled'}
             />
-            <Box flex={isTablet ? 0.7 : 1} display={'flex'}>
-              {/* {storeName && (
-            <AvailabilityIndicator
-              success={storeNameAvailable}
-              resultName={'name'}
-              isLoading={nameAvailabilityLoading}
-            />
-          )} */}
-            </Box>
           </InputWithInfoInputContainer>
           <InputWithInfoInfoContainer>
             <Alert icon={<HelpIcon />} severity={'success'}>
               <AlertTitle>How is this used?</AlertTitle>
-              Your Restaurant name is what shows up in the search for vouchers
-              and restaurants, if you are a chain, when you add multiple
-              locations the name will show up followed by the locations provided
-              nickname in brackets. e.g - <strong>Rudy's (Ancoats Sq)</strong>
+              Your Restaurant name is what shows up in the search for deals and
+              restaurants, if you are a chain, when you add multiple locations
+              the name will show up followed by the locations provided nickname
+              in brackets. e.g - <strong>Rudy's (Ancoats Sq)</strong>
             </Alert>
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>
@@ -283,8 +274,8 @@ const NewRestaurantCreateRestaurant = (props) => {
               Your Restaurant Avatar acts as a profile image for your
               Restaurant, your cover photo is used as the back drop.
               <Box mt={1}>
-                If an image isn't provided for a new voucher, the voucher image
-                will default to your Restaurant Cover Photo.
+                If an image isn't provided for a new deal, the deal image will
+                default to your Restaurant Cover Photo.
               </Box>
               <Box mt={1}>
                 Images can be updated <strong>at any time.</strong>
@@ -303,8 +294,8 @@ const NewRestaurantCreateRestaurant = (props) => {
             <Alert icon={<HelpIcon />} severity={'success'}>
               <AlertTitle>How is the cover photo used?</AlertTitle>
               Your restaurant cover photo acts as a backdrop for your restaurant
-              profile screen and a fallback for vouchers if one isn't provided
-              for them.
+              profile screen and a fallback for deals if one isn't provided for
+              them.
               <Box mt={1}>
                 Images can be updated <strong>at any time.</strong>
               </Box>

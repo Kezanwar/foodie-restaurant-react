@@ -18,16 +18,16 @@ import { IconButtonAnimate } from '../../../components/animate';
 const OPTIONS = [
   {
     label: 'Home',
-    linkTo: '/',
+    linkTo: '/'
   },
   {
     label: 'Profile',
-    linkTo: '/',
+    linkTo: '/'
   },
   {
     label: 'Settings',
-    linkTo: '/',
-  },
+    linkTo: '/'
+  }
 ];
 
 // ----------------------------------------------------------------------
@@ -79,15 +79,23 @@ export default function AccountPopover() {
               height: '100%',
               borderRadius: '50%',
               position: 'absolute',
-              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
-            },
-          }),
+              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8)
+            }
+          })
         }}
       >
-        <CustomAvatar src={user?.photoURL} alt={user?.first_name} name={user?.first_name} />
+        <CustomAvatar
+          src={user?.avatar}
+          alt={user?.first_name}
+          name={user?.first_name}
+        />
       </IconButtonAnimate>
 
-      <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 200, p: 0 }}>
+      <MenuPopover
+        open={openPopover}
+        onClose={handleClosePopover}
+        sx={{ width: 200, p: 0 }}
+      >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
             {user?.first_name}
@@ -102,7 +110,10 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           {OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
+            <MenuItem
+              key={option.label}
+              onClick={() => handleClickItem(option.linkTo)}
+            >
               {option.label}
             </MenuItem>
           ))}

@@ -45,6 +45,12 @@ export const PageSix = Loadable(
   lazy(() => import('../pages/dashboard/PageSix'))
 );
 
+// * Dashboard Deals
+
+export const DealsCreate = Loadable(
+  lazy(() => import('../pages/dashboard/Deals/DealsCreate'))
+);
+
 // ----------------------------------------------------------------------
 
 // * New Restaurant Pages

@@ -12,7 +12,7 @@ const SPACING = 8;
 
 Main.propTypes = {
   sx: PropTypes.object,
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 export default function Main({ children, sx, ...other }) {
@@ -23,13 +23,13 @@ export default function Main({ children, sx, ...other }) {
       component="main"
       sx={{
         flexGrow: 1,
-        py: `${HEADER.H_MOBILE + SPACING}px`,
+        pt: `${HEADER.H_MOBILE + SPACING}px`,
         ...(isDesktop && {
           px: 2,
-          py: `${HEADER.H_DASHBOARD_DESKTOP + SPACING}px`,
-          width: `calc(100% - ${NAV.W_DASHBOARD}px)`,
+          pt: `${HEADER.H_DASHBOARD_DESKTOP + SPACING}px`,
+          width: `calc(100% - ${NAV.W_DASHBOARD}px)`
         }),
-        ...sx,
+        ...sx
       }}
       {...other}
     >

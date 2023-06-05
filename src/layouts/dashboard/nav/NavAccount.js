@@ -6,6 +6,7 @@ import { Box, Typography } from '@mui/material';
 import { useAuthContext } from '../../../hooks/useAuthContext';
 // components
 import { CustomAvatar } from '../../../components/custom-avatar';
+import useRestaurantQuery from '../../../hooks/queries/useRestaurantQuery';
 
 // ----------------------------------------------------------------------
 
@@ -21,11 +22,13 @@ const StyledRoot = styled('div')(({ theme }) => ({
 
 export default function NavAccount() {
   const { user } = useAuthContext();
+  const { data } = useRestaurantQuery();
 
+  const restaurantName = data?.data?.name;
   return (
     <StyledRoot>
       <CustomAvatar
-        src={user?.photoURL}
+        src={user?.avatar}
         alt={user?.first_name}
         name={user?.first_name}
       />
@@ -40,7 +43,8 @@ export default function NavAccount() {
           noWrap
           sx={{ color: 'text.secondary', fontSize: '0.75rem' }}
         >
-          {capitalCase(user?.restaurant?.role.replace(/_/g, ' '))}
+          {restaurantName}
+          {/* {capitalCase(user?.restaurant?.role.replace(/_/g, ' '))} */}
         </Typography>
       </Box>
     </StyledRoot>
