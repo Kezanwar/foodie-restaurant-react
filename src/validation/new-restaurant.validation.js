@@ -50,9 +50,9 @@ export const restaurantDetailsSchema = Yup.object().shape({
   booking_link: Yup.string().test({
     test: (str) => {
       if (str.length === 0) return true;
-      return !str.includes(' ');
+      return !str.includes(' ') && str.includes('.');
     },
-    message: 'Booking link must not have any spaces',
+    message: 'Booking link must not have any spaces and include a full stop',
     nam: 'Booking link'
   })
 });
