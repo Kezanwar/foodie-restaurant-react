@@ -96,6 +96,7 @@ const NewRestaurantCreateRestaurant = (props) => {
       cover_photo: data?.data?.cover_photo || null,
       is_new_cover: !data?.data?.avatar,
       bio: data?.data?.bio || '',
+      booking_link: data?.data?.booking_link || '',
       social_media: {
         instagram: data?.data?.social_media?.instagram || '',
         facebook: data?.data?.social_media?.facebook || '',
@@ -104,6 +105,7 @@ const NewRestaurantCreateRestaurant = (props) => {
       }
     }),
     [
+      data?.data?.booking_link,
       data?.data?.name,
       data?.data?.avatar,
       data?.data?.cover_photo,
@@ -159,7 +161,8 @@ const NewRestaurantCreateRestaurant = (props) => {
         is_new_cover,
         social_media,
         cuisines,
-        dietary_requirements
+        dietary_requirements,
+        booking_link
       } = data;
       setFormSubmitLoading(true);
       const formData = getFormDataFromObject({
@@ -169,7 +172,8 @@ const NewRestaurantCreateRestaurant = (props) => {
         cuisines,
         dietary_requirements,
         bio,
-        social_media
+        social_media,
+        booking_link
       });
       const updatedRestaurant = await postRestaurantDetails(formData);
       mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_rest_profile_success, {});
@@ -259,51 +263,6 @@ const NewRestaurantCreateRestaurant = (props) => {
             </Alert>
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>
-
-        <CustomTooltip mb={1} tooltipText={image_tooltip.tooltip} />
-
-        <Subheader text={'Upload your Restaurant Avatar'} />
-
-        <InputWithInfoStack>
-          <InputWithInfoInputContainer sx={uploadAvatarSx}>
-            <RHFUploadAvatar margin={0} name="avatar" label="" />
-          </InputWithInfoInputContainer>
-          <InputWithInfoInfoContainer>
-            <Alert icon={<HelpIcon />} severity={'success'}>
-              <AlertTitle>How is the avatar used?</AlertTitle>
-              Your Restaurant Avatar acts as a profile image for your
-              Restaurant, your cover photo is used as the back drop.
-              <Box mt={1}>
-                If an image isn't provided for a new deal, the deal image will
-                default to your Restaurant Cover Photo.
-              </Box>
-              <Box mt={1}>
-                Images can be updated <strong>at any time.</strong>
-              </Box>
-            </Alert>
-          </InputWithInfoInfoContainer>
-        </InputWithInfoStack>
-        <CustomTooltip tooltipText={image_tooltip.tooltip} mb={1} />
-
-        <Subheader text={'Upload your restaurant cover photo'} />
-        <InputWithInfoStack>
-          <InputWithInfoInputContainer>
-            <RHFUploadWithCrop name="cover_photo" label="" />
-          </InputWithInfoInputContainer>
-          <InputWithInfoInfoContainer>
-            <Alert icon={<HelpIcon />} severity={'success'}>
-              <AlertTitle>How is the cover photo used?</AlertTitle>
-              Your restaurant cover photo acts as a backdrop for your restaurant
-              profile screen and a fallback for deals if one isn't provided for
-              them.
-              <Box mt={1}>
-                Images can be updated <strong>at any time.</strong>
-              </Box>
-            </Alert>
-          </InputWithInfoInfoContainer>
-        </InputWithInfoStack>
-
-        <Spacer />
         <Subheader text={'Add your cuisines (Choose multiple or one)'} />
 
         <InputWithInfoStack>
@@ -353,6 +312,52 @@ const NewRestaurantCreateRestaurant = (props) => {
             </Alert>
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>
+
+        <CustomTooltip mb={1} tooltipText={image_tooltip.tooltip} />
+
+        <Subheader text={'Upload your Restaurant Avatar'} />
+
+        <InputWithInfoStack>
+          <InputWithInfoInputContainer sx={uploadAvatarSx}>
+            <RHFUploadAvatar margin={0} name="avatar" label="" />
+          </InputWithInfoInputContainer>
+          <InputWithInfoInfoContainer>
+            <Alert icon={<HelpIcon />} severity={'success'}>
+              <AlertTitle>How is the avatar used?</AlertTitle>
+              Your Restaurant Avatar acts as a profile image for your
+              Restaurant, your cover photo is used as the back drop.
+              <Box mt={1}>
+                If an image isn't provided for a new deal, the deal image will
+                default to your Restaurant Cover Photo.
+              </Box>
+              <Box mt={1}>
+                Images can be updated <strong>at any time.</strong>
+              </Box>
+            </Alert>
+          </InputWithInfoInfoContainer>
+        </InputWithInfoStack>
+        <CustomTooltip tooltipText={image_tooltip.tooltip} mb={1} />
+
+        <Subheader text={'Upload your restaurant cover photo'} />
+        <InputWithInfoStack>
+          <InputWithInfoInputContainer>
+            <RHFUploadWithCrop name="cover_photo" label="" />
+          </InputWithInfoInputContainer>
+          <InputWithInfoInfoContainer>
+            <Alert icon={<HelpIcon />} severity={'success'}>
+              <AlertTitle>How is the cover photo used?</AlertTitle>
+              Your restaurant cover photo acts as a backdrop for your restaurant
+              profile screen and a fallback for deals if one isn't provided for
+              them.
+              <Box mt={1}>
+                Images can be updated <strong>at any time.</strong>
+              </Box>
+            </Alert>
+          </InputWithInfoInfoContainer>
+        </InputWithInfoStack>
+
+        <Spacer />
+
         <Subheader
           text={'Add a bio for customers to read (Max 500 characters)'}
         />
@@ -369,6 +374,28 @@ const NewRestaurantCreateRestaurant = (props) => {
           />
         </FormSectionStack>
         <Spacer />
+        <Subheader text={'Add a booking link for your restaurant (optional)'} />
+
+        <InputWithInfoStack>
+          <InputWithInfoInputContainer>
+            <RHFTextField
+              sx={{ flex: 1 }}
+              name="booking_link"
+              label="Add your booking link"
+              placeholder={'e.g www.yourwebsite.com/booking'}
+              variant={'filled'}
+            />
+          </InputWithInfoInputContainer>
+          <InputWithInfoInfoContainer>
+            <Alert icon={<HelpIcon />} severity={'success'}>
+              <AlertTitle>How is this used?</AlertTitle>
+              Your Restaurant name is what shows up in the search for deals and
+              restaurants, if you are a chain, when you add multiple locations
+              the name will show up followed by the locations provided nickname
+              in brackets. e.g - <strong>Rudy's (Ancoats Sq)</strong>
+            </Alert>
+          </InputWithInfoInfoContainer>
+        </InputWithInfoStack>
         <Subheader
           text={'Add your restaurants social media links (optional)'}
         />

@@ -181,7 +181,6 @@ export default function DealsCreate() {
 
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <StaticDateRangePicker
-                      disablePast
                       sx={datePickerSx}
                       onChange={(v) => console.log(v)}
                     />

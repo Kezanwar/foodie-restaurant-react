@@ -46,7 +46,15 @@ export const restaurantDetailsSchema = Yup.object().shape({
   bio: Yup.string()
     .required('Restaurant bio is required')
     .min(140, 'Bio is minimum 140 characters')
-    .max(500, 'Bio is max 500 characters')
+    .max(500, 'Bio is max 500 characters'),
+  booking_link: Yup.string().test({
+    test: (str) => {
+      if (str.length === 0) return true;
+      return !str.includes(' ') && str.includes('.');
+    },
+    message: 'Booking link must not have any spaces and include a full stop',
+    name: 'Booking link'
+  })
 });
 
 export const addLocationsSchema = Yup.object().shape({

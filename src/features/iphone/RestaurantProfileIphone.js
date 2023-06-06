@@ -1,7 +1,10 @@
+/* eslint-disable no-useless-escape */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
+  Button,
+  Link,
   Stack,
   TextField,
   Typography,
@@ -9,7 +12,7 @@ import {
 } from '@mui/material';
 import { capitalize } from 'lodash';
 import { useTheme } from '@emotion/react';
-
+import EastIcon from '@mui/icons-material/East';
 import Iphone14Pro from '../../components/iphone/Iphone14Pro';
 import SvgColor from '../../components/svg-color/SvgColor';
 import useLocationsQuery from '../../hooks/queries/useLocationsQuery';
@@ -39,7 +42,46 @@ const AvatarStyles = {
   border: '2px solid white'
 };
 
+const btnStyles = {
+  width: '100%',
+  py: 1,
+  transition: 'all 150ms ease',
+  bgcolor: 'text.primary',
+  color: (theme) =>
+    theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+  '&:hover': {
+    bgcolor: 'text.primary',
+    color: (theme) =>
+      theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+    opacity: 0.8,
+    boxShadow: 'none'
+  }
+};
+
 const TypographyWordBreak = { wordBreak: 'break-all' };
+
+const link = (url) => {
+  const l = document.createElement('a');
+  l.href = `${url.includes('http') ? '' : '//'}${url}`;
+  l.target = '_blank';
+  l.click();
+  l.remove();
+};
+
+const BookButton = ({ url }) => {
+  return (
+    <Button
+      type="button"
+      onClick={(e) => {
+        link(url);
+      }}
+      sx={btnStyles}
+      variant="contained"
+    >
+      Book now <EastIcon fontSize="small" sx={{ marginLeft: 1 }} />
+    </Button>
+  );
+};
 
 const OpeningTimeText = ({ day, value }) => {
   return (
@@ -103,6 +145,8 @@ const RestaurantProfileIphone = () => {
       setSelectedLocationID(locations[0]._id);
     }
   }, [locations, setSelectedLocationID]);
+
+  const bookingLink = data?.data?.booking_link;
 
   return (
     <Stack
@@ -324,7 +368,7 @@ const RestaurantProfileIphone = () => {
                         </Typography>
                         <DealIconBox className="deal-box">
                           <SvgColor
-                            src={'/assets/icons/navbar/ic_deal.svg'}
+                            src={'/assets/icons/navbar/ic_voucher.svg'}
                             sx={{
                               width: 24,
                               height: 24
@@ -334,6 +378,12 @@ const RestaurantProfileIphone = () => {
                       </DealContainer>
                     );
                   })}
+
+                  {bookingLink && (
+                    <>
+                      <Spacer sp={4} /> <BookButton url={bookingLink} />
+                    </>
+                  )}
                 </Box>
               </Box>
             </Box>
