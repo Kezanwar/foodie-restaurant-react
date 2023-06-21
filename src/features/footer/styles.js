@@ -1,5 +1,6 @@
 import { Box, styled } from '@mui/material';
 import FooterBG from '../../assets/footer-bg.svg';
+import FooterBGMobile from '../../assets/footer-bg-mob.svg';
 
 export const FooterContainer = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(20),
@@ -7,7 +8,14 @@ export const FooterContainer = styled(Box)(({ theme }) => ({
   minHeight: '30vh',
   background: `url(${FooterBG})`,
   backgroundSize: '100%',
-  backgroundRepeat: 'no-repeat'
+  backgroundRepeat: 'no-repeat',
+  [theme.breakpoints.down('md')]: {
+    marginTop: theme.spacing(12),
+    background: `url(${FooterBGMobile})`,
+    minHeight: '30vh',
+    backgroundSize: '100%',
+    backgroundRepeat: 'no-repeat'
+  }
 }));
 
 export const FooterGrid = styled(Box)(({ theme }) => ({

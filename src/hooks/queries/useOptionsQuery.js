@@ -7,7 +7,8 @@ const useOptionsQuery = () => {
   // const queryClient = useQueryClient();
   const query = useQuery(OPTIONS_QUERY, () => getOptions(), {
     enabled: true,
-    staleTime: 300000
+    staleTime: 60 * (60 * 1000),
+    cacheTime: 120 * (60 * 1000)
   });
 
   // const updateQuery = useCallback((data) => {

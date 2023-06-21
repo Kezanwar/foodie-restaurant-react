@@ -42,7 +42,7 @@ export default function SnackbarProvider({ children }) {
         iconVariant={{
           info: <SnackbarIcon icon="eva:info-fill" color="info" />,
           success: (
-            <SnackbarIcon icon="eva:checkmark-circle-2-fill" color="primary" />
+            <SnackbarIcon icon="eva:checkmark-circle-2-fill" color="success" />
           ),
           warning: (
             <SnackbarIcon icon="eva:alert-triangle-fill" color="warning" />

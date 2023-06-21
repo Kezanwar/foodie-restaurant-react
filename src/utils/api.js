@@ -1,8 +1,8 @@
 import axiosInstance from './axios';
+import { formattedDateString } from './formatTime';
 
 const endpoints = {
   getRestaurant: '/restaurant',
-  getLocations: '/locations/all',
 
   // create new restaurant
   postCompanyInfo: '/create-restaurant/company-info',
@@ -11,25 +11,26 @@ const endpoints = {
   postSubmitApplication: 'create-restaurant/submit-application',
 
   // locations
+  getLocations: '/locations',
   checkLocation: '/locations/check',
   checkEditLocation: '/locations/edit/check',
   addLocation: '/locations/add',
   editLocation: '/locations/edit',
   deleteLocation: '/locations/delete',
 
-  // options
+  // deals
+  getActiveDeals: '/deals/active',
+  getExpiredDeals: '/deals/expired',
+  addDeal: '/deals/add',
 
+  // options
   getOptions: '/options'
 };
 
-export const getRestaurant = async () => {
-  const res = await axiosInstance.get(endpoints.getRestaurant);
-  return res;
-};
+//* ------ Restaurant --------
 
-export const getLocations = async () => {
-  const res = await axiosInstance.get(endpoints.getLocations);
-  return res;
+export const getRestaurant = () => {
+  return axiosInstance.get(endpoints.getRestaurant);
 };
 
 //* ------ Create new restaurant journey --------
@@ -56,6 +57,10 @@ export const postSubmitApplicationStep = (data) => {
 
 //* ----------------- Locations -----------------
 
+export const getLocations = async () => {
+  return axiosInstance.get(endpoints.getLocations);
+};
+
 export const checkLocation = (data) => {
   return axiosInstance.post(endpoints.checkLocation, data);
 };
@@ -74,6 +79,28 @@ export const editLocation = (data, id) => {
 
 export const deleteLocation = (id) => {
   return axiosInstance.post(`${endpoints.deleteLocation}/${id}`);
+};
+
+//* ----------------- Deals -----------------
+
+export const getActiveDeals = async () => {
+  return axiosInstance.get(endpoints.getActiveDeals, {
+    params: {
+      current_date: formattedDateString(new Date())
+    }
+  });
+};
+
+export const getExpiredDeals = async () => {
+  return axiosInstance.get(endpoints.getExpiredDeals, {
+    params: {
+      current_date: formattedDateString(new Date())
+    }
+  });
+};
+
+export const addDeal = (data) => {
+  return axiosInstance.post(endpoints.addDeal, data);
 };
 
 //* ------------------ Options -------------------

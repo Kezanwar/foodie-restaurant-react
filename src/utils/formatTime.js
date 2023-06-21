@@ -21,7 +21,9 @@ export function fTimestamp(date) {
 export function fToNow(date) {
   return date
     ? formatDistanceToNow(new Date(date), {
-        addSuffix: true,
+        addSuffix: true
       })
     : '';
 }
+
+export const formattedDateString = (date) => format(date, 'yyyy-MM-dd');

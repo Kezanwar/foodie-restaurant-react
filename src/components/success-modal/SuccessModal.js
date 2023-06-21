@@ -8,7 +8,14 @@ import Image from 'mui-image';
 
 import SuccessUndraw from '../../assets/undraw-sucess.svg';
 
-const SuccessModal = ({ isOpen, onThanksCTA, title, subtitle, ctaText }) => {
+const SuccessModal = ({
+  isOpen,
+  onThanksCTA,
+  title,
+  subtitle,
+  ctaText,
+  imgSrc = SuccessUndraw
+}) => {
   return (
     <Modal
       sx={{
@@ -48,7 +55,7 @@ const SuccessModal = ({ isOpen, onThanksCTA, title, subtitle, ctaText }) => {
           {subtitle}
         </Typography>
         <Box mt={6} sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Image src={SuccessUndraw} width={'120px'} />
+          <Image src={imgSrc} width={'120px'} />
         </Box>
 
         <Box mt={6} px={1} display={'flex'} justifyContent={'center'}>

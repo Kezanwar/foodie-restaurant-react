@@ -6,4 +6,14 @@ export const LOCATIONS_QUERY = {
   LOCATIONS: 'LOCATIONS'
 };
 
+export const DEALS_QUERY = {
+  ACTIVE_DEALS: 'ACTIVE_DEALS',
+  EXPIRED_DEALS: 'EXPIRED_DEALS'
+};
+
 export const OPTIONS_QUERY = 'OPTIONS';
+
+export const cacheValues = {
+  staleTime: 10 * (60 * 1000),
+  cacheTime: 15 * (60 * 1000)
+};
