@@ -1,20 +1,20 @@
 import { useCallback } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import {
-  LOCATIONS_QUERY,
+  DEALS_QUERY,
   cacheValues
 } from '../../constants/react-query.constants';
-import { getLocations } from '../../utils/api';
+import { getActiveDeals } from '../../utils/api';
 
-const useLocationsQuery = () => {
+const useActiveDealsQuery = () => {
   const queryClient = useQueryClient();
-  const query = useQuery(LOCATIONS_QUERY.LOCATIONS, () => getLocations(), {
+  const query = useQuery(DEALS_QUERY.ACTIVE_DEALS, () => getActiveDeals(), {
     enabled: true,
     ...cacheValues
   });
 
   const updateQuery = useCallback((data) => {
-    queryClient.setQueryData(LOCATIONS_QUERY.LOCATIONS, (oldData) => {
+    queryClient.setQueryData(DEALS_QUERY.ACTIVE_DEALS, (oldData) => {
       return {
         ...oldData,
         data
@@ -24,7 +24,7 @@ const useLocationsQuery = () => {
 
   const invalidateQuery = useCallback(() => {
     queryClient.invalidateQueries({
-      queryKey: [LOCATIONS_QUERY.LOCATIONS]
+      queryKey: [DEALS_QUERY.ACTIVE_DEALS]
     });
   });
 
@@ -34,4 +34,4 @@ const useLocationsQuery = () => {
   return query;
 };
 
-export default useLocationsQuery;
+export default useActiveDealsQuery;

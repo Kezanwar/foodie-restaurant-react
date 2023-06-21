@@ -25,7 +25,8 @@ import {
   NewRestaurantCreateRestaurant,
   NewRestaurantAddLocations,
   PageConfirmEmail,
-  DealsCreate
+  DealsCreate,
+  DealsAll
 } from './elements';
 import {
   PATH_AUTH,
@@ -83,7 +84,7 @@ export default function Router() {
               element: <Navigate to={PATH_DASHBOARD.deals_all} replace />,
               index: true
             },
-            { path: 'all', element: <PageFour /> },
+            { path: 'all', element: <DealsAll /> },
             { path: 'create', element: <DealsCreate /> },
             { path: ':id', element: <PageSix /> },
             { path: 'edit/:id', element: <PageSix /> }

@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, IconButton, Modal, Typography } from '@mui/material';
+import { Button, IconButton, Modal, Typography, alpha } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box } from '@mui/system';
 import { LoadingButton } from '@mui/lab';
+import { TheatersOutlined } from '@mui/icons-material';
 
 const AcceptDeclineModal = ({
   isOpen,
@@ -13,7 +14,8 @@ const AcceptDeclineModal = ({
   subtitle,
   acceptText,
   submitLoading,
-  cancelText
+  cancelText,
+  children
 }) => {
   return (
     <Modal
@@ -28,9 +30,9 @@ const AcceptDeclineModal = ({
         px={2}
         py={2}
         sx={{
-          background: 'white',
+          backgroundColor: (theme) => theme.palette.background.paper,
           width: '480px',
-          //   minHeight: '200px',
+          minHeight: '200px',
           maxWidth: '95vw',
           borderRadius: 1
         }}
@@ -53,6 +55,11 @@ const AcceptDeclineModal = ({
         <Typography pl={1} color={'grey'} variant="body2">
           {subtitle}
         </Typography>
+        {children && (
+          <Box px={1} mt={2}>
+            {children}
+          </Box>
+        )}
         <Box mt={6} px={1} display={'flex'} justifyContent={'center'}>
           <Button
             onClick={onCancel}

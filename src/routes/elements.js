@@ -51,6 +51,10 @@ export const DealsCreate = Loadable(
   lazy(() => import('../pages/dashboard/Deals/DealsCreate'))
 );
 
+export const DealsAll = Loadable(
+  lazy(() => import('../pages/dashboard/Deals/DealsAll'))
+);
+
 // ----------------------------------------------------------------------
 
 // * New Restaurant Pages

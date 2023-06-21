@@ -297,6 +297,9 @@ const NewRestaurantCompanyInfo = (props) => {
           </InputWithInfoStack>
 
           {/* ACTIONS */}
+          {!!errors.afterSubmit && (
+            <Alert severity="error">{errors.afterSubmit.message}</Alert>
+          )}
 
           <Box mt={4} sx={{ display: 'flex' }}>
             <Button color="inherit" onClick={handleBack}>

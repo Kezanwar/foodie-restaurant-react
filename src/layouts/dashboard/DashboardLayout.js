@@ -26,7 +26,6 @@ export default function DashboardLayout() {
   const { isLoading, data, isFetched } = useRestaurantQuery();
 
   useEffect(() => {
-    enqueueSnackbar('hello');
     if (
       (isFetched && !data?.data?.status) ||
       data?.data?.status === RESTAURANT_STATUS.APPLICATION_PENDING ||

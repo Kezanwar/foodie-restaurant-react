@@ -46,7 +46,10 @@ export default function Input(theme) {
       styleOverrides: {
         root: {
           borderRadius: theme.shape.borderRadius,
-          backgroundColor: alpha(theme.palette.grey[400], 0.08),
+          backgroundColor: alpha(
+            theme.palette.grey[400],
+            theme.palette.mode === 'light' ? 0.2 : 0.1
+          ),
           '&:hover': {
             backgroundColor: alpha(theme.palette.grey[400], 0.15)
           },

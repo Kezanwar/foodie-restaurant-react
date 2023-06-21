@@ -43,13 +43,15 @@ export const StoreNameAndUrlWrapper = styled(Box)(({ theme }) => ({
   }
 }));
 
-export const InputWithInfoStack = styled(Stack)(({ theme, matchGapMB }) => ({
-  marginBottom: matchGapMB ? theme.spacing(3) : theme.spacing(5),
+export const InputWithInfoStack = styled(Stack, {
+  shouldForwardProp: (p) => p !== 'reverseMob'
+})(({ theme, reverseMob }) => ({
+  marginBottom: theme.spacing(5),
   flexDirection: 'row',
   gap: theme.spacing(3),
   flex: 1,
   [theme.breakpoints.down('md')]: {
-    flexDirection: 'column'
+    flexDirection: reverseMob ? 'column-reverse' : 'column'
   }
 }));
 

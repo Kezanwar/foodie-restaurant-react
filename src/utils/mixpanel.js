@@ -57,7 +57,10 @@ export const MIXPANEL_EVENTS = {
   edit_location_success: 'fe_edit_location_success',
   edit_location_failed: 'fe_edit_location_failed',
   delete_location_success: 'fe_delete_location_success',
-  delete_location_failed: 'fe_delete_location_failed'
+  delete_location_failed: 'fe_delete_location_failed',
+
+  // ---- DEALS
+  add_deal_success: 'fe_add_deal_sucess'
 };
 
 export function mixpanelTrack(eventName, props) {

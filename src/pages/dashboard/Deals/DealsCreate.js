@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-
+import { LoadingButton } from '@mui/lab';
+import { useSnackbar } from 'notistack';
+import { useNavigate } from 'react-router';
 import { StaticDateRangePicker } from '@mui/x-date-pickers-pro/StaticDateRangePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro';
-import dayjs from 'dayjs';
+import { add, format } from 'date-fns';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
@@ -14,28 +15,40 @@ import {
   Typography,
   Alert,
   AlertTitle,
-  TextField
+  Button,
+  FormHelperText
 } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
-import DashboardTitle from '../../../components/dashboard-title/DashboardTitle';
-import FormProvider from '../../../components/hook-form/FormProvider';
 
-import { companyInfoSchema } from '../../../validation/new-restaurant.validation';
+import FormProvider from '../../../components/hook-form/FormProvider';
+import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
+import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
+
 import { newDealSchema } from '../../../validation/deals.validation';
 import {
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
   InputWithInfoStack
 } from '../../../features/forms/styles';
+import DashboardTitle from '../../../components/dashboard-title/DashboardTitle';
 import { RHFAutocomplete, RHFTextField } from '../../../components/hook-form';
-import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
+
 import Subheader from '../../../components/subheader/Subheader';
-import { MAX_DEALS } from '../../../constants/deals.constants';
+
 import { DashboardTitleContainer } from '../styles';
-import DateRangePicker from '../../../components/date-range-picker/DateRangePicker';
+
 import RHFMultipleAutocomplete from '../../../components/hook-form/RHFMultipleAutoComplete';
-import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
+
 import Spacer from '../../../components/spacer/Spacer';
+import { formattedDateString } from '../../../utils/formatTime';
+import { SelectButton } from '../../../components/select-button/SelectButton';
+import ExpandableBox from '../../../components/expandable-box/ExpandableBox';
+import { addDeal } from '../../../utils/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
+import AcceptDeclineModal from '../../../components/accept-decline-modal/AcceptDeclineModal';
+
+import { PATH_DASHBOARD } from '../../../routes/paths';
+import useActiveDealsQuery from '../../../hooks/queries/useActiveDealsQuery';
 
 // components
 
@@ -49,37 +62,46 @@ function removeLicenseEl() {
   getElementsByText('MUI X Missing license key').forEach((el) => el.remove());
 }
 
-const datePickerSx = {
-  backgroundColor: 'transparent',
-  padding: 0,
-
-  '.MuiDialogActions-root': {
-    display: 'none'
+const DateInputOptions = [
+  {
+    text: '6 Months',
+    start_date: formattedDateString(new Date()),
+    end_date: formattedDateString(add(new Date(), { months: 6 }))
   },
-  '.MuiPickersToolbar-root': {
-    padding: 0,
-    'span.MuiTypography-overline': {
-      display: 'none'
-    }
+  {
+    text: '3 Months',
+    start_date: formattedDateString(new Date()),
+    end_date: formattedDateString(add(new Date(), { months: 3 }))
   },
-  '.MuiDateRangeCalendar-monthContainer': {
-    border: '1px solid #f0f0f0',
-    borderRadius: '8px',
-    marginTop: '16px'
+  {
+    text: '1 Month',
+    start_date: formattedDateString(new Date()),
+    end_date: formattedDateString(add(new Date(), { months: 1 }))
+  },
+  {
+    text: '2 Weeks',
+    start_date: formattedDateString(new Date()),
+    end_date: formattedDateString(add(new Date(), { weeks: 2 }))
   }
-};
+];
 
 // ----------------------------------------------------------------------
 
 export default function DealsCreate() {
-  const { isTablet } = useCustomMediaQueries();
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [formSubmitLoading, setFormSubmitLoading] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const navigate = useNavigate();
+
   const defaultValues = useMemo(
     () => ({
       name: '',
       description: '',
       start_date: '',
       end_date: '',
-      timezone: '',
       locations: []
     }),
     []
@@ -90,21 +112,120 @@ export default function DealsCreate() {
     defaultValues
   });
 
+  const datePickerRef = useRef();
+  const staticPickerValues = useRef({ start: '', end: '' });
+
   const {
     reset,
     setError,
+    watch,
     handleSubmit,
+    trigger,
+    clearErrors,
     formState: { errors, isSubmitting, isSubmitSuccessful },
     getValues,
     getFieldState,
     setValue
   } = methods;
 
-  const onSubmit = async () => {};
+  const dateErrors = errors.start_date || errors.end_date;
+
+  const allActiveDeals = useActiveDealsQuery();
+
+  const dateErrorText = showDatePicker
+    ? 'Required - please choose a start and end date'
+    : 'Must choose a date range to advertise this deal';
+
+  const updateFormDateRange = (start_date, end_date) => {
+    setShowDatePicker(false);
+    setValue('start_date', start_date);
+    setValue('end_date', end_date);
+    if (dateErrors) trigger();
+  };
+
+  const updateStaticDatePicker = ([start, end]) => {
+    staticPickerValues.current = { start, end };
+    if (start) {
+      setValue('start_date', formattedDateString(start?.$d));
+    } else {
+      setValue('start_date', '');
+    }
+    if (end) {
+      setValue('end_date', formattedDateString(end?.$d));
+    } else {
+      setValue('end_date', '');
+    }
+    clearErrors();
+  };
+
+  const handleShowDatePicker = () => {
+    const { start, end } = staticPickerValues.current;
+    setShowDatePicker(true);
+    clearErrors(['start_date', 'end_date']);
+
+    if (start) {
+      setValue('start_date', formattedDateString(start?.$d));
+    } else {
+      setValue('start_date', '');
+    }
+    if (end) {
+      setValue('end_date', formattedDateString(end?.$d));
+    } else {
+      setValue('end_date', '');
+    }
+    setTimeout(
+      () =>
+        datePickerRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        }),
+      300
+    );
+  };
+
+  const onCancelModal = () => {
+    setShowConfirmModal(false);
+  };
+
+  const postDeal = useCallback(async () => {
+    await trigger();
+    if (Object.values(errors).length) {
+      onCancelModal();
+      return;
+    }
+    const data = getValues();
+    try {
+      setFormSubmitLoading(true);
+      const postLocations = data?.locations?.map((l) => l._id);
+      const newDeal = await addDeal({ ...data, locations: postLocations });
+      mixpanelTrack(MIXPANEL_EVENTS.add_deal_success, {
+        data
+      });
+      enqueueSnackbar(`${data.name} created successfully`, {
+        variant: 'success'
+      });
+      reset();
+      setFormSubmitLoading(false);
+      setShowConfirmModal(false);
+      allActiveDeals.invalidateQuery();
+      navigate(PATH_DASHBOARD.deals_all);
+    } catch (error) {
+      setError('afterSubmit', {
+        ...error,
+        message: error.message
+      });
+      setFormSubmitLoading(false);
+      setShowConfirmModal(false);
+    }
+  }, []);
+
+  const onSubmit = async (data) => {
+    setShowConfirmModal(true);
+  };
 
   useEffect(() => {
     removeLicenseEl();
-  }, []);
+  }, [showDatePicker]);
 
   const { data } = useLocationsQuery();
 
@@ -119,28 +240,67 @@ export default function DealsCreate() {
     });
   }, [data?.data?.length]);
 
-  const [date, setDate] = useState('');
+  const endDate = watch('end_date');
+  const startDate = watch('start_date');
+
+  const { isTablet } = useCustomMediaQueries();
+
+  const datePickerSx = useMemo(
+    () => ({
+      backgroundColor: 'transparent',
+      padding: 0,
+      marginTop: 3,
+
+      '.MuiDialogActions-root': {
+        display: 'none'
+      },
+      '.MuiPickersToolbar-root': {
+        padding: 0,
+        'span.MuiTypography-overline': {
+          display: 'none'
+        }
+      },
+      '.MuiDateRangeCalendar-monthContainer': {
+        border: '1px solid #f0f0f0',
+        borderRadius: '8px',
+        marginTop: '16px'
+      },
+      '.MuiPickersToolbar-content': {
+        justifyContent: isTablet ? 'center' : 'flex-start'
+      }
+    }),
+    [isTablet]
+  );
+
   return (
     <>
       <Helmet>
         <title> Create a new deal | Foodie</title>
       </Helmet>
 
-      <Container maxWidth={'xl'}>
+      <Container sx={{ px: 3 }} maxWidth={'xl'}>
         <DashboardTitleContainer>
           <DashboardTitle title="Create a new deal" />
           <Typography variant="body2" color={'text.secondary'}>
-            Use this form to create a new deal, you're allowed to have a{' '}
+            {/* Use this form to create a new deal, you're allowed to have a{' '}
             <strong>maximum of {MAX_DEALS} active deals </strong> at one time.
-            You can manage your deals here.
+            You can manage your deals here. */}
           </Typography>
         </DashboardTitleContainer>
         <Box>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <Box>
-              <Subheader text={'Give your deal a name & description'} />
-              <InputWithInfoStack>
+            <Box pb={1}>
+              <InputWithInfoStack reverseMob>
                 <InputWithInfoInputContainer>
+                  <Subheader
+                    sx={{ marginBottom: 8 }}
+                    text={'Give your deal a name & description'}
+                  />
+                  <Typography mb={2} variant="body2" color={'text.secondary'}>
+                    * Please include all relevant information including any
+                    restricted times the offer is available here, e.g Lunch time
+                    special, available between 12-4pm...
+                  </Typography>
                   <RHFTextField
                     sx={{ flex: 1, marginBottom: 3 }}
                     name="name"
@@ -156,7 +316,7 @@ export default function DealsCreate() {
                     name="description"
                     label="Enter your deal description (max 140 characters)"
                   />
-                  <Spacer />
+                  <Spacer sp={6} />
                   <Subheader
                     text={'Select 1 or more locations for this deal'}
                   />
@@ -169,25 +329,127 @@ export default function DealsCreate() {
                     label="Select 1 or more locations"
                     placeholder="Start typing or choose from the dropdown"
                   />
-                  <Spacer />
+                  <Spacer sp={6} />
                   <Subheader
                     sx={{ marginBottom: 8 }}
                     text={'How long do you want to advertise this deal for?'}
                   />
-                  <Typography mb={1} variant="body2" color={'text.secondary'}>
-                    Must choose a location first, each individual deal can only
-                    exist in one timezone.
+                  <Typography mb={2} variant="body2" color={'text.secondary'}>
+                    * You can expire a deal at any time from your dashboard
                   </Typography>
 
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      gap: 1,
+                      flexWrap: 'wrap',
+                      justifyContent: isTablet ? 'center' : 'flex-start',
+                      marginTop: isTablet ? 3 : 0
+                    }}
+                  >
+                    {DateInputOptions.map((dateObj) => {
+                      const isCustomBtn = dateObj.text === 'Custom Date Range';
+                      const isSelected =
+                        !showDatePicker &&
+                        endDate === dateObj.end_date &&
+                        startDate === dateObj.start_date;
+                      return (
+                        <SelectButton
+                          key={dateObj.text}
+                          isSelected={isCustomBtn ? showDatePicker : isSelected}
+                          variant="outlined"
+                          color={
+                            dateErrors
+                              ? 'error'
+                              : isSelected
+                              ? 'primary'
+                              : 'inherit'
+                          }
+                          onClick={
+                            isCustomBtn
+                              ? handleShowDatePicker
+                              : () =>
+                                  updateFormDateRange(
+                                    dateObj.start_date,
+                                    dateObj.end_date
+                                  )
+                          }
+                        >
+                          {dateObj.text}
+                        </SelectButton>
+                      );
+                    })}
+                    <SelectButton
+                      isSelected={showDatePicker}
+                      variant="outlined"
+                      color={
+                        dateErrors
+                          ? 'error'
+                          : showDatePicker
+                          ? 'primary'
+                          : 'inherit'
+                      }
+                      onClick={handleShowDatePicker}
+                    >
+                      Custom date range
+                    </SelectButton>
+                  </Box>
+
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <StaticDateRangePicker
-                      sx={datePickerSx}
-                      onChange={(v) => console.log(v)}
-                    />
+                    <ExpandableBox expanded={showDatePicker}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: isTablet ? 'center' : 'flex-start'
+                        }}
+                        ref={datePickerRef}
+                      >
+                        <StaticDateRangePicker
+                          disablePast
+                          reduceAnimations={isTablet}
+                          sx={datePickerSx}
+                          onChange={(v) => updateStaticDatePicker(v)}
+                        />
+                      </Box>
+                    </ExpandableBox>
                   </LocalizationProvider>
+                  {dateErrors && (
+                    <Box mt={2}>
+                      <FormHelperText error>{dateErrorText}</FormHelperText>
+                    </Box>
+                  )}
+                  {!!errors.afterSubmit && (
+                    <Alert severity="error">{errors.afterSubmit.message}</Alert>
+                  )}
+                  <Box mt={4} sx={{ display: 'flex' }}>
+                    <Button color="inherit" onClick={() => {}} sx={{ mr: 1 }}>
+                      Cancel
+                    </Button>
+                    <Box sx={{ flexGrow: 1 }} />
+                    {/* <Button
+                      color="inherit"
+                      onClick={() => {
+                        console.log(getValues());
+                      }}
+                      sx={{ mr: 1 }}
+                    >
+                      Vals
+                    </Button> */}
+                    <LoadingButton
+                      loading={formSubmitLoading}
+                      type="submit"
+                      variant="contained"
+                    >
+                      Done
+                    </LoadingButton>
+                  </Box>
                 </InputWithInfoInputContainer>
                 <InputWithInfoInfoContainer>
-                  <Alert icon={<HelpIcon />} severity={'success'}>
+                  <Alert
+                    sx={{ mb: 2 }}
+                    icon={<HelpIcon />}
+                    severity={'success'}
+                  >
                     <AlertTitle>How do deals work?</AlertTitle>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. At
                     neque minima sit doloribus harum soluta necessitatibus hic?
@@ -209,9 +471,48 @@ export default function DealsCreate() {
                 </InputWithInfoInfoContainer>
               </InputWithInfoStack>
             </Box>
+            {showConfirmModal && (
+              <AcceptDeclineModal
+                onCancel={onCancelModal}
+                onAccept={postDeal}
+                acceptText={'Create deal'}
+                cancelText={'Cancel'}
+                submitLoading={formSubmitLoading}
+                title={'Confirm new deal'}
+                subtitle={'Are you sure you want to create this deal?'}
+                isOpen={showConfirmModal}
+              >
+                <Box>
+                  <Typography fontSize={14}>{getValues().name}</Typography>
+                  <Separator />
+                  <Typography fontSize={14}>
+                    {getValues().description}
+                  </Typography>
+                  <Separator />
+                  <Box>
+                    {getValues().locations.map((l, i) => (
+                      <Typography key={l._id} mb={1} fontSize={14}>
+                        {l.name}
+                      </Typography>
+                    ))}
+                  </Box>
+                  <Separator />
+                  <Typography fontSize={14}>
+                    Start date{' '}
+                    {format(new Date(getValues().start_date), 'dd-MM-yyyy')} -
+                    End date{' '}
+                    {format(new Date(getValues().end_date), 'dd-MM-yyyy')}
+                  </Typography>
+                </Box>
+              </AcceptDeclineModal>
+            )}
           </FormProvider>
         </Box>
       </Container>
     </>
   );
 }
+
+const Separator = () => (
+  <Box sx={{ height: '1px', backgroundColor: 'primary.main', my: 2 }} />
+);
