@@ -47,12 +47,16 @@ export const PageSix = Loadable(
 
 // * Dashboard Deals
 
+export const DealsAll = Loadable(
+  lazy(() => import('../pages/dashboard/Deals/DealsAll'))
+);
+
 export const DealsCreate = Loadable(
   lazy(() => import('../pages/dashboard/Deals/DealsCreate'))
 );
 
-export const DealsAll = Loadable(
-  lazy(() => import('../pages/dashboard/Deals/DealsAll'))
+export const DealsSingle = Loadable(
+  lazy(() => import('../pages/dashboard/Deals/DealsSingle'))
 );
 
 // ----------------------------------------------------------------------

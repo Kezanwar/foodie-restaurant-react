@@ -1,5 +1,6 @@
 import mixpanel from 'mixpanel-browser';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 // routes
@@ -32,6 +33,7 @@ export default function App() {
               <ThemeProvider>
                 <SnackbarProvider>
                   <Router />
+                  <ReactQueryDevtools initialIsOpen={false} />
                 </SnackbarProvider>
               </ThemeProvider>
             </MotionLazyContainer>

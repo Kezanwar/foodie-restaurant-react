@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Alert, AlertTitle, Box, Button, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import { LoadingButton } from '@mui/lab';
@@ -40,7 +40,7 @@ const PageConfirmEmail = (props) => {
           <Box flex={1} mr={isTablet ? 0 : 8} mt={isTablet ? 4 : 0}>
             <Typography variant="h3">
               Confirm your{' '}
-              <Typography display={'inline'} variant="h3" color={'primary'}>
+              <Typography display={'inline'} variant="span" color={'primary'}>
                 email
               </Typography>
             </Typography>

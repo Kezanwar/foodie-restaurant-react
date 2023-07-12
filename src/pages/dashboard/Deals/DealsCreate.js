@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useForm } from 'react-hook-form';
+import { useForm, useFormContext } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router';
@@ -472,39 +472,12 @@ export default function DealsCreate() {
               </InputWithInfoStack>
             </Box>
             {showConfirmModal && (
-              <AcceptDeclineModal
+              <CreateDealModal
                 onCancel={onCancelModal}
                 onAccept={postDeal}
-                acceptText={'Create deal'}
-                cancelText={'Cancel'}
                 submitLoading={formSubmitLoading}
-                title={'Confirm new deal'}
-                subtitle={'Are you sure you want to create this deal?'}
                 isOpen={showConfirmModal}
-              >
-                <Box>
-                  <Typography fontSize={14}>{getValues().name}</Typography>
-                  <Separator />
-                  <Typography fontSize={14}>
-                    {getValues().description}
-                  </Typography>
-                  <Separator />
-                  <Box>
-                    {getValues().locations.map((l, i) => (
-                      <Typography key={l._id} mb={1} fontSize={14}>
-                        {l.name}
-                      </Typography>
-                    ))}
-                  </Box>
-                  <Separator />
-                  <Typography fontSize={14}>
-                    Start date{' '}
-                    {format(new Date(getValues().start_date), 'dd-MM-yyyy')} -
-                    End date{' '}
-                    {format(new Date(getValues().end_date), 'dd-MM-yyyy')}
-                  </Typography>
-                </Box>
-              </AcceptDeclineModal>
+              />
             )}
           </FormProvider>
         </Box>
@@ -513,6 +486,54 @@ export default function DealsCreate() {
   );
 }
 
-const Separator = () => (
-  <Box sx={{ height: '1px', backgroundColor: 'primary.main', my: 2 }} />
+const ModalTitle = ({ children }) => (
+  <Typography variant="h6" fontSize={'16px!important'}>
+    {children}
+  </Typography>
 );
+
+const CreateDealModal = ({ onCancel, onAccept, submitLoading, isOpen }) => {
+  const { getValues } = useFormContext();
+  const values = getValues();
+  return (
+    <AcceptDeclineModal
+      onCancel={onCancel}
+      onAccept={onAccept}
+      acceptText={'Create deal'}
+      cancelText={'Cancel'}
+      submitLoading={submitLoading}
+      title={'Confirm new deal'}
+      subtitle={'Are you sure you want to create this deal?'}
+      isOpen={isOpen}
+    >
+      <Box>
+        <Box mb={2}>
+          <ModalTitle>{values?.name}</ModalTitle>
+          <Typography fontSize={14}>{values?.description}</Typography>
+        </Box>
+        <ModalTitle>Locations</ModalTitle>
+        <Box mb={2}>
+          {values?.locations.map((l, i) => (
+            <Box key={l._id} mb={1} fontSize={14}>
+              {l.name}
+            </Box>
+          ))}
+        </Box>
+        <Box display={'flex'} gap={2}>
+          <Box>
+            <ModalTitle>Start</ModalTitle>
+            <Typography fontSize={14}>
+              {format(new Date(values?.start_date), 'EEE do MMM yyyy')}
+            </Typography>
+          </Box>
+          <Box>
+            <ModalTitle>End</ModalTitle>
+            <Typography fontSize={14}>
+              {format(new Date(values?.end_date), 'EEE do MMM yyyy')}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+    </AcceptDeclineModal>
+  );
+};

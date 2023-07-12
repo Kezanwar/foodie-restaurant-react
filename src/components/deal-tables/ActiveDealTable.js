@@ -1,6 +1,7 @@
 /* eslint-disable object-shorthand */
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router';
 import {
   Box,
   Button,
@@ -11,6 +12,8 @@ import {
   styled,
   useMediaQuery
 } from '@mui/material';
+import { DataGrid, GridToolbar, GridToolbarContainer } from '@mui/x-data-grid';
+import { eachDayOfInterval, format } from 'date-fns';
 
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
@@ -21,16 +24,17 @@ import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined
 import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { DataGrid, GridToolbar, GridToolbarContainer } from '@mui/x-data-grid';
-import { eachDayOfInterval, format } from 'date-fns';
 
 import MotionDivViewport from '../animate/MotionDivViewport';
-
-import useActiveDealsQuery from '../../hooks/queries/useActiveDealsQuery';
 import { CustomHeaderCell } from './styles';
 import Label from '../label/Label';
 import DealTableLoading from './DealTableLoading';
 import DealTableEmpty from './DealTableEmpty';
+
+import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
+import useActiveDealsQuery from '../../hooks/queries/useActiveDealsQuery';
+
+import { PATH_DASHBOARD } from '../../routes/paths';
 
 const tableType = 'active';
 
@@ -40,42 +44,44 @@ const menuIconProps = {
   color: 'primary'
 };
 
-const ActionMenu = React.memo(({ handleView, handleEdit, handleExpire }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    event.stopPropagation();
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  return (
-    <div>
-      <IconButton color="info" onClick={handleClick}>
-        {/* {params.value} */}
-        <MoreVertIcon fontSize="small" />
-      </IconButton>
-      <Menu
-        // MenuListProps={{ sx: { minWidth: 120 } }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleView}>
-          <VisibilityOutlinedIcon {...menuIconProps} /> View deal
-        </MenuItem>
-        <MenuItem onClick={handleEdit}>
-          <DriveFileRenameOutlineOutlinedIcon {...menuIconProps} /> Edit deal
-        </MenuItem>
-        <MenuItem onClick={handleExpire}>
-          {' '}
-          <EventBusyIcon {...menuIconProps} /> Expire deal
-        </MenuItem>
-      </Menu>
-    </div>
-  );
-});
+const ActionMenu = React.memo(
+  ({ dealId, handleView, handleEdit, handleExpire }) => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+      event.stopPropagation();
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+    return (
+      <div>
+        <IconButton color="info" onClick={handleClick}>
+          {/* {params.value} */}
+          <MoreVertIcon fontSize="small" />
+        </IconButton>
+        <Menu
+          // MenuListProps={{ sx: { minWidth: 120 } }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={() => handleView(dealId)}>
+            <VisibilityOutlinedIcon {...menuIconProps} /> View deal
+          </MenuItem>
+          <MenuItem onClick={() => handleEdit(dealId)}>
+            <DriveFileRenameOutlineOutlinedIcon {...menuIconProps} /> Edit deal
+          </MenuItem>
+          <MenuItem onClick={() => handleExpire(dealId)}>
+            {' '}
+            <EventBusyIcon {...menuIconProps} /> Expire deal
+          </MenuItem>
+        </Menu>
+      </div>
+    );
+  }
+);
 
 ActiveDealTable.propTypes = {};
 
@@ -88,6 +94,13 @@ export default function ActiveDealTable() {
   const dealQuery = useActiveDealsQuery();
   const noFlex = useMediaQuery((theme) => theme.breakpoints.down(1400));
   // const showScroll = useMediaQuery((theme) => theme.breakpoints.down(1400));
+
+  const navigate = useNavigate();
+
+  const handleView = (dealId) =>
+    navigate(`${PATH_DASHBOARD.deals_single}/${dealId}`);
+
+  const { isMobile } = useCustomMediaQueries();
   const flex = noFlex ? 0 : 1;
   const columns = useMemo(
     () => [
@@ -97,8 +110,9 @@ export default function ActiveDealTable() {
         width: 100,
         sortable: false,
         type: 'actions',
-
-        renderCell: (params) => <ActionMenu />
+        renderCell: (params) => (
+          <ActionMenu dealId={params.id} handleView={handleView} />
+        )
       },
       {
         field: 'name',
@@ -120,20 +134,6 @@ export default function ActiveDealTable() {
           </Typography>
         )
       },
-      // {
-      //   field: 'start_date',
-      //   headerName: 'Start date',
-      //   width: 160,
-
-      //   valueGetter: (params) => format(new Date(params.value), 'dd/MM/yy'),
-      //   renderHeader: (params) => {
-      //     return (
-      //       <CustomHeaderCell>
-      //         <DateRangeIcon color="primary" /> {params.colDef.headerName}
-      //       </CustomHeaderCell>
-      //     );
-      //   }
-      // },
       {
         field: 'end_date',
         headerName: 'End date',
@@ -173,13 +173,7 @@ export default function ActiveDealTable() {
             </CustomHeaderCell>
           );
         },
-        width: 150,
-        valueGetter: (params) => {
-          return eachDayOfInterval({
-            start: new Date(params.row.start_date),
-            end: new Date()
-          }).length;
-        }
+        width: 150
       },
       {
         field: 'days_left',
@@ -208,17 +202,11 @@ export default function ActiveDealTable() {
             </CustomHeaderCell>
           );
         },
-        width: 150,
-        valueGetter: (params) => {
-          return eachDayOfInterval({
-            start: new Date(),
-            end: new Date(params.row.end_date)
-          }).length;
-        }
+        width: 150
       },
 
       {
-        field: 'views',
+        field: 'view_count',
         headerName: 'Views',
         type: 'number',
         width: 120,
@@ -233,7 +221,6 @@ export default function ActiveDealTable() {
             </Label>
           );
         },
-        valueGetter: (params) => params.value.length,
         renderHeader: (params) => {
           return (
             <CustomHeaderCell>
@@ -270,7 +257,7 @@ export default function ActiveDealTable() {
         }
       },
       {
-        field: 'saves',
+        field: 'save_count',
         headerName: 'Saves',
         type: 'number',
         width: 120,
@@ -285,7 +272,6 @@ export default function ActiveDealTable() {
             </Label>
           );
         },
-        valueGetter: (params) => params.value.length,
         renderHeader: (params) => {
           return (
             <CustomHeaderCell>
@@ -295,16 +281,6 @@ export default function ActiveDealTable() {
           );
         }
       }
-
-      //   {
-      //     field: 'fullName',
-      //     headerName: 'Full name',
-      //     description: 'This column has a value getter and is not sortable.',
-      //     sortable: false,
-      //     width: 160,
-      //     valueGetter: (params) =>
-      //       `${params.row.firstName || ''} ${params.row.lastName || ''}`
-      //   }
     ],
     [flex]
   );
@@ -335,7 +311,7 @@ export default function ActiveDealTable() {
       <DataGrid
         // sx={sx}
         components={{
-          Toolbar: GridToolbar
+          Toolbar: !isMobile ? GridToolbar : null
         }}
         rowSelection={false}
         rows={deals}
@@ -346,7 +322,7 @@ export default function ActiveDealTable() {
           }
         }}
         pageSizeOptions={[8, 20]}
-        onRowClick={(e, d) => console.log(e, d)}
+        onRowClick={(deal) => handleView(deal.id)}
       />
     </Box>
   );

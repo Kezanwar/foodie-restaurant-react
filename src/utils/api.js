@@ -21,6 +21,7 @@ const endpoints = {
   // deals
   getActiveDeals: '/deals/active',
   getExpiredDeals: '/deals/expired',
+  getSingleDeal: '/deals/single',
   addDeal: '/deals/add',
 
   // options
@@ -97,6 +98,10 @@ export const getExpiredDeals = async () => {
       current_date: formattedDateString(new Date())
     }
   });
+};
+
+export const getSingleDeal = async (id) => {
+  return axiosInstance.get(`${endpoints.getSingleDeal}/${id}`);
 };
 
 export const addDeal = (data) => {

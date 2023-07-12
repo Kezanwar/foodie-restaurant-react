@@ -29,6 +29,7 @@ import DealTableEmpty from './DealTableEmpty';
 import DealTableLoading from './DealTableLoading';
 import { CustomHeaderCell } from './styles';
 import Label from '../label/Label';
+import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
 
 const menuIconProps = {
   fontSize: 'small',
@@ -36,39 +37,41 @@ const menuIconProps = {
   color: 'primary'
 };
 
-const ActionMenu = React.memo(({ handleView, handleEdit, handleExpire }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    event.stopPropagation();
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  return (
-    <div>
-      <IconButton color="info" onClick={handleClick}>
-        {/* {params.value} */}
-        <MoreVertIcon fontSize="small" />
-      </IconButton>
-      <Menu
-        // MenuListProps={{ sx: { minWidth: 120 } }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleView}>
-          <VisibilityOutlinedIcon {...menuIconProps} /> View deal
-        </MenuItem>
-        <MenuItem onClick={handleEdit}>
-          <DriveFileRenameOutlineOutlinedIcon {...menuIconProps} /> Create new
-          from deal
-        </MenuItem>
-      </Menu>
-    </div>
-  );
-});
+const ActionMenu = React.memo(
+  ({ dealId, handleView, handleEdit, handleExpire }) => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+      event.stopPropagation();
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+    return (
+      <div>
+        <IconButton color="info" onClick={handleClick}>
+          {/* {params.value} */}
+          <MoreVertIcon fontSize="small" />
+        </IconButton>
+        <Menu
+          // MenuListProps={{ sx: { minWidth: 120 } }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleView}>
+            <VisibilityOutlinedIcon {...menuIconProps} /> View deal
+          </MenuItem>
+          <MenuItem onClick={handleEdit}>
+            <DriveFileRenameOutlineOutlinedIcon {...menuIconProps} /> Create new
+            from deal
+          </MenuItem>
+        </Menu>
+      </div>
+    );
+  }
+);
 
 ExpiredDealTable.propTypes = {};
 
@@ -83,6 +86,7 @@ export default function ExpiredDealTable() {
   const dealQuery = useExpiredDealsQuery();
   const noFlex = useMediaQuery((theme) => theme.breakpoints.down(1400));
   // const showScroll = useMediaQuery((theme) => theme.breakpoints.down(1400));
+  const { isMobile } = useCustomMediaQueries();
   const flex = noFlex ? 0 : 1;
   const columns = useMemo(
     () => [
@@ -171,17 +175,11 @@ export default function ExpiredDealTable() {
             </CustomHeaderCell>
           );
         },
-        width: 150,
-        valueGetter: (params) => {
-          return eachDayOfInterval({
-            start: new Date(params.row.start_date),
-            end: new Date(params.row.end_date)
-          }).length;
-        }
+        width: 150
       },
 
       {
-        field: 'views',
+        field: 'view_count',
         headerName: 'Views',
         type: 'number',
         width: 120,
@@ -196,7 +194,6 @@ export default function ExpiredDealTable() {
             </Label>
           );
         },
-        valueGetter: (params) => params.value.length,
         renderHeader: (params) => {
           return (
             <CustomHeaderCell>
@@ -222,7 +219,6 @@ export default function ExpiredDealTable() {
             </Label>
           );
         },
-        valueGetter: (params) => params.value,
         renderHeader: (params) => {
           return (
             <CustomHeaderCell>
@@ -233,7 +229,7 @@ export default function ExpiredDealTable() {
         }
       },
       {
-        field: 'saves',
+        field: 'save_count',
         headerName: 'Saves',
         type: 'number',
         width: 120,
@@ -248,7 +244,6 @@ export default function ExpiredDealTable() {
             </Label>
           );
         },
-        valueGetter: (params) => params.value.length,
         renderHeader: (params) => {
           return (
             <CustomHeaderCell>
@@ -276,7 +271,7 @@ export default function ExpiredDealTable() {
     >
       <DataGrid
         components={{
-          Toolbar: GridToolbar
+          Toolbar: !isMobile ? GridToolbar : null
         }}
         rowSelection={false}
         rows={deals}

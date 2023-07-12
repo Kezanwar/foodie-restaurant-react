@@ -2,7 +2,9 @@ import * as Yup from 'yup';
 
 export const newDealSchema = Yup.object().shape({
   name: Yup.string().required('Required'),
-  description: Yup.string().required('Required'),
+  description: Yup.string()
+    .required('Required')
+    .max(140, 'Maximum 300 characters'),
   start_date: Yup.string().required('Required'),
   end_date: Yup.string()
     .required('Required')
