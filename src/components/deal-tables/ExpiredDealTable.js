@@ -1,10 +1,10 @@
 /* eslint-disable object-shorthand */
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { eachDayOfInterval, format } from 'date-fns';
+import { format } from 'date-fns';
+import { useNavigate } from 'react-router';
 import {
   Box,
-  Button,
   IconButton,
   Menu,
   MenuItem,
@@ -15,7 +15,6 @@ import EventBusyIcon from '@mui/icons-material/EventBusy';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
-import AvTimerOutlinedIcon from '@mui/icons-material/AvTimerOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
 import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
@@ -23,6 +22,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 import useExpiredDealsQuery from '../../hooks/queries/useExpiredDealsQuery';
+import { PATH_DASHBOARD } from '../../routes/paths';
 
 import MotionDivViewport from '../animate/MotionDivViewport';
 import DealTableEmpty from './DealTableEmpty';
@@ -60,7 +60,7 @@ const ActionMenu = React.memo(
           open={open}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleView}>
+          <MenuItem onClick={() => handleView(dealId)}>
             <VisibilityOutlinedIcon {...menuIconProps} /> View deal
           </MenuItem>
           <MenuItem onClick={handleEdit}>
@@ -85,6 +85,11 @@ const tableType = 'expired';
 export default function ExpiredDealTable() {
   const dealQuery = useExpiredDealsQuery();
   const noFlex = useMediaQuery((theme) => theme.breakpoints.down(1400));
+
+  const navigate = useNavigate();
+
+  const handleView = (dealId) =>
+    navigate(`${PATH_DASHBOARD.deals_single}/${dealId}`);
   // const showScroll = useMediaQuery((theme) => theme.breakpoints.down(1400));
   const { isMobile } = useCustomMediaQueries();
   const flex = noFlex ? 0 : 1;
@@ -97,7 +102,9 @@ export default function ExpiredDealTable() {
         sortable: false,
         type: 'actions',
 
-        renderCell: (params) => <ActionMenu />
+        renderCell: (params) => (
+          <ActionMenu dealId={params.id} handleView={handleView} />
+        )
       },
       {
         field: 'name',
@@ -282,7 +289,7 @@ export default function ExpiredDealTable() {
           }
         }}
         pageSizeOptions={[8, 20]}
-        onRowClick={(e, d) => console.log(e, d)}
+        onRowClick={(e) => handleView(e.id)}
       />
     </Box>
   );

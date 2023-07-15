@@ -198,16 +198,17 @@ export default function DealsCreate() {
       setFormSubmitLoading(true);
       const postLocations = data?.locations?.map((l) => l._id);
       const newDeal = await addDeal({ ...data, locations: postLocations });
+      await allActiveDeals.refetch();
       mixpanelTrack(MIXPANEL_EVENTS.add_deal_success, {
         data
       });
+
       enqueueSnackbar(`${data.name} created successfully`, {
         variant: 'success'
       });
       reset();
       setFormSubmitLoading(false);
       setShowConfirmModal(false);
-      allActiveDeals.invalidateQuery();
       navigate(PATH_DASHBOARD.deals_all);
     } catch (error) {
       setError('afterSubmit', {

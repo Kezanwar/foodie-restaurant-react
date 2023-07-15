@@ -27,13 +27,15 @@ export default function App() {
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <QueryClientProvider client={queryClient}>
+        {ENVIRONMENT === 'DEVELOPMENT' && (
+          <ReactQueryDevtools initialIsOpen={false} />
+        )}
         <AuthProvider>
           <UtilityProvider>
             <MotionLazyContainer>
               <ThemeProvider>
                 <SnackbarProvider>
                   <Router />
-                  <ReactQueryDevtools initialIsOpen={false} />
                 </SnackbarProvider>
               </ThemeProvider>
             </MotionLazyContainer>

@@ -100,14 +100,14 @@ export default function ActiveDealTable() {
   const handleView = (dealId) =>
     navigate(`${PATH_DASHBOARD.deals_single}/${dealId}`);
 
-  const { isMobile } = useCustomMediaQueries();
+  const { isMobile, isTablet } = useCustomMediaQueries();
   const flex = noFlex ? 0 : 1;
   const columns = useMemo(
     () => [
       {
         field: 'actions',
         headerName: 'Actions',
-        width: 100,
+        width: isTablet ? 80 : 100,
         sortable: false,
         type: 'actions',
         renderCell: (params) => (
@@ -173,7 +173,7 @@ export default function ActiveDealTable() {
             </CustomHeaderCell>
           );
         },
-        width: 150
+        width: 160
       },
       {
         field: 'days_left',
@@ -203,87 +203,93 @@ export default function ActiveDealTable() {
           );
         },
         width: 150
-      },
-
-      {
-        field: 'view_count',
-        headerName: 'Views',
-        type: 'number',
-        width: 120,
-        align: 'center',
-        headerAlign: 'center',
-        flex: flex,
-        renderCell: (params) => {
-          const col = params.value <= 14 ? 'warning' : 'success';
-          return (
-            <Label variant={'filled'} color={col}>
-              {params.value}
-            </Label>
-          );
-        },
-        renderHeader: (params) => {
-          return (
-            <CustomHeaderCell>
-              <VisibilityOutlinedIcon color="primary" />{' '}
-              {params.colDef.headerName}
-            </CustomHeaderCell>
-          );
-        }
-      },
-      {
-        field: 'impressions',
-        headerName: 'Impressions',
-        type: 'number',
-        width: 180,
-        flex: flex,
-        align: 'center',
-        headerAlign: 'center',
-        renderCell: (params) => {
-          const col = params.value <= 6 ? 'warning' : 'success';
-          return (
-            <Label variant={'filled'} color={col}>
-              {params.value}
-            </Label>
-          );
-        },
-        valueGetter: (params) => params.value,
-        renderHeader: (params) => {
-          return (
-            <CustomHeaderCell>
-              <InsightsOutlinedIcon color="primary" />{' '}
-              {params.colDef.headerName}
-            </CustomHeaderCell>
-          );
-        }
-      },
-      {
-        field: 'save_count',
-        headerName: 'Saves',
-        type: 'number',
-        width: 120,
-        flex: flex,
-        align: 'center',
-        headerAlign: 'center',
-        renderCell: (params) => {
-          const col = params.value <= 14 ? 'warning' : 'success';
-          return (
-            <Label variant={'filled'} color={col}>
-              {params.value}
-            </Label>
-          );
-        },
-        renderHeader: (params) => {
-          return (
-            <CustomHeaderCell>
-              <BookmarkAddedOutlinedIcon color="primary" />{' '}
-              {params.colDef.headerName}
-            </CustomHeaderCell>
-          );
-        }
       }
     ],
     [flex]
   );
+
+  const desktopOnlyColumns = useMemo(() => {
+    return !isTablet
+      ? [
+          {
+            field: 'view_count',
+            headerName: 'Views',
+            type: 'number',
+            width: 120,
+            align: 'center',
+            headerAlign: 'center',
+            flex: flex,
+            renderCell: (params) => {
+              const col = params.value <= 14 ? 'warning' : 'success';
+              return (
+                <Label variant={'filled'} color={col}>
+                  {params.value}
+                </Label>
+              );
+            },
+            renderHeader: (params) => {
+              return (
+                <CustomHeaderCell>
+                  <VisibilityOutlinedIcon color="primary" />{' '}
+                  {params.colDef.headerName}
+                </CustomHeaderCell>
+              );
+            }
+          },
+          {
+            field: 'impressions',
+            headerName: 'Impressions',
+            type: 'number',
+            width: 180,
+            flex: flex,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: (params) => {
+              const col = params.value <= 6 ? 'warning' : 'success';
+              return (
+                <Label variant={'filled'} color={col}>
+                  {params.value}
+                </Label>
+              );
+            },
+            valueGetter: (params) => params.value,
+            renderHeader: (params) => {
+              return (
+                <CustomHeaderCell>
+                  <InsightsOutlinedIcon color="primary" />{' '}
+                  {params.colDef.headerName}
+                </CustomHeaderCell>
+              );
+            }
+          },
+          {
+            field: 'save_count',
+            headerName: 'Saves',
+            type: 'number',
+            width: 120,
+            flex: flex,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: (params) => {
+              const col = params.value <= 14 ? 'warning' : 'success';
+              return (
+                <Label variant={'filled'} color={col}>
+                  {params.value}
+                </Label>
+              );
+            },
+            renderHeader: (params) => {
+              return (
+                <CustomHeaderCell>
+                  <BookmarkAddedOutlinedIcon color="primary" />{' '}
+                  {params.colDef.headerName}
+                </CustomHeaderCell>
+              );
+            }
+          }
+        ]
+      : [];
+  }, [flex, isTablet]);
   const deals = dealQuery?.data?.data;
   const loading = dealQuery?.isLoading;
   if (loading) return <DealTableLoading type={tableType} />;
@@ -315,7 +321,7 @@ export default function ActiveDealTable() {
         }}
         rowSelection={false}
         rows={deals}
-        columns={columns}
+        columns={columns.concat(desktopOnlyColumns)}
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 8 }

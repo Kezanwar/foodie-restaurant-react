@@ -6,7 +6,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
-import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
+
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 
 import { StatCardWrapperStyled } from './styles';
