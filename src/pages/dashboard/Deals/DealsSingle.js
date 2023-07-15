@@ -200,6 +200,14 @@ const DealsSingle = () => {
             </DateContainer>
           </DateWrapper>
           <ActionsContainer>
+            {isExpired && (
+              <LightLoadingButton
+                variant="text"
+                endIcon={<DriveFileRenameOutlineOutlinedIcon />}
+              >
+                Use as template
+              </LightLoadingButton>
+            )}
             {!isExpired && (
               <LightLoadingButton
                 variant="text"
@@ -220,14 +228,6 @@ const DealsSingle = () => {
             <LightLoadingButton variant="text" endIcon={<DeleteOutlineIcon />}>
               Delete
             </LightLoadingButton>
-            {isExpired && (
-              <LightLoadingButton
-                variant="text"
-                endIcon={<DriveFileRenameOutlineOutlinedIcon />}
-              >
-                Use as template
-              </LightLoadingButton>
-            )}
           </ActionsContainer>
         </DealDetailsContainer>
         <InsightsContainer>

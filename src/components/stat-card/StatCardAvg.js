@@ -116,7 +116,7 @@ const StatCardAvg = React.memo(({ title, avg_per_day, value }) => {
   const { desc, titleIcon } = titleIconDesc();
 
   return (
-    <StatCardWrapperStyled>
+    <StatCardWrapperStyled title={title}>
       <Box
         display={'flex'}
         alignItems={'start'}
@@ -140,20 +140,8 @@ const StatCardAvg = React.memo(({ title, avg_per_day, value }) => {
         {value?.toLocaleString()}
       </Typography>
       <Box display={'flex'} alignItems={'center'} gap={1} mt={4} mb={1}>
-        {/* {icon}{' '} */}
-        <AvgDayContainer borderColor={avgTextCol}>
-          <Typography
-            color={avgTextCol}
-            fontWeight={600}
-            variant="h6"
-            lineHeight={0}
-          >
-            {avg_per_day?.toLocaleString()}
-          </Typography>
-        </AvgDayContainer>
-
         <Typography color={'text.secondary'} variant="body2">
-          Avg. per day
+          Avg. per day: {avg_per_day?.toLocaleString()}
         </Typography>
       </Box>
     </StatCardWrapperStyled>
