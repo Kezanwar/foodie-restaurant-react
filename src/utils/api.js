@@ -21,7 +21,11 @@ const endpoints = {
   // deals
   getActiveDeals: '/deals/active',
   getExpiredDeals: '/deals/expired',
+  getSingleDeal: '/deals/single',
+
+  // deals CUD
   addDeal: '/deals/add',
+  expireDeal: '/deals/expire',
 
   // options
   getOptions: '/options'
@@ -99,8 +103,22 @@ export const getExpiredDeals = async () => {
   });
 };
 
+export const getSingleDeal = async (id) => {
+  return axiosInstance.get(`${endpoints.getSingleDeal}/${id}`, {
+    params: {
+      current_date: formattedDateString(new Date())
+    }
+  });
+};
+
 export const addDeal = (data) => {
   return axiosInstance.post(endpoints.addDeal, data);
+};
+
+export const expireDeal = (id) => {
+  return axiosInstance.patch(`${endpoints.expireDeal}/${id}`, {
+    end_date: formattedDateString(new Date())
+  });
 };
 
 //* ------------------ Options -------------------

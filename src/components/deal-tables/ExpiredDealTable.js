@@ -1,10 +1,10 @@
 /* eslint-disable object-shorthand */
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { eachDayOfInterval, format } from 'date-fns';
+import { format } from 'date-fns';
+import { useNavigate } from 'react-router';
 import {
   Box,
-  Button,
   IconButton,
   Menu,
   MenuItem,
@@ -15,7 +15,6 @@ import EventBusyIcon from '@mui/icons-material/EventBusy';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
-import AvTimerOutlinedIcon from '@mui/icons-material/AvTimerOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
 import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
@@ -23,12 +22,14 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 import useExpiredDealsQuery from '../../hooks/queries/useExpiredDealsQuery';
+import { PATH_DASHBOARD } from '../../routes/paths';
 
 import MotionDivViewport from '../animate/MotionDivViewport';
 import DealTableEmpty from './DealTableEmpty';
 import DealTableLoading from './DealTableLoading';
 import { CustomHeaderCell } from './styles';
 import Label from '../label/Label';
+import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
 
 const menuIconProps = {
   fontSize: 'small',
@@ -36,39 +37,41 @@ const menuIconProps = {
   color: 'primary'
 };
 
-const ActionMenu = React.memo(({ handleView, handleEdit, handleExpire }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    event.stopPropagation();
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  return (
-    <div>
-      <IconButton color="info" onClick={handleClick}>
-        {/* {params.value} */}
-        <MoreVertIcon fontSize="small" />
-      </IconButton>
-      <Menu
-        // MenuListProps={{ sx: { minWidth: 120 } }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleView}>
-          <VisibilityOutlinedIcon {...menuIconProps} /> View deal
-        </MenuItem>
-        <MenuItem onClick={handleEdit}>
-          <DriveFileRenameOutlineOutlinedIcon {...menuIconProps} /> Create new
-          from deal
-        </MenuItem>
-      </Menu>
-    </div>
-  );
-});
+const ActionMenu = React.memo(
+  ({ dealId, handleView, handleEdit, handleExpire }) => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+      event.stopPropagation();
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+    return (
+      <div>
+        <IconButton color="info" onClick={handleClick}>
+          {/* {params.value} */}
+          <MoreVertIcon fontSize="small" />
+        </IconButton>
+        <Menu
+          // MenuListProps={{ sx: { minWidth: 120 } }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={() => handleView(dealId)}>
+            <VisibilityOutlinedIcon {...menuIconProps} /> View deal
+          </MenuItem>
+          <MenuItem onClick={handleEdit}>
+            <DriveFileRenameOutlineOutlinedIcon {...menuIconProps} /> Create new
+            from deal
+          </MenuItem>
+        </Menu>
+      </div>
+    );
+  }
+);
 
 ExpiredDealTable.propTypes = {};
 
@@ -82,7 +85,13 @@ const tableType = 'expired';
 export default function ExpiredDealTable() {
   const dealQuery = useExpiredDealsQuery();
   const noFlex = useMediaQuery((theme) => theme.breakpoints.down(1400));
+
+  const navigate = useNavigate();
+
+  const handleView = (dealId) =>
+    navigate(`${PATH_DASHBOARD.deals_single}/${dealId}`);
   // const showScroll = useMediaQuery((theme) => theme.breakpoints.down(1400));
+  const { isMobile } = useCustomMediaQueries();
   const flex = noFlex ? 0 : 1;
   const columns = useMemo(
     () => [
@@ -93,7 +102,9 @@ export default function ExpiredDealTable() {
         sortable: false,
         type: 'actions',
 
-        renderCell: (params) => <ActionMenu />
+        renderCell: (params) => (
+          <ActionMenu dealId={params.id} handleView={handleView} />
+        )
       },
       {
         field: 'name',
@@ -171,17 +182,11 @@ export default function ExpiredDealTable() {
             </CustomHeaderCell>
           );
         },
-        width: 150,
-        valueGetter: (params) => {
-          return eachDayOfInterval({
-            start: new Date(params.row.start_date),
-            end: new Date(params.row.end_date)
-          }).length;
-        }
+        width: 150
       },
 
       {
-        field: 'views',
+        field: 'view_count',
         headerName: 'Views',
         type: 'number',
         width: 120,
@@ -196,7 +201,6 @@ export default function ExpiredDealTable() {
             </Label>
           );
         },
-        valueGetter: (params) => params.value.length,
         renderHeader: (params) => {
           return (
             <CustomHeaderCell>
@@ -222,7 +226,6 @@ export default function ExpiredDealTable() {
             </Label>
           );
         },
-        valueGetter: (params) => params.value,
         renderHeader: (params) => {
           return (
             <CustomHeaderCell>
@@ -233,7 +236,7 @@ export default function ExpiredDealTable() {
         }
       },
       {
-        field: 'saves',
+        field: 'save_count',
         headerName: 'Saves',
         type: 'number',
         width: 120,
@@ -248,7 +251,6 @@ export default function ExpiredDealTable() {
             </Label>
           );
         },
-        valueGetter: (params) => params.value.length,
         renderHeader: (params) => {
           return (
             <CustomHeaderCell>
@@ -276,7 +278,7 @@ export default function ExpiredDealTable() {
     >
       <DataGrid
         components={{
-          Toolbar: GridToolbar
+          Toolbar: !isMobile ? GridToolbar : null
         }}
         rowSelection={false}
         rows={deals}
@@ -287,7 +289,7 @@ export default function ExpiredDealTable() {
           }
         }}
         pageSizeOptions={[8, 20]}
-        onRowClick={(e, d) => console.log(e, d)}
+        onRowClick={(e) => handleView(e.id)}
       />
     </Box>
   );

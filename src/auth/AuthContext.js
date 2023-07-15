@@ -8,14 +8,14 @@ import {
   useCallback,
   useMemo
 } from 'react';
+
 // utils
 import axios from '../utils/axios';
-//
 import { setSession } from './utils';
-import { AUTH_ENDPOINTS } from '../constants/auth.constants';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../utils/mixpanel';
 
-// ----------------------------------------------------------------------
+// config
+import { AUTH_ENDPOINTS } from '../constants/auth.constants';
 
 const ACTION_TYPES = {
   INITIALIZE: 'INITIALIZE',
@@ -23,8 +23,6 @@ const ACTION_TYPES = {
   LOGIN: 'LOGIN',
   LOGOUT: 'LOGOUT'
 };
-
-// ----------------------------------------------------------------------
 
 const initialState = {
   isInitialized: false,

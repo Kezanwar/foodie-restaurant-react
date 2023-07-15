@@ -26,7 +26,8 @@ import {
   NewRestaurantAddLocations,
   PageConfirmEmail,
   DealsCreate,
-  DealsAll
+  DealsAll,
+  DealsSingle
 } from './elements';
 import {
   PATH_AUTH,
@@ -86,7 +87,7 @@ export default function Router() {
             },
             { path: 'all', element: <DealsAll /> },
             { path: 'create', element: <DealsCreate /> },
-            { path: ':id', element: <PageSix /> },
+            { path: 'single/:id', element: <DealsSingle /> },
             { path: 'edit/:id', element: <PageSix /> }
           ]
         },

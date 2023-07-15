@@ -1,5 +1,6 @@
 import mixpanel from 'mixpanel-browser';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 // routes
@@ -26,6 +27,9 @@ export default function App() {
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <QueryClientProvider client={queryClient}>
+        {ENVIRONMENT === 'DEVELOPMENT' && (
+          <ReactQueryDevtools initialIsOpen={false} />
+        )}
         <AuthProvider>
           <UtilityProvider>
             <MotionLazyContainer>
