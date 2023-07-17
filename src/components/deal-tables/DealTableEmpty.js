@@ -1,7 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import { Box, Button, Typography, styled } from '@mui/material';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import { useNavigate } from 'react-router';
+import { PATH_DASHBOARD } from '../../routes/paths';
 
 export const Container = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -20,11 +22,16 @@ const sx = {
 };
 
 const DealTableEmpty = ({ type }) => {
+  const nav = useNavigate();
   return (
     <Container>
       <SentimentVeryDissatisfiedIcon color="primary" fontSize="large" />
       <Typography>Sorry their aren't any {type} deals to show </Typography>
-      <Button variant="contained" sx={sx}>
+      <Button
+        variant="contained"
+        onClick={() => nav(PATH_DASHBOARD.deals_create)}
+        sx={sx}
+      >
         Create a new deal
       </Button>
     </Container>
