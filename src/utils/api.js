@@ -2,30 +2,30 @@ import axiosInstance from './axios';
 import { formattedDateString } from './formatTime';
 
 const endpoints = {
-  getRestaurant: '/restaurant',
+  getRestaurant: '/rest/restaurant',
 
   // create new restaurant
-  postCompanyInfo: '/create-restaurant/company-info',
-  postRestaurantDetails: '/create-restaurant/details',
-  postLocationsStep: '/create-restaurant/locations',
-  postSubmitApplication: 'create-restaurant/submit-application',
+  postCompanyInfo: '/rest/create-restaurant/company-info',
+  postRestaurantDetails: '/rest/create-restaurant/details',
+  postLocationsStep: '/rest/create-restaurant/locations',
+  postSubmitApplication: '/rest/create-restaurant/submit-application',
 
   // locations
-  getLocations: '/locations',
-  checkLocation: '/locations/check',
-  checkEditLocation: '/locations/edit/check',
-  addLocation: '/locations/add',
-  editLocation: '/locations/edit',
-  deleteLocation: '/locations/delete',
+  getLocations: '/rest/locations',
+  checkLocation: '/rest/locations/check',
+  checkEditLocation: '/rest/locations/edit/check',
+  addLocation: '/rest/locations/add',
+  editLocation: '/rest/locations/edit',
+  deleteLocation: '/rest/locations/delete',
 
   // deals
-  getActiveDeals: '/deals/active',
-  getExpiredDeals: '/deals/expired',
-  getSingleDeal: '/deals/single',
+  getActiveDeals: '/rest/deals/active',
+  getExpiredDeals: '/rest/deals/expired',
+  getSingleDeal: '/rest/deals/single',
 
   // deals CUD
-  addDeal: '/deals/add',
-  expireDeal: '/deals/expire',
+  addDeal: '/rest/deals/add',
+  expireDeal: '/rest/deals/expire',
 
   // options
   getOptions: '/options'

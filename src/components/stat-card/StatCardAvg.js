@@ -38,27 +38,6 @@ const StatCardAvg = React.memo(({ title, avg_per_day, value }) => {
     palette: { mode }
   } = useTheme();
 
-  const config = () => {
-    let status = 'neutral';
-    if (avg_per_day > 20) status = 'positive';
-    if (avg_per_day < 5) status = 'negative';
-
-    switch (status) {
-      case 'positive':
-        return {
-          avgTextCol: 'success.main'
-        };
-      case 'negative':
-        return {
-          avgTextCol: 'error.main'
-        };
-      default:
-        return {
-          avgTextCol: 'warning.main'
-        };
-    }
-  };
-
   const titleIconDesc = () => {
     switch (title) {
       case 'Impressions':
@@ -111,12 +90,10 @@ const StatCardAvg = React.memo(({ title, avg_per_day, value }) => {
     }
   };
 
-  const { avgTextCol } = config();
-
   const { desc, titleIcon } = titleIconDesc();
 
   return (
-    <StatCardWrapperStyled>
+    <StatCardWrapperStyled title={title}>
       <Box
         display={'flex'}
         alignItems={'start'}
@@ -125,7 +102,7 @@ const StatCardAvg = React.memo(({ title, avg_per_day, value }) => {
         mb={3}
       >
         <Box>
-          <Typography variant="h6" fontWeight={600} fontSize={'18px!important'}>
+          <Typography variant="h5" fontWeight={600} fontSize={'18px!important'}>
             {title}
           </Typography>
           <Typography color={'text.secondary'} variant="body2">
@@ -140,20 +117,8 @@ const StatCardAvg = React.memo(({ title, avg_per_day, value }) => {
         {value?.toLocaleString()}
       </Typography>
       <Box display={'flex'} alignItems={'center'} gap={1} mt={4} mb={1}>
-        {/* {icon}{' '} */}
-        <AvgDayContainer borderColor={avgTextCol}>
-          <Typography
-            color={avgTextCol}
-            fontWeight={600}
-            variant="h6"
-            lineHeight={0}
-          >
-            {avg_per_day?.toLocaleString()}
-          </Typography>
-        </AvgDayContainer>
-
         <Typography color={'text.secondary'} variant="body2">
-          Avg. per day
+          Avg per day: {avg_per_day?.toLocaleString()}
         </Typography>
       </Box>
     </StatCardWrapperStyled>

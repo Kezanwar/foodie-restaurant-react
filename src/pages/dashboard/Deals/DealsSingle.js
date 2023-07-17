@@ -200,6 +200,14 @@ const DealsSingle = () => {
             </DateContainer>
           </DateWrapper>
           <ActionsContainer>
+            {isExpired && (
+              <LightLoadingButton
+                variant="text"
+                endIcon={<DriveFileRenameOutlineOutlinedIcon />}
+              >
+                Use as template
+              </LightLoadingButton>
+            )}
             {!isExpired && (
               <LightLoadingButton
                 variant="text"
@@ -220,14 +228,6 @@ const DealsSingle = () => {
             <LightLoadingButton variant="text" endIcon={<DeleteOutlineIcon />}>
               Delete
             </LightLoadingButton>
-            {isExpired && (
-              <LightLoadingButton
-                variant="text"
-                endIcon={<DriveFileRenameOutlineOutlinedIcon />}
-              >
-                Use as template
-              </LightLoadingButton>
-            )}
           </ActionsContainer>
         </DealDetailsContainer>
         <InsightsContainer>
@@ -242,19 +242,19 @@ const DealsSingle = () => {
         </InsightsContainer>
         <DashboardStatGrid>
           <StatCardAvg
-            avg_per_day={deal?.impressions?.avg}
+            avg_per_day={deal?.unique_views?.avg}
             title={'Impressions'}
-            value={deal?.impressions?.count}
+            value={deal?.unique_views?.count}
           />
           <StatCardAvg
-            avg_per_day={deal?.view_count?.avg}
+            avg_per_day={deal?.view?.avg}
             title={'Views'}
-            value={deal?.view_count?.count}
+            value={deal?.views?.count}
           />
           <StatCardAvg
             title={'Saves'}
-            avg_per_day={deal?.save_count?.avg}
-            value={deal?.save_count?.count}
+            avg_per_day={deal?.saves?.avg}
+            value={deal?.saves?.count}
           />
         </DashboardStatGrid>
       </Container>
