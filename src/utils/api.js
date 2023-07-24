@@ -114,7 +114,11 @@ export const getSingleDeal = async (id) => {
 };
 
 export const addDeal = (data) => {
-  return axiosInstance.post(endpoints.addDeal, data);
+  return axiosInstance.post(endpoints.addDeal, data, {
+    params: {
+      current_date: formattedDateString(new Date())
+    }
+  });
 };
 
 export const editDeal = (id, data) => {
