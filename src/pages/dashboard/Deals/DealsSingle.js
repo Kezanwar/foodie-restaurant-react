@@ -21,6 +21,7 @@ import { deleteDeal, expireDeal } from '../../../utils/api';
 import useSingleDealQuery from '../../../hooks/queries/useSingleDealQuery';
 import useActiveDealsQuery from '../../../hooks/queries/useActiveDealsQuery';
 import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
+import useExpiredDealsQuery from '../../../hooks/queries/useExpiredDealsQuery';
 
 const DealDetailsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -97,7 +98,7 @@ const InsightsContainer = styled(Box)(({ theme }) => ({
 
 const DealsSingle = () => {
   const { id } = useParams();
-  const { data, error, isLoading, refetch } = useSingleDealQuery(id);
+  const { data, error, isLoading, refetch, remove } = useSingleDealQuery(id);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -119,16 +120,17 @@ const DealsSingle = () => {
   const onEdit = () => navigate(`${PATH_DASHBOARD.deals_edit}/${id}`);
 
   const activeDeals = useActiveDealsQuery();
-  const expiredDeals = useActiveDealsQuery();
+  const expiredDeals = useExpiredDealsQuery();
 
   const handleOnExpireSubmit = async () => {
     if (deal?._id) {
       setSubmitLoading(true);
       try {
         const res = await expireDeal(deal?._id);
+
         refetch();
-        await activeDeals.refetch();
-        await expiredDeals.refetch();
+        activeDeals.remove();
+        expiredDeals.remove();
         enqueueSnackbar(`Successfully expired ${deal?.name}`, {
           variant: 'success'
         });
@@ -149,9 +151,10 @@ const DealsSingle = () => {
       setSubmitLoading(true);
       try {
         const res = await deleteDeal(deal?._id);
-        refetch();
-        activeDeals.refetch();
-        expiredDeals.refetch();
+        remove();
+        activeDeals.remove();
+        expiredDeals.remove();
+
         enqueueSnackbar(`Successfully deleted ${deal?.name}`, {
           variant: 'success'
         });
