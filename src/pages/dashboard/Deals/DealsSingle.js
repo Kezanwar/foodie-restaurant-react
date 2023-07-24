@@ -1,26 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { format } from 'date-fns';
 import { useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
-import { Box, Container, Typography, styled } from '@mui/material';
+import { Box, Button, Container, Typography, styled } from '@mui/material';
 
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
-import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 
 import { DashboardStatGrid } from '../styles';
 import LoadingScreen from '../../../components/loading-screen/LoadingScreen';
 import StatCardAvg from '../../../components/stat-card/StatCardAvg';
 import AcceptDeclineModal from '../../../components/accept-decline-modal/AcceptDeclineModal';
-import Subheader from '../../../components/subheader/Subheader';
 import LightLoadingButton from '../../../components/light-loading-button/LightLoadingButton';
 
 import { PATH_DASHBOARD } from '../../../routes/paths';
-import { expireDeal } from '../../../utils/api';
+import { deleteDeal, expireDeal } from '../../../utils/api';
 import useSingleDealQuery from '../../../hooks/queries/useSingleDealQuery';
 import useActiveDealsQuery from '../../../hooks/queries/useActiveDealsQuery';
 import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
@@ -106,11 +103,20 @@ const DealsSingle = () => {
 
   const { isTablet } = useCustomMediaQueries();
 
-  const [expireDealModal, setExpireDealModal] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
 
+  const [expireDealModal, setExpireDealModal] = useState(false);
   const onExpireCancel = () => setExpireDealModal(false);
   const onExpireOpen = () => setExpireDealModal(true);
+
+  const [deleteDealModal, setDeleteDealModal] = useState(false);
+  const onDeleteCancel = () => setDeleteDealModal(false);
+  const onDeleteOpen = () => setDeleteDealModal(true);
+
+  const onUseAsTemplate = () =>
+    navigate(`${PATH_DASHBOARD.deals_create}/?template_id=${id}`);
+
+  const onEdit = () => navigate(`${PATH_DASHBOARD.deals_edit}/${id}`);
 
   const activeDeals = useActiveDealsQuery();
   const expiredDeals = useActiveDealsQuery();
@@ -132,6 +138,30 @@ const DealsSingle = () => {
         setSubmitLoading(false);
         setExpireDealModal(false);
         enqueueSnackbar(`Unable to expire ${deal?.name} please try again`, {
+          variant: 'error'
+        });
+      }
+    }
+  };
+
+  const handleOnDeleteSubmit = async () => {
+    if (deal?._id) {
+      setSubmitLoading(true);
+      try {
+        const res = await deleteDeal(deal?._id);
+        refetch();
+        activeDeals.refetch();
+        expiredDeals.refetch();
+        enqueueSnackbar(`Successfully deleted ${deal?.name}`, {
+          variant: 'success'
+        });
+        setExpireDealModal(false);
+        setSubmitLoading(false);
+        navigate(PATH_DASHBOARD.root, { replace: true });
+      } catch (error) {
+        setSubmitLoading(false);
+        setExpireDealModal(false);
+        enqueueSnackbar(`Unable to delete ${deal?.name} please try again`, {
           variant: 'error'
         });
       }
@@ -202,6 +232,7 @@ const DealsSingle = () => {
           <ActionsContainer>
             {isExpired && (
               <LightLoadingButton
+                onClick={onUseAsTemplate}
                 variant="text"
                 endIcon={<DriveFileRenameOutlineOutlinedIcon />}
               >
@@ -211,6 +242,7 @@ const DealsSingle = () => {
             {!isExpired && (
               <LightLoadingButton
                 variant="text"
+                onClick={onEdit}
                 endIcon={<DriveFileRenameOutlineOutlinedIcon />}
               >
                 Edit
@@ -225,7 +257,11 @@ const DealsSingle = () => {
                 Expire
               </LightLoadingButton>
             )}
-            <LightLoadingButton variant="text" endIcon={<DeleteOutlineIcon />}>
+            <LightLoadingButton
+              onClick={onDeleteOpen}
+              variant="text"
+              endIcon={<DeleteOutlineIcon />}
+            >
               Delete
             </LightLoadingButton>
           </ActionsContainer>
@@ -242,19 +278,19 @@ const DealsSingle = () => {
         </InsightsContainer>
         <DashboardStatGrid>
           <StatCardAvg
-            avg_per_day={deal?.unique_views?.avg}
+            avg_per_day={deal?.unique_views?.avg || 0}
             title={'Impressions'}
-            value={deal?.unique_views?.count}
+            value={deal?.unique_views?.count || 0}
           />
           <StatCardAvg
-            avg_per_day={deal?.view?.avg}
+            avg_per_day={deal?.view?.avg || 0}
             title={'Views'}
-            value={deal?.views?.count}
+            value={deal?.views?.count || 0}
           />
           <StatCardAvg
             title={'Saves'}
-            avg_per_day={deal?.saves?.avg}
-            value={deal?.saves?.count}
+            avg_per_day={deal?.saves?.avg || 0}
+            value={deal?.saves?.count || 0}
           />
         </DashboardStatGrid>
       </Container>
@@ -264,6 +300,15 @@ const DealsSingle = () => {
           onCancel={onExpireCancel}
           isOpen={expireDealModal}
           onAccept={handleOnExpireSubmit}
+          submitLoading={submitLoading}
+        />
+      )}
+      {deleteDealModal && (
+        <DeleteDealModal
+          dealName={deal?.name}
+          onCancel={onDeleteCancel}
+          isOpen={deleteDealModal}
+          onAccept={handleOnDeleteSubmit}
           submitLoading={submitLoading}
         />
       )}
@@ -301,6 +346,38 @@ const ExpireDealModal = ({
           <Typography color={'text.secondary'} variant="body2">
             Once expired the deal will no longer appear on users feed and will
             move over to your expired deals.
+          </Typography>
+        </Box>
+      </Box>
+    </AcceptDeclineModal>
+  );
+};
+
+const DeleteDealModal = ({
+  onCancel,
+  onAccept,
+  submitLoading,
+  isOpen,
+  dealName
+}) => {
+  return (
+    <AcceptDeclineModal
+      onCancel={onCancel}
+      onAccept={onAccept}
+      acceptText={'Yes, delete'}
+      cancelText={'Cancel'}
+      submitLoading={submitLoading}
+      title={'Delete this deal'}
+      subtitle={'Are you sure you want to delete this deal?'}
+      isOpen={isOpen}
+    >
+      <Box mt={2}>
+        <Box mb={2}>
+          <Typography mb={1} fontSize={18} fontWeight={700}>
+            {dealName}
+          </Typography>
+          <Typography color={'text.secondary'} variant="body2">
+            This deal and its stats will be deleted forever.
           </Typography>
         </Box>
       </Box>

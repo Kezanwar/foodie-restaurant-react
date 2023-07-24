@@ -211,7 +211,7 @@ export function AuthProvider({ children }) {
       register,
       registerWithGoogle
     };
-  }, [state, login, logout, register]);
+  }, [state, login, logout, register, registerWithGoogle, loginWithGoogle]);
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 }

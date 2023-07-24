@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useSnackbar } from 'notistack';
 // @mui
 import { Box } from '@mui/material';
 // components
@@ -13,15 +12,12 @@ import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
 import LoadingScreen from '../../components/loading-screen/LoadingScreen';
 import NotSubscribedNotice from '../../components/not-subcribed-notice/NotSubscribedNotice';
-import Footer from '../../features/footer/Footer';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-
-  const { enqueueSnackbar } = useSnackbar();
 
   const { isLoading, data, isFetched } = useRestaurantQuery();
 
