@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { useForm, useFormContext } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import { StaticDateRangePicker } from '@mui/x-date-pickers-pro/StaticDateRangePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { add, format } from 'date-fns';
@@ -16,41 +16,39 @@ import {
   Alert,
   AlertTitle,
   Button,
-  FormHelperText
+  FormHelperText,
+  styled
 } from '@mui/material';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import HelpIcon from '@mui/icons-material/Help';
-
 import FormProvider from '../../../components/hook-form/FormProvider';
-import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
-import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
 
-import { newDealSchema } from '../../../validation/deals.validation';
 import {
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
   InputWithInfoStack
 } from '../../../features/forms/styles';
 import DashboardTitle from '../../../components/dashboard-title/DashboardTitle';
-import { RHFAutocomplete, RHFTextField } from '../../../components/hook-form';
-
+import { RHFTextField } from '../../../components/hook-form';
 import Subheader from '../../../components/subheader/Subheader';
-
 import { DashboardTitleContainer } from '../styles';
-
 import RHFMultipleAutocomplete from '../../../components/hook-form/RHFMultipleAutoComplete';
-
 import Spacer from '../../../components/spacer/Spacer';
-import { formattedDateString } from '../../../utils/formatTime';
 import { SelectButton } from '../../../components/select-button/SelectButton';
 import ExpandableBox from '../../../components/expandable-box/ExpandableBox';
-import { addDeal } from '../../../utils/api';
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
 import AcceptDeclineModal from '../../../components/accept-decline-modal/AcceptDeclineModal';
 
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import useActiveDealsQuery from '../../../hooks/queries/useActiveDealsQuery';
+import { formattedDateString } from '../../../utils/formatTime';
+import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
+import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
+import { addDeal, getDealTemplate } from '../../../utils/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
 
-// components
+import { newDealSchema } from '../../../validation/deals.validation';
+import LoadingScreen from '../../../components/loading-screen/LoadingScreen';
+import { DEALS_PER_LOCATION } from '../../../constants/deals.constants';
 
 function getElementsByText(str, tag = 'div') {
   return Array.prototype.slice
@@ -59,7 +57,14 @@ function getElementsByText(str, tag = 'div') {
 }
 
 function removeLicenseEl() {
-  getElementsByText('MUI X Missing license key').forEach((el) => el.remove());
+  const elements = getElementsByText('MUI X Missing license key');
+  if (!elements?.length) {
+    setTimeout(() => removeLicenseEl(), 100);
+  } else {
+    elements.forEach((el) => {
+      el.remove();
+    });
+  }
 }
 
 const DateInputOptions = [
@@ -85,12 +90,27 @@ const DateInputOptions = [
   }
 ];
 
+export const DateButtonsWrapper = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: theme.spacing(1),
+  flexWrap: 'wrap',
+  justifyContent: 'flex-start',
+  marginTop: 0,
+  [theme.breakpoints.down('md')]: {
+    justifyContent: 'center',
+    marginTop: theme.spacing(3)
+  }
+}));
+
 // ----------------------------------------------------------------------
 
 export default function DealsCreate() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const params = useParams();
+  const { search } = useLocation();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -127,6 +147,26 @@ export default function DealsCreate() {
     getFieldState,
     setValue
   } = methods;
+
+  useEffect(() => {
+    if (search) {
+      const id = new URLSearchParams(search)?.get('template_id');
+      if (id) {
+        getDealTemplate(id)
+          .then((res) => {
+            const name = res?.data?.name;
+            const description = res?.data?.description;
+            setValue('name', name);
+            setValue('description', description);
+          })
+          .catch((err) => {
+            enqueueSnackbar('Template not found', {
+              variant: 'warning'
+            });
+          });
+      }
+    }
+  }, []);
 
   const dateErrors = errors.start_date || errors.end_date;
 
@@ -224,11 +264,7 @@ export default function DealsCreate() {
     setShowConfirmModal(true);
   };
 
-  useEffect(() => {
-    removeLicenseEl();
-  }, [showDatePicker]);
-
-  const { data } = useLocationsQuery();
+  const { data, isLoading } = useLocationsQuery();
 
   const locationOptions = useMemo(() => {
     const locs = data?.data;
@@ -272,6 +308,29 @@ export default function DealsCreate() {
     }),
     [isTablet]
   );
+
+  const cantCreate = useMemo(() => {
+    if (isLoading || allActiveDeals?.isLoading) return false;
+    const locationsLength = data?.data?.length;
+    const activeDealsLength = allActiveDeals?.data?.data.length;
+    if (activeDealsLength >= locationsLength * DEALS_PER_LOCATION) return true;
+    return false;
+  }, [
+    allActiveDeals?.data?.data?.length,
+    data?.data?.length,
+    isLoading,
+    allActiveDeals?.isLoading
+  ]);
+
+  useEffect(() => {
+    if (!cantCreate) {
+      removeLicenseEl();
+    }
+  }, [showDatePicker, cantCreate]);
+
+  if (allActiveDeals?.isLoading || isLoading) return <LoadingScreen />;
+
+  if (cantCreate) return <CantCreate />;
 
   return (
     <>
@@ -339,15 +398,7 @@ export default function DealsCreate() {
                     * You can expire a deal at any time from your dashboard
                   </Typography>
 
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      gap: 1,
-                      flexWrap: 'wrap',
-                      justifyContent: isTablet ? 'center' : 'flex-start',
-                      marginTop: isTablet ? 3 : 0
-                    }}
-                  >
+                  <DateButtonsWrapper>
                     {DateInputOptions.map((dateObj) => {
                       const isCustomBtn = dateObj.text === 'Custom Date Range';
                       const isSelected =
@@ -394,7 +445,7 @@ export default function DealsCreate() {
                     >
                       Custom date range
                     </SelectButton>
-                  </Box>
+                  </DateButtonsWrapper>
 
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <ExpandableBox expanded={showDatePicker}>
@@ -536,5 +587,69 @@ const CreateDealModal = ({ onCancel, onAccept, submitLoading, isOpen }) => {
         </Box>
       </Box>
     </AcceptDeclineModal>
+  );
+};
+
+// ----------------------------------
+
+const sx = {
+  bgcolor: 'text.primary',
+  color: (theme) =>
+    theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+  width: 'max-content'
+};
+
+export const CantCreateContentWrapper = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  paddingTop: theme.spacing(2),
+  paddingBottom: theme.spacing(2)
+}));
+
+export const CantCreateAlert = styled(Alert)(({ theme }) => ({
+  maxWidth: '80%',
+  marginBottom: theme.spacing(4),
+  [theme.breakpoints.down('md')]: {
+    maxWidth: 'unset'
+  }
+}));
+
+const CantCreate = () => {
+  const nav = useNavigate();
+  return (
+    <>
+      <Helmet>
+        <title> Create a new deal | Foodie</title>
+      </Helmet>
+      <Container sx={{ px: 3 }} maxWidth={'xl'}>
+        <CantCreateContentWrapper>
+          <CantCreateAlert severity="warning">
+            <AlertTitle>Maximum active deals reached</AlertTitle>
+            <Box>You've reached the maximum amount of active deals.</Box>
+          </CantCreateAlert>
+          <Typography
+            textAlign={'center'}
+            mb={4}
+            variant="body2"
+            color={'text.secondary'}
+          >
+            Sorry, A restaurant can have a maxmim of{' '}
+            <strong>{DEALS_PER_LOCATION} active deals per location.</strong>
+            <br />
+            <br />
+            You must wait for an active deal to expire, or expire an active deal
+            manually to create a new one.
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={() => nav(PATH_DASHBOARD.deals_all)}
+            sx={sx}
+          >
+            Manage your deals
+          </Button>
+        </CantCreateContentWrapper>
+      </Container>
+    </>
   );
 };

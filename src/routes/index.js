@@ -27,7 +27,8 @@ import {
   PageConfirmEmail,
   DealsCreate,
   DealsAll,
-  DealsSingle
+  DealsSingle,
+  DealsEdit
 } from './elements';
 import {
   PATH_AUTH,
@@ -88,7 +89,7 @@ export default function Router() {
             { path: 'all', element: <DealsAll /> },
             { path: 'create', element: <DealsCreate /> },
             { path: 'single/:id', element: <DealsSingle /> },
-            { path: 'edit/:id', element: <PageSix /> }
+            { path: 'edit/:id', element: <DealsEdit /> }
           ]
         },
         { path: 'restaurant', element: <PageThree /> },

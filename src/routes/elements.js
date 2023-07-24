@@ -58,6 +58,9 @@ export const DealsCreate = Loadable(
 export const DealsSingle = Loadable(
   lazy(() => import('../pages/dashboard/Deals/DealsSingle'))
 );
+export const DealsEdit = Loadable(
+  lazy(() => import('../pages/dashboard/Deals/DealsEdit'))
+);
 
 // ----------------------------------------------------------------------
 

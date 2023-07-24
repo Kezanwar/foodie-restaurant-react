@@ -104,16 +104,16 @@ export default function ActiveDealTable() {
   const flex = noFlex ? 0 : 1;
   const columns = useMemo(
     () => [
-      {
-        field: 'actions',
-        headerName: 'Actions',
-        width: isTablet ? 80 : 100,
-        sortable: false,
-        type: 'actions',
-        renderCell: (params) => (
-          <ActionMenu dealId={params.id} handleView={handleView} />
-        )
-      },
+      // {
+      //   field: 'actions',
+      //   headerName: 'Actions',
+      //   width: isTablet ? 80 : 100,
+      //   sortable: false,
+      //   type: 'actions',
+      //   renderCell: (params) => (
+      //     <ActionMenu dealId={params.id} handleView={handleView} />
+      //   )
+      // },
       {
         field: 'name',
         headerName: 'Name',
@@ -212,7 +212,7 @@ export default function ActiveDealTable() {
     return !isTablet
       ? [
           {
-            field: 'view_count',
+            field: 'views',
             headerName: 'Views',
             type: 'number',
             width: 120,
@@ -220,10 +220,10 @@ export default function ActiveDealTable() {
             headerAlign: 'center',
             flex: flex,
             renderCell: (params) => {
-              const col = params.value <= 14 ? 'warning' : 'success';
+              const col = params.value.count <= 14 ? 'warning' : 'success';
               return (
                 <Label variant={'filled'} color={col}>
-                  {params.value}
+                  {params.value.count}
                 </Label>
               );
             },
@@ -237,7 +237,7 @@ export default function ActiveDealTable() {
             }
           },
           {
-            field: 'impressions',
+            field: 'unique_views',
             headerName: 'Impressions',
             type: 'number',
             width: 180,
@@ -263,7 +263,7 @@ export default function ActiveDealTable() {
             }
           },
           {
-            field: 'save_count',
+            field: 'saves',
             headerName: 'Saves',
             type: 'number',
             width: 120,
@@ -271,10 +271,10 @@ export default function ActiveDealTable() {
             align: 'center',
             headerAlign: 'center',
             renderCell: (params) => {
-              const col = params.value <= 14 ? 'warning' : 'success';
+              const col = params.value.count <= 14 ? 'warning' : 'success';
               return (
                 <Label variant={'filled'} color={col}>
-                  {params.value}
+                  {params.value.count}
                 </Label>
               );
             },

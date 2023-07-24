@@ -23,9 +23,11 @@ const endpoints = {
   getExpiredDeals: '/rest/deals/expired',
   getSingleDeal: '/rest/deals/single',
 
-  // deals CUD
   addDeal: '/rest/deals/add',
+  editDeal: 'rest/deals/edit',
   expireDeal: '/rest/deals/expire',
+  deleteDeal: '/rest/deals/delete',
+  templateDeal: '/rest/deals/use-template',
 
   // options
   getOptions: '/options'
@@ -115,10 +117,22 @@ export const addDeal = (data) => {
   return axiosInstance.post(endpoints.addDeal, data);
 };
 
+export const editDeal = (id, data) => {
+  return axiosInstance.patch(`${endpoints.editDeal}/${id}`, data);
+};
+
 export const expireDeal = (id) => {
   return axiosInstance.patch(`${endpoints.expireDeal}/${id}`, {
     end_date: formattedDateString(new Date())
   });
+};
+
+export const deleteDeal = (id) => {
+  return axiosInstance.post(`${endpoints.deleteDeal}/${id}`);
+};
+
+export const getDealTemplate = (id) => {
+  return axiosInstance.get(`${endpoints.templateDeal}/${id}`);
 };
 
 //* ------------------ Options -------------------

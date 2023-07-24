@@ -85,6 +85,7 @@ const tableType = 'expired';
 export default function ExpiredDealTable() {
   const dealQuery = useExpiredDealsQuery();
   const noFlex = useMediaQuery((theme) => theme.breakpoints.down(1400));
+  const { isTablet } = useCustomMediaQueries();
 
   const navigate = useNavigate();
 
@@ -95,17 +96,17 @@ export default function ExpiredDealTable() {
   const flex = noFlex ? 0 : 1;
   const columns = useMemo(
     () => [
-      {
-        field: 'actions',
-        headerName: 'Actions',
-        width: 100,
-        sortable: false,
-        type: 'actions',
+      // {
+      //   field: 'actions',
+      //   headerName: 'Actions',
+      //   width: 100,
+      //   sortable: false,
+      //   type: 'actions',
 
-        renderCell: (params) => (
-          <ActionMenu dealId={params.id} handleView={handleView} />
-        )
-      },
+      //   renderCell: (params) => (
+      //     <ActionMenu dealId={params.id} handleView={handleView} />
+      //   )
+      // },
       {
         field: 'name',
         headerName: 'Name',
@@ -183,86 +184,93 @@ export default function ExpiredDealTable() {
           );
         },
         width: 150
-      },
-
-      {
-        field: 'view_count',
-        headerName: 'Views',
-        type: 'number',
-        width: 120,
-        align: 'center',
-        headerAlign: 'center',
-        flex: flex,
-        renderCell: (params) => {
-          const col = params.value <= 14 ? 'warning' : 'success';
-          return (
-            <Label variant={'filled'} color={col}>
-              {params.value}
-            </Label>
-          );
-        },
-        renderHeader: (params) => {
-          return (
-            <CustomHeaderCell>
-              <VisibilityOutlinedIcon color="primary" />{' '}
-              {params.colDef.headerName}
-            </CustomHeaderCell>
-          );
-        }
-      },
-      {
-        field: 'impressions',
-        headerName: 'Impressions',
-        type: 'number',
-        width: 180,
-        flex: flex,
-        align: 'center',
-        headerAlign: 'center',
-        renderCell: (params) => {
-          const col = params.value <= 6 ? 'warning' : 'success';
-          return (
-            <Label variant={'filled'} color={col}>
-              {params.value}
-            </Label>
-          );
-        },
-        renderHeader: (params) => {
-          return (
-            <CustomHeaderCell>
-              <InsightsOutlinedIcon color="primary" />{' '}
-              {params.colDef.headerName}
-            </CustomHeaderCell>
-          );
-        }
-      },
-      {
-        field: 'save_count',
-        headerName: 'Saves',
-        type: 'number',
-        width: 120,
-        flex: flex,
-        align: 'center',
-        headerAlign: 'center',
-        renderCell: (params) => {
-          const col = params.value <= 14 ? 'warning' : 'success';
-          return (
-            <Label variant={'filled'} color={col}>
-              {params.value}
-            </Label>
-          );
-        },
-        renderHeader: (params) => {
-          return (
-            <CustomHeaderCell>
-              <BookmarkAddedOutlinedIcon color="primary" />{' '}
-              {params.colDef.headerName}
-            </CustomHeaderCell>
-          );
-        }
       }
     ],
     [flex]
   );
+
+  const desktopOnlyColumns = useMemo(() => {
+    return !isTablet
+      ? [
+          {
+            field: 'views',
+            headerName: 'Views',
+            type: 'number',
+            width: 120,
+            align: 'center',
+            headerAlign: 'center',
+            flex: flex,
+            renderCell: (params) => {
+              const col = params.value.count <= 14 ? 'warning' : 'success';
+              return (
+                <Label variant={'filled'} color={col}>
+                  {params.value.count}
+                </Label>
+              );
+            },
+            renderHeader: (params) => {
+              return (
+                <CustomHeaderCell>
+                  <VisibilityOutlinedIcon color="primary" />{' '}
+                  {params.colDef.headerName}
+                </CustomHeaderCell>
+              );
+            }
+          },
+          {
+            field: 'unique_views',
+            headerName: 'Impressions',
+            type: 'number',
+            width: 180,
+            flex: flex,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: (params) => {
+              const col = params.value <= 6 ? 'warning' : 'success';
+              return (
+                <Label variant={'filled'} color={col}>
+                  {params.value}
+                </Label>
+              );
+            },
+            valueGetter: (params) => params.value,
+            renderHeader: (params) => {
+              return (
+                <CustomHeaderCell>
+                  <InsightsOutlinedIcon color="primary" />{' '}
+                  {params.colDef.headerName}
+                </CustomHeaderCell>
+              );
+            }
+          },
+          {
+            field: 'saves',
+            headerName: 'Saves',
+            type: 'number',
+            width: 120,
+            flex: flex,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: (params) => {
+              const col = params.value.count <= 14 ? 'warning' : 'success';
+              return (
+                <Label variant={'filled'} color={col}>
+                  {params.value.count}
+                </Label>
+              );
+            },
+            renderHeader: (params) => {
+              return (
+                <CustomHeaderCell>
+                  <BookmarkAddedOutlinedIcon color="primary" />{' '}
+                  {params.colDef.headerName}
+                </CustomHeaderCell>
+              );
+            }
+          }
+        ]
+      : [];
+  }, [flex, isTablet]);
 
   const deals = dealQuery?.data?.data;
   const loading = dealQuery?.isLoading;
@@ -276,13 +284,23 @@ export default function ExpiredDealTable() {
       sx={TableSx}
       transition={TableAnimDur}
     >
+      {noFlex && (
+        <Typography
+          mb={1}
+          fontSize={12}
+          textAlign={'right'}
+          color={'info.main'}
+        >
+          Scroll for more →
+        </Typography>
+      )}
       <DataGrid
         components={{
           Toolbar: !isMobile ? GridToolbar : null
         }}
         rowSelection={false}
         rows={deals}
-        columns={columns}
+        columns={columns.concat(desktopOnlyColumns)}
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 8 }
