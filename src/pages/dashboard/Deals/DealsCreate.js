@@ -57,13 +57,15 @@ function getElementsByText(str, tag = 'div') {
 }
 
 function removeLicenseEl() {
+  let deleted = false;
   const elements = getElementsByText('MUI X Missing license key');
-  if (!elements?.length) {
+  if (!deleted && !elements?.length) {
     setTimeout(() => removeLicenseEl(), 100);
   } else {
     elements.forEach((el) => {
       el.remove();
     });
+    deleted = true;
   }
 }
 
