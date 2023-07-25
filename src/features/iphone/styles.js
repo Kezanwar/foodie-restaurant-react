@@ -55,3 +55,38 @@ export const DealIconBox = styled(Box)(({ theme }) => ({
   color: theme.palette.primary.light,
   transform: 'translateX(-50%) translateY(-50%) scale(0.75) '
 }));
+
+export const RestaurantProfilePhoneContentWrapper = styled(Box, {
+  shouldForwardProp: (p) => p !== 'phoneHeight' || p !== 'phoneWidth'
+})(({ theme, phoneHeight, phoneWidth }) => ({
+  height: phoneHeight - 40,
+  paddingBottom: 0,
+  backgroundColor: theme.palette.background.paper,
+  width: phoneWidth - 38,
+  overflowY: 'scroll',
+  borderRadius: '49px',
+  '&::-webkit-scrollbar': {
+    width: 0,
+    borderRadius: 5
+  },
+  '&::-webkit-scrollbar-track': {
+    backgroundColor: 'transparent',
+    width: 0
+  },
+  '&::-webkit-scrollbar-thumb': {
+    width: 0
+  }
+}));
+
+export const LinearGradientSeparator = styled(Box)(({ theme }) => ({
+  width: '100%',
+  height: '1.2px',
+  boxShadow: theme.shadows[19],
+  background: `-webkit-linear-gradient(45deg, ${theme.palette.primary.main} 10%, ${theme.palette.primary.lighter} 90%)`
+}));
+
+export const DietaryCuisinesChipsWrapper = styled(Box)(({ theme }) => ({
+  display: 'flex!important',
+  flexWrap: 'wrap',
+  gap: theme.spacing(1)
+}));

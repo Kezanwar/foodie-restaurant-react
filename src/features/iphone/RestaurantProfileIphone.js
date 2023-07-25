@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
   Box,
   Button,
+  Chip,
   Link,
   Stack,
   TextField,
@@ -24,7 +25,10 @@ import {
   MainSection,
   DealContainer,
   DealIconBox,
-  DealsSection
+  DealsSection,
+  RestaurantProfilePhoneContentWrapper,
+  LinearGradientSeparator,
+  DietaryCuisinesChipsWrapper
 } from './styles';
 
 const EXAMPLE_DEALS = [
@@ -83,6 +87,13 @@ const BookButton = ({ url }) => {
   );
 };
 
+const openingTimeTextSx = {
+  textTransform: 'uppercase',
+  fontWeight: 'medium',
+  mt: '-1.5px',
+  fontSize: 12
+};
+
 const OpeningTimeText = ({ day, value }) => {
   return (
     <Stack
@@ -101,17 +112,25 @@ const OpeningTimeText = ({ day, value }) => {
       </Typography>
       <Typography
         color={value.is_open ? 'success.main' : 'warning.main'}
-        sx={{
-          textTransform: 'uppercase',
-          fontWeight: 'medium',
-          mt: '-1.5px',
-          fontSize: 12
-        }}
+        sx={openingTimeTextSx}
         variant="body2"
       >
         {value.is_open ? `${value.open} - ${value.close}` : 'Closed'}{' '}
       </Typography>
     </Stack>
+  );
+};
+
+const CuisinesAndDietaryChips = ({ dietary_requirements, cuisines }) => {
+  return (
+    <DietaryCuisinesChipsWrapper>
+      {cuisines?.map((c) => (
+        <Chip variant="outlined" label={c.name} />
+      ))}
+      {dietary_requirements?.map((d) => (
+        <Chip variant="outlined" label={d.name} />
+      ))}
+    </DietaryCuisinesChipsWrapper>
   );
 };
 
@@ -135,7 +154,8 @@ const RestaurantProfileIphone = () => {
     return null;
   }, [locations, selectedLocationID]);
 
-  const { avatar, name, bio, cover_photo } = data?.data || {};
+  const { avatar, name, bio, cover_photo, dietary_requirements, cuisines } =
+    data?.data || {};
 
   const height = iphoneRef?.current?.height || 1;
   const width = iphoneRef?.current?.width || 1;
@@ -148,51 +168,36 @@ const RestaurantProfileIphone = () => {
 
   const bookingLink = data?.data?.booking_link;
 
-  return (
+  const wrapperSx = useMemo(() => {
+    return isMobile
+      ? {
+          '& .device': {
+            transform: isSmallMobile ? 'scale(0.7)' : 'scale(0.75)'
+          },
+          marginTop: -4,
+          marginBottom: -4
+        }
+      : {
+          '& .device': {
+            transform: 'scale(0.8)',
+            marginTop: -10
+          }
+        };
+  }, [isMobile, isSmallMobile]);
+
+  return !data?.data ? null : (
     <Stack
       flex={1}
       maxWidth={'100vw'}
       overflow={'hidden'}
-      sx={
-        isMobile
-          ? {
-              '& .device': {
-                transform: isSmallMobile ? 'scale(0.7)' : 'scale(0.75)'
-              },
-              marginTop: -4,
-              marginBottom: -4
-            }
-          : {
-              '& .device': {
-                transform: 'scale(0.8)',
-                marginTop: -10
-              }
-            }
-      }
+      sx={wrapperSx}
       justifyContent={'center'}
       alignItems={'center'}
     >
       <Iphone14Pro ref={iphoneRef}>
-        <Box
-          sx={{
-            height: height - 40,
-            paddingBottom: 0,
-            backgroundColor: theme.palette.background.paper,
-            width: width - 38,
-            overflowY: 'scroll',
-            borderRadius: '49px',
-            '&::-webkit-scrollbar': {
-              width: 0,
-              borderRadius: 5
-            },
-            '&::-webkit-scrollbar-track': {
-              backgroundColor: 'transparent',
-              width: 0
-            },
-            '&::-webkit-scrollbar-thumb': {
-              width: 0
-            }
-          }}
+        <RestaurantProfilePhoneContentWrapper
+          phoneHeight={height}
+          phoneWidth={width}
         >
           <CoverPhotoContainer url={`url(${cover_photo})`}>
             <img style={AvatarStyles} src={avatar} alt={'avatar'} />
@@ -206,7 +211,7 @@ const RestaurantProfileIphone = () => {
               }}
               mb={1.5}
             >
-              <Typography ml={0} variant="h6">
+              <Typography ml={0} variant="h5">
                 {name}
               </Typography>
             </Box>
@@ -222,15 +227,12 @@ const RestaurantProfileIphone = () => {
                 </Box> */}
             </Box>
 
-            <Box
-              sx={{
-                width: '100%',
-                height: '1.2px',
-                boxShadow: theme.shadows[19],
-                background: `-webkit-linear-gradient(45deg, ${theme.palette.primary.main} 10%, ${theme.palette.primary.lighter} 90%)`
-              }}
-              mb={3}
+            <CuisinesAndDietaryChips
+              cuisines={cuisines}
+              dietary_requirements={dietary_requirements}
             />
+            <Spacer sp={3} />
+            <LinearGradientSeparator mb={3} />
             <Box mb={3}>
               <Spacer sp={1} />
               {locations ? (
@@ -388,7 +390,7 @@ const RestaurantProfileIphone = () => {
               </Box>
             </Box>
           </DealsSection>
-        </Box>
+        </RestaurantProfilePhoneContentWrapper>
       </Iphone14Pro>
     </Stack>
   );
