@@ -3,6 +3,7 @@ import { formattedDateString } from './formatTime';
 
 const endpoints = {
   getRestaurant: '/rest/restaurant',
+  editRestaurant: 'rest/restaurant/edit',
 
   // create new restaurant
   postCompanyInfo: '/rest/create-restaurant/company-info',
@@ -37,6 +38,12 @@ const endpoints = {
 
 export const getRestaurant = () => {
   return axiosInstance.get(endpoints.getRestaurant);
+};
+
+export const editRestaurant = (data) => {
+  return axiosInstance.patch(endpoints.editRestaurant, data, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
 };
 
 //* ------ Create new restaurant journey --------

@@ -28,7 +28,9 @@ import {
   DealsCreate,
   DealsAll,
   DealsSingle,
-  DealsEdit
+  DealsEdit,
+  Restaurant,
+  RestaurantEdit
 } from './elements';
 import {
   PATH_AUTH,
@@ -92,7 +94,16 @@ export default function Router() {
             { path: 'edit/:id', element: <DealsEdit /> }
           ]
         },
-        { path: 'restaurant', element: <PageThree /> },
+        {
+          path: 'restaurant',
+          children: [
+            {
+              element: <Restaurant />,
+              index: true
+            },
+            { path: 'edit', element: <RestaurantEdit /> }
+          ]
+        },
         { path: 'users', element: <PageThree /> },
         { path: 'subscription', element: <PageThree /> }
       ]

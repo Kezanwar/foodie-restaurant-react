@@ -191,8 +191,6 @@ const NewRestaurantCreateRestaurant = (props) => {
     setFormSubmitLoading(false);
   };
 
-  const { isTablet } = useCustomMediaQueries();
-
   useEffect(() => {
     reset(defaultValues);
   }, [defaultValues, setValue]);

@@ -24,6 +24,7 @@ export const PATH_DASHBOARD = {
   deals_edit: path(ROOTS_DASHBOARD, '/deals/edit'),
   deals_single: path(ROOTS_DASHBOARD, '/deals/single'),
   restaurant: path(ROOTS_DASHBOARD, '/restaurant'),
+  restaurant_edit: path(ROOTS_DASHBOARD, '/restaurant/edit'),
   users: path(ROOTS_DASHBOARD, '/users'),
   subscription: path(ROOTS_DASHBOARD, '/subscription')
 
