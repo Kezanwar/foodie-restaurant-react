@@ -117,7 +117,9 @@ const LocationChipList = React.memo(({ locations }) => {
   return (
     <LocationChipsContainer>
       {locations?.map((lo) => {
-        return <Chip variant="outlined" label={lo.nickname} />;
+        return (
+          <Chip key={lo.nickname} variant="outlined" label={lo.nickname} />
+        );
       })}
     </LocationChipsContainer>
   );

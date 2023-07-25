@@ -70,7 +70,11 @@ export default function DealsEdit() {
   const { id } = useParams();
   const { data: dealData, error, isLoading, refetch } = useSingleDealQuery(id);
 
-  const { data } = useLocationsQuery();
+  const {
+    data,
+    isLoading: locationsLoading,
+    error: locationsError
+  } = useLocationsQuery();
 
   const locationOptions = useMemo(() => {
     const locs = data?.data;
@@ -193,10 +197,10 @@ export default function DealsEdit() {
   }, []);
 
   useEffect(() => {
-    if (error) {
+    if (error || locationsError) {
       navigate(PATH_DASHBOARD.deals_all, { replace: true });
     }
-  }, [error]);
+  }, [error, locationsError]);
 
   const { isTablet } = useCustomMediaQueries();
 
@@ -229,7 +233,7 @@ export default function DealsEdit() {
 
   const dateErrorText = errors?.end_date?.message;
 
-  return isLoading ? (
+  return isLoading || locationsLoading ? (
     <LoadingScreen />
   ) : (
     <>
