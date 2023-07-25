@@ -1,9 +1,16 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { format } from 'date-fns';
 import { useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
-import { Box, Button, Container, Typography, styled } from '@mui/material';
+import {
+  Box,
+  Button,
+  Chip,
+  Container,
+  Typography,
+  styled
+} from '@mui/material';
 
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -22,6 +29,7 @@ import useSingleDealQuery from '../../../hooks/queries/useSingleDealQuery';
 import useActiveDealsQuery from '../../../hooks/queries/useActiveDealsQuery';
 import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
 import useExpiredDealsQuery from '../../../hooks/queries/useExpiredDealsQuery';
+import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
 
 const DealDetailsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -30,7 +38,7 @@ const DealDetailsContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.spacing(2),
   paddingTop: theme.spacing(4),
-  paddingBottom: theme.spacing(4),
+  paddingBottom: theme.spacing(2),
   marginBottom: theme.spacing(2)
 }));
 
@@ -65,7 +73,10 @@ const ActionsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   gap: theme.spacing(8),
   marginBottom: theme.spacing(2),
-  marginTop: theme.spacing(2)
+  marginTop: theme.spacing(5),
+  [theme.breakpoints.down('md')]: {
+    gap: theme.spacing(3)
+  }
 }));
 
 const ExpiredStatusContainer = styled(Box, {
@@ -91,8 +102,28 @@ const InsightsContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.spacing(1),
   marginBottom: theme.spacing(3),
-  marginTop: theme.spacing(4)
+  marginTop: theme.spacing(3)
 }));
+
+const LocationChipsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: theme.spacing(1),
+  flexWrap: 'wrap'
+}));
+
+const LocationChipList = React.memo(({ locations }) => {
+  return (
+    <LocationChipsContainer>
+      {locations?.map((lo) => {
+        return (
+          <Chip key={lo.nickname} variant="outlined" label={lo.nickname} />
+        );
+      })}
+    </LocationChipsContainer>
+  );
+});
 
 // --------------------------------------------------------
 
@@ -122,15 +153,17 @@ const DealsSingle = () => {
   const activeDeals = useActiveDealsQuery();
   const expiredDeals = useExpiredDealsQuery();
 
-  const handleOnExpireSubmit = async () => {
+  const deal = data?.data;
+
+  const handleOnExpireSubmit = useCallback(async () => {
     if (deal?._id) {
       setSubmitLoading(true);
       try {
         const res = await expireDeal(deal?._id);
-
         refetch();
         activeDeals.remove();
         expiredDeals.remove();
+        mixpanelTrack(MIXPANEL_EVENTS.expire_deal_success);
         enqueueSnackbar(`Successfully expired ${deal?.name}`, {
           variant: 'success'
         });
@@ -139,14 +172,15 @@ const DealsSingle = () => {
       } catch (error) {
         setSubmitLoading(false);
         setExpireDealModal(false);
+        mixpanelTrack(MIXPANEL_EVENTS.expire_deal_error);
         enqueueSnackbar(`Unable to expire ${deal?.name} please try again`, {
           variant: 'error'
         });
       }
     }
-  };
+  }, [deal?._id, deal?.name]);
 
-  const handleOnDeleteSubmit = async () => {
+  const handleOnDeleteSubmit = useCallback(async () => {
     if (deal?._id) {
       setSubmitLoading(true);
       try {
@@ -158,18 +192,20 @@ const DealsSingle = () => {
         enqueueSnackbar(`Successfully deleted ${deal?.name}`, {
           variant: 'success'
         });
+        mixpanelTrack(MIXPANEL_EVENTS.delete_deal_success);
         setExpireDealModal(false);
         setSubmitLoading(false);
         navigate(PATH_DASHBOARD.root, { replace: true });
       } catch (error) {
         setSubmitLoading(false);
         setExpireDealModal(false);
+        mixpanelTrack(MIXPANEL_EVENTS.delete_deal_error);
         enqueueSnackbar(`Unable to delete ${deal?.name} please try again`, {
           variant: 'error'
         });
       }
     }
-  };
+  }, [deal?._id, deal?.name]);
 
   useEffect(() => {
     if (!id) {
@@ -187,8 +223,6 @@ const DealsSingle = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
-
-  const deal = data?.data;
 
   const isExpired = deal?.is_expired;
 
@@ -232,6 +266,7 @@ const DealsSingle = () => {
               </Typography>
             </DateContainer>
           </DateWrapper>
+          <LocationChipList locations={deal?.locations} />
           <ActionsContainer>
             {isExpired && (
               <LightLoadingButton
