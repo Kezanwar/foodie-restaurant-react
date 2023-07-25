@@ -161,7 +161,7 @@ export default function DealsEdit() {
       });
       await allActiveDeals.refetch();
       refetch();
-      mixpanelTrack(MIXPANEL_EVENTS.add_deal_success, {
+      mixpanelTrack(MIXPANEL_EVENTS.edit_deal_success, {
         data
       });
       enqueueSnackbar(`${data.name} edited successfully`, {
@@ -175,6 +175,9 @@ export default function DealsEdit() {
       setError('afterSubmit', {
         ...error,
         message: error.message
+      });
+      mixpanelTrack(MIXPANEL_EVENTS.edit_deal_error, {
+        data
       });
       setFormSubmitLoading(false);
       setShowConfirmModal(false);

@@ -60,7 +60,15 @@ export const MIXPANEL_EVENTS = {
   delete_location_failed: 'fe_delete_location_failed',
 
   // ---- DEALS
-  add_deal_success: 'fe_add_deal_sucess'
+  add_deal_success: 'fe_add_deal_sucess',
+  add_deal_error: 'fe_add_deal_error',
+  edit_deal_success: 'fe_edit_deal_sucess',
+  edit_deal_error: 'fe_edit_deal_error',
+  delete_deal_success: 'fe_delete_deal_success',
+  delete_deal_error: 'fe_delete_deal_error',
+  expire_deal_success: 'fe_expire_deal_success',
+  expire_deal_error: 'fe_expire_deal_error',
+  use_template_deal: 'fe_use_template_deal'
 };
 
 export function mixpanelTrack(eventName, props) {

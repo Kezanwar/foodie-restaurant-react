@@ -111,7 +111,6 @@ export default function DealsCreate() {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const params = useParams();
   const { search } = useLocation();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -154,10 +153,11 @@ export default function DealsCreate() {
     if (search) {
       const id = new URLSearchParams(search)?.get('template_id');
       if (id) {
+        mixpanelTrack(MIXPANEL_EVENTS.use_template_deal);
         getDealTemplate(id)
           .then((res) => {
-            const name = res?.data?.name;
-            const description = res?.data?.description;
+            const name = res?.data?.name || '';
+            const description = res?.data?.description || '';
             setValue('name', name);
             setValue('description', description);
           })
@@ -259,6 +259,9 @@ export default function DealsCreate() {
       });
       setFormSubmitLoading(false);
       setShowConfirmModal(false);
+      mixpanelTrack(MIXPANEL_EVENTS.add_deal_error, {
+        data
+      });
     }
   }, []);
 
