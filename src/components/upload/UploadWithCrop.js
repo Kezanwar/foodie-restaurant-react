@@ -22,7 +22,6 @@ import RejectionFiles from './errors/RejectionFiles';
 import MultiFilePreview from './preview/MultiFilePreview';
 import SingleFilePreview from './preview/SingleFilePreview';
 import { MAX_IMAGE } from '../../constants/files.constants';
-import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
 import { CropModalContainer } from './styles';
 
 // ----------------------------------------------------------------------
@@ -243,7 +242,7 @@ const modalStyles = {
 
 function CropModal({ isOpen, img, onCropDone, onCancel }) {
   const [loading, setLoading] = useState(true);
-  const { isMobile } = useCustomMediaQueries();
+
   const cropperRef = useRef(null);
 
   const smallHeight = useMediaQuery('(max-height:770px)');
@@ -256,8 +255,6 @@ function CropModal({ isOpen, img, onCropDone, onCancel }) {
     if (largerHeight) return 600;
     return 400;
   }, [smallHeight, mediumHeight, largerHeight]);
-
-  console.log(canvasHeight);
 
   const imgSrc = img ? URL.createObjectURL(img) : '';
 
