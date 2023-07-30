@@ -1,7 +1,14 @@
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { Box, Tooltip, Link, ListItemText } from '@mui/material';
+import {
+  Box,
+  Tooltip,
+  Link,
+  ListItemText,
+  colors,
+  useTheme
+} from '@mui/material';
 // locales
 import { useLocales } from '../../../locales';
 // auth
@@ -18,18 +25,33 @@ NavItem.propTypes = {
   active: PropTypes.bool,
   item: PropTypes.object,
   depth: PropTypes.number,
-  isExternalLink: PropTypes.bool,
+  isExternalLink: PropTypes.bool
 };
 
-export default function NavItem({ item, depth, open, active, isExternalLink, ...other }) {
+export default function NavItem({
+  item,
+  depth,
+  open,
+  active,
+  isExternalLink,
+  ...other
+}) {
   const { translate } = useLocales();
 
   const { title, path, icon, info, children, disabled, caption, roles } = item;
 
   const subItem = depth !== 1;
 
+  const theme = useTheme();
+
   const renderContent = (
-    <StyledItem depth={depth} active={active} disabled={disabled} caption={!!caption} {...other}>
+    <StyledItem
+      depth={depth}
+      active={active}
+      disabled={disabled}
+      caption={!!caption}
+      {...other}
+    >
       {icon && <StyledIcon>{icon}</StyledIcon>}
 
       {subItem && (
@@ -51,10 +73,11 @@ export default function NavItem({ item, depth, open, active, isExternalLink, ...
           noWrap: true,
           component: 'span',
           variant: active ? 'subtitle2' : 'body2',
+          color: active ? (theme.palette.mode === 'dark' ? 'white' : '') : ''
         }}
         secondaryTypographyProps={{
           noWrap: true,
-          variant: 'caption',
+          variant: 'caption'
         }}
       />
 
@@ -67,7 +90,9 @@ export default function NavItem({ item, depth, open, active, isExternalLink, ...
       {!!children && (
         <Iconify
           width={16}
-          icon={open ? 'eva:arrow-ios-downward-fill' : 'eva:arrow-ios-forward-fill'}
+          icon={
+            open ? 'eva:arrow-ios-downward-fill' : 'eva:arrow-ios-forward-fill'
+          }
           sx={{ ml: 1, flexShrink: 0 }}
         />
       )}

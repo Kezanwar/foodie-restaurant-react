@@ -24,3 +24,10 @@ export const LocationCardsContainer = styled(m.div)(({ theme }) => ({
   gap: 3,
   flexWrap: 'wrap'
 }));
+
+export const EditIconsWrapper = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: theme.spacing(2),
+  right: theme.spacing(1.5),
+  display: 'flex'
+}));
