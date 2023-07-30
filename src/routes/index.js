@@ -30,7 +30,8 @@ import {
   DealsSingle,
   DealsEdit,
   Restaurant,
-  RestaurantEdit
+  RestaurantEdit,
+  LocationsAll
 } from './elements';
 import {
   PATH_AUTH,
@@ -85,10 +86,9 @@ export default function Router() {
           path: 'deals',
           children: [
             {
-              element: <Navigate to={PATH_DASHBOARD.deals_all} replace />,
+              element: <DealsAll />,
               index: true
             },
-            { path: 'all', element: <DealsAll /> },
             { path: 'create', element: <DealsCreate /> },
             { path: 'single/:id', element: <DealsSingle /> },
             { path: 'edit/:id', element: <DealsEdit /> }
@@ -102,6 +102,18 @@ export default function Router() {
               index: true
             },
             { path: 'edit', element: <RestaurantEdit /> }
+          ]
+        },
+        {
+          path: 'locations',
+          children: [
+            {
+              element: <LocationsAll />,
+              index: true
+            },
+            { path: 'create', element: <DealsCreate /> },
+            { path: 'single/:id', element: <DealsSingle /> },
+            { path: 'edit/:id', element: <DealsEdit /> }
           ]
         },
         { path: 'users', element: <PageThree /> },

@@ -7,12 +7,20 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useTheme } from '@emotion/react';
 import { capitalize } from 'lodash';
 
-import { LocationCardStyled } from './styles';
+import { EditIconsWrapper, LocationCardStyled } from './styles';
 
 import SvgColor from '../svg-color/SvgColor';
 import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
 
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
+
+const BodyText = ({ children }) => {
+  return (
+    <Typography color={'text.secondary'} variant="body2" fontSize={13}>
+      {children}
+    </Typography>
+  );
+};
 
 const LocationCard = ({
   address: { address_line_1, address_line_2, postcode, city, country },
@@ -30,14 +38,7 @@ const LocationCard = ({
 
   return (
     <LocationCardStyled key={`location-card-${_id}`} layout>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: theme.spacing(2),
-          right: theme.spacing(1.5),
-          display: 'flex'
-        }}
-      >
+      <EditIconsWrapper>
         <IconButton onClick={() => onEdit(_id)} color="info" size="small">
           <EditIcon fontSize="small" />
         </IconButton>
@@ -48,7 +49,7 @@ const LocationCard = ({
         >
           <DeleteOutlineIcon fontSize="small" />
         </IconButton>
-      </Box>
+      </EditIconsWrapper>
 
       <Stack
         sx={{
@@ -56,7 +57,7 @@ const LocationCard = ({
         }}
         mb={2}
       >
-        <Box mb={2} display={'flex'} alignItems={'center'}>
+        <Box mb={2} display={'flex'} alignItems={'flex-start'}>
           <Box
             sx={{
               display: 'flex',
@@ -71,16 +72,22 @@ const LocationCard = ({
             />
           </Box>
 
-          <Typography ml={1} fontWeight={600} fontSize={13} variant="body2">
+          <Typography
+            ml={1}
+            pr={5.5}
+            fontWeight={600}
+            fontSize={14}
+            variant="body2"
+          >
             {data?.data?.name} ({nickname})
           </Typography>
         </Box>
 
-        <Typography variant="body2">{address_line_1}</Typography>
-        <Typography variant="body2">{address_line_2}</Typography>
-        <Typography variant="body2">{postcode}</Typography>
-        <Typography variant="body2">{city}</Typography>
-        <Typography variant="body2">{country}</Typography>
+        <BodyText>{address_line_1}</BodyText>
+        <BodyText>{address_line_2}</BodyText>
+        <BodyText>{postcode}</BodyText>
+        <BodyText>{city}</BodyText>
+        <BodyText>{country}</BodyText>
       </Stack>
       <Stack mb={2} gap={0.25}>
         <Box mb={2} display={'flex'} alignItems={'center'}>
@@ -103,8 +110,8 @@ const LocationCard = ({
           </Typography>
         </Box>
 
-        <Typography variant="body2">{email}</Typography>
-        <Typography variant="body2">{phone_number}</Typography>
+        <BodyText>{email}</BodyText>
+        <BodyText>{phone_number}</BodyText>
       </Stack>
       <Stack gap={0.25}>
         <Box mb={2} display={'flex'} alignItems={'center'}>

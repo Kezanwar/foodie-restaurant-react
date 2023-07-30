@@ -19,7 +19,8 @@ const ICONS = {
   credit: icon('ic_credit'),
   menuItem: icon('ic_menu_item'),
   store: icon('ic_store'),
-  payments: icon('ic_payments')
+  payments: icon('ic_payments'),
+  locations: icon('ic_locations')
 };
 
 const navConfig = [
@@ -34,21 +35,23 @@ const navConfig = [
         icon: ICONS.analytics
       },
       {
-        title: 'Deals',
-        path: PATH_DASHBOARD.deals,
-        icon: ICONS.payments,
-        children: [
-          { title: 'All', path: PATH_DASHBOARD.deals_all },
-          { title: 'Create', path: PATH_DASHBOARD.deals_create }
-          // { title: 'Five', path: PATH_DASHBOARD.user.five },
-          // { title: 'Six', path: PATH_DASHBOARD.user.six }
-        ]
-      },
-
-      {
         title: 'Restaurant',
         path: PATH_DASHBOARD.restaurant,
         icon: ICONS.store
+      },
+      {
+        title: 'Locations',
+        path: PATH_DASHBOARD.locations,
+        icon: ICONS.locations
+        // children: [
+        //   { title: 'All', path: PATH_DASHBOARD.locations_all },
+        //   { title: 'Create', path: PATH_DASHBOARD.locations_create }
+        // ]
+      },
+      {
+        title: 'Deals',
+        path: PATH_DASHBOARD.deals,
+        icon: ICONS.payments
       }
     ]
   },
@@ -62,21 +65,11 @@ const navConfig = [
         title: 'users',
         path: PATH_DASHBOARD.users,
         icon: ICONS.user
-        // children: [
-        //   { title: 'Four', path: PATH_DASHBOARD.user.four },
-        //   { title: 'Five', path: PATH_DASHBOARD.user.five },
-        //   { title: 'Six', path: PATH_DASHBOARD.user.six },
-        // ],
       },
       {
         title: 'subscription',
         path: PATH_DASHBOARD.subscription,
         icon: ICONS.credit
-        // children: [
-        //   { title: 'Four', path: PATH_DASHBOARD.user.four },
-        //   { title: 'Five', path: PATH_DASHBOARD.user.five },
-        //   { title: 'Six', path: PATH_DASHBOARD.user.six },
-        // ],
       }
     ]
   }

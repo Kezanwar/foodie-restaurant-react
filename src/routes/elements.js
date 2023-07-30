@@ -72,6 +72,12 @@ export const RestaurantEdit = Loadable(
   lazy(() => import('../pages/dashboard/Restaurant/RestaurantEdit'))
 );
 
+// * Dashboard Locations
+
+export const LocationsAll = Loadable(
+  lazy(() => import('../pages/dashboard/Locations/LocationsAll'))
+);
+
 // ----------------------------------------------------------------------
 
 // * New Restaurant Pages
