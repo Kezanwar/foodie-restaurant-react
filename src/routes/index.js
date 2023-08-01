@@ -31,7 +31,8 @@ import {
   DealsEdit,
   Restaurant,
   RestaurantEdit,
-  LocationsAll
+  LocationsAll,
+  LocationsAdd
 } from './elements';
 import {
   PATH_AUTH,
@@ -111,7 +112,7 @@ export default function Router() {
               element: <LocationsAll />,
               index: true
             },
-            { path: 'create', element: <DealsCreate /> },
+            { path: 'add', element: <LocationsAdd /> },
             { path: 'single/:id', element: <DealsSingle /> },
             { path: 'edit/:id', element: <DealsEdit /> }
           ]

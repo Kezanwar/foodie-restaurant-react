@@ -251,7 +251,7 @@ export default function DealsCreate() {
       reset();
       setFormSubmitLoading(false);
       setShowConfirmModal(false);
-      navigate(PATH_DASHBOARD.deals_all);
+      navigate(PATH_DASHBOARD.deals);
     } catch (error) {
       setError('afterSubmit', {
         ...error,

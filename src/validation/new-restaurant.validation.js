@@ -85,6 +85,24 @@ export const addLocationsSchema = Yup.object().shape({
   })
 });
 
+export const addLocationsDashboardSchema = Yup.object().shape({
+  address: Yup.object({
+    address_line_1: Yup.string().required('Address line 1 is required'),
+    postcode: Yup.string().required('Postcode is required'),
+    city: Yup.string().required('City is required'),
+    country: Yup.object()
+      .test('Country', 'Country is required', (value) => {
+        return !!value?.label;
+      })
+      .nullable()
+  }),
+  email: Yup.string()
+    .required('Email is required')
+    .email('Email must be a valid email address'),
+  phone_number: Yup.string().required('Phone number is required'),
+  nickname: Yup.string().required('Nickname is required')
+});
+
 export const submitApplicationSchema = Yup.object().shape({
   terms_and_conditions: Yup.boolean()
     .required('The terms and conditions must be accepted.')

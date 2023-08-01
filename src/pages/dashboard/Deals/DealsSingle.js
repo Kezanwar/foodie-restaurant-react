@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSnackbar } from 'notistack';
-import { format } from 'date-fns';
+import { format, isAfter } from 'date-fns';
 import { useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import {
@@ -224,6 +224,11 @@ const DealsSingle = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
+  const startsLater = useMemo(
+    () => isAfter(new Date(), new Date(deal?.start_date || null)),
+    [deal?.start_date]
+  );
+
   const isExpired = deal?.is_expired;
 
   if (isLoading) return <LoadingScreen />;
@@ -286,7 +291,7 @@ const DealsSingle = () => {
                 Edit
               </LightLoadingButton>
             )}
-            {!isExpired && (
+            {!isExpired && startsLater && (
               <LightLoadingButton
                 variant="text"
                 onClick={onExpireOpen}
