@@ -13,6 +13,7 @@ import LightLoadingButton from '../../../components/light-loading-button/LightLo
 import useRestaurantQuery from '../../../hooks/queries/useRestaurantQuery';
 import LocationCard from '../../../components/location-card/LocationCard';
 import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
+import { PATH_DASHBOARD } from '../../../routes/paths';
 
 export const LocationsWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -24,12 +25,15 @@ export const LocationsWrapper = styled(Box)(({ theme }) => ({
 const LocationsAll = (props) => {
   const resQuery = useRestaurantQuery();
   const locQuery = useLocationsQuery();
+  const nav = useNavigate();
 
   const locations = locQuery?.data?.data;
 
   const restaurant = resQuery?.data?.data;
 
   const restLoading = resQuery?.isLoading;
+
+  const onAddLocationClick = () => nav(PATH_DASHBOARD.locations_add);
 
   if (restLoading) return <LoadingScreen />;
   return (
@@ -44,7 +48,10 @@ const LocationsAll = (props) => {
           <Typography mb={2} variant="body2" color={'text.secondary'}>
             You can view and manage your locations here.
           </Typography>
-          <LightLoadingButton endIcon={<DriveFileRenameOutlineOutlinedIcon />}>
+          <LightLoadingButton
+            onClick={onAddLocationClick}
+            endIcon={<DriveFileRenameOutlineOutlinedIcon />}
+          >
             Add a new location
           </LightLoadingButton>
         </DashboardTitleContainer>

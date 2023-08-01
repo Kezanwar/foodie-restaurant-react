@@ -78,6 +78,10 @@ export const LocationsAll = Loadable(
   lazy(() => import('../pages/dashboard/Locations/LocationsAll'))
 );
 
+export const LocationsAdd = Loadable(
+  lazy(() => import('../pages/dashboard/Locations/LocationsAdd'))
+);
+
 // ----------------------------------------------------------------------
 
 // * New Restaurant Pages

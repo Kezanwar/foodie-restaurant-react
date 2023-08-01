@@ -21,7 +21,6 @@ export const PATH_DASHBOARD = {
   overview: path(ROOTS_DASHBOARD, '/overview'),
 
   deals: path(ROOTS_DASHBOARD, '/deals'),
-  deals_all: path(ROOTS_DASHBOARD, '/deals/all'),
   deals_create: path(ROOTS_DASHBOARD, '/deals/create'),
   deals_edit: path(ROOTS_DASHBOARD, '/deals/edit'),
   deals_single: path(ROOTS_DASHBOARD, '/deals/single'),
@@ -30,8 +29,7 @@ export const PATH_DASHBOARD = {
   restaurant_edit: path(ROOTS_DASHBOARD, '/restaurant/edit'),
 
   locations: path(ROOTS_DASHBOARD, '/locations'),
-  locations_all: path(ROOTS_DASHBOARD, '/locations/all'),
-  locations_create: path(ROOTS_DASHBOARD, '/locations/create'),
+  locations_add: path(ROOTS_DASHBOARD, '/locations/add'),
   locations_edit: path(ROOTS_DASHBOARD, '/locations/edit'),
 
   // management

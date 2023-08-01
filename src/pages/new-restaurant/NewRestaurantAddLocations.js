@@ -73,7 +73,7 @@ const motionStyles = {
   gap: '24px'
 };
 
-const TopAlert = () => {
+export const LocationsTopAlert = () => {
   return (
     <Box mb={6}>
       <Alert icon={<HelpIcon />} severity={'success'}>
@@ -534,7 +534,7 @@ const NewRestaurantAddLocation = (props) => {
         <title> Step 3 | Foodie</title>
       </Helmet>
       <Box>
-        <TopAlert />
+        <LocationsTopAlert />
         <FormProvider
           methods={methods}
           onSubmit={handleSubmit(onSubmit, onError)}
