@@ -32,7 +32,8 @@ import {
   Restaurant,
   RestaurantEdit,
   LocationsAll,
-  LocationsAdd
+  LocationsAdd,
+  LocationEdit
 } from './elements';
 import {
   PATH_AUTH,
@@ -113,8 +114,7 @@ export default function Router() {
               index: true
             },
             { path: 'add', element: <LocationsAdd /> },
-            { path: 'single/:id', element: <DealsSingle /> },
-            { path: 'edit/:id', element: <DealsEdit /> }
+            { path: 'edit/:id', element: <LocationEdit /> }
           ]
         },
         { path: 'users', element: <PageThree /> },

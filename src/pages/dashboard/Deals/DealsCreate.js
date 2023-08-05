@@ -178,6 +178,8 @@ export default function DealsCreate() {
     ? 'Required - please choose a start and end date'
     : 'Must choose a date range to advertise this deal';
 
+  const onCancel = () => navigate(-1);
+
   const updateFormDateRange = (start_date, end_date) => {
     setShowDatePicker(false);
     setValue('start_date', start_date);
@@ -479,19 +481,11 @@ export default function DealsCreate() {
                     <Alert severity="error">{errors.afterSubmit.message}</Alert>
                   )}
                   <Box mt={4} sx={{ display: 'flex' }}>
-                    <Button color="inherit" onClick={() => {}} sx={{ mr: 1 }}>
+                    <Button color="inherit" onClick={onCancel} sx={{ mr: 1 }}>
                       Cancel
                     </Button>
                     <Box sx={{ flexGrow: 1 }} />
-                    {/* <Button
-                      color="inherit"
-                      onClick={() => {
-                        console.log(getValues());
-                      }}
-                      sx={{ mr: 1 }}
-                    >
-                      Vals
-                    </Button> */}
+
                     <LoadingButton
                       loading={formSubmitLoading}
                       type="submit"
