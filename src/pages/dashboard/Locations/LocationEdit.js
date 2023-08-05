@@ -1,70 +1,77 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate, useParams } from 'react-router';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbar } from 'notistack';
-
-import {
-  Alert,
-  Box,
-  Button,
-  Container,
-  Stack,
-  Typography,
-  useTheme
-} from '@mui/material';
-import { capitalize } from 'lodash';
-import { useNavigate } from 'react-router';
+import { Box, Button, Container, Typography, useTheme } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { capitalize } from 'lodash';
 import { LoadingButton } from '@mui/lab';
 
 import { DashboardTitleContainer } from '../styles';
 import DashboardTitle from '../../../components/dashboard-title/DashboardTitle';
-
 import LoadingScreen from '../../../components/loading-screen/LoadingScreen';
-import FormProvider from '../../../components/hook-form/FormProvider';
+import { addLocationsDashboardSchema } from '../../../validation/new-restaurant.validation';
+import ConfirmLocationModalDashboard from '../../../components/confirm-location-modal/ConfirmLocationModalDashboard';
+import OpeningTimeInput from '../../../components/opening-time-input/OpeningTimeInput';
 import Subheader from '../../../components/subheader/Subheader';
+import Spacer from '../../../components/spacer/Spacer';
+import { RHFTextField } from '../../../components/hook-form';
 import {
   InputStack,
   InputStackSingleItemContainer
 } from '../../../features/forms/styles';
-import AddressAutocomplete from '../../../components/address-autocomplete/AddressAutocomplete';
-import { RHFTextField } from '../../../components/hook-form';
-import Spacer from '../../../components/spacer/Spacer';
 import RHFCountriesAutocomplete from '../../../components/hook-form/RHFCountriesAutocomplete';
-import OpeningTimeInput from '../../../components/opening-time-input/OpeningTimeInput';
+import AddressAutocomplete from '../../../components/address-autocomplete/AddressAutocomplete';
+import FormProvider from '../../../components/hook-form/FormProvider';
 
-import useOpeningTimesForm from '../../../hooks/useOpeningTimesForm';
 import useRestaurantQuery from '../../../hooks/queries/useRestaurantQuery';
-import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
 import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
-
-import {
-  addLocationsDashboardSchema,
-  addLocationsSchema
-} from '../../../validation/new-restaurant.validation';
-import { countries } from '../../../assets/data';
-import ConfirmLocationModal from '../../../components/confirm-location-modal/ConfirmLocationModal';
-import { LocationsTopAlert } from '../../new-restaurant/NewRestaurantAddLocations';
-import { addLocation, checkLocation } from '../../../utils/api';
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
-import ConfirmLocationModalDashboard from '../../../components/confirm-location-modal/ConfirmLocationModalDashboard';
+import useOpeningTimesForm from '../../../hooks/useOpeningTimesForm';
 import { PATH_DASHBOARD } from '../../../routes/paths';
+import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
+import {
+  checkEditLocation,
+  checkLocation,
+  editLocation
+} from '../../../utils/api';
+import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
+import { countries } from '../../../assets/data';
 
-const LocationsAdd = (props) => {
+const LocationEdit = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const [addLocationModalOpen, setAddLocationModalOpen] = useState(false);
   const [addLocationLoading, setAddLocationLoading] = useState(false);
-
-  const { enqueueSnackbar } = useSnackbar();
-
   const [mapPosition, setMapPosition] = useState({
     lat: 53.41728238865921,
     lng: -2.235525662503866
   });
 
+  const locations = useLocationsQuery();
+  const { id } = useParams();
+  const nav = useNavigate();
+
+  const {
+    openingTimes,
+    resetOpeningTimes,
+    updateOpeningTimes,
+    replaceOpeningTimes
+  } = useOpeningTimesForm();
+
+  const location = useMemo(() => {
+    return locations?.data?.data
+      ? locations?.data?.data?.find((l) => l._id === id)
+      : null;
+  }, [id, locations?.data?.data]);
+
+  useEffect(() => {
+    if (locations?.error || !id) nav(PATH_DASHBOARD.locations);
+  }, [locations?.error, id]);
+
+  const { enqueueSnackbar } = useSnackbar();
+
   const resQuery = useRestaurantQuery();
-  const { data, isLoading, updateQuery } = useLocationsQuery();
 
   const { isTablet, isMobile } = useCustomMediaQueries();
 
@@ -76,28 +83,23 @@ const LocationsAdd = (props) => {
 
   const restLoading = resQuery?.isLoading;
 
-  const {
-    openingTimes,
-    resetOpeningTimes,
-    updateOpeningTimes,
-    replaceOpeningTimes
-  } = useOpeningTimesForm();
-
   const defaultValues = useMemo(
     () => ({
       address: {
-        address_line_1: '',
-        address_line_2: '',
-        postcode: '',
-        city: '',
-        country: countries.find((el) => el.label === 'United Kingdom')
+        address_line_1: location?.address?.address_line_1 || '',
+        address_line_2: location?.address?.address_line_2 || '',
+        postcode: location?.address?.postcode || '',
+        city: location?.address?.city || '',
+        country: location?.address?.country
+          ? countries.find((el) => el.label === location?.address?.country)
+          : countries.find((el) => el.label === 'United Kingdom')
       },
 
-      email: '',
-      phone_number: '',
-      nickname: ''
+      email: location?.email,
+      phone_number: location?.phone_number,
+      nickname: location?.nickname
     }),
-    [data?.data]
+    [location]
   );
 
   const methods = useForm({
@@ -116,6 +118,35 @@ const LocationsAdd = (props) => {
     getFieldState,
     setValue
   } = methods;
+
+  useEffect(() => {
+    if (location) {
+      const { address, nickname, email, phone_number } = location;
+      const { address_line_1, address_line_2, postcode, city, country } =
+        address;
+
+      Object.entries({ nickname, email, phone_number }).forEach(
+        ([key, value]) => {
+          setValue(key, value);
+        }
+      );
+      Object.entries({
+        address_line_1,
+        address_line_2,
+        postcode,
+        city,
+        country
+      }).forEach(([key, value]) => {
+        if (key === 'country') {
+          setValue(
+            `address.${key}`,
+            countries.find((el) => el.label === value)
+          );
+        } else setValue(`address.${key}`, value);
+      });
+      replaceOpeningTimes(location?.opening_times);
+    }
+  }, [location]);
 
   const scrollToForm = useCallback(() => {
     window.scrollTo({
@@ -144,7 +175,7 @@ const LocationsAdd = (props) => {
     };
 
     try {
-      const res = await checkLocation(newLocation);
+      const res = await checkEditLocation(newLocation, id);
       const data = res?.data;
 
       if (data) {
@@ -185,17 +216,15 @@ const LocationsAdd = (props) => {
 
       setFormSubmitLoading(true);
       try {
-        const res = await addLocation(newLocation);
+        const res = await editLocation(newLocation, id);
         const data = res?.data;
 
-        updateQuery(data);
+        locations.updateQuery(data);
         setAddLocationModalOpen(false);
         setFormSubmitLoading(false);
         setAddLocationLoading(false);
         mixpanelTrack(MIXPANEL_EVENTS.add_location_success);
-        enqueueSnackbar(
-          `${res?.data?.nickname || 'Location'} added successfully`
-        );
+        enqueueSnackbar('Location updated');
         navigate(PATH_DASHBOARD.locations);
       } catch (error) {
         enqueueSnackbar(`${error?.message || 'Unexpected error occured'}`, {
@@ -242,26 +271,28 @@ const LocationsAdd = (props) => {
 
     const data = { ...errors };
 
-    mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_add_locations_errors, {
+    mixpanelTrack(MIXPANEL_EVENTS.edit_location_failed, {
       errors: data
     });
   }, []);
 
-  if (restLoading || isLoading) return <LoadingScreen />;
+  console.log(location);
+
+  if (locations?.isLoading) return <LoadingScreen />;
+
   return (
     <>
       <Helmet>
-        <title> Add Location | Foodie</title>
+        <title> Edit Location | Foodie</title>
       </Helmet>
 
       <Container sx={{ px: 3, pb: 4 }} maxWidth={'xl'}>
         <DashboardTitleContainer>
-          <DashboardTitle title={'Add A Location'} />
+          <DashboardTitle title={`Edit Location: ${location?.nickname}`} />
           <Typography mb={2} variant="body2" color={'text.secondary'}>
-            Add a location using the form below.
+            Edit your location using the form below.
           </Typography>
         </DashboardTitleContainer>
-        <LocationsTopAlert />
         <FormProvider
           methods={methods}
           onSubmit={handleSubmit(onSubmit, onError)}
@@ -382,12 +413,13 @@ const LocationsAdd = (props) => {
               >
                 Reset form
               </Button>
+
               <LoadingButton
                 loading={addLocationLoading}
                 type="submit"
                 variant="contained"
               >
-                Add Location
+                Save Location
               </LoadingButton>
             </Box>
           </Box>
@@ -408,6 +440,6 @@ const LocationsAdd = (props) => {
   );
 };
 
-LocationsAdd.propTypes = {};
+LocationEdit.propTypes = {};
 
-export default LocationsAdd;
+export default LocationEdit;

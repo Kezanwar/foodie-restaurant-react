@@ -8,6 +8,8 @@ import { capitalize } from 'lodash';
 import { Box, Button, Modal, Typography, useMediaQuery } from '@mui/material';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
+import 'leaflet/dist/leaflet.css';
+
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 
 import Spacer from '../spacer/Spacer';
@@ -81,7 +83,7 @@ const ConfirmLocationModalDashboard = ({
               borderRadius: '8px',
 
               backgroundColor: alpha('#fff', 0.3),
-              boxShadow: theme.shadows[12],
+              boxShadow: theme.shadows[8],
               backdropFilter: 'blur(4px)'
             }}
           >

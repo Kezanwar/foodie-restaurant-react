@@ -66,30 +66,11 @@ export default function DealsEdit() {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [datePickerValue, setDatePickerValue] = useState('');
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { id } = useParams();
   const { data: dealData, error, isLoading, refetch } = useSingleDealQuery(id);
-
-  const {
-    data,
-    isLoading: locationsLoading,
-    error: locationsError
-  } = useLocationsQuery();
-
-  const locationOptions = useMemo(() => {
-    const locs = data?.data;
-    if (!locs?.length) return [];
-    return locs.map((l) => {
-      return {
-        name: `${l.nickname}, ${l.address.address_line_1}, ${l.address.postcode}`,
-        _id: l._id
-      };
-    });
-  }, [data?.data?.length]);
-
-  const { enqueueSnackbar } = useSnackbar();
-
-  const navigate = useNavigate();
 
   const defaultValues = useMemo(
     () => ({
@@ -101,6 +82,12 @@ export default function DealsEdit() {
     []
   );
 
+  const {
+    data,
+    isLoading: locationsLoading,
+    error: locationsError
+  } = useLocationsQuery();
+
   const methods = useForm({
     resolver: yupResolver(editDealSchema),
     defaultValues
@@ -109,15 +96,24 @@ export default function DealsEdit() {
   const {
     reset,
     setError,
-    watch,
     handleSubmit,
     trigger,
-    clearErrors,
     formState: { errors, isSubmitting, isSubmitSuccessful },
     getValues,
-    getFieldState,
+
     setValue
   } = methods;
+
+  const locationOptions = useMemo(() => {
+    const locs = data?.data;
+    if (!locs?.length) return [];
+    return locs.map((l) => {
+      return {
+        name: `${l.nickname}, ${l.address.address_line_1}, ${l.address.postcode}`,
+        _id: l._id
+      };
+    });
+  }, [data?.data?.length]);
 
   useEffect(() => {
     if (dealData?.data) {
@@ -329,15 +325,7 @@ export default function DealsEdit() {
                       Cancel
                     </Button>
                     <Box sx={{ flexGrow: 1 }} />
-                    <Button
-                      color="inherit"
-                      onClick={() => {
-                        console.log(getValues());
-                      }}
-                      sx={{ mr: 1 }}
-                    >
-                      Vals
-                    </Button>
+
                     <LoadingButton
                       loading={formSubmitLoading}
                       type="submit"

@@ -47,6 +47,9 @@ const LocationsAll = (props) => {
 
   const onAddLocationClick = () => nav(PATH_DASHBOARD.locations_add);
 
+  const onEditLocationClick = (id) =>
+    nav(`${PATH_DASHBOARD.locations_edit}/${id}`);
+
   const onCancelDeleteLocationModal = () => {
     setDeleteLocationModalOpen(false);
   };
@@ -114,7 +117,7 @@ const LocationsAll = (props) => {
                     <LocationCard
                       {...location}
                       key={location._id}
-                      //   onEdit={onEditLocationClick}
+                      onEdit={onEditLocationClick}
                       onDelete={onDeleteLocationClick}
                     />
                   );
