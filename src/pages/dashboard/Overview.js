@@ -1,37 +1,261 @@
+import { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
-// @mui
-import { Container, Typography } from '@mui/material';
+import { useNavigate } from 'react-router';
+import {
+  Box,
+  Button,
+  Container,
+  Link,
+  ListItemIcon,
+  Typography,
+  alpha,
+  styled,
+  useTheme
+} from '@mui/material';
+import EastIcon from '@mui/icons-material/East';
+
 // components
+import LoadingScreen from '../../components/loading-screen/LoadingScreen';
+import { DashboardStatGrid } from './styles';
+import StatCardDashboard from '../../components/stat-card/StatCardDashboard';
+import SvgColor from '../../components/svg-color/SvgColor';
+import Subheader from '../../components/subheader/Subheader';
+
+// hooks
+import useDashboardOverviewQuery from '../../hooks/queries/useDashboardOverviewQuery';
+import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
+
+// config
+import { ICON } from '../../config';
+import { PATH_DASHBOARD } from '../../routes/paths';
+
+const icon = (name, color) => (
+  <SvgColor
+    src={`/assets/icons/navbar/${name}.svg`}
+    sx={{ width: 1, height: 1, color: color || 'currentColor' }}
+  />
+);
+
+export const StyledIcon = styled(ListItemIcon)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: ICON.NAV_ITEM,
+  height: ICON.NAV_ITEM,
+  marginRight: '0px'
+});
+
+export const DealLocationStatCard = styled(Box)(({ theme }) => {
+  const isDark = theme.palette.mode === 'dark';
+  return {
+    backgroundColor: alpha(theme.palette.primary.light, 0.01),
+    color: isDark ? 'white' : theme.palette.grey[900],
+    boxShadow: theme.shadows[3],
+    padding: theme.spacing(2.5),
+    borderRadius: theme.spacing(2)
+  };
+});
+
+export const DealLocationWrapper = styled(Box)(({ theme }) => {
+  return {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: theme.spacing(3),
+    marginBottom: theme.spacing(6),
+    [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: '1fr'
+    }
+  };
+});
+
+export const DealDataWrapper = styled(Box)(({ theme }) => {
+  return {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: theme.spacing(2)
+  };
+});
+
+export const CardLink = styled(Link)(({ theme }) => {
+  return {
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing(1),
+    fontWeight: 500,
+    fontSize: 16,
+    cursor: 'pointer',
+    textDecoration: 'none!important',
+    '&:hover': {
+      opacity: 0.8
+    }
+  };
+});
+
+export const DealLocationIconWrapper = styled(Box)(({ theme }) => {
+  const isDark = theme.palette.mode === 'dark';
+  return {
+    padding: theme.spacing(0.75),
+    backgroundColor: alpha(
+      !isDark ? theme.palette.primary.light : '#fff',
+      !isDark ? 0.15 : 0
+    ),
+    borderRadius: '100%',
+    aspectRatio: '1/1',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  };
+});
 
 // ----------------------------------------------------------------------
 
 export default function Overview() {
+  const { data, isLoading, isError } = useDashboardOverviewQuery();
+  const rest = useRestaurantQuery();
+  const nav = useNavigate();
+
+  const locDealIconCol = 'primary.main';
+
+  const onDealsClick = () => nav(PATH_DASHBOARD.deals);
+  const onLocationsClick = () => nav(PATH_DASHBOARD.locations);
+
+  const {
+    active_deals,
+    booking_clicks,
+    expired_deals,
+    favourites,
+    impressions_views_saves,
+    locations
+  } = data?.data || {};
+
+  const { impressions, views, saves } = impressions_views_saves?.[0] || {};
+
+  const dataArray = useMemo(() => {
+    if (data?.data) {
+      return Object.entries({
+        views,
+        impressions,
+        favourites,
+        saves,
+        booking_clicks
+      });
+    }
+    return [];
+  }, [data?.data]);
+
+  const restName = rest?.data?.data.name;
+
+  if (isLoading || rest?.isLoading) return <LoadingScreen />;
+
+  if (isError || rest?.isError) return null;
+
   return (
     <>
       <Helmet>
         <title> Overview | Foodie</title>
       </Helmet>
 
-      <Container maxWidth={'xl'}>
-        <Typography variant="h3" component="h1" paragraph>
-          Dashboard Overview
-        </Typography>
+      <Container sx={{ px: 3, pb: 6 }} maxWidth={'xl'}>
+        <Box mb={4}>
+          <Typography variant="h3" component="h1">
+            {restName ? `${restName} Dashboard Overview` : 'Dashboard Overview'}
+          </Typography>
+          <Typography variant="body2" color={'text.secondary'} paragraph>
+            Your restaurants current status and insights.
+          </Typography>
+        </Box>
 
-        <Typography gutterBottom>
-          Curabitur turpis. Vestibulum facilisis, purus nec pulvinar iaculis, ligula mi congue nunc, vitae euismod
-          ligula urna in dolor. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Phasellus blandit leo
-          ut odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce id
-          purus. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. In consectetuer turpis ut velit.
-          Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus.
-          Vestibulum suscipit nulla quis orci. Nam commodo suscipit quam. Sed a libero.
-        </Typography>
+        <Subheader text={'Your Restaurants current status'} />
+        <DealLocationWrapper>
+          <DealLocationStatCard>
+            <Box
+              display={'flex'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+              mb={4}
+            >
+              <Typography color={'primary.light'} variant="h3" component="h2">
+                Deals
+              </Typography>
+              <DealLocationIconWrapper>
+                <StyledIcon>{icon('ic_payments', locDealIconCol)}</StyledIcon>
+              </DealLocationIconWrapper>
+            </Box>
 
-        <Typography>
-          Praesent ac sem eget est egestas volutpat. Phasellus viverra nulla ut metus varius laoreet. Curabitur
-          ullamcorper ultricies nisi. Ut non enim eleifend felis pretium feugiat. Donec mi odio, faucibus at,
-          scelerisque quis, convallis in, nisi. Fusce vel dui. Quisque libero metus, condimentum nec, tempor a, commodo
-          mollis, magna. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Cras dapibus.
-        </Typography>
+            <DealDataWrapper>
+              <Box>
+                <Typography
+                  color={'text.secondary'}
+                  fontWeight={500}
+                  component="h4"
+                >
+                  Active
+                </Typography>
+                <Typography fontWeight={600} variant="h2" component="h2">
+                  {active_deals}
+                </Typography>
+              </Box>
+              <Box>
+                <Typography
+                  color={'text.secondary'}
+                  fontWeight={500}
+                  component="h4"
+                >
+                  Expired
+                </Typography>
+                <Typography fontWeight={600} variant="h2" component="h2">
+                  {expired_deals}
+                </Typography>
+              </Box>
+            </DealDataWrapper>
+            <Box mt={4} mb={1}>
+              <CardLink onClick={onDealsClick}>
+                Go to Deals <EastIcon fontSize="small" />
+              </CardLink>
+            </Box>
+          </DealLocationStatCard>
+          <DealLocationStatCard>
+            <Box
+              display={'flex'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+              mb={4}
+            >
+              <Typography color={'primary.light'} variant="h3" component="h2">
+                Locations
+              </Typography>
+              <DealLocationIconWrapper>
+                <StyledIcon>{icon('ic_locations', locDealIconCol)}</StyledIcon>
+              </DealLocationIconWrapper>
+            </Box>
+
+            <DealDataWrapper>
+              <Box>
+                <Typography
+                  color={'text.secondary'}
+                  fontWeight={500}
+                  component="h4"
+                >
+                  Total
+                </Typography>
+                <Typography variant="h2" fontWeight={600} component="h2">
+                  {locations}
+                </Typography>
+              </Box>
+            </DealDataWrapper>
+            <Box mt={4} mb={1}>
+              <CardLink onClick={onLocationsClick}>
+                Go to Locations <EastIcon fontSize="small" />
+              </CardLink>
+            </Box>
+          </DealLocationStatCard>
+        </DealLocationWrapper>
+        <Subheader text={'Your Restaurants Insights'} />
+        <DashboardStatGrid>
+          {dataArray?.map(([key, value]) => (
+            <StatCardDashboard key={key} name={key} value={value} />
+          ))}
+        </DashboardStatGrid>
       </Container>
     </>
   );

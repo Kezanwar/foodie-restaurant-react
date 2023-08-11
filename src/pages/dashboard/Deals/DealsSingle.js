@@ -30,6 +30,7 @@ import useActiveDealsQuery from '../../../hooks/queries/useActiveDealsQuery';
 import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
 import useExpiredDealsQuery from '../../../hooks/queries/useExpiredDealsQuery';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
+import useDashboardOverviewQuery from '../../../hooks/queries/useDashboardOverviewQuery';
 
 const DealDetailsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -152,6 +153,7 @@ const DealsSingle = () => {
 
   const activeDeals = useActiveDealsQuery();
   const expiredDeals = useExpiredDealsQuery();
+  const dash = useDashboardOverviewQuery();
 
   const deal = data?.data;
 
@@ -163,6 +165,7 @@ const DealsSingle = () => {
         refetch();
         activeDeals.remove();
         expiredDeals.remove();
+        dash.remove();
         mixpanelTrack(MIXPANEL_EVENTS.expire_deal_success);
         enqueueSnackbar(`Successfully expired ${deal?.name}`, {
           variant: 'success'
@@ -188,6 +191,7 @@ const DealsSingle = () => {
         remove();
         activeDeals.remove();
         expiredDeals.remove();
+        dash.remove();
 
         enqueueSnackbar(`Successfully deleted ${deal?.name}`, {
           variant: 'success'

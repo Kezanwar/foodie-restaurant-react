@@ -1,3 +1,7 @@
+export const DASHBOARD_QUERY = {
+  OVERVIEW: 'DASHBOARD_OVERVIEW'
+};
+
 export const RESTAURANT_QUERY = {
   RESTAURANT: 'RESTAURANT'
 };

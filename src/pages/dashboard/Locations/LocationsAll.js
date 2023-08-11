@@ -19,6 +19,7 @@ import useRestaurantQuery from '../../../hooks/queries/useRestaurantQuery';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 import { deleteLocation } from '../../../utils/api';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
+import useDashboardOverviewQuery from '../../../hooks/queries/useDashboardOverviewQuery';
 
 export const LocationsWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -37,6 +38,7 @@ const LocationsAll = (props) => {
 
   const resQuery = useRestaurantQuery();
   const locQuery = useLocationsQuery();
+  const dashQuery = useDashboardOverviewQuery();
   const nav = useNavigate();
 
   const locations = locQuery?.data?.data;
@@ -69,6 +71,7 @@ const LocationsAll = (props) => {
       mixpanelTrack(MIXPANEL_EVENTS.delete_location_success);
       setDeleteLocationLoading(false);
       setDeleteLocationModalOpen(false);
+      dashQuery.remove();
     } catch (error) {
       enqueueSnackbar(`${error?.message || 'Unexpected error occured'}`, {
         variant: 'error'

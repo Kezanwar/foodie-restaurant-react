@@ -49,6 +49,7 @@ import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
 import { newDealSchema } from '../../../validation/deals.validation';
 import LoadingScreen from '../../../components/loading-screen/LoadingScreen';
 import { DEALS_PER_LOCATION } from '../../../constants/deals.constants';
+import useDashboardOverviewQuery from '../../../hooks/queries/useDashboardOverviewQuery';
 
 function getElementsByText(str, tag = 'div') {
   return Array.prototype.slice
@@ -112,6 +113,8 @@ export default function DealsCreate() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const { search } = useLocation();
+
+  const dashQuery = useDashboardOverviewQuery();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -243,6 +246,7 @@ export default function DealsCreate() {
       const postLocations = data?.locations?.map((l) => l._id);
       const newDeal = await addDeal({ ...data, locations: postLocations });
       await allActiveDeals.refetch();
+      dashQuery.remove();
       mixpanelTrack(MIXPANEL_EVENTS.add_deal_success, {
         data
       });

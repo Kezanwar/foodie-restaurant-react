@@ -11,24 +11,8 @@ const Loadable = (Component) => (props) =>
     </Suspense>
   );
 
-// ----------------------------------------------------------------------
+// ------- test pages
 
-// * Guest Pages
-
-export const LoginPage = Loadable(
-  lazy(() => import('../pages/guest/LoginPage'))
-);
-export const RegisterPage = Loadable(
-  lazy(() => import('../pages/guest/RegisterPage'))
-);
-
-// ----------------------------------------------------------------------
-
-// * Dashboard Pages
-
-export const Overview = Loadable(
-  lazy(() => import('../pages/dashboard/Overview'))
-);
 export const PageTwo = Loadable(
   lazy(() => import('../pages/dashboard/PageTwo'))
 );
@@ -44,6 +28,27 @@ export const PageFive = Loadable(
 export const PageSix = Loadable(
   lazy(() => import('../pages/dashboard/PageSix'))
 );
+
+// ----------------------------------------------------------------------
+
+// * Guest Pages
+
+export const LoginPage = Loadable(
+  lazy(() => import('../pages/guest/LoginPage'))
+);
+export const RegisterPage = Loadable(
+  lazy(() => import('../pages/guest/RegisterPage'))
+);
+
+// ----------------------------------------------------------------------
+
+// * Dashboard Overview
+
+export const Overview = Loadable(
+  lazy(() => import('../pages/dashboard/Overview'))
+);
+
+// ---------------
 
 // * Dashboard Deals
 
