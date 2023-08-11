@@ -2,6 +2,8 @@ import axiosInstance from './axios';
 import { formattedDateString } from './formatTime';
 
 const endpoints = {
+  getDashboardOverview: '/rest/dashboard/overview',
+
   getRestaurant: '/rest/restaurant',
   editRestaurant: 'rest/restaurant/edit',
 
@@ -34,6 +36,15 @@ const endpoints = {
   getOptions: '/options'
 };
 
+//* ------ Overview --------
+
+export const getDashboardOverview = () => {
+  return axiosInstance.get(endpoints.getDashboardOverview, {
+    params: {
+      current_date: formattedDateString(new Date())
+    }
+  });
+};
 //* ------ Restaurant --------
 
 export const getRestaurant = () => {
