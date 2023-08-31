@@ -7,13 +7,7 @@ import Logo from '../../components/logo/Logo';
 const Footer = (props) => {
   return (
     <FooterContainer>
-      <FooterGrid
-      // sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 0 }}
-      // zIndex={'1'}
-      // px={30}
-      // pt={10}
-      // pb={5}
-      >
+      <FooterGrid>
         <Box mt={-2} letterSpacing={-0.5}>
           <Logo />
           <Typography variant="body2">© foodie limited</Typography>

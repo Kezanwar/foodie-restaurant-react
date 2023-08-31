@@ -15,7 +15,7 @@ import { useSettingsContext } from '../../../components/settings';
 //
 
 import AccountPopover from './AccountPopover';
-import ModeOptions from '../../../components/settings/drawer/ModeOptions';
+import ModeOptions from '../../../components/settings/ModeOptions';
 
 // ----------------------------------------------------------------------
 
