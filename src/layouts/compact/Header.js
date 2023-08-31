@@ -10,8 +10,9 @@ import { bgBlur } from '../../utils/cssStyles';
 import Logo from '../../components/logo';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import AccountPopover from './AccountPopover';
-import ModeOptions from '../../components/settings/drawer/ModeOptions';
+
 import useResponsive from '../../hooks/useResponsive';
+import ModeOptions from '../../components/settings/ModeOptions';
 
 // ----------------------------------------------------------------------
 

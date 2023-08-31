@@ -19,7 +19,7 @@ import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
 import ContactsPopover from './ContactsPopover';
 import NotificationsPopover from './NotificationsPopover';
-import ModeOptions from '../../../components/settings/drawer/ModeOptions';
+import ModeOptions from '../../../components/settings/ModeOptions';
 
 // ----------------------------------------------------------------------
 

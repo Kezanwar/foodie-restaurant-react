@@ -2,7 +2,11 @@ import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 // @mui
 import { CssBaseline } from '@mui/material';
-import { createTheme, StyledEngineProvider, ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
+import {
+  createTheme,
+  StyledEngineProvider,
+  ThemeProvider as MUIThemeProvider
+} from '@mui/material/styles';
 // components
 import { useSettingsContext } from '../components/settings';
 //
@@ -16,22 +20,21 @@ import GlobalStyles from './globalStyles';
 // ----------------------------------------------------------------------
 
 ThemeProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 export default function ThemeProvider({ children }) {
-  const { themeMode, themeDirection } = useSettingsContext();
+  const { themeMode } = useSettingsContext();
 
   const themeOptions = useMemo(
     () => ({
       palette: palette(themeMode),
       typography,
       shape: { borderRadius: 8 },
-      direction: themeDirection,
       shadows: shadows(themeMode),
-      customShadows: customShadows(themeMode),
+      customShadows: customShadows(themeMode)
     }),
-    [themeDirection, themeMode]
+    [themeMode]
   );
 
   const theme = createTheme(themeOptions);
