@@ -12,6 +12,9 @@ export const HOST_API_KEY = process.env.REACT_APP_HOST_API_KEY || '';
 
 export const MIXPANEL_API_KEY = process.env.REACT_APP_MIXPANEL_TOKEN || '';
 
+export const RAPID_KEY = process.env.REACT_APP_RAPID_KEY;
+export const IP_KEY = process.env.REACT_APP_IP_FIND_KEY;
+
 // export const FIREBASE_API = {
 //   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
 //   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,

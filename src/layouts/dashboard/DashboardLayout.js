@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-// @mui
 import { Box } from '@mui/material';
-// components
+
 import Main from './Main';
 import Header from './header';
 import NavVertical from './nav/NavVertical';
+import LoadingScreen from '../../components/loading-screen/LoadingScreen';
+import NotSubscribedNotice from '../../components/not-subcribed-notice/NotSubscribedNotice';
 
 import { PATH_NEW_RESTAURANT } from '../../routes/paths';
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
-import LoadingScreen from '../../components/loading-screen/LoadingScreen';
-import NotSubscribedNotice from '../../components/not-subcribed-notice/NotSubscribedNotice';
 
 // ----------------------------------------------------------------------
 

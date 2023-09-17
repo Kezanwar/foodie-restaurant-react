@@ -1,11 +1,9 @@
 /* eslint-disable no-useless-escape */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import {
   Box,
   Button,
   Chip,
-  Link,
   Stack,
   TextField,
   Typography,
@@ -125,10 +123,10 @@ const CuisinesAndDietaryChips = ({ dietary_requirements, cuisines }) => {
   return (
     <DietaryCuisinesChipsWrapper>
       {cuisines?.map((c) => (
-        <Chip variant="outlined" label={c.name} />
+        <Chip key={c.name} variant="outlined" label={c.name} />
       ))}
       {dietary_requirements?.map((d) => (
-        <Chip variant="outlined" label={d.name} />
+        <Chip key={d.name} variant="outlined" label={d.name} />
       ))}
     </DietaryCuisinesChipsWrapper>
   );

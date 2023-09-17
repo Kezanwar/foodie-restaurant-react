@@ -3,16 +3,14 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router';
 import {
   Box,
-  Button,
   Container,
   Link,
   ListItemIcon,
   Typography,
   alpha,
-  styled,
-  useTheme
+  styled
 } from '@mui/material';
-import EastIcon from '@mui/icons-material/East';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 // components
 import LoadingScreen from '../../components/loading-screen/LoadingScreen';
@@ -20,6 +18,7 @@ import { DashboardStatGrid } from './styles';
 import StatCardDashboard from '../../components/stat-card/StatCardDashboard';
 import SvgColor from '../../components/svg-color/SvgColor';
 import Subheader from '../../components/subheader/Subheader';
+import LightLoadingButton from '../../components/light-loading-button/LightLoadingButton';
 
 // hooks
 import useDashboardOverviewQuery from '../../hooks/queries/useDashboardOverviewQuery';
@@ -50,9 +49,11 @@ export const DealLocationStatCard = styled(Box)(({ theme }) => {
   return {
     backgroundColor: alpha(theme.palette.primary.light, 0.01),
     color: isDark ? 'white' : theme.palette.grey[900],
-    boxShadow: theme.shadows[3],
     padding: theme.spacing(2.5),
-    borderRadius: theme.spacing(2)
+    borderRadius: theme.spacing(2),
+    flex: 1,
+    boxShadow: theme.shadows[2]
+    // border: `2px solid ${theme.palette.grey[200]}`
   };
 });
 
@@ -61,6 +62,8 @@ export const DealLocationWrapper = styled(Box)(({ theme }) => {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gap: theme.spacing(3),
+    alignItems: 'center',
+
     marginBottom: theme.spacing(6),
     [theme.breakpoints.down('sm')]: {
       gridTemplateColumns: '1fr'
@@ -106,6 +109,16 @@ export const DealLocationIconWrapper = styled(Box)(({ theme }) => {
     alignItems: 'center'
   };
 });
+
+export const Separator = styled(Box)(({ theme }) => ({
+  width: '1px',
+  height: '200px',
+  backgroundColor: theme.palette.grey[300],
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    height: '1px'
+  }
+}));
 
 // ----------------------------------------------------------------------
 
@@ -165,13 +178,14 @@ export default function Overview() {
           </Typography>
         </Box>
 
-        <Subheader text={'Your Restaurants current status'} />
+        <Subheader text={'Restaurant Status'} />
         <DealLocationWrapper>
           <DealLocationStatCard>
             <Box
               display={'flex'}
-              justifyContent={'space-between'}
+              gap={2}
               alignItems={'center'}
+              justifyContent={'space-between'}
               mb={4}
             >
               <Typography color={'primary.light'} variant="h3" component="h2">
@@ -209,16 +223,21 @@ export default function Overview() {
               </Box>
             </DealDataWrapper>
             <Box mt={4} mb={1}>
-              <CardLink onClick={onDealsClick}>
-                Go to Deals <EastIcon fontSize="small" />
-              </CardLink>
+              <LightLoadingButton
+                onClick={onDealsClick}
+                endIcon={<ArrowForwardIcon fontSize="inherit" />}
+              >
+                View Deals
+              </LightLoadingButton>
             </Box>
           </DealLocationStatCard>
+
           <DealLocationStatCard>
             <Box
               display={'flex'}
-              justifyContent={'space-between'}
+              gap={2}
               alignItems={'center'}
+              justifyContent={'space-between'}
               mb={4}
             >
               <Typography color={'primary.light'} variant="h3" component="h2">
@@ -244,13 +263,16 @@ export default function Overview() {
               </Box>
             </DealDataWrapper>
             <Box mt={4} mb={1}>
-              <CardLink onClick={onLocationsClick}>
-                Go to Locations <EastIcon fontSize="small" />
-              </CardLink>
+              <LightLoadingButton
+                onClick={onLocationsClick}
+                endIcon={<ArrowForwardIcon fontSize="inherit" />}
+              >
+                View Locations
+              </LightLoadingButton>
             </Box>
           </DealLocationStatCard>
         </DealLocationWrapper>
-        <Subheader text={'Your Restaurants Insights'} />
+        <Subheader text={'Restaurant Insights'} />
         <DashboardStatGrid>
           {dataArray?.map(([key, value]) => (
             <StatCardDashboard key={key} name={key} value={value} />
