@@ -156,9 +156,7 @@ const WorldAddressAutocomplete = ({ handleOnAddressSelect }) => {
       <TextField
         autoComplete="new-password"
         InputProps={{
-          form: {
-            autoComplete: 'off'
-          },
+          autoComplete: 'off',
           startAdornment: (
             <InputAdornment position="start">
               <SearchOutlined fontSize="small" />
