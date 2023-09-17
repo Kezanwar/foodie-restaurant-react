@@ -37,7 +37,6 @@ const StatCardDashboard = React.memo(({ name, value }) => {
         .join(' ')
     : '';
 
-  console.log(name);
 
   const titleIconDesc = () => {
     switch (title) {
@@ -52,7 +51,7 @@ const StatCardDashboard = React.memo(({ name, value }) => {
               <StarOutlineIcon color="secondary" />
             </TitleIconWrapper>
           ),
-          desc: 'Total deal unique views from customers'
+          desc: 'Total deal unique views'
         };
       case 'Booking Clicks':
         return {
@@ -65,7 +64,7 @@ const StatCardDashboard = React.memo(({ name, value }) => {
               <MouseOutlinedIcon color="warning" />
             </TitleIconWrapper>
           ),
-          desc: 'Total book now clicks from customers'
+          desc: 'Total book now clicks'
         };
       case 'Favourites':
         return {
@@ -78,7 +77,7 @@ const StatCardDashboard = React.memo(({ name, value }) => {
               <FavoriteBorderOutlinedIcon color="error" />
             </TitleIconWrapper>
           ),
-          desc: 'Total restaurants favourites from customers'
+          desc: 'Total restaurant favourites'
         };
       case 'Views':
         return {
@@ -93,7 +92,7 @@ const StatCardDashboard = React.memo(({ name, value }) => {
               />
             </TitleIconWrapper>
           ),
-          desc: 'Total deal views from customers'
+          desc: 'Total deal views'
         };
 
       case 'Saves':
@@ -107,7 +106,7 @@ const StatCardDashboard = React.memo(({ name, value }) => {
               <BookmarkAddedOutlinedIcon color="success" />
             </TitleIconWrapper>
           ),
-          desc: 'Total deal saves from customers'
+          desc: 'Total deal saves'
         };
       default:
         return {

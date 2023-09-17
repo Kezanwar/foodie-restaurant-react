@@ -6,15 +6,15 @@ export const StatCardWrapperStyled = styled(Box, {
   return {
     backgroundColor:
       title === 'Impressions'
-        ? alpha(theme.palette.secondary.light, 0.04)
+        ? alpha(theme.palette.secondary.light, 0.1)
         : title === 'Views'
-        ? alpha(theme.palette.info.light, 0.04)
+        ? alpha(theme.palette.info.light, 0.1)
         : title === 'Saves'
-        ? alpha(theme.palette.success.light, 0.04)
+        ? alpha(theme.palette.success.light, 0.1)
         : title === 'Booking Clicks'
-        ? alpha(theme.palette.warning.light, 0.04)
+        ? alpha(theme.palette.warning.light, 0.1)
         : title === 'Favourites'
-        ? alpha(theme.palette.error.light, 0.04)
+        ? alpha(theme.palette.error.light, 0.1)
         : '',
     color:
       title === 'Impressions'
@@ -28,7 +28,7 @@ export const StatCardWrapperStyled = styled(Box, {
         : title === 'Favourites'
         ? theme.palette.error.main
         : '',
-    boxShadow: theme.shadows[3],
+    // boxShadow: theme.shadows[3],
     padding: theme.spacing(2.5),
     borderRadius: theme.spacing(2)
   };
