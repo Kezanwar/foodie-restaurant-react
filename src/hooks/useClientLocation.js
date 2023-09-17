@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { differenceInCalendarDays, parseISO } from 'date-fns';
 
-const R_KEY = process.env.REACT_APP_RAPID_KEY;
-const IP_KEY = process.env.REACT_APP_IP_FIND_KEY;
+import { ENVIRONMENT, IP_KEY, RAPID_KEY } from '../config';
+
+const DEV = ENVIRONMENT === 'DEVELOPMENT';
+
+const DIFF = 14;
+
+const STORAGE_KEY = 'foodie/client';
 
 const fetchClientLocation = () => {
   return axios.get(
@@ -12,7 +18,7 @@ const fetchClientLocation = () => {
         apikey: IP_KEY
       },
       headers: {
-        'X-RapidAPI-Key': R_KEY,
+        'X-RapidAPI-Key': RAPID_KEY,
         'X-RapidAPI-Host':
           'find-any-ip-address-or-domain-location-world-wide.p.rapidapi.com'
       }
@@ -20,13 +26,42 @@ const fetchClientLocation = () => {
   );
 };
 
+const getClientLocationFromLocalStorage = () => {
+  const ls_item = JSON.parse(window.localStorage.getItem(STORAGE_KEY));
+  return ls_item;
+};
+
+const saveClientLocationToLocalStorage = (new_item) => {
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(new_item));
+};
+
 const useClientLocation = () => {
-  const [clientLocation, setClientLocation] = useState('');
+  const now = new Date();
+
+  const current = getClientLocationFromLocalStorage() || {};
+
+  const { l, t } = current;
+
+  const [clientLocation, setClientLocation] = useState(
+    DEV ? 'United Kingdom' : l
+  );
 
   useEffect(() => {
-    fetchClientLocation()
-      .then((res) => setClientLocation(res?.data?.country || ''))
-      .catch((err) => {});
+    if (differenceInCalendarDays(now, t ? parseISO(t) : now) > DIFF || !l) {
+      if (!DEV) {
+        fetchClientLocation()
+          .then((res) => {
+            if (res?.data?.country) {
+              setClientLocation(res.data.country || '');
+              saveClientLocationToLocalStorage({
+                l: res.data.country,
+                t: now
+              });
+            }
+          })
+          .catch((err) => {});
+      }
+    }
   }, []);
 
   return clientLocation;
