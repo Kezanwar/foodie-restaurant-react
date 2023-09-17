@@ -10,7 +10,7 @@ import {
   alpha,
   styled
 } from '@mui/material';
-import EastIcon from '@mui/icons-material/East';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 // components
 import LoadingScreen from '../../components/loading-screen/LoadingScreen';
@@ -52,19 +52,21 @@ export const DealLocationStatCard = styled(Box)(({ theme }) => {
     padding: theme.spacing(2.5),
     borderRadius: theme.spacing(2),
     flex: 1,
-    border: `2px solid ${alpha(theme.palette.primary.lighter, 0.75)}`
+    boxShadow: theme.shadows[2]
+    // border: `2px solid ${theme.palette.grey[200]}`
   };
 });
 
 export const DealLocationWrapper = styled(Box)(({ theme }) => {
   return {
-    display: 'flex',
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
     gap: theme.spacing(3),
     alignItems: 'center',
 
     marginBottom: theme.spacing(6),
     [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column'
+      gridTemplateColumns: '1fr'
     }
   };
 });
@@ -223,9 +225,9 @@ export default function Overview() {
             <Box mt={4} mb={1}>
               <LightLoadingButton
                 onClick={onDealsClick}
-                endIcon={<EastIcon fontSize="inherit" />}
+                endIcon={<ArrowForwardIcon fontSize="inherit" />}
               >
-                Go to Deals
+                View Deals
               </LightLoadingButton>
             </Box>
           </DealLocationStatCard>
@@ -263,13 +265,10 @@ export default function Overview() {
             <Box mt={4} mb={1}>
               <LightLoadingButton
                 onClick={onLocationsClick}
-                endIcon={<EastIcon fontSize="inherit" />}
+                endIcon={<ArrowForwardIcon fontSize="inherit" />}
               >
-                Go to Locations
+                View Locations
               </LightLoadingButton>
-              {/* <CardLink onClick={onLocationsClick}>
-                Go to Locations <EastIcon fontSize="small" />
-              </CardLink> */}
             </Box>
           </DealLocationStatCard>
         </DealLocationWrapper>

@@ -57,7 +57,7 @@ export const DealIconBox = styled(Box)(({ theme }) => ({
 }));
 
 export const RestaurantProfilePhoneContentWrapper = styled(Box, {
-  shouldForwardProp: (p) => p !== 'phoneHeight' || p !== 'phoneWidth'
+  shouldForwardProp: (p) => p !== 'phoneHeight' && p !== 'phoneWidth'
 })(({ theme, phoneHeight, phoneWidth }) => ({
   height: phoneHeight - 40,
   paddingBottom: 0,

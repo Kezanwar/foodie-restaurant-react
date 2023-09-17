@@ -28,7 +28,6 @@ export const StatCardWrapperStyled = styled(Box, {
         : title === 'Favourites'
         ? theme.palette.error.main
         : '',
-    // boxShadow: theme.shadows[3],
     padding: theme.spacing(2.5),
     borderRadius: theme.spacing(2)
   };
