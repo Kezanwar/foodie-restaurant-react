@@ -12,6 +12,7 @@ import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
 import LoadingScreen from '../../components/loading-screen/LoadingScreen';
 import NotSubscribedNotice from '../../components/not-subcribed-notice/NotSubscribedNotice';
+import { useUtilityContext } from '../../hooks/useUtilityContext';
 
 // ----------------------------------------------------------------------
 

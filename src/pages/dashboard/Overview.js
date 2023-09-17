@@ -178,7 +178,7 @@ export default function Overview() {
           </Typography>
         </Box>
 
-        <Subheader text={'Your Restaurants current status'} />
+        <Subheader text={'Restaurant Status'} />
         <DealLocationWrapper>
           <DealLocationStatCard>
             <Box
@@ -272,7 +272,7 @@ export default function Overview() {
             </Box>
           </DealLocationStatCard>
         </DealLocationWrapper>
-        <Subheader text={'Your Restaurants Insights'} />
+        <Subheader text={'Restaurant Insights'} />
         <DashboardStatGrid>
           {dataArray?.map(([key, value]) => (
             <StatCardDashboard key={key} name={key} value={value} />
