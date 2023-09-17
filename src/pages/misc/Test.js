@@ -14,34 +14,6 @@ const Test = (props) => {
   return (
     <Box>
       <AddressAutocomplete />
-      <Spacer sp={8} />
-      <Autocomplete
-        fullWidth
-        value={value}
-        options={countries}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        getOptionLabel={(option) => option.label}
-        renderOption={(props, option) => (
-          <Box
-            component="li"
-            value={option.label}
-            {...props}
-            sx={{ px: '8px !important' }}
-          >
-            <Box component="span" sx={{ flexShrink: 0, mr: 2, fontSize: 22 }}>
-              {countryToFlag(option.code)}
-            </Box>
-            {option.label} ({option.code}) +{option.phone}
-            <input readOnly value={option.label} style={{ display: 'none' }} />
-          </Box>
-        )}
-        renderInput={(params) => <TextField {...params} label="Controllable" />}
-      />
-      <button type="button" onClick={() => setValue(countries[3])}>
-        click
-      </button>
     </Box>
   );
 };
