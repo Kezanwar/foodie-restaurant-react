@@ -265,6 +265,7 @@ const LocationsAdd = (props) => {
         <FormProvider
           methods={methods}
           onSubmit={handleSubmit(onSubmit, onError)}
+          autoComplete={false}
         >
           <Subheader text={'Add Location Address'} />
           <InputStackSingleItemContainer>
@@ -280,12 +281,14 @@ const LocationsAdd = (props) => {
 
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="address.address_line_1"
               placeholder={'e.g 23 Red Baloon Street'}
               label="Address line 1"
             />
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="address.address_line_2"
               placeholder={'e.g Didsbury'}
@@ -294,12 +297,14 @@ const LocationsAdd = (props) => {
           </InputStack>
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="address.postcode"
               label="Postcode"
               placeholder={'e.g M20 2FG'}
             />
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="address.city"
               label="City"
@@ -314,12 +319,14 @@ const LocationsAdd = (props) => {
           <Subheader text={'Location Contact Details'} />
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="email"
               label="E-mail address"
               placeholder={'e.g your@email.com'}
             />
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="phone_number"
               placeholder={'e.g 07917620399'}
@@ -331,6 +338,7 @@ const LocationsAdd = (props) => {
 
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="nickname"
               placeholder={'e.g Ancoats NQ'}

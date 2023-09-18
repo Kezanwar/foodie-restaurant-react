@@ -72,7 +72,7 @@ export default function AuthRegisterForm() {
       });
     } catch (error) {
       console.error(error);
-      console.log(data);
+
       mixpanelTrack(MIXPANEL_EVENTS.register_failed, {
         email: data.email,
         first_name: data.first_name,

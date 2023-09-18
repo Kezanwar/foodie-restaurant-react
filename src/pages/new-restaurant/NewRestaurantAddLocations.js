@@ -455,7 +455,6 @@ const NewRestaurantAddLocation = (props) => {
     const editLocation = data?.data?.find((l) => l._id === _id);
     if (editLocation) {
       const { address, email, phone_number, nickname } = editLocation;
-      // console.log(countries.find((c) => c.label === address.country));
       setValue('add_location', {
         address: {
           ...address,
@@ -559,12 +558,14 @@ const NewRestaurantAddLocation = (props) => {
 
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="add_location.address.address_line_1"
               placeholder={'e.g 23 Red Baloon Street'}
               label="Address line 1"
             />
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="add_location.address.address_line_2"
               placeholder={'e.g Didsbury'}
@@ -573,12 +574,14 @@ const NewRestaurantAddLocation = (props) => {
           </InputStack>
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="add_location.address.postcode"
               label="Postcode"
               placeholder={'e.g M20 2FG'}
             />
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="add_location.address.city"
               label="City"
@@ -593,12 +596,14 @@ const NewRestaurantAddLocation = (props) => {
           <Subheader text={'Location Contact Details'} />
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="add_location.email"
               label="E-mail address"
               placeholder={'e.g your@email.com'}
             />
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="add_location.phone_number"
               placeholder={'e.g 07917620399'}
@@ -610,6 +615,7 @@ const NewRestaurantAddLocation = (props) => {
 
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="add_location.nickname"
               placeholder={'e.g Ancoats NQ'}
