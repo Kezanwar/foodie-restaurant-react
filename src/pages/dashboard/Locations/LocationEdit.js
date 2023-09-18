@@ -276,8 +276,6 @@ const LocationEdit = (props) => {
     });
   }, []);
 
-  console.log(location);
-
   if (locations?.isLoading) return <LoadingScreen />;
 
   return (
@@ -311,12 +309,14 @@ const LocationEdit = (props) => {
 
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="address.address_line_1"
               placeholder={'e.g 23 Red Baloon Street'}
               label="Address line 1"
             />
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="address.address_line_2"
               placeholder={'e.g Didsbury'}
@@ -325,12 +325,14 @@ const LocationEdit = (props) => {
           </InputStack>
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="address.postcode"
               label="Postcode"
               placeholder={'e.g M20 2FG'}
             />
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="address.city"
               label="City"
@@ -345,12 +347,14 @@ const LocationEdit = (props) => {
           <Subheader text={'Location Contact Details'} />
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="email"
               label="E-mail address"
               placeholder={'e.g your@email.com'}
             />
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="phone_number"
               placeholder={'e.g 07917620399'}
@@ -362,6 +366,7 @@ const LocationEdit = (props) => {
 
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="nickname"
               placeholder={'e.g Ancoats NQ'}

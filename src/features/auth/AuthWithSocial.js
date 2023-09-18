@@ -8,14 +8,14 @@ import Iconify from '../../components/iconify';
 // ----------------------------------------------------------------------
 
 export default function AuthWithSocial() {
-  const { loginWithGoogle, loginWithGithub, loginWithTwitter } = useAuthContext();
+  const { loginWithGoogle, loginWithGithub, loginWithTwitter } =
+    useAuthContext();
 
   const handleGoogleLogin = async () => {
     try {
       if (loginWithGoogle) {
         loginWithGoogle();
       }
-      console.log('GOOGLE LOGIN');
     } catch (error) {
       console.error(error);
     }
@@ -26,7 +26,6 @@ export default function AuthWithSocial() {
       if (loginWithGithub) {
         loginWithGithub();
       }
-      console.log('GITHUB LOGIN');
     } catch (error) {
       console.error(error);
     }
@@ -37,7 +36,6 @@ export default function AuthWithSocial() {
       if (loginWithTwitter) {
         loginWithTwitter();
       }
-      console.log('TWITTER LOGIN');
     } catch (error) {
       console.error(error);
     }
@@ -51,8 +49,8 @@ export default function AuthWithSocial() {
           typography: 'overline',
           color: 'text.disabled',
           '&::before, ::after': {
-            borderTopStyle: 'dashed',
-          },
+            borderTopStyle: 'dashed'
+          }
         }}
       >
         OR

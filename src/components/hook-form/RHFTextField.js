@@ -6,7 +6,7 @@ RHFTextField.propTypes = {
   name: PropTypes.string
 };
 
-export default function RHFTextField({ name, ...other }) {
+export default function RHFTextField({ name, autoComplete = true, ...other }) {
   const { control } = useFormContext();
 
   return (
@@ -24,6 +24,8 @@ export default function RHFTextField({ name, ...other }) {
           }
           error={!!error}
           helperText={error?.message}
+          // inputProps={!autoComplete ? { autoComplete: v4() } : {}}
+          inputProps={!autoComplete ? { autoComplete: 'new-password' } : {}}
           {...other}
         />
       )}

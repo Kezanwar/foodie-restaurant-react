@@ -133,9 +133,8 @@ const UKAddressAutocomplete = ({ handleOnAddressSelect }) => {
     <Box>
       <SearchWrapper>
         <TextField
-          autoComplete="new-password"
           InputProps={{
-            autoComplete: 'off',
+            autoComplete: 'new-password',
             startAdornment: (
               <InputAdornment position="start">
                 <CreateOutlinedIcon fontSize="small" />

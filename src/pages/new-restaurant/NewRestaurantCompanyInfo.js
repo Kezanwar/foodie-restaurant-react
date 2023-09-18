@@ -138,7 +138,6 @@ const NewRestaurantCompanyInfo = (props) => {
       city,
       country
     }).forEach(([key, value]) => {
-      console.log(key, value);
       setValue(`company_address.${key}`, value);
     });
   };
@@ -214,12 +213,14 @@ const NewRestaurantCompanyInfo = (props) => {
           <Subheader text={'Company Information'} />
           <InputStack>
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="company_name"
               label="Registered company name"
               placeholder={'e.g My Restaurant Ltd'}
             />
             <RHFTextField
+              autoComplete={false}
               variant={'filled'}
               name="company_number"
               label="Company number"
@@ -251,6 +252,7 @@ const NewRestaurantCompanyInfo = (props) => {
               <>
                 <Box my={2}>
                   <RHFTextField
+                    autoComplete={false}
                     variant={'filled'}
                     name="company_address.address_line_1"
                     label="Address line 1"
@@ -259,6 +261,7 @@ const NewRestaurantCompanyInfo = (props) => {
                 </Box>
                 <Box mb={2}>
                   <RHFTextField
+                    autoComplete={false}
                     variant={'filled'}
                     name="company_address.address_line_2"
                     label="Address line 2 (Optional)"
@@ -267,6 +270,7 @@ const NewRestaurantCompanyInfo = (props) => {
                 </Box>
                 <Box mb={2}>
                   <RHFTextField
+                    autoComplete={false}
                     variant={'filled'}
                     name="company_address.postcode"
                     label="Post / Zip code"
@@ -275,6 +279,7 @@ const NewRestaurantCompanyInfo = (props) => {
                 </Box>
                 <Box mb={2}>
                   <RHFTextField
+                    autoComplete={false}
                     variant={'filled'}
                     name="company_address.city"
                     label="City"
