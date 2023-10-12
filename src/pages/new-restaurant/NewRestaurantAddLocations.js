@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, {
   Fragment,
   useCallback,
@@ -33,16 +34,10 @@ import {
 } from '../../features/forms/styles';
 
 import { addLocationsSchema } from '../../validation/new-restaurant.validation';
-
 import FormProvider from '../../components/hook-form/FormProvider';
-
 import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
-
 import LocationCard from '../../components/location-card/LocationCard';
-
 import useLocationsQuery from '../../hooks/queries/useLocationsQuery';
-import LoadingScreen from '../../components/loading-screen/LoadingScreen';
-
 import { PATH_NEW_RESTAURANT } from '../../routes/paths';
 import MotionDivViewport from '../../components/animate/MotionDivViewport';
 
@@ -130,7 +125,7 @@ const EditAlert = ({ editLocationObj, isTablet }) => {
   );
 };
 
-const NewRestaurantAddLocation = (props) => {
+const NewRestaurantAddLocation = () => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const [addLocationLoading, setAddLocationLoading] = useState(false);
   const [confirmLocationLoading, setConfirmLocationLoading] = useState(false);
@@ -142,13 +137,14 @@ const NewRestaurantAddLocation = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuthContext();
 
-  const { data, isLoading, updateQuery } = useLocationsQuery();
+  const { data, updateQuery } = useLocationsQuery();
 
   const restaurantQuery = useRestaurantQuery();
 
   const editLocationObj = useMemo(() => {
     if (!editLocationID) return null;
     return data?.data?.find((l) => l._id === editLocationID);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editLocationID]);
 
   const [mapPosition, setMapPosition] = useState({
@@ -204,7 +200,7 @@ const NewRestaurantAddLocation = (props) => {
     reset,
     setError,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors },
     getValues,
     getFieldState,
     setValue
@@ -212,6 +208,7 @@ const NewRestaurantAddLocation = (props) => {
 
   useEffect(() => {
     reset(defaultValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues, setValue]);
 
   const handleBack = () => {
@@ -243,7 +240,7 @@ const NewRestaurantAddLocation = (props) => {
     setFormSubmitLoading(false);
   };
 
-  const { isTablet, isMobile } = useCustomMediaQueries();
+  const { isTablet } = useCustomMediaQueries();
 
   useEffect(() => {
     pageScrollToTop();
@@ -292,6 +289,7 @@ const NewRestaurantAddLocation = (props) => {
         error: error?.message
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openingTimes]);
 
   const onSaveEditLocationClick = useCallback(async () => {
@@ -334,6 +332,7 @@ const NewRestaurantAddLocation = (props) => {
       setAddLocationLoading(false);
       mixpanelTrack(MIXPANEL_EVENTS.check_location_failed);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openingTimes, editLocationID]);
 
   const onConfirmLocation = useCallback(
@@ -370,6 +369,7 @@ const NewRestaurantAddLocation = (props) => {
         console.error(error);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [openingTimes]
   );
 
@@ -410,6 +410,7 @@ const NewRestaurantAddLocation = (props) => {
         console.error(error);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [openingTimes]
   );
 
@@ -439,6 +440,7 @@ const NewRestaurantAddLocation = (props) => {
         error: error?.message
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onCancelDeleteLocationModal = () => {
@@ -480,6 +482,7 @@ const NewRestaurantAddLocation = (props) => {
       return `Are you sure you want to delete ${l?.nickname}, ${l?.address?.postcode}?`;
     }
     return '';
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idToDelete.current, getValues]);
 
   const locations = watch('locations');
@@ -510,7 +513,7 @@ const NewRestaurantAddLocation = (props) => {
   const onError = useCallback(
     (errors) => {
       const errArr = Object.entries(errors);
-      errArr.forEach(([name, value]) =>
+      errArr.forEach(([, value]) =>
         value?.message
           ? enqueueSnackbar(value.message, { variant: 'error' })
           : null

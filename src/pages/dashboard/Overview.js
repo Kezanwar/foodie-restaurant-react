@@ -52,8 +52,8 @@ export const DealLocationStatCard = styled(Box)(({ theme }) => {
     padding: theme.spacing(2.5),
     borderRadius: theme.spacing(2),
     flex: 1,
-    boxShadow: theme.shadows[2]
-    // border: `2px solid ${theme.palette.grey[200]}`
+    // boxShadow: theme.shadows[2]
+    border: `2px solid ${alpha(theme.palette.primary.lighter, 0.45)}`
   };
 });
 

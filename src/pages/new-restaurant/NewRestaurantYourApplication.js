@@ -1,38 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Stack } from '@mui/system';
-import {
-  Alert,
-  AlertTitle,
-  Typography,
-  Box,
-  Button,
-  useMediaQuery
-} from '@mui/material';
+import { Alert, AlertTitle, Typography, Box, Button } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import Image from 'mui-image';
+
 import { useNavigate } from 'react-router';
 import HelpIcon from '@mui/icons-material/Help';
 import { LoadingButton } from '@mui/lab';
-import PropTypes from 'prop-types';
+
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet-async';
 
-// import FacebookIcon from '@mui/icons-material/Facebook';
-// import InstagramIcon from '@mui/icons-material/Instagram';
-// import LinkedInIcon from '@mui/icons-material/LinkedIn';
-// import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
-import { useTheme } from '@emotion/react';
-
 import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
-import LikeLottie from '../../assets/lottie/like-button.json';
 
 import { pageScrollToTop } from '../../utils/scroll';
 import Subheader from '../../components/subheader/Subheader';
 import Spacer from '../../components/spacer/Spacer';
 
-import MotionDivViewport from '../../components/animate/MotionDivViewport';
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 import useLocationsQuery from '../../hooks/queries/useLocationsQuery';
 import LoadingScreen from '../../components/loading-screen/LoadingScreen';
@@ -47,20 +31,17 @@ import { RHFCheckbox } from '../../components/hook-form';
 import { postSubmitApplicationStep } from '../../utils/api';
 
 import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
-import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
 
 import { useAuthContext } from '../../hooks/useAuthContext';
 
-const NewRestaurantYourApplication = (props) => {
+const NewRestaurantYourApplication = () => {
   const { isTablet, isMobile } = useCustomMediaQueries();
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const navigate = useNavigate();
 
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuthContext();
-
-  const isSmallMobile = useMediaQuery((theme) => theme.breakpoints.down(390));
 
   useEffect(() => {
     pageScrollToTop();
@@ -74,15 +55,11 @@ const NewRestaurantYourApplication = (props) => {
 
   const locations = locationsQuery?.data?.data || null;
 
-  const { avatar, name, bio, company_info, cover_photo, social_media } =
-    data?.data || {};
+  const { company_info } = data?.data || {};
 
   const { company_address, company_name, company_number } = company_info || {};
 
-  const theme = useTheme();
-
   const handleBack = () => navigate(PATH_NEW_RESTAURANT.step_3);
-  const handleNext = () => {};
 
   const defaultValues = {
     terms_and_conditions: false,
@@ -94,14 +71,14 @@ const NewRestaurantYourApplication = (props) => {
     defaultValues
   });
 
-  const { handleSubmit, getValues, formState, setError } = methods;
+  const { handleSubmit, setError } = methods;
 
   const onSubmit = async (data) => {
     try {
       const updatedRestaurant = await postSubmitApplicationStep(data);
       updateQuery(updatedRestaurant?.data);
+      enqueueSnackbar('🎉 Application submitted successfully!');
       setFormSubmitLoading(false);
-      //   setSuccessModalOpen(true);
     } catch (error) {
       console.error(error);
 
@@ -119,7 +96,7 @@ const NewRestaurantYourApplication = (props) => {
   const onError = useCallback(
     (errors) => {
       const errArr = Object.entries(errors);
-      errArr.forEach(([name, value]) =>
+      errArr.forEach(([, value]) =>
         value?.message
           ? enqueueSnackbar(value.message, { variant: 'error' })
           : null
@@ -136,6 +113,7 @@ const NewRestaurantYourApplication = (props) => {
         }
       );
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [user?.email]
   );
 

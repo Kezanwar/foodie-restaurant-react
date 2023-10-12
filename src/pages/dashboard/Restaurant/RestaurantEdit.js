@@ -1,7 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
+
 import { Helmet } from 'react-helmet-async';
-import { Alert, AlertTitle, Box, Container, Typography } from '@mui/material';
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  Container,
+  Typography
+} from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
@@ -35,7 +42,7 @@ import useOptionsQuery from '../../../hooks/queries/useOptionsQuery';
 import { useAuthContext } from '../../../hooks/useAuthContext';
 import { restaurantDetailsSchema } from '../../../validation/new-restaurant.validation';
 import { getFormDataFromObject } from '../../../utils/formData';
-import { editRestaurant, postRestaurantDetails } from '../../../utils/api';
+import { editRestaurant } from '../../../utils/api';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
 import { image_tooltip } from '../../../constants/tooltips.constants';
 import { PATH_DASHBOARD } from '../../../routes/paths';
@@ -55,10 +62,12 @@ const optEqVal = (option, value) => {
   return option.slug === value.slug;
 };
 
-const RestaurantEdit = (props) => {
+const RestaurantEdit = () => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const { data, isLoading, updateQuery } = useRestaurantQuery();
   const navigate = useNavigate();
+
+  const onCancel = () => navigate(-1);
 
   const restaurant = data?.data;
 
@@ -68,7 +77,6 @@ const RestaurantEdit = (props) => {
 
   const cuisineOptions = options?.data?.data?.cuisines;
   const dietaryOptions = options?.data?.data?.dietary_requirements;
-  const optionsLoading = options?.isLoading;
 
   const defaultValues = useMemo(
     () => ({
@@ -109,17 +117,7 @@ const RestaurantEdit = (props) => {
     defaultValues
   });
 
-  const {
-    reset,
-    setError,
-    handleSubmit,
-    watch,
-
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-    getValues,
-    getFieldState,
-    setValue
-  } = methods;
+  const { setError, handleSubmit, watch, getValues, setValue } = methods;
 
   const onSubmit = useCallback(async (data) => {
     try {
@@ -162,6 +160,7 @@ const RestaurantEdit = (props) => {
       });
     }
     setFormSubmitLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const avatar = watch('avatar');
@@ -182,7 +181,7 @@ const RestaurantEdit = (props) => {
   const onError = useCallback(
     (errors) => {
       const errArr = Object.entries(errors);
-      errArr.forEach(([name, value]) =>
+      errArr.forEach(([, value]) =>
         value?.message
           ? enqueueSnackbar(value.message, { variant: 'error' })
           : null
@@ -196,6 +195,7 @@ const RestaurantEdit = (props) => {
         errors: data
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [user?.email]
   );
 
@@ -410,6 +410,9 @@ const RestaurantEdit = (props) => {
             </InputStack>
             {/* ACTIONS */}
             <Box mt={4} sx={{ display: 'flex' }}>
+              <Button color="inherit" onClick={onCancel}>
+                Cancel
+              </Button>
               <Box sx={{ flexGrow: 1 }} />
               <LoadingButton
                 loading={formSubmitLoading}
@@ -425,7 +428,5 @@ const RestaurantEdit = (props) => {
     </>
   );
 };
-
-RestaurantEdit.propTypes = {};
 
 export default RestaurantEdit;

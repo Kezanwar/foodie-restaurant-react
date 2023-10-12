@@ -1,7 +1,6 @@
-import React from 'react';
 import { useQuery } from 'react-query';
 import { OPTIONS_QUERY } from '../../constants/react-query.constants';
-import { getOptions, getRestaurant } from '../../utils/api';
+import { getOptions } from '../../utils/api';
 
 const useOptionsQuery = () => {
   // const queryClient = useQueryClient();

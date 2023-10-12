@@ -1,16 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { m } from 'framer-motion';
-import PropTypes from 'prop-types';
+
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router';
-import {
-  Alert,
-  AlertTitle,
-  Autocomplete,
-  Button,
-  TextField,
-  Typography
-} from '@mui/material';
+import { Alert, AlertTitle, Button } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 
 import { useForm } from 'react-hook-form';
@@ -22,9 +14,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Subheader from '../../components/subheader/Subheader';
 import { RHFTextField } from '../../components/hook-form';
 
-import { countries, countryToFlag } from '../../assets/data';
 import { pageScrollToTop } from '../../utils/scroll';
-import { varFade } from '../../components/animate';
+
 import Spacer from '../../components/spacer/Spacer';
 import {
   FormSectionStack,
@@ -38,22 +29,21 @@ import { restaurantDetailsSchema } from '../../validation/new-restaurant.validat
 
 import FormProvider from '../../components/hook-form/FormProvider';
 import {
-  RHFUpload,
   RHFUploadAvatar,
   RHFUploadWithCrop
 } from '../../components/hook-form/RHFUpload';
-import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
+
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 import { PATH_NEW_RESTAURANT } from '../../routes/paths';
 import { postRestaurantDetails } from '../../utils/api';
 import { getFormDataFromObject } from '../../utils/formData';
-import MotionDivViewport from '../../components/animate/MotionDivViewport';
+
 import useOptionsQuery from '../../hooks/queries/useOptionsQuery';
 import RHFMultipleAutocomplete from '../../components/hook-form/RHFMultipleAutoComplete';
 import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
 import CustomTooltip from '../../components/custom-tooltip/CustomTooltip';
 import { image_tooltip } from '../../constants/tooltips.constants';
-import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
+
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
 import { useAuthContext } from '../../hooks/useAuthContext';
 
@@ -72,7 +62,7 @@ const optEqVal = (option, value) => {
   return option.slug === value.slug;
 };
 
-const NewRestaurantCreateRestaurant = (props) => {
+const NewRestaurantCreateRestaurant = () => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const { data, updateQuery } = useRestaurantQuery();
   const options = useOptionsQuery();
@@ -83,7 +73,6 @@ const NewRestaurantCreateRestaurant = (props) => {
 
   const cuisineOptions = options?.data?.data?.cuisines;
   const dietaryOptions = options?.data?.data?.dietary_requirements;
-  const optionsLoading = options?.isLoading;
 
   const defaultValues = useMemo(
     () => ({
@@ -129,10 +118,8 @@ const NewRestaurantCreateRestaurant = (props) => {
     setError,
     handleSubmit,
     watch,
-
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { isDirty },
     getValues,
-    getFieldState,
     setValue
   } = methods;
 
@@ -151,6 +138,10 @@ const NewRestaurantCreateRestaurant = (props) => {
   };
 
   const onSubmit = async (data) => {
+    if (!isDirty) {
+      handleNext();
+      return;
+    }
     try {
       const {
         name,
@@ -193,6 +184,7 @@ const NewRestaurantCreateRestaurant = (props) => {
 
   useEffect(() => {
     reset(defaultValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues, setValue]);
 
   const avatar = watch('avatar');
@@ -213,7 +205,7 @@ const NewRestaurantCreateRestaurant = (props) => {
   const onError = useCallback(
     (errors) => {
       const errArr = Object.entries(errors);
-      errArr.forEach(([name, value]) =>
+      errArr.forEach(([, value]) =>
         value?.message
           ? enqueueSnackbar(value.message, { variant: 'error' })
           : null
@@ -227,6 +219,7 @@ const NewRestaurantCreateRestaurant = (props) => {
         errors: data
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [user?.email]
   );
 
@@ -278,8 +271,8 @@ const NewRestaurantCreateRestaurant = (props) => {
           <InputWithInfoInfoContainer>
             <Alert icon={<HelpIcon />} severity={'success'}>
               <AlertTitle>How do we use this?</AlertTitle>
-              Our mobile app allows your customers to favourite cuisine types
-              and filter by cuisine within their searches.
+              Our mobile app allows our consumers to favourite cuisine types and
+              filter by cuisine within their searches.
             </Alert>
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>
@@ -304,9 +297,9 @@ const NewRestaurantCreateRestaurant = (props) => {
           <InputWithInfoInfoContainer>
             <Alert icon={<HelpIcon />} severity={'success'}>
               <AlertTitle>Why do we need this?</AlertTitle>
-              We want to provide a pleasant user experience for customers by
-              letting them filter searches by their particular dietary
-              requirements.
+              We want to provide a positive inclusive user experience for
+              customers by letting them filter searches by their particular
+              dietary requirements.
             </Alert>
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>
@@ -323,11 +316,7 @@ const NewRestaurantCreateRestaurant = (props) => {
             <Alert icon={<HelpIcon />} severity={'success'}>
               <AlertTitle>How is the avatar used?</AlertTitle>
               Your Restaurant Avatar acts as a profile image for your
-              Restaurant, your cover photo is used as the back drop.
-              <Box mt={1}>
-                If an image isn't provided for a new deal, the deal image will
-                default to your Restaurant Cover Photo.
-              </Box>
+              Restaurant.
               <Box mt={1}>
                 Images can be updated <strong>at any time.</strong>
               </Box>
@@ -344,9 +333,9 @@ const NewRestaurantCreateRestaurant = (props) => {
           <InputWithInfoInfoContainer>
             <Alert icon={<HelpIcon />} severity={'success'}>
               <AlertTitle>How is the cover photo used?</AlertTitle>
-              Your restaurant cover photo acts as a backdrop for your restaurant
-              profile screen and a fallback for deals if one isn't provided for
-              them.
+              Your restaurant cover photo acts as a background for your
+              restaurant profile screen and a substitute for deals if one isn't
+              provided for them.
               <Box mt={1}>
                 Images can be updated <strong>at any time.</strong>
               </Box>
@@ -387,10 +376,10 @@ const NewRestaurantCreateRestaurant = (props) => {
           <InputWithInfoInfoContainer>
             <Alert icon={<HelpIcon />} severity={'success'}>
               <AlertTitle>How is this used?</AlertTitle>
-              Your Restaurant name is what shows up in the search for deals and
-              restaurants, if you are a chain, when you add multiple locations
-              the name will show up followed by the locations provided nickname
-              in brackets. e.g - <strong>Rudy's (Ancoats Sq)</strong>
+              Add a link to help our consumers to make a reservation, this may
+              be a link direct to your booking system or just a simple email or
+              telephone number so consumers can reserve seats for the deal you
+              have listed.
             </Alert>
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>

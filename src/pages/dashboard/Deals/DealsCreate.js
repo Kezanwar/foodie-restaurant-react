@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, useFormContext } from 'react-hook-form';
@@ -19,7 +20,7 @@ import {
   FormHelperText,
   styled
 } from '@mui/material';
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+
 import HelpIcon from '@mui/icons-material/Help';
 import FormProvider from '../../../components/hook-form/FormProvider';
 
@@ -146,9 +147,8 @@ export default function DealsCreate() {
     handleSubmit,
     trigger,
     clearErrors,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors },
     getValues,
-    getFieldState,
     setValue
   } = methods;
 
@@ -164,13 +164,14 @@ export default function DealsCreate() {
             setValue('name', name);
             setValue('description', description);
           })
-          .catch((err) => {
+          .catch(() => {
             enqueueSnackbar('Template not found', {
               variant: 'warning'
             });
           });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const dateErrors = errors.start_date || errors.end_date;
@@ -244,7 +245,7 @@ export default function DealsCreate() {
     try {
       setFormSubmitLoading(true);
       const postLocations = data?.locations?.map((l) => l._id);
-      const newDeal = await addDeal({ ...data, locations: postLocations });
+      await addDeal({ ...data, locations: postLocations });
       await allActiveDeals.refetch();
       dashQuery.remove();
       mixpanelTrack(MIXPANEL_EVENTS.add_deal_success, {
@@ -269,9 +270,10 @@ export default function DealsCreate() {
         data
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     setShowConfirmModal(true);
   };
 
@@ -286,6 +288,7 @@ export default function DealsCreate() {
         _id: l._id
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data?.length]);
 
   const endDate = watch('end_date');
@@ -352,11 +355,6 @@ export default function DealsCreate() {
       <Container sx={{ px: 3 }} maxWidth={'xl'}>
         <DashboardTitleContainer>
           <DashboardTitle title="Create a new deal" />
-          <Typography variant="body2" color={'text.secondary'}>
-            {/* Use this form to create a new deal, you're allowed to have a{' '}
-            <strong>maximum of {MAX_DEALS} active deals </strong> at one time.
-            You can manage your deals here. */}
-          </Typography>
         </DashboardTitleContainer>
         <Box>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -482,7 +480,11 @@ export default function DealsCreate() {
                     </Box>
                   )}
                   {!!errors.afterSubmit && (
-                    <Alert severity="error">{errors.afterSubmit.message}</Alert>
+                    <Box mt={2}>
+                      <Alert severity="error">
+                        {errors.afterSubmit.message}
+                      </Alert>
+                    </Box>
                   )}
                   <Box mt={4} sx={{ display: 'flex' }}>
                     <Button color="inherit" onClick={onCancel} sx={{ mr: 1 }}>
@@ -505,23 +507,29 @@ export default function DealsCreate() {
                     icon={<HelpIcon />}
                     severity={'success'}
                   >
-                    <AlertTitle>How do deals work?</AlertTitle>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. At
-                    neque minima sit doloribus harum soluta necessitatibus hic?
-                    Dolorum, pariatur eligendi{' '}
-                    <strong>Siganti et il gido!</strong>
+                    <AlertTitle>How do deals work?</AlertTitle>A Deal requires a
+                    name, description and 1 or more locations assigned to it.
+                    You also need to specify how long you would like the deal to
+                    appear on the mobile app.
                     <br />
                     <br />
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Unde temporibus hic vel minima incidunt rem similique
-                    placeat voluptatibus omnis ipsam quia eligendi dolor
-                    consequatur dolorem, ipsa magni!
+                    <strong>
+                      Please include any time restrictions in the title or
+                      description.
+                    </strong>
                     <br />
                     <br />
-                    Sapiente neque, suscipit deserunt porro explicabo iusto
-                    doloribus? Molestiae voluptatum facilis tenetur aperiam
-                    doloribus officiis architecto. Dolor minus sit, obcaecati
-                    reiciendis culpa inventore.
+                    Foodie's deal system streamlines the process for restaurants
+                    to showcase their special offers. As soon as you post a
+                    deal, it seamlessly integrates into our app and is filtered
+                    by customer preferences such as cuisine, dietary
+                    requirements, and location and can be time-restricted.
+                    <br />
+                    <br />
+                    Our advanced search function takes into account keywords
+                    found in both the deal's title and description, facilitating
+                    a more efficient and personalized connection between diners
+                    and enticing discounts.
                   </Alert>
                 </InputWithInfoInfoContainer>
               </InputWithInfoStack>
@@ -568,7 +576,7 @@ const CreateDealModal = ({ onCancel, onAccept, submitLoading, isOpen }) => {
         </Box>
         <ModalTitle>Locations</ModalTitle>
         <Box mb={2}>
-          {values?.locations.map((l, i) => (
+          {values?.locations.map((l) => (
             <Box key={l._id} mb={1} fontSize={14}>
               {l.name}
             </Box>
