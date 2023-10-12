@@ -1,3 +1,8 @@
+//    ___                __ __
+//  .'  _.-----.-----.--|  |__.-----.
+//  |   _|  _  |  _  |  _  |  |  -__|
+//  |__| |_____|_____|_____|__|_____|
+
 import mixpanel from 'mixpanel-browser';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -7,7 +12,6 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Router from './routes';
 
 // providers
-
 import { AuthProvider } from './auth/AuthContext';
 import ThemeProvider from './theme';
 import SnackbarProvider from './components/snackbar';

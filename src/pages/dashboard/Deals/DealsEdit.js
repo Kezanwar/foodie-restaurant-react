@@ -69,6 +69,8 @@ export default function DealsEdit() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
+  const onCancel = () => navigate(-1);
+
   const { id } = useParams();
   const { data: dealData, error, isLoading, refetch } = useSingleDealQuery(id);
 
@@ -321,7 +323,7 @@ export default function DealsEdit() {
                     <Alert severity="error">{errors.afterSubmit.message}</Alert>
                   )}
                   <Box mt={4} sx={{ display: 'flex' }}>
-                    <Button color="inherit" onClick={() => {}} sx={{ mr: 1 }}>
+                    <Button color="inherit" onClick={onCancel} sx={{ mr: 1 }}>
                       Cancel
                     </Button>
                     <Box sx={{ flexGrow: 1 }} />

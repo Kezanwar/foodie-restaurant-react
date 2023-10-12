@@ -1,24 +1,10 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
-import EastIcon from '@mui/icons-material/East';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
 import { useSnackbar } from 'notistack';
-import { m } from 'framer-motion';
-import PropTypes from 'prop-types';
+
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router';
-import {
-  Alert,
-  AlertTitle,
-  Autocomplete,
-  Button,
-  TextField,
-  Typography
-} from '@mui/material';
+import { Alert, AlertTitle, Button, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/system';
@@ -28,12 +14,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Subheader from '../../components/subheader/Subheader';
 import { RHFTextField } from '../../components/hook-form';
 
-import { countries, countryToFlag } from '../../assets/data';
+import { countries } from '../../assets/data';
 import { pageScrollToTop } from '../../utils/scroll';
-import { varFade } from '../../components/animate';
+
 import Spacer from '../../components/spacer/Spacer';
 import {
-  FormSectionStack,
   InputStack,
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
@@ -47,16 +32,16 @@ import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 import { postCompanyInfo } from '../../utils/api';
 
 import { PATH_NEW_RESTAURANT } from '../../routes/paths';
-import MotionDivViewport from '../../components/animate/MotionDivViewport';
+
 import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
-import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
+
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import AddressAutocomplete from '../../components/address-autocomplete/AddressAutocomplete';
 import RHFCountriesAutocomplete from '../../components/hook-form/RHFCountriesAutocomplete';
 
-const NewRestaurantCompanyInfo = (props) => {
-  const { data, isLoading, updateQuery } = useRestaurantQuery();
+const NewRestaurantCompanyInfo = () => {
+  const { data, updateQuery } = useRestaurantQuery();
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -103,11 +88,8 @@ const NewRestaurantCompanyInfo = (props) => {
     reset,
     setError,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-    getValues,
-    getFieldState,
-    setValue,
-    watch
+    formState: { errors, isDirty },
+    setValue
   } = methods;
 
   useEffect(() => {
@@ -143,6 +125,10 @@ const NewRestaurantCompanyInfo = (props) => {
   };
 
   const onSubmit = async (data) => {
+    if (!isDirty) {
+      handleNext();
+      return;
+    }
     try {
       // make dynamic api call
       setFormSubmitLoading(true);
@@ -160,7 +146,6 @@ const NewRestaurantCompanyInfo = (props) => {
       handleNext();
     } catch (error) {
       console.error(error);
-      // reset();
       mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_company_info_failed, {
         data,
         error: error?.message || JSON.stringify(error)
@@ -176,7 +161,7 @@ const NewRestaurantCompanyInfo = (props) => {
   const onError = useCallback(
     (errors) => {
       const errArr = Object.entries(errors);
-      errArr.forEach(([name, value]) =>
+      errArr.forEach(([, value]) =>
         value?.message
           ? enqueueSnackbar(value.message, { variant: 'error' })
           : null
@@ -190,7 +175,8 @@ const NewRestaurantCompanyInfo = (props) => {
         errors: data
       });
     },
-    [user?.email]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user?.email, enqueueSnackbar]
   );
 
   return (
@@ -295,8 +281,8 @@ const NewRestaurantCompanyInfo = (props) => {
               <Alert icon={<HelpIcon />} severity={'success'}>
                 <AlertTitle>Why do we need this?</AlertTitle>
                 We use the information taken on this step to confirm your
-                authenticity as a restaurant, thus ensuring a level of safety is
-                met for our customers.
+                authenticity as a restaurant, thus ensuring a minimum level of
+                safety for our customers.
               </Alert>
             </InputWithInfoInfoContainer>
           </InputWithInfoStack>
@@ -327,7 +313,5 @@ const NewRestaurantCompanyInfo = (props) => {
     </Box>
   );
 };
-
-NewRestaurantCompanyInfo.propTypes = {};
 
 export default NewRestaurantCompanyInfo;
