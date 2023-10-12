@@ -480,7 +480,11 @@ export default function DealsCreate() {
                     </Box>
                   )}
                   {!!errors.afterSubmit && (
-                    <Alert severity="error">{errors.afterSubmit.message}</Alert>
+                    <Box mt={2}>
+                      <Alert severity="error">
+                        {errors.afterSubmit.message}
+                      </Alert>
+                    </Box>
                   )}
                   <Box mt={4} sx={{ display: 'flex' }}>
                     <Button color="inherit" onClick={onCancel} sx={{ mr: 1 }}>
