@@ -1,4 +1,4 @@
-import { alpha, Box, Card, styled, CardActionArea, Stack } from '@mui/material';
+import { alpha, Box, styled } from '@mui/material';
 import { m } from 'framer-motion';
 import MotionDivViewport from '../animate/MotionDivViewport';
 
@@ -18,7 +18,7 @@ export const LocationCardStyled = styled(MotionDivViewport)(({ theme }) => ({
   }
 }));
 
-export const LocationCardsContainer = styled(m.div)(({ theme }) => ({
+export const LocationCardsContainer = styled(m.div)(() => ({
   marginbottom: 6,
   flexDirection: 'row',
   gap: 3,

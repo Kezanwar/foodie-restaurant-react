@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Box, Typography, styled, useTheme } from '@mui/material';
 import { capitalize } from 'lodash';
 
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+// import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+// import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
@@ -36,7 +36,6 @@ const StatCardDashboard = React.memo(({ name, value }) => {
         .map((l) => capitalize(l))
         .join(' ')
     : '';
-
 
   const titleIconDesc = () => {
     switch (title) {

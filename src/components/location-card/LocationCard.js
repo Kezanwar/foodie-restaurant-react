@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/system';
 import { IconButton, Stack, Typography } from '@mui/material';
@@ -10,7 +11,6 @@ import { capitalize } from 'lodash';
 import { EditIconsWrapper, LocationCardStyled } from './styles';
 
 import SvgColor from '../svg-color/SvgColor';
-import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
 
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
 
@@ -33,7 +33,7 @@ const LocationCard = ({
   onEdit
 }) => {
   const theme = useTheme();
-  const { isMobile } = useCustomMediaQueries();
+
   const { data } = useRestaurantQuery();
 
   return (
