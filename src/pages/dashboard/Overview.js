@@ -136,20 +136,21 @@ export default function Overview() {
     active_deals,
     booking_clicks,
     expired_deals,
-    favourites,
-    impressions_views_saves,
+    followers,
+    impressions_views_favourites,
     locations
   } = data?.data || {};
 
-  const { impressions, views, saves } = impressions_views_saves?.[0] || {};
+  const { impressions, views, favourites } =
+    impressions_views_favourites?.[0] || {};
 
   const dataArray = useMemo(() => {
     if (data?.data) {
       return Object.entries({
         views,
         impressions,
+        followers,
         favourites,
-        saves,
         booking_clicks
       });
     }
@@ -275,7 +276,7 @@ export default function Overview() {
         <Subheader text={'Restaurant Insights'} />
         <DashboardStatGrid>
           {dataArray?.map(([key, value]) => (
-            <StatCardDashboard key={key} name={key} value={value} />
+            <StatCardDashboard key={key} name={key} value={value || 0} />
           ))}
         </DashboardStatGrid>
       </Container>

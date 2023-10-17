@@ -69,7 +69,7 @@ const StatCardAvg = React.memo(({ title, avg_per_day, value }) => {
           desc: 'Total view count'
         };
 
-      case 'Saves':
+      case 'Favourites':
         return {
           titleIcon: (
             <TitleIconWrapper
@@ -80,7 +80,7 @@ const StatCardAvg = React.memo(({ title, avg_per_day, value }) => {
               <BookmarkAddedOutlinedIcon color="success" />
             </TitleIconWrapper>
           ),
-          desc: 'Total user saves'
+          desc: 'Total user favourites'
         };
       default:
         return {

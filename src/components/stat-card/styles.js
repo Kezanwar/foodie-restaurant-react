@@ -9,11 +9,11 @@ export const StatCardWrapperStyled = styled(Box, {
         ? alpha(theme.palette.secondary.light, 0.1)
         : title === 'Views'
         ? alpha(theme.palette.info.light, 0.1)
-        : title === 'Saves'
+        : title === 'Favourites'
         ? alpha(theme.palette.success.light, 0.1)
         : title === 'Booking Clicks'
         ? alpha(theme.palette.warning.light, 0.1)
-        : title === 'Favourites'
+        : title === 'Followers'
         ? alpha(theme.palette.error.light, 0.1)
         : '',
     color:
@@ -21,11 +21,11 @@ export const StatCardWrapperStyled = styled(Box, {
         ? theme.palette.secondary.main
         : title === 'Views'
         ? theme.palette.info.main
-        : title === 'Saves'
+        : title === 'Favourites'
         ? theme.palette.success.main
         : title === 'Booking Clicks'
         ? theme.palette.warning.main
-        : title === 'Favourites'
+        : title === 'Followers'
         ? theme.palette.error.main
         : '',
     padding: theme.spacing(2.5),

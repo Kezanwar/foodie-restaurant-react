@@ -81,7 +81,7 @@ const StatCard = React.memo(({ title, percentage, value }) => {
           </TitleIconWrapper>
         );
 
-      case 'Saves':
+      case 'Favourites':
         return (
           <TitleIconWrapper
             backgroundColor={
