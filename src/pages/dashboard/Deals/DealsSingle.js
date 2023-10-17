@@ -325,19 +325,19 @@ const DealsSingle = () => {
         </InsightsContainer>
         <DashboardStatGrid>
           <StatCardAvg
-            avg_per_day={deal?.unique_views?.avg || 0}
+            avg_per_day={deal?.averages?.unique_views || 0}
             title={'Impressions'}
-            value={deal?.unique_views?.count || 0}
+            value={deal?.counts?.unique_views || 0}
           />
           <StatCardAvg
-            avg_per_day={deal?.view?.avg || 0}
+            avg_per_day={deal?.averages?.views || 0}
             title={'Views'}
-            value={deal?.views?.count || 0}
+            value={deal?.counts?.views || 0}
           />
           <StatCardAvg
-            title={'Saves'}
-            avg_per_day={deal?.saves?.avg || 0}
-            value={deal?.saves?.count || 0}
+            title={'Favourites'}
+            avg_per_day={deal?.averages?.favourites || 0}
+            value={deal?.counts?.favourites || 0}
           />
         </DashboardStatGrid>
       </Container>

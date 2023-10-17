@@ -201,10 +201,10 @@ export default function ExpiredDealTable() {
             headerAlign: 'center',
             flex: flex,
             renderCell: (params) => {
-              const col = params.value.count <= 14 ? 'warning' : 'success';
+              const col = params.value <= 14 ? 'warning' : 'success';
               return (
                 <Label variant={'filled'} color={col}>
-                  {params.value.count}
+                  {params.value}
                 </Label>
               );
             },
@@ -244,18 +244,18 @@ export default function ExpiredDealTable() {
             }
           },
           {
-            field: 'saves',
-            headerName: 'Saves',
+            field: 'favourites',
+            headerName: 'Favourites',
             type: 'number',
             width: 120,
             flex: flex,
             align: 'center',
             headerAlign: 'center',
             renderCell: (params) => {
-              const col = params.value.count <= 14 ? 'warning' : 'success';
+              const col = params.value <= 14 ? 'warning' : 'success';
               return (
                 <Label variant={'filled'} color={col}>
-                  {params.value.count}
+                  {params.value}
                 </Label>
               );
             },
