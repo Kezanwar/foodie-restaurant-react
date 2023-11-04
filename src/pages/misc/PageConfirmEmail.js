@@ -29,7 +29,7 @@ export const LoadingBox = styled(Box)(({ theme }) => ({
 
 const PageConfirmEmail = (props) => {
   const { user, emailConfirmed, initialize } = useAuthContext();
-  const { isTablet } = useCustomMediaQueries();
+  const { isTablet, isMobile } = useCustomMediaQueries();
   const pathAfterLogin = usePathAfterLogin();
   const navigate = useNavigate();
 
@@ -72,7 +72,7 @@ const PageConfirmEmail = (props) => {
       </Helmet>
 
       <Box textAlign={isTablet ? 'center' : 'left'}>
-        <Spacer />
+        {!isMobile && <Spacer />}
         <Box
           display={'flex'}
           sx={{ flexDirection: isTablet ? 'column-reverse' : 'row' }}
@@ -86,20 +86,25 @@ const PageConfirmEmail = (props) => {
             </Typography>
 
             <Spacer sp={3} />
-
+            {/* 
             <Typography variant="body2">
               <strong>Hello {user?.first_name},</strong> please{' '}
               <strong>confirm your email address</strong> before proceeding to
               use the foodie platform.
-            </Typography>
-            <Spacer sp={3} />
+            </Typography> */}
+
             <Typography variant="body2">
-              Please enter the 6 digit OTP sent to{' '}
+              Hello {user?.first_name}, please enter the 6 digit OTP sent to{' '}
               <strong>{user?.email}</strong>
             </Typography>
+
             <Spacer sp={3} />
             <MuiOtpInput
               my={4}
+              TextFieldsProps={{ inputProps: { inputMode: 'numeric' } }}
+              mx={isMobile ? 1 : 0}
+              gap={isMobile ? 1 : 2}
+              autoFocus
               value={OTP}
               onComplete={onComplete}
               onChange={onChange}
@@ -134,17 +139,19 @@ const PageConfirmEmail = (props) => {
             </Box>
           </Box>
 
+          {/* {!isMobile && ( */}
           <Image
             duration={200}
-            width={200}
+            width={isMobile ? 120 : 200}
             src={UndrawSVG}
             alt={'undraw'}
             wrapperStyle={{
               margin: isTablet ? 'auto' : '',
-              marginBottom: isTablet ? 44 : 0,
+              marginBottom: isTablet ? 16 : 0,
               flex: 0.65
             }}
           />
+          {/* )} */}
         </Box>
       </Box>
     </>
