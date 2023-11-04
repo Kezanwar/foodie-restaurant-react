@@ -206,12 +206,21 @@ export function AuthProvider({ children }) {
       userRole: state?.user?.restaurant?.role,
       emailConfirmed: state?.user?.email_confirmed,
       login,
+      initialize,
       loginWithGoogle,
       logout,
       register,
       registerWithGoogle
     };
-  }, [state, login, logout, register, registerWithGoogle, loginWithGoogle]);
+  }, [
+    state,
+    login,
+    logout,
+    register,
+    registerWithGoogle,
+    loginWithGoogle,
+    initialize
+  ]);
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 }
