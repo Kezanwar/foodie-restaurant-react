@@ -3,7 +3,6 @@ import { formattedDateString } from './formatTime';
 
 const endpoints = {
   getDashboardOverview: '/rest/dashboard/overview',
-
   getRestaurant: '/rest/restaurant',
   editRestaurant: 'rest/restaurant/edit',
 
