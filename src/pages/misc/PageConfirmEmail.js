@@ -104,6 +104,7 @@ const PageConfirmEmail = (props) => {
               TextFieldsProps={{ inputProps: { inputMode: 'numeric' } }}
               mx={isMobile ? 1 : 0}
               gap={isMobile ? 1 : 2}
+              autoFocus
               value={OTP}
               onComplete={onComplete}
               onChange={onChange}

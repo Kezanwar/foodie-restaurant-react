@@ -2,14 +2,23 @@ import PropTypes from 'prop-types';
 import { forwardRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Box, Link, Typography } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
-const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
-  const theme = useTheme();
+export const LogoText = styled(Typography)(({ theme }) => ({
+  fontSize: 48,
+  letterSpacing: -2,
+  fontWeight: '800',
+  textTransform: 'lowercase',
+  background: `-webkit-linear-gradient(45deg, ${theme.palette.primary.main} 10%, ${theme.palette.primary.lighter} 90%)`,
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  paddingRight: 1
+}));
 
+const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
   const logo = (
     <Box
       ref={ref}
@@ -19,20 +28,7 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
       }}
       {...other}
     >
-      <Typography
-        sx={{
-          fontSize: 48,
-          letterSpacing: -2,
-          fontWeight: '800',
-          textTransform: 'lowercase',
-          background: `-webkit-linear-gradient(45deg, ${theme.palette.primary.main} 10%, ${theme.palette.primary.lighter} 90%)`,
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          paddingRight: 1
-        }}
-      >
-        Foodie
-      </Typography>
+      <LogoText>Foodie</LogoText>
     </Box>
   );
 
