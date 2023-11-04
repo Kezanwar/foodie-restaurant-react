@@ -10,22 +10,6 @@ import { Box, Link, Typography } from '@mui/material';
 const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
   const theme = useTheme();
 
-  const PRIMARY_LIGHT = theme.palette.primary.light;
-
-  const PRIMARY_MAIN = theme.palette.primary.main;
-
-  const PRIMARY_DARK = theme.palette.primary.dark;
-
-  // OR using local (public folder)
-  // -------------------------------------------------------
-  // const logo = (
-  //   <Box
-  //     component="img"
-  //     src="/logo/logo_single.svg" => your path
-  //     sx={{ width: 40, height: 40, cursor: 'pointer', ...sx }}
-  //   />
-  // );
-
   const logo = (
     <Box
       ref={ref}
@@ -39,7 +23,7 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
         sx={{
           fontSize: 48,
           letterSpacing: -2,
-          fontWeight: 'bold',
+          fontWeight: '800',
           textTransform: 'lowercase',
           background: `-webkit-linear-gradient(45deg, ${theme.palette.primary.main} 10%, ${theme.palette.primary.lighter} 90%)`,
           WebkitBackgroundClip: 'text',
