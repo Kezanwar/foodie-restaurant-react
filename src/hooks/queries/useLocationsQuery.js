@@ -13,20 +13,23 @@ const useLocationsQuery = () => {
     ...cacheValues
   });
 
-  const updateQuery = useCallback((data) => {
-    queryClient.setQueryData(LOCATIONS_QUERY.LOCATIONS, (oldData) => {
-      return {
-        ...oldData,
-        data
-      };
-    });
-  }, []);
+  const updateQuery = useCallback(
+    (data) => {
+      queryClient.setQueryData(LOCATIONS_QUERY.LOCATIONS, (oldData) => {
+        return {
+          ...oldData,
+          data
+        };
+      });
+    },
+    [queryClient]
+  );
 
   const invalidateQuery = useCallback(() => {
     queryClient.invalidateQueries({
       queryKey: [LOCATIONS_QUERY.LOCATIONS]
     });
-  });
+  }, [queryClient]);
 
   query.invalidateQuery = invalidateQuery;
 

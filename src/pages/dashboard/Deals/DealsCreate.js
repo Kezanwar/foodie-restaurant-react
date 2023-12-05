@@ -401,7 +401,7 @@ export default function DealsCreate() {
                   <Spacer sp={6} />
                   <Subheader
                     sx={{ marginBottom: 8 }}
-                    text={'How long do you want to advertise this deal for?'}
+                    text={'How long would you like to run this campaign for?'}
                   />
                   <Typography mb={2} variant="body2" color={'text.secondary'}>
                     * You can expire a deal at any time from your dashboard
@@ -409,7 +409,6 @@ export default function DealsCreate() {
 
                   <DateButtonsWrapper>
                     {DateInputOptions.map((dateObj) => {
-                      const isCustomBtn = dateObj.text === 'Custom Date Range';
                       const isSelected =
                         !showDatePicker &&
                         endDate === dateObj.end_date &&
@@ -417,7 +416,7 @@ export default function DealsCreate() {
                       return (
                         <SelectButton
                           key={dateObj.text}
-                          isSelected={isCustomBtn ? showDatePicker : isSelected}
+                          isSelected={isSelected}
                           variant="outlined"
                           color={
                             dateErrors
@@ -426,14 +425,11 @@ export default function DealsCreate() {
                               ? 'primary'
                               : 'inherit'
                           }
-                          onClick={
-                            isCustomBtn
-                              ? handleShowDatePicker
-                              : () =>
-                                  updateFormDateRange(
-                                    dateObj.start_date,
-                                    dateObj.end_date
-                                  )
+                          onClick={() =>
+                            updateFormDateRange(
+                              dateObj.start_date,
+                              dateObj.end_date
+                            )
                           }
                         >
                           {dateObj.text}
@@ -452,7 +448,7 @@ export default function DealsCreate() {
                       }
                       onClick={handleShowDatePicker}
                     >
-                      Custom date range
+                      Choose date range
                     </SelectButton>
                   </DateButtonsWrapper>
 

@@ -4,6 +4,7 @@ export const newDealSchema = Yup.object().shape({
   name: Yup.string().required('Required').max(30, 'Maximum 30 characters'),
   description: Yup.string()
     .required('Required')
+    .min(50, 'Minimum 50 characters')
     .max(300, 'Maximum 300 characters'),
   start_date: Yup.string().required('Required'),
   end_date: Yup.string()
