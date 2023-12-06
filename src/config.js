@@ -14,6 +14,7 @@ export const MIXPANEL_API_KEY = process.env.REACT_APP_MIXPANEL_TOKEN || '';
 
 export const RAPID_KEY = process.env.REACT_APP_RAPID_KEY;
 export const IP_KEY = process.env.REACT_APP_IP_FIND_KEY;
+export const GEOAPIFY_API_KEY = process.env.REACT_APP_GEOAPIFY_KEY;
 
 // export const FIREBASE_API = {
 //   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
