@@ -7,7 +7,6 @@ import mixpanel from 'mixpanel-browser';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { useGeolocation } from 'react-use';
 
 // routes
 import Router from './routes';
@@ -29,10 +28,7 @@ import { ENVIRONMENT, GOOGLE_CLIENT_ID, MIXPANEL_API_KEY } from './config';
 export default function App() {
   mixpanel.init(MIXPANEL_API_KEY, { debug: ENVIRONMENT === 'DEVELOPMENT' });
   const queryClient = new QueryClient();
-  const g = useGeolocation();
-  navigator.geolocation.getCurrentPosition((position) => {
-    console.log(position);
-  });
+
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <QueryClientProvider client={queryClient}>
