@@ -25,7 +25,7 @@ import { PATH_NEW_RESTAURANT } from '../../routes/paths';
 import FormProvider from '../../components/hook-form/FormProvider';
 import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
 
-import { submitApplicationSchema } from '../../validation/new-restaurant.validation';
+import { submitApplicationSchema } from '../../validation/new-restaurant';
 import { RHFCheckbox } from '../../components/hook-form';
 
 import { postSubmitApplicationStep } from '../../utils/api';

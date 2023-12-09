@@ -47,7 +47,7 @@ import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
 import { addDeal, getDealTemplate } from '../../../utils/api';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
 
-import { newDealSchema } from '../../../validation/deals.validation';
+import { newDealSchema } from '../../../validation/deals';
 import LoadingScreen from '../../../components/loading-screen/LoadingScreen';
 import { DEALS_PER_LOCATION } from '../../../constants/deals.constants';
 import useDashboardOverviewQuery from '../../../hooks/queries/useDashboardOverviewQuery';

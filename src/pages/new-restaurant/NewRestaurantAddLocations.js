@@ -33,7 +33,7 @@ import {
   InputStackSingleItemContainer
 } from '../../features/forms/styles';
 
-import { addLocationsSchema } from '../../validation/new-restaurant.validation';
+import { addLocationsSchema } from '../../validation/new-restaurant';
 import FormProvider from '../../components/hook-form/FormProvider';
 import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
 import LocationCard from '../../components/location-card/LocationCard';

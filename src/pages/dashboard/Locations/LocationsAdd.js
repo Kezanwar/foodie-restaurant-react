@@ -42,7 +42,7 @@ import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
 import {
   addLocationsDashboardSchema,
   addLocationsSchema
-} from '../../../validation/new-restaurant.validation';
+} from '../../../validation/new-restaurant';
 import { countries } from '../../../assets/data';
 import ConfirmLocationModal from '../../../components/confirm-location-modal/ConfirmLocationModal';
 import { LocationsTopAlert } from '../../new-restaurant/NewRestaurantAddLocations';

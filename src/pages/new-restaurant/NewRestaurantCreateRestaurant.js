@@ -25,7 +25,7 @@ import {
   InputWithInfoStack
 } from '../../features/forms/styles';
 
-import { restaurantDetailsSchema } from '../../validation/new-restaurant.validation';
+import { restaurantDetailsSchema } from '../../validation/new-restaurant';
 
 import FormProvider from '../../components/hook-form/FormProvider';
 import {

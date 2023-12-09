@@ -23,7 +23,7 @@ import Iconify from '../../components/iconify';
 import GOOGLE from '../../assets/icons/google.svg';
 import FormProvider, { RHFTextField } from '../../components/hook-form';
 import Spacer from '../../components/spacer/Spacer';
-import { LoginSchema } from '../../validation/auth.validation';
+import { LoginSchema } from '../../validation/auth';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
 
 // ----------------------------------------------------------------------

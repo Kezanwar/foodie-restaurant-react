@@ -23,7 +23,7 @@ import Iconify from '../../components/iconify';
 import FormProvider, { RHFTextField } from '../../components/hook-form';
 import CustomTooltip from '../../components/custom-tooltip/CustomTooltip';
 
-import { RegisterSchema } from '../../validation/auth.validation';
+import { RegisterSchema } from '../../validation/auth';
 import { auth_tooltips } from '../../constants/tooltips.constants';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
 import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';

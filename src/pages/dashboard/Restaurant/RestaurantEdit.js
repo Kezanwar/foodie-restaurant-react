@@ -40,7 +40,7 @@ import RHFMultipleAutocomplete from '../../../components/hook-form/RHFMultipleAu
 import useRestaurantQuery from '../../../hooks/queries/useRestaurantQuery';
 import useOptionsQuery from '../../../hooks/queries/useOptionsQuery';
 import { useAuthContext } from '../../../hooks/useAuthContext';
-import { restaurantDetailsSchema } from '../../../validation/new-restaurant.validation';
+import { restaurantDetailsSchema } from '../../../validation/new-restaurant';
 import { getFormDataFromObject } from '../../../utils/formData';
 import { editRestaurant } from '../../../utils/api';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';

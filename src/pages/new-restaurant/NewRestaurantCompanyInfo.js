@@ -25,7 +25,7 @@ import {
   InputWithInfoStack
 } from '../../features/forms/styles';
 
-import { companyInfoSchema } from '../../validation/new-restaurant.validation';
+import { companyInfoSchema } from '../../validation/new-restaurant';
 
 import FormProvider from '../../components/hook-form/FormProvider';
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';

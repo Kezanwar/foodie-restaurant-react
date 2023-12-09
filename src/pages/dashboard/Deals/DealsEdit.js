@@ -46,7 +46,7 @@ import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
 import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
 import { editDeal } from '../../../utils/api';
 import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
-import { editDealSchema } from '../../../validation/deals.validation';
+import { editDealSchema } from '../../../validation/deals';
 
 function getElementsByText(str, tag = 'div') {
   return Array.prototype.slice
