@@ -21,15 +21,15 @@ import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
-import useExpiredDealsQuery from '../../hooks/queries/useExpiredDealsQuery';
-import { PATH_DASHBOARD } from '../../routes/paths';
+import useExpiredDealsQuery from 'hooks/queries/useExpiredDealsQuery';
+import { PATH_DASHBOARD } from 'routes/paths';
 
 import MotionDivViewport from '../animate/MotionDivViewport';
 import DealTableEmpty from './DealTableEmpty';
 import DealTableLoading from './DealTableLoading';
 import { CustomHeaderCell } from './styles';
-import Label from '../label/Label';
-import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
+import Label from 'components/label/Label';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 
 const menuIconProps = {
   fontSize: 'small',

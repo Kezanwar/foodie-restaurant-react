@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useFormContext, Controller } from 'react-hook-form';
-import { Select, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 
 RHFSelect.propTypes = {
   name: PropTypes.string,

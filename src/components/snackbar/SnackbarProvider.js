@@ -3,9 +3,8 @@ import { useRef } from 'react';
 import { SnackbarProvider as NotistackProvider } from 'notistack';
 // @mui
 import { alpha } from '@mui/material/styles';
-import { Box, Collapse, IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 //
-import { useSettingsContext } from '../settings';
 import Iconify from '../iconify';
 //
 import StyledNotistack from './styles';

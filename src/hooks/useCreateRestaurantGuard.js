@@ -1,11 +1,10 @@
-import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
-import { PATH_NEW_RESTAURANT } from '../routes/paths';
+import { PATH_NEW_RESTAURANT } from 'routes/paths';
 import {
   RESTAURANT_REG_STEPS,
   RESTAURANT_STATUS
-} from '../constants/restaurants.constants';
+} from 'constants/restaurants.constants';
 
 const pathsArr = Object.values(PATH_NEW_RESTAURANT).filter(
   (path) => path !== PATH_NEW_RESTAURANT.new_restaurant

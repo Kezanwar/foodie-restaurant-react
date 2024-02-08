@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import icon from '../../assets/map-marker.png';
+import icon from 'assets/map-marker.png';
 
 const CustomMarker = L.Icon.extend({
   options: {

@@ -1,6 +1,6 @@
 import { createContext, useMemo } from 'react';
 
-import useBatteryLow from '../../hooks/useBatteryLow';
+import useBatteryLow from 'hooks/useBatteryLow';
 
 // ----------------------------------------------------------------------
 

@@ -1,13 +1,10 @@
 import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
 
-// components
-import LoadingScreen from '../components/loading-screen';
-import { RESTAURANT_STATUS } from '../constants/restaurants.constants';
-//
-import { useAuthContext } from '../hooks/useAuthContext';
-import { usePathAfterLogin } from '../hooks/usePathAfterLogin';
-import { PATH_DASHBOARD, PATH_NEW_RESTAURANT } from '../routes/paths';
+import LoadingScreen from 'components/loading-screen';
+
+import { useAuthContext } from 'hooks/useAuthContext';
+import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
 
 // ----------------------------------------------------------------------
 

@@ -1,10 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Button, IconButton, Modal, Typography, alpha } from '@mui/material';
+
+import { Button, IconButton, Modal, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box } from '@mui/system';
 import { LoadingButton } from '@mui/lab';
-import { TheatersOutlined } from '@mui/icons-material';
 
 const AcceptDeclineModal = ({
   isOpen,

@@ -14,16 +14,18 @@ import {
   Typography
 } from '@mui/material';
 
+import { countries } from 'assets/data';
+
+import { MATCH_POSTCODE } from 'utils/regex';
+
+import { GEOAPIFY_API_KEY, RAPID_KEY } from '../../config';
+
 import {
   AddressSearchUnderWrapper,
   IconBtn,
   LoadingWrapper,
   SearchWrapper
 } from './styles';
-
-import { countries } from '../../assets/data';
-import { GEOAPIFY_API_KEY, RAPID_KEY } from '../../config';
-import { MATCH_POSTCODE } from '../../utils/regex';
 
 const LoadingAddresses = () => {
   return (

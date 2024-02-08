@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Button, Typography, styled } from '@mui/material';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { useNavigate } from 'react-router';
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { PATH_DASHBOARD } from 'routes/paths';
 
 export const Container = styled(Box)(({ theme }) => ({
   display: 'flex',

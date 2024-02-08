@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
+import { Box, Typography } from '@mui/material';
+
 import { FooterContainer, FooterGrid } from './styles';
-import Logo from '../../components/logo/Logo';
+import Logo from 'components/logo/Logo';
 
 const Footer = (props) => {
   return (

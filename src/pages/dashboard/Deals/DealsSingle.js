@@ -3,14 +3,7 @@ import { useSnackbar } from 'notistack';
 import { format, isAfter } from 'date-fns';
 import { useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
-import {
-  Box,
-  Button,
-  Chip,
-  Container,
-  Typography,
-  styled
-} from '@mui/material';
+import { Box, Chip, Container, Typography, styled } from '@mui/material';
 
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -18,19 +11,19 @@ import EventBusyIcon from '@mui/icons-material/EventBusy';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 
 import { DashboardStatGrid } from '../styles';
-import LoadingScreen from '../../../components/loading-screen/LoadingScreen';
-import StatCardAvg from '../../../components/stat-card/StatCardAvg';
-import AcceptDeclineModal from '../../../components/accept-decline-modal/AcceptDeclineModal';
-import LightLoadingButton from '../../../components/light-loading-button/LightLoadingButton';
+import LoadingScreen from 'components/loading-screen/LoadingScreen';
+import StatCardAvg from 'components/stat-card/StatCardAvg';
+import AcceptDeclineModal from 'components/accept-decline-modal/AcceptDeclineModal';
+import LightLoadingButton from 'components/light-loading-button/LightLoadingButton';
 
-import { PATH_DASHBOARD } from '../../../routes/paths';
-import { deleteDeal, expireDeal } from '../../../utils/api';
-import useSingleDealQuery from '../../../hooks/queries/useSingleDealQuery';
-import useActiveDealsQuery from '../../../hooks/queries/useActiveDealsQuery';
-import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
-import useExpiredDealsQuery from '../../../hooks/queries/useExpiredDealsQuery';
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
-import useDashboardOverviewQuery from '../../../hooks/queries/useDashboardOverviewQuery';
+import { PATH_DASHBOARD } from 'routes/paths';
+import { deleteDeal, expireDeal } from 'utils/api';
+import useSingleDealQuery from 'hooks/queries/useSingleDealQuery';
+import useActiveDealsQuery from 'hooks/queries/useActiveDealsQuery';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
+import useExpiredDealsQuery from 'hooks/queries/useExpiredDealsQuery';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
 
 const DealDetailsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',

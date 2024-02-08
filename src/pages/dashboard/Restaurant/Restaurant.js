@@ -5,16 +5,16 @@ import { Box, Container, Stack, Typography, styled } from '@mui/material';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 
 import { DashboardTitleContainer } from '../styles';
-import LoadingScreen from '../../../components/loading-screen/LoadingScreen';
-import DashboardTitle from '../../../components/dashboard-title/DashboardTitle';
+import LoadingScreen from 'components/loading-screen/LoadingScreen';
+import DashboardTitle from 'components/dashboard-title/DashboardTitle';
 
-import useRestaurantQuery from '../../../hooks/queries/useRestaurantQuery';
-import RestaurantProfileIphone from '../../../features/iphone/RestaurantProfileIphone';
-import Spacer from '../../../components/spacer/Spacer';
-import Subheader from '../../../components/subheader/Subheader';
-import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
-import LightLoadingButton from '../../../components/light-loading-button/LightLoadingButton';
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
+import RestaurantProfileIphone from 'features/iphone/RestaurantProfileIphone';
+import Spacer from 'components/spacer/Spacer';
+import Subheader from 'components/subheader/Subheader';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
+import LightLoadingButton from 'components/light-loading-button/LightLoadingButton';
+import { PATH_DASHBOARD } from 'routes/paths';
 
 const CompanyDetailsWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',

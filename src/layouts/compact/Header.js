@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { AppBar, Toolbar, Box, Link } from '@mui/material';
+import { AppBar, Toolbar, Box } from '@mui/material';
 // config
 import { HEADER } from '../../config';
 // utils
-import { bgBlur } from '../../utils/cssStyles';
+import { bgBlur } from 'utils/cssStyles';
 // components
-import Logo from '../../components/logo';
-import { useAuthContext } from '../../hooks/useAuthContext';
+import Logo from 'components/logo';
+import { useAuthContext } from 'hooks/useAuthContext';
 import AccountPopover from './AccountPopover';
 
-import useResponsive from '../../hooks/useResponsive';
-import ModeOptions from '../../components/settings/ModeOptions';
+import useResponsive from 'hooks/useResponsive';
+import ModeOptions from 'components/settings/ModeOptions';
 
 // ----------------------------------------------------------------------
 

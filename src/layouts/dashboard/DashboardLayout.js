@@ -5,12 +5,12 @@ import { Box } from '@mui/material';
 import Main from './Main';
 import Header from './header';
 import NavVertical from './nav/NavVertical';
-import LoadingScreen from '../../components/loading-screen/LoadingScreen';
-import NotSubscribedNotice from '../../components/not-subcribed-notice/NotSubscribedNotice';
+import LoadingScreen from 'components/loading-screen/LoadingScreen';
+import NotSubscribedNotice from 'components/not-subcribed-notice/NotSubscribedNotice';
 
-import { PATH_NEW_RESTAURANT } from '../../routes/paths';
-import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
-import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
+import { PATH_NEW_RESTAURANT } from 'routes/paths';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
+import { RESTAURANT_STATUS } from 'constants/restaurants.constants';
 
 // ----------------------------------------------------------------------
 

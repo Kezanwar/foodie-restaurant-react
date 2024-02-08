@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useSnackbar } from 'notistack';
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 
 // form
 import { useForm } from 'react-hook-form';
@@ -17,17 +17,16 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // auth
-import { useAuthContext } from '../../hooks/useAuthContext';
+import { useAuthContext } from 'hooks/useAuthContext';
 // components
-import Iconify from '../../components/iconify';
-import FormProvider, { RHFTextField } from '../../components/hook-form';
-import CustomTooltip from '../../components/custom-tooltip/CustomTooltip';
+import Iconify from 'components/iconify';
+import FormProvider, { RHFTextField } from 'components/hook-form';
+import CustomTooltip from 'components/custom-tooltip/CustomTooltip';
 
-import { RegisterSchema } from '../../validation/auth';
-import { auth_tooltips } from '../../constants/tooltips.constants';
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
-import useRHFErrorMixpanelTracker from '../../hooks/useRHFErrorMixpanelTracker';
-import GOOGLE from '../../assets/icons/google.svg';
+import { RegisterSchema } from 'validation/auth';
+import { auth_tooltips } from 'constants/tooltips.constants';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import GOOGLE from 'assets/icons/google.svg';
 
 // ----------------------------------------------------------------------
 

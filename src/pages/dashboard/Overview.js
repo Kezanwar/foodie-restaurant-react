@@ -13,20 +13,20 @@ import {
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 // components
-import LoadingScreen from '../../components/loading-screen/LoadingScreen';
+import LoadingScreen from 'components/loading-screen/LoadingScreen';
 import { DashboardStatGrid } from './styles';
-import StatCardDashboard from '../../components/stat-card/StatCardDashboard';
-import SvgColor from '../../components/svg-color/SvgColor';
-import Subheader from '../../components/subheader/Subheader';
-import LightLoadingButton from '../../components/light-loading-button/LightLoadingButton';
+import StatCardDashboard from 'components/stat-card/StatCardDashboard';
+import SvgColor from 'components/svg-color/SvgColor';
+import Subheader from 'components/subheader/Subheader';
+import LightLoadingButton from 'components/light-loading-button/LightLoadingButton';
 
 // hooks
-import useDashboardOverviewQuery from '../../hooks/queries/useDashboardOverviewQuery';
-import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
+import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 
 // config
-import { ICON } from '../../config';
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { ICON } from 'config';
+import { PATH_DASHBOARD } from 'routes/paths';
 
 const icon = (name, color) => (
   <SvgColor

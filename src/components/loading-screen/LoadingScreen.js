@@ -1,11 +1,9 @@
-import { m } from 'framer-motion';
-// @mui
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
-//
-import Logo from '../logo';
-import ProgressBar from '../progress-bar';
-import LoadinLottie from '../loading-lottie/LoadingLottie';
+
+import Logo from 'components/logo/Logo';
+import ProgressBar from 'components/progress-bar/index';
+import LoadinLottie from 'components/loading-lottie/LoadingLottie';
 
 // ----------------------------------------------------------------------
 

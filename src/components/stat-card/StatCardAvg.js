@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography, styled, useTheme } from '@mui/material';
 
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
 

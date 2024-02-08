@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useNavigate, useParams } from 'react-router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet-async';
@@ -10,34 +9,30 @@ import { capitalize } from 'lodash';
 import { LoadingButton } from '@mui/lab';
 
 import { DashboardTitleContainer } from '../styles';
-import DashboardTitle from '../../../components/dashboard-title/DashboardTitle';
-import LoadingScreen from '../../../components/loading-screen/LoadingScreen';
-import { addLocationsDashboardSchema } from '../../../validation/new-restaurant';
-import ConfirmLocationModalDashboard from '../../../components/confirm-location-modal/ConfirmLocationModalDashboard';
-import OpeningTimeInput from '../../../components/opening-time-input/OpeningTimeInput';
-import Subheader from '../../../components/subheader/Subheader';
-import Spacer from '../../../components/spacer/Spacer';
-import { RHFTextField } from '../../../components/hook-form';
+import DashboardTitle from 'components/dashboard-title/DashboardTitle';
+import LoadingScreen from 'components/loading-screen/LoadingScreen';
+import { addLocationsDashboardSchema } from 'validation/new-restaurant';
+import ConfirmLocationModalDashboard from 'components/confirm-location-modal/ConfirmLocationModalDashboard';
+import OpeningTimeInput from 'components/opening-time-input/OpeningTimeInput';
+import Subheader from 'components/subheader/Subheader';
+import Spacer from 'components/spacer/Spacer';
+import { RHFTextField } from 'components/hook-form';
 import {
   InputStack,
   InputStackSingleItemContainer
-} from '../../../features/forms/styles';
-import RHFCountriesAutocomplete from '../../../components/hook-form/RHFCountriesAutocomplete';
-import AddressAutocomplete from '../../../components/address-autocomplete/AddressAutocomplete';
-import FormProvider from '../../../components/hook-form/FormProvider';
+} from 'features/forms/styles';
+import RHFCountriesAutocomplete from 'components/hook-form/RHFCountriesAutocomplete';
+import AddressAutocomplete from 'components/address-autocomplete/AddressAutocomplete';
+import FormProvider from 'components/hook-form/FormProvider';
 
-import useRestaurantQuery from '../../../hooks/queries/useRestaurantQuery';
-import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
-import useOpeningTimesForm from '../../../hooks/useOpeningTimesForm';
-import { PATH_DASHBOARD } from '../../../routes/paths';
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
-import {
-  checkEditLocation,
-  checkLocation,
-  editLocation
-} from '../../../utils/api';
-import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
-import { countries } from '../../../assets/data';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
+import useOpeningTimesForm from 'hooks/useOpeningTimesForm';
+import { PATH_DASHBOARD } from 'routes/paths';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { checkEditLocation, editLocation } from 'utils/api';
+import useLocationsQuery from 'hooks/queries/useLocationsQuery';
+import { countries } from 'assets/data';
 
 const LocationEdit = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);

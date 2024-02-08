@@ -1,10 +1,7 @@
 import { useCallback } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
-import {
-  LOCATIONS_QUERY,
-  cacheValues
-} from '../../constants/react-query.constants';
-import { getLocations } from '../../utils/api';
+import { LOCATIONS_QUERY, cacheValues } from 'constants/react-query.constants';
+import { getLocations } from 'utils/api';
 
 const useLocationsQuery = () => {
   const queryClient = useQueryClient();

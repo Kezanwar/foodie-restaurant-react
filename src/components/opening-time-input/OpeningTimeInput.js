@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
+
 import { Box, Stack } from '@mui/system';
 import {
   FormControlLabel,
@@ -8,10 +8,10 @@ import {
   Typography
 } from '@mui/material';
 
-import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 
-import { CanDisableInputContainer } from '../../features/forms/styles';
-import { OPENING_TIMES_OPTIONS } from '../../constants/utils.constants';
+import { CanDisableInputContainer } from 'features/forms/styles';
+import { OPENING_TIMES_OPTIONS } from 'constants/utils.constants';
 
 const OpeningTimeInput = ({
   value,

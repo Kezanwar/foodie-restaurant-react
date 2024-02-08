@@ -1,4 +1,4 @@
-import { alpha, Paper, Stack, styled, Box } from '@mui/material';
+import { Paper, Stack, styled, Box } from '@mui/material';
 
 export const SetupFormWrapperStyled = styled(Paper)(({ theme }) => ({
   padding: `${theme.spacing(3)}`,
@@ -8,13 +8,10 @@ export const SetupFormWrapperStyled = styled(Paper)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     padding: `${theme.spacing(1)}`
   }
-  // bgcolor: (theme) => alpha(theme.palette.grey[100], 0.0),
-  //   border: `1px solid ${alpha(theme.palette.grey[600], 0.1)}`,
-  //   boxShadow: theme.shadows[8],
 }));
 
 export const FormSectionStack = styled(Stack)(
-  ({ sx, theme, singleItem, matchGapMB, fullWidthMobile }) => ({
+  ({ sx, theme, singleItem, fullWidthMobile }) => ({
     gap: theme.spacing(3),
     flexDirection: 'row',
     marginBottom: theme.spacing(2),
@@ -27,7 +24,6 @@ export const FormSectionStack = styled(Stack)(
           : singleItem && !fullWidthMobile
           ? `calc(50% - ${theme.spacing(1)})`
           : ''
-      // marginBottom: matchGapMB ? theme.spacing(2) : theme.spacing(5),
     },
     ...sx
   })
@@ -85,19 +81,18 @@ export const StoreUrlContainer = styled(Box)(({ theme }) => ({
   },
   [theme.breakpoints.down('md')]: {
     width: '100%'
-    // marginBottom: theme.spacing(1),
   }
 }));
 
-export const InputWithInfoInputContainer = styled(Box)(({ theme }) => ({
+export const InputWithInfoInputContainer = styled(Box)(() => ({
   flex: 1
 }));
 
-export const InputWithInfoInfoContainer = styled(Box)(({ theme }) => ({
+export const InputWithInfoInfoContainer = styled(Box)(() => ({
   flex: 1
 }));
 
-export const CanDisableInputContainer = styled(Box)(({ theme, disabled }) => ({
+export const CanDisableInputContainer = styled(Box)(({ disabled }) => ({
   filter: disabled ? 'greyscale(1.2)' : 'unset',
   pointerEvents: disabled ? 'none' : 'all'
 }));

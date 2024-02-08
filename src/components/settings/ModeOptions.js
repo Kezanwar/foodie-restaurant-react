@@ -3,13 +3,7 @@ import { RadioGroup } from '@mui/material';
 //
 import SvgColor from '../svg-color';
 import { useSettingsContext } from './SettingsContext';
-import {
-  StyledCard,
-  StyledWrap,
-  MaskControl,
-  StyledCardHeader,
-  StyledWrapHeader
-} from './styles';
+import { MaskControl, StyledCardHeader, StyledWrapHeader } from './styles';
 
 // ----------------------------------------------------------------------
 

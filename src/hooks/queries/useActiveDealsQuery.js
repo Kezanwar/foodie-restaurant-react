@@ -1,10 +1,6 @@
-import { useCallback } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
-import {
-  DEALS_QUERY,
-  cacheValues
-} from '../../constants/react-query.constants';
-import { getActiveDeals } from '../../utils/api';
+import { useQuery } from 'react-query';
+import { DEALS_QUERY, cacheValues } from 'constants/react-query.constants';
+import { getActiveDeals } from 'utils/api';
 
 const useActiveDealsQuery = () => {
   // const queryClient = useQueryClient();

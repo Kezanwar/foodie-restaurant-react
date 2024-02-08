@@ -12,13 +12,13 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Router from './routes';
 
 // providers
-import { AuthProvider } from './auth/AuthContext';
-import ThemeProvider from './theme';
-import SnackbarProvider from './components/snackbar';
-import UtilityProvider from './context/utility/UtilityContext';
+import { AuthProvider } from 'auth/AuthContext';
+import ThemeProvider from 'theme/index';
+import SnackbarProvider from 'components/snackbar/SnackbarProvider';
+import UtilityProvider from 'context/utility/UtilityContext';
 
 // components
-import { MotionLazyContainer } from './components/animate';
+import { MotionLazyContainer } from 'components/animate';
 
 // config
 import { ENVIRONMENT, GOOGLE_CLIENT_ID, MIXPANEL_API_KEY } from './config';

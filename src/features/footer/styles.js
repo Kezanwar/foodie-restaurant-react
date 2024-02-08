@@ -1,6 +1,6 @@
 import { Box, styled } from '@mui/material';
-import FooterBG from '../../assets/footer-bg.svg';
-import FooterBGMobile from '../../assets/footer-bg-mob.svg';
+import FooterBG from 'assets/footer-bg.svg';
+import FooterBGMobile from 'assets/footer-bg-mob.svg';
 
 export const FooterContainer = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(20),

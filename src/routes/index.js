@@ -1,13 +1,12 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 import { Box } from '@mui/material';
 // auth
-import AuthGuard from '../auth/AuthGuard';
-import GuestGuard from '../auth/GuestGuard';
+import AuthGuard from 'auth/AuthGuard';
+import GuestGuard from 'auth/GuestGuard';
 // layouts
-import CompactLayout from '../layouts/compact';
-import DashboardLayout from '../layouts/dashboard';
+import CompactLayout from 'layouts/compact';
+import DashboardLayout from 'layouts/dashboard';
 // config
-import { PATH_AFTER_LOGIN } from '../config';
 //
 import {
   Page404,
@@ -41,9 +40,9 @@ import {
   PATH_MISC,
   PATH_NEW_RESTAURANT
 } from './paths';
-import { usePathAfterLogin } from '../hooks/usePathAfterLogin';
-import NewRestaurantLayout from '../layouts/new-restaurant/NewRestaurantLayout';
-import Test from '../pages/misc/Test';
+import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
+import NewRestaurantLayout from 'layouts/new-restaurant/NewRestaurantLayout';
+import Test from 'pages/misc/Test';
 
 // ----------------------------------------------------------------------
 
