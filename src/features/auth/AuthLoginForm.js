@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useSnackbar } from 'notistack';
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 
 // form
 import { useForm } from 'react-hook-form';
@@ -17,14 +17,14 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // auth
-import { useAuthContext } from '../../hooks/useAuthContext';
+import { useAuthContext } from 'hooks/useAuthContext';
 // components
-import Iconify from '../../components/iconify';
-import GOOGLE from '../../assets/icons/google.svg';
-import FormProvider, { RHFTextField } from '../../components/hook-form';
-import Spacer from '../../components/spacer/Spacer';
-import { LoginSchema } from '../../validation/auth';
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
+import Iconify from 'components/iconify';
+import GOOGLE from 'assets/icons/google.svg';
+import FormProvider, { RHFTextField } from 'components/hook-form';
+import Spacer from 'components/spacer/Spacer';
+import { LoginSchema } from 'validation/auth';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 
 // ----------------------------------------------------------------------
 

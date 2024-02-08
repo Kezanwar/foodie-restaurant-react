@@ -14,19 +14,17 @@ import { Helmet } from 'react-helmet-async';
 import { StyledContent, StyledRoot } from './styles';
 
 import Header from './header';
-import { useAuthContext } from '../../hooks/useAuthContext';
-import { MotionContainer } from '../../components/animate';
 
-import { FORM_STEPS } from '../../pages/new-restaurant/util';
-import { PATH_DASHBOARD } from '../../routes/paths';
-import Spacer from '../../components/spacer/Spacer';
+import { FORM_STEPS } from 'pages/new-restaurant/util';
+import { PATH_DASHBOARD } from 'routes/paths';
+import Spacer from 'components/spacer/Spacer';
 
-import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
-import UndrawSVG from '../../assets/undraw-content-team-8.svg';
-import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
-import LoadingScreen from '../../components/loading-screen/LoadingScreen';
-import MotionDivViewport from '../../components/animate/MotionDivViewport';
-import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
+import UndrawSVG from 'assets/undraw-content-team-8.svg';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
+import LoadingScreen from 'components/loading-screen/LoadingScreen';
+
+import { RESTAURANT_STATUS } from 'constants/restaurants.constants';
 
 const disallowedRestStatusArr = Object.values(RESTAURANT_STATUS).filter(
   (status) =>

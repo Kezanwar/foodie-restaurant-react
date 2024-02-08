@@ -10,7 +10,7 @@ import Iconify from '../iconify';
 // ----------------------------------------------------------------------
 
 DownloadButton.propTypes = {
-  onDownload: PropTypes.func,
+  onDownload: PropTypes.func
 };
 
 export default function DownloadButton({ onDownload }) {
@@ -40,9 +40,9 @@ export default function DownloadButton({ onDownload }) {
           opacity: 1,
           ...bgBlur({
             opacity: 0.64,
-            color: theme.palette.grey[900],
-          }),
-        },
+            color: theme.palette.grey[900]
+          })
+        }
       }}
     >
       <Iconify icon="eva:arrow-circle-down-fill" width={24} />

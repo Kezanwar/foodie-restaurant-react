@@ -1,5 +1,4 @@
 import React, { useCallback, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { useFormContext } from 'react-hook-form';
 import { useTheme } from '@emotion/react';
 import { LoadingButton } from '@mui/lab';
@@ -8,10 +7,10 @@ import { capitalize } from 'lodash';
 import { Box, Button, Modal, Typography, useMediaQuery } from '@mui/material';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
-import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 
-import Spacer from '../spacer/Spacer';
-import CustomMarker from '../leaflet/CustomMarker';
+import Spacer from 'components/spacer/Spacer';
+import CustomMarker from 'components/leaflet/CustomMarker';
 
 const ConfirmLocationModal = ({
   isOpen,

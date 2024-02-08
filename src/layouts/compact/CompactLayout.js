@@ -2,10 +2,10 @@ import { Outlet } from 'react-router-dom';
 // @mui
 import { Stack, Container } from '@mui/material';
 // hooks
-import useOffSetTop from '../../hooks/useOffSetTop';
+import useOffSetTop from 'hooks/useOffSetTop';
 // config
 import { HEADER } from '../../config';
-//
+
 import Header from './Header';
 
 // ----------------------------------------------------------------------

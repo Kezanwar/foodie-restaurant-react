@@ -12,12 +12,12 @@ import {
 import { capitalize } from 'lodash';
 import { useTheme } from '@emotion/react';
 import EastIcon from '@mui/icons-material/East';
-import Iphone14Pro from '../../components/iphone/Iphone14Pro';
-import SvgColor from '../../components/svg-color/SvgColor';
-import useLocationsQuery from '../../hooks/queries/useLocationsQuery';
-import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
-import Spacer from '../../components/spacer/Spacer';
-import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
+import Iphone14Pro from 'components/iphone/Iphone14Pro';
+import SvgColor from 'components/svg-color/SvgColor';
+import useLocationsQuery from 'hooks/queries/useLocationsQuery';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
+import Spacer from 'components/spacer/Spacer';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import {
   CoverPhotoContainer,
   MainSection,

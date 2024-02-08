@@ -1,9 +1,9 @@
 // @mui
 import { Divider, IconButton, Stack } from '@mui/material';
 // auth
-import { useAuthContext } from '../../hooks/useAuthContext';
+import { useAuthContext } from 'hooks/useAuthContext';
 // components
-import Iconify from '../../components/iconify';
+import Iconify from 'components/iconify';
 
 // ----------------------------------------------------------------------
 

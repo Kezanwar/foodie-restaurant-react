@@ -22,31 +22,31 @@ import {
   FormHelperText
 } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
-import FormProvider from '../../../components/hook-form/FormProvider';
+import FormProvider from 'components/hook-form/FormProvider';
 
 import {
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
   InputWithInfoStack
-} from '../../../features/forms/styles';
-import DashboardTitle from '../../../components/dashboard-title/DashboardTitle';
-import { RHFTextField } from '../../../components/hook-form';
-import Subheader from '../../../components/subheader/Subheader';
+} from 'features/forms/styles';
+import DashboardTitle from 'components/dashboard-title/DashboardTitle';
+import { RHFTextField } from 'components/hook-form';
+import Subheader from 'components/subheader/Subheader';
 import { DashboardTitleContainer } from '../styles';
-import RHFMultipleAutocomplete from '../../../components/hook-form/RHFMultipleAutoComplete';
-import Spacer from '../../../components/spacer/Spacer';
-import LoadingScreen from '../../../components/loading-screen/LoadingScreen';
-import AcceptDeclineModal from '../../../components/accept-decline-modal/AcceptDeclineModal';
+import RHFMultipleAutocomplete from 'components/hook-form/RHFMultipleAutoComplete';
+import Spacer from 'components/spacer/Spacer';
+import LoadingScreen from 'components/loading-screen/LoadingScreen';
+import AcceptDeclineModal from 'components/accept-decline-modal/AcceptDeclineModal';
 
-import { PATH_DASHBOARD } from '../../../routes/paths';
-import useSingleDealQuery from '../../../hooks/queries/useSingleDealQuery';
-import useActiveDealsQuery from '../../../hooks/queries/useActiveDealsQuery';
-import { formattedDateString } from '../../../utils/formatTime';
-import useCustomMediaQueries from '../../../hooks/useCustomMediaQueries';
-import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
-import { editDeal } from '../../../utils/api';
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
-import { editDealSchema } from '../../../validation/deals';
+import { PATH_DASHBOARD } from 'routes/paths';
+import useSingleDealQuery from 'hooks/queries/useSingleDealQuery';
+import useActiveDealsQuery from 'hooks/queries/useActiveDealsQuery';
+import { formattedDateString } from 'utils/formatTime';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
+import useLocationsQuery from 'hooks/queries/useLocationsQuery';
+import { editDeal } from 'utils/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { editDealSchema } from 'validation/deals';
 
 function getElementsByText(str, tag = 'div') {
   return Array.prototype.slice

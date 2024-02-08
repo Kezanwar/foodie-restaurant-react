@@ -1,14 +1,12 @@
 import PropTypes from 'prop-types';
-import { m } from 'framer-motion';
-// @mui
 import { Container, Typography } from '@mui/material';
 // components
-import { MotionContainer, varBounce } from '../components/animate';
+import { MotionContainer, varBounce } from 'components/animate';
 // assets
-import { ForbiddenIllustration } from '../assets/illustrations';
+import { ForbiddenIllustration } from 'assets/illustrations';
 //
-import { useAuthContext } from '../hooks/useAuthContext';
-import MotionDivViewport from '../components/animate/MotionDivViewport';
+import { useAuthContext } from 'hooks/useAuthContext';
+import MotionDivViewport from 'components/animate/MotionDivViewport';
 
 // ----------------------------------------------------------------------
 

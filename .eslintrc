@@ -10,6 +10,13 @@
     "plugin:react-hooks/recommended",
     "prettier"
   ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
   "plugins": ["react", "react-hooks", "prettier"],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
@@ -25,10 +32,11 @@
     "no-alert": 0,
     "no-shadow": 0,
     "no-console": 0,
+    "react/prop-types": 0,
+    "import/order": 0,
     "react/jsx-key": 1,
     "import/no-cycle": 0,
     "arrow-body-style": "off",
-    "react/prop-types": 1,
     "no-param-reassign": 0,
     "no-nested-ternary": 0,
     "default-param-last": 0,

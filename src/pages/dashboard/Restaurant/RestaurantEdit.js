@@ -16,36 +16,36 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import HelpIcon from '@mui/icons-material/Help';
 import { LoadingButton } from '@mui/lab';
 
-import LoadingScreen from '../../../components/loading-screen/LoadingScreen';
+import LoadingScreen from 'components/loading-screen/LoadingScreen';
 import { DashboardTitleContainer } from '../styles';
-import DashboardTitle from '../../../components/dashboard-title/DashboardTitle';
-import { RHFTextField } from '../../../components/hook-form';
+import DashboardTitle from 'components/dashboard-title/DashboardTitle';
+import { RHFTextField } from 'components/hook-form';
 import {
   FormSectionStack,
   InputStack,
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
   InputWithInfoStack
-} from '../../../features/forms/styles';
-import Subheader from '../../../components/subheader/Subheader';
-import Spacer from '../../../components/spacer/Spacer';
+} from 'features/forms/styles';
+import Subheader from 'components/subheader/Subheader';
+import Spacer from 'components/spacer/Spacer';
 import {
   RHFUploadAvatar,
   RHFUploadWithCrop
-} from '../../../components/hook-form/RHFUpload';
-import CustomTooltip from '../../../components/custom-tooltip/CustomTooltip';
-import FormProvider from '../../../components/hook-form/FormProvider';
-import RHFMultipleAutocomplete from '../../../components/hook-form/RHFMultipleAutoComplete';
+} from 'components/hook-form/RHFUpload';
+import CustomTooltip from 'components/custom-tooltip/CustomTooltip';
+import FormProvider from 'components/hook-form/FormProvider';
+import RHFMultipleAutocomplete from 'components/hook-form/RHFMultipleAutoComplete';
 
-import useRestaurantQuery from '../../../hooks/queries/useRestaurantQuery';
-import useOptionsQuery from '../../../hooks/queries/useOptionsQuery';
-import { useAuthContext } from '../../../hooks/useAuthContext';
-import { restaurantDetailsSchema } from '../../../validation/new-restaurant';
-import { getFormDataFromObject } from '../../../utils/formData';
-import { editRestaurant } from '../../../utils/api';
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
-import { image_tooltip } from '../../../constants/tooltips.constants';
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
+import useOptionsQuery from 'hooks/queries/useOptionsQuery';
+import { useAuthContext } from 'hooks/useAuthContext';
+import { restaurantDetailsSchema } from 'validation/new-restaurant';
+import { getFormDataFromObject } from 'utils/formData';
+import { editRestaurant } from 'utils/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { image_tooltip } from 'constants/tooltips.constants';
+import { PATH_DASHBOARD } from 'routes/paths';
 
 const uploadAvatarSx = {
   '& > *': {

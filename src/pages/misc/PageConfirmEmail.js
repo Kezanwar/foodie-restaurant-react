@@ -14,13 +14,13 @@ import { LoadingButton } from '@mui/lab';
 
 import Image from 'mui-image';
 
-import { useAuthContext } from '../../hooks/useAuthContext';
-import Spacer from '../../components/spacer/Spacer';
-import UndrawSVG from '../../assets/undraw-completing.svg';
-import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
-import { usePathAfterLogin } from '../../hooks/usePathAfterLogin';
-import axiosInstance from '../../utils/axios';
-import { AUTH_ENDPOINTS } from '../../constants/auth.constants';
+import { useAuthContext } from 'hooks/useAuthContext';
+import Spacer from 'components/spacer/Spacer';
+import UndrawSVG from 'assets/undraw-completing.svg';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
+import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
+import axiosInstance from 'utils/axios';
+import { AUTH_ENDPOINTS } from 'constants/auth.constants';
 
 export const LoadingBox = styled(Box)(({ theme }) => ({
   display: 'flex',

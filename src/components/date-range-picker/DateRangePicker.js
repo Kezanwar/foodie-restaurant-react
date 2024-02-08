@@ -9,11 +9,11 @@ import {
   DialogTitle,
   DialogActions,
   DialogContent,
-  FormHelperText,
+  FormHelperText
 } from '@mui/material';
 import { DatePicker, CalendarPicker } from '@mui/x-date-pickers';
 // hooks
-import useResponsive from '../../hooks/useResponsive';
+import useResponsive from 'hooks/useResponsive';
 
 // ----------------------------------------------------------------------
 
@@ -25,8 +25,16 @@ DateRangePicker.propTypes = {
   onChangeEndDate: PropTypes.func,
   onChangeStartDate: PropTypes.func,
   variant: PropTypes.oneOf(['input', 'calendar']),
-  startDate: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.instanceOf(Date)]),
-  endDate: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.instanceOf(Date)]),
+  startDate: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.instanceOf(Date)
+  ]),
+  endDate: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.instanceOf(Date)
+  ])
 };
 
 export default function DateRangePicker({
@@ -42,7 +50,7 @@ export default function DateRangePicker({
   open,
   onClose,
   //
-  isError,
+  isError
 }) {
   const isDesktop = useResponsive('up', 'md');
 
@@ -57,9 +65,9 @@ export default function DateRangePicker({
       PaperProps={{
         sx: {
           ...(isCalendarView && {
-            maxWidth: 720,
-          }),
-        },
+            maxWidth: 720
+          })
+        }
       }}
     >
       <DialogTitle sx={{ pb: 2 }}>{title}</DialogTitle>
@@ -68,8 +76,8 @@ export default function DateRangePicker({
         sx={{
           ...(isCalendarView &&
             isDesktop && {
-              overflow: 'unset',
-            }),
+              overflow: 'unset'
+            })
         }}
       >
         <Stack
@@ -80,18 +88,32 @@ export default function DateRangePicker({
             pt: 1,
             '& .MuiCalendarPicker-root': {
               ...(!isDesktop && {
-                width: 'auto',
-              }),
-            },
+                width: 'auto'
+              })
+            }
           }}
         >
           {isCalendarView ? (
             <>
-              <Paper variant="outlined" sx={{ borderRadius: 2, borderColor: 'divider', borderStyle: 'dashed' }}>
+              <Paper
+                variant="outlined"
+                sx={{
+                  borderRadius: 2,
+                  borderColor: 'divider',
+                  borderStyle: 'dashed'
+                }}
+              >
                 <CalendarPicker date={startDate} onChange={onChangeStartDate} />
               </Paper>
 
-              <Paper variant="outlined" sx={{ borderRadius: 2, borderColor: 'divider', borderStyle: 'dashed' }}>
+              <Paper
+                variant="outlined"
+                sx={{
+                  borderRadius: 2,
+                  borderColor: 'divider',
+                  borderStyle: 'dashed'
+                }}
+              >
                 <CalendarPicker date={endDate} onChange={onChangeEndDate} />
               </Paper>
             </>
@@ -115,7 +137,9 @@ export default function DateRangePicker({
         </Stack>
 
         {isError && (
-          <FormHelperText sx={{ color: 'error.main', px: 2 }}>End date must be later than start date</FormHelperText>
+          <FormHelperText sx={{ color: 'error.main', px: 2 }}>
+            End date must be later than start date
+          </FormHelperText>
         )}
       </DialogContent>
 

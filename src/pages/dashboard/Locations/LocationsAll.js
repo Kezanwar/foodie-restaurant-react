@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbar } from 'notistack';
 import { Box, Container, Typography, styled } from '@mui/material';
@@ -7,19 +6,19 @@ import { useNavigate } from 'react-router';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 
 import { DashboardTitleContainer } from '../styles';
-import DashboardTitle from '../../../components/dashboard-title/DashboardTitle';
-import LoadingScreen from '../../../components/loading-screen/LoadingScreen';
-import LightLoadingButton from '../../../components/light-loading-button/LightLoadingButton';
-import LocationCard from '../../../components/location-card/LocationCard';
-import AcceptDeclineModal from '../../../components/accept-decline-modal/AcceptDeclineModal';
+import DashboardTitle from 'components/dashboard-title/DashboardTitle';
+import LoadingScreen from 'components/loading-screen/LoadingScreen';
+import LightLoadingButton from 'components/light-loading-button/LightLoadingButton';
+import LocationCard from 'components/location-card/LocationCard';
+import AcceptDeclineModal from 'components/accept-decline-modal/AcceptDeclineModal';
 
-import useLocationsQuery from '../../../hooks/queries/useLocationsQuery';
-import useRestaurantQuery from '../../../hooks/queries/useRestaurantQuery';
+import useLocationsQuery from 'hooks/queries/useLocationsQuery';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 
-import { PATH_DASHBOARD } from '../../../routes/paths';
-import { deleteLocation } from '../../../utils/api';
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../../utils/mixpanel';
-import useDashboardOverviewQuery from '../../../hooks/queries/useDashboardOverviewQuery';
+import { PATH_DASHBOARD } from 'routes/paths';
+import { deleteLocation } from 'utils/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
 
 export const LocationsWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',

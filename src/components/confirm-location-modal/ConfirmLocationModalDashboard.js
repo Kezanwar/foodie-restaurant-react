@@ -1,5 +1,4 @@
 import React, { useCallback, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { useFormContext } from 'react-hook-form';
 import { useTheme } from '@emotion/react';
 import { LoadingButton } from '@mui/lab';

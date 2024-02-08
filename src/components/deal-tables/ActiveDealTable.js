@@ -1,19 +1,17 @@
 /* eslint-disable object-shorthand */
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
+
 import { useNavigate } from 'react-router';
 import {
   Box,
-  Button,
   IconButton,
   MenuItem,
   Menu,
   Typography,
-  styled,
   useMediaQuery
 } from '@mui/material';
-import { DataGrid, GridToolbar, GridToolbarContainer } from '@mui/x-data-grid';
-import { eachDayOfInterval, format } from 'date-fns';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { format } from 'date-fns';
 
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
@@ -25,16 +23,17 @@ import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import MotionDivViewport from '../animate/MotionDivViewport';
+import MotionDivViewport from 'components/animate/MotionDivViewport';
 import { CustomHeaderCell } from './styles';
-import Label from '../label/Label';
+import Label from 'components/label/Label';
+
 import DealTableLoading from './DealTableLoading';
 import DealTableEmpty from './DealTableEmpty';
 
-import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
-import useActiveDealsQuery from '../../hooks/queries/useActiveDealsQuery';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
+import useActiveDealsQuery from 'hooks/queries/useActiveDealsQuery';
 
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { PATH_DASHBOARD } from 'routes/paths';
 
 const tableType = 'active';
 
@@ -333,10 +332,3 @@ export default function ActiveDealTable() {
     </Box>
   );
 }
-
-const sx = {
-  boxShadow: (theme) =>
-    theme.palette.mode === 'light'
-      ? '0px 0px 5px -3px rgba(145, 158, 171, 0.2), 0px 0px 10px 0px rgba(145, 158, 171, 0.14), 0px 0px 18px 0px rgba(145, 158, 171, 0.12)'
-      : ''
-};

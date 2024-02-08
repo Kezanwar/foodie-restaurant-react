@@ -2,13 +2,11 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 // components
-import LoadingScreen from '../components/loading-screen';
+import LoadingScreen from 'components/loading-screen';
 //
-import Login from '../pages/guest/LoginPage';
-import { useAuthContext } from '../hooks/useAuthContext';
-import { RESTAURANT_STATUS } from '../constants/restaurants.constants';
-import { PATH_MISC, PATH_NEW_RESTAURANT } from '../routes/paths';
-import PageConfirmEmail from '../pages/misc/PageConfirmEmail';
+import Login from 'pages/guest/LoginPage';
+import { useAuthContext } from 'hooks/useAuthContext';
+import { PATH_MISC } from 'routes/paths';
 
 // ----------------------------------------------------------------------
 

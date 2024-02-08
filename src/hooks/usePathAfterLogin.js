@@ -1,9 +1,5 @@
-import { RESTAURANT_STATUS } from '../constants/restaurants.constants';
-import {
-  PATH_AUTH,
-  PATH_DASHBOARD,
-  PATH_NEW_RESTAURANT
-} from '../routes/paths';
+import { RESTAURANT_STATUS } from 'constants/restaurants.constants';
+import { PATH_AUTH, PATH_DASHBOARD, PATH_NEW_RESTAURANT } from 'routes/paths';
 import { useAuthContext } from './useAuthContext';
 
 export const usePathAfterLogin = () => {

@@ -1,9 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Button, IconButton, Modal, Typography } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+
+import { Button, Modal, Typography } from '@mui/material';
+
 import { Box } from '@mui/system';
-import { LoadingButton } from '@mui/lab';
+
 import Image from 'mui-image';
 
 import SuccessUndraw from '../../assets/undraw-sucess.svg';

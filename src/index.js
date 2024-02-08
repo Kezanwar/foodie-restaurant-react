@@ -13,10 +13,8 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 // components
-import { SettingsProvider } from './components/settings';
-import ScrollToTop from './components/scroll-to-top';
-
-import { AuthProvider } from './auth/AuthContext';
+import { SettingsProvider } from 'components/settings';
+import ScrollToTop from 'components/scroll-to-top';
 
 //
 import App from './App';

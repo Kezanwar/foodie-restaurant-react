@@ -1,14 +1,13 @@
-// @mui
-import { Alert, Stack, Typography, Link, Select, Menu } from '@mui/material';
+import { Alert, Stack, Typography, Link } from '@mui/material';
 import HelpIcon from '@mui/icons-material/Help';
-// layouts
-import AuthLayout from '../../layouts/auth';
-// sections
-import AuthLoginForm from './AuthLoginForm';
-// components
-import RouterLink from '../../components/router-link/RouterLink';
 
-import { PATH_AUTH } from '../../routes/paths';
+import AuthLayout from 'layouts/auth';
+
+import RouterLink from 'components/router-link/RouterLink';
+
+import { PATH_AUTH } from 'routes/paths';
+
+import AuthLoginForm from './AuthLoginForm';
 
 // ----------------------------------------------------------------------
 
