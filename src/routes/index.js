@@ -4,20 +4,15 @@ import { Box } from '@mui/material';
 import AuthGuard from 'auth/AuthGuard';
 import GuestGuard from 'auth/GuestGuard';
 // layouts
-import CompactLayout from 'layouts/compact';
+import CompactLayout from 'layouts/compact/index';
 import DashboardLayout from 'layouts/dashboard';
 // config
 //
 import {
   Page404,
   Overview,
-  PageTwo,
-  PageSix,
-  PageFour,
-  PageFive,
-  LoginPage,
-  PageThree,
-  RegisterPage,
+  Login,
+  Register,
   NewRestaurantYourApplication,
   NewRestaurantGetStarted,
   NewRestaurantCompanyInfo,
@@ -32,14 +27,10 @@ import {
   RestaurantEdit,
   LocationsAll,
   LocationsAdd,
-  LocationEdit
+  LocationEdit,
+  ChangePassword
 } from './elements';
-import {
-  PATH_AUTH,
-  PATH_DASHBOARD,
-  PATH_MISC,
-  PATH_NEW_RESTAURANT
-} from './paths';
+import { PATH_AUTH, PATH_MISC, PATH_NEW_RESTAURANT } from './paths';
 import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
 import NewRestaurantLayout from 'layouts/new-restaurant/NewRestaurantLayout';
 import Test from 'pages/misc/Test';
@@ -58,7 +49,7 @@ export default function Router() {
           path: PATH_AUTH.login,
           element: (
             <GuestGuard>
-              <LoginPage />
+              <Login />
             </GuestGuard>
           )
         },
@@ -66,9 +57,13 @@ export default function Router() {
           path: PATH_AUTH.register,
           element: (
             <GuestGuard>
-              <RegisterPage />
+              <Register />
             </GuestGuard>
           )
+        },
+        {
+          path: PATH_AUTH.change_password,
+          element: <ChangePassword />
         }
       ]
     },
@@ -82,7 +77,6 @@ export default function Router() {
       children: [
         { element: <Navigate to={pathAfterLogin} replace />, index: true },
         { path: 'overview', element: <Overview /> },
-        // { path: 'deals', element: <PageTwo /> },
         {
           path: 'deals',
           children: [
@@ -116,8 +110,8 @@ export default function Router() {
             { path: 'edit/:id', element: <LocationEdit /> }
           ]
         },
-        { path: 'users', element: <PageThree /> },
-        { path: 'subscription', element: <PageThree /> }
+        { path: 'users', element: <Test /> },
+        { path: 'subscription', element: <Test /> }
       ]
     },
     {
@@ -136,14 +130,6 @@ export default function Router() {
         { path: 'subscription', element: <Box /> }
       ]
     },
-    // {
-    //   path: PATH_NEW_RESTAURANT.new_restaurant,
-    //   element: (
-    //     <AuthGuard>
-    //       <NewRestaurantPage />
-    //     </AuthGuard>
-    //   )
-    // },
     {
       element: <CompactLayout />,
       children: [

@@ -1,36 +1,29 @@
-import PropTypes from 'prop-types';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Stack, AppBar, Toolbar, Box } from '@mui/material';
+import { Stack, AppBar, Box } from '@mui/material';
 // utils
-import { bgBlur } from '../../../utils/cssStyles';
+import { bgBlur } from 'utils/cssStyles';
 // hooks
-import useOffSetTop from '../../../hooks/useOffSetTop';
-import useResponsive from '../../../hooks/useResponsive';
+import useOffSetTop from 'hooks/useOffSetTop';
+import useResponsive from 'hooks/useResponsive';
 // config
-import { HEADER, NAV } from '../../../config';
+import { HEADER } from '../../../config';
 // components
-import Logo from '../../../components/logo';
-import { useSettingsContext } from '../../../components/settings';
+import Logo from 'components/logo';
+import { useSettingsContext } from 'components/settings';
 //
 
-import AccountPopover from './AccountPopover';
-import ModeOptions from '../../../components/settings/ModeOptions';
+import ModeOptions from 'components/settings/ModeOptions';
+import AccountPopover from 'components/account-popover';
 
 // ----------------------------------------------------------------------
 
-Header.propTypes = {
-  onOpenNav: PropTypes.func
-};
-
-export default function Header({ onOpenNav }) {
+export default function Header() {
   const theme = useTheme();
 
   const { themeLayout } = useSettingsContext();
 
   const isNavHorizontal = themeLayout === 'horizontal';
-
-  const isNavMini = themeLayout === 'mini';
 
   const isDesktop = useResponsive('up', 'lg');
 
@@ -45,13 +38,9 @@ export default function Header({ onOpenNav }) {
         justifyContent="flex-end"
         spacing={{ xs: 0.5, sm: 1.5 }}
       >
-        {/* <LanguagePopover /> */}
         <Box mr={1}>
           <ModeOptions />
         </Box>
-
-        {/* <ContactsPopover /> */}
-
         <AccountPopover />
       </Stack>
     </>

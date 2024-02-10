@@ -3,23 +3,21 @@ import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import { Stack, AppBar, Toolbar, IconButton, Box } from '@mui/material';
 // utils
-import { bgBlur } from '../../../utils/cssStyles';
+import { bgBlur } from 'utils/cssStyles';
 // hooks
-import useOffSetTop from '../../../hooks/useOffSetTop';
-import useResponsive from '../../../hooks/useResponsive';
+import useOffSetTop from 'hooks/useOffSetTop';
+import useResponsive from 'hooks/useResponsive';
 // config
 import { HEADER, NAV } from '../../../config';
 // components
-import Logo from '../../../components/logo';
-import Iconify from '../../../components/iconify';
-import { useSettingsContext } from '../../../components/settings';
+import Logo from 'components/logo';
+import Iconify from 'components/iconify';
+import { useSettingsContext } from 'components/settings';
 //
 import Searchbar from './Searchbar';
-import AccountPopover from './AccountPopover';
-import LanguagePopover from './LanguagePopover';
-import ContactsPopover from './ContactsPopover';
-import NotificationsPopover from './NotificationsPopover';
-import ModeOptions from '../../../components/settings/ModeOptions';
+import AccountPopover from 'components/account-popover/index';
+
+import ModeOptions from 'components/settings/ModeOptions';
 
 // ----------------------------------------------------------------------
 
@@ -63,10 +61,6 @@ export default function Header({ onOpenNav }) {
         <Box mr={1}>
           <ModeOptions />
         </Box>
-
-        {/* <NotificationsPopover /> */}
-
-        {/* <ContactsPopover /> */}
 
         <AccountPopover />
       </Stack>

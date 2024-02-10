@@ -15,7 +15,7 @@ import Router from './routes';
 import { AuthProvider } from 'auth/AuthContext';
 import ThemeProvider from 'theme/index';
 import SnackbarProvider from 'components/snackbar/SnackbarProvider';
-import UtilityProvider from 'context/utility/UtilityContext';
+import UtilityProvider from 'hocs/UtilityContext';
 
 // components
 import { MotionLazyContainer } from 'components/animate';
