@@ -12,7 +12,7 @@ import {
 // locales
 import { useLocales } from '../../../locales';
 // auth
-import RoleBasedGuard from '../../../auth/RoleBasedGuard';
+import RoleBasedGuard from '../../../hocs/auth/RoleBasedGuard';
 //
 import Iconify from '../../iconify';
 //

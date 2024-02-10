@@ -12,10 +12,10 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Router from './routes';
 
 // providers
-import { AuthProvider } from 'auth/AuthContext';
+import { AuthProvider } from 'hocs/auth/AuthContext';
 import ThemeProvider from 'theme/index';
 import SnackbarProvider from 'components/snackbar/SnackbarProvider';
-import UtilityProvider from 'hocs/UtilityContext';
+import UtilityProvider from 'hocs/utility/UtilityContext';
 
 // components
 import { MotionLazyContainer } from 'components/animate';

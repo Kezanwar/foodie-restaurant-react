@@ -1,8 +1,8 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 import { Box } from '@mui/material';
 // auth
-import AuthGuard from 'auth/AuthGuard';
-import GuestGuard from 'auth/GuestGuard';
+import AuthGuard from 'hocs/auth/AuthGuard';
+import GuestGuard from 'hocs/auth/GuestGuard';
 // layouts
 import CompactLayout from 'layouts/compact/index';
 import DashboardLayout from 'layouts/dashboard';

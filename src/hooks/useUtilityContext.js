@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 //
 
-import { UtilityContext } from 'hocs/UtilityContext';
+import { UtilityContext } from 'hocs/utility/UtilityContext';
 // import { AuthContext } from './Auth0Context';
 // import { AuthContext } from './FirebaseContext';
 // import { AuthContext } from './AwsCognitoContext';
