@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 //
-import { AuthContext } from '../auth/AuthContext';
+import { AuthContext } from '../hocs/auth/AuthContext';
 // import { AuthContext } from './Auth0Context';
 // import { AuthContext } from './FirebaseContext';
 // import { AuthContext } from './AwsCognitoContext';
@@ -10,7 +10,8 @@ import { AuthContext } from '../auth/AuthContext';
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
 
-  if (!context) throw new Error('useAuthContext context must be use inside AuthProvider');
+  if (!context)
+    throw new Error('useAuthContext context must be use inside AuthProvider');
 
   return context;
 };

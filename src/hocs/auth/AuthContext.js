@@ -15,7 +15,7 @@ import { setSession } from './utils';
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 
 // config
-import { AUTH_ENDPOINTS } from '../constants/auth.constants';
+import { AUTH_ENDPOINTS } from '../../constants/auth.constants';
 
 const ACTION_TYPES = {
   INITIALIZE: 'INITIALIZE',
