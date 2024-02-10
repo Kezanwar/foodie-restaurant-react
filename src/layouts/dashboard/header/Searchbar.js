@@ -4,15 +4,22 @@ import match from 'autosuggest-highlight/match';
 import { useNavigate, useLocation } from 'react-router-dom';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
-import { Box, Slide, Popper, InputBase, InputAdornment, ClickAwayListener } from '@mui/material';
+import {
+  Box,
+  Slide,
+  Popper,
+  InputBase,
+  InputAdornment,
+  ClickAwayListener
+} from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 // utils
-import { bgBlur } from '../../../utils/cssStyles';
-import flattenArray from '../../../utils/flattenArray';
+import { bgBlur } from 'utils/cssStyles';
+import flattenArray from 'utils/flattenArray';
 // components
-import Iconify from '../../../components/iconify';
-import { IconButtonAnimate } from '../../../components/animate';
-import SearchNotFound from '../../../components/search-not-found';
+import Iconify from 'components/iconify';
+import { IconButtonAnimate } from 'components/animate';
+import SearchNotFound from 'components/search-not-found';
 //
 import NavConfig from '../nav/config';
 
@@ -35,8 +42,8 @@ const StyledSearchbar = styled('div')(({ theme }) => ({
   boxShadow: theme.customShadows.z8,
   [theme.breakpoints.up('md')]: {
     height: APPBAR_DESKTOP,
-    padding: theme.spacing(0, 5),
-  },
+    padding: theme.spacing(0, 5)
+  }
 }));
 
 const StyledPopper = styled((props) => <Popper {...props} />)(({ theme }) => ({
@@ -45,10 +52,10 @@ const StyledPopper = styled((props) => <Popper {...props} />)(({ theme }) => ({
   width: 'calc(100% - 16px) !important',
   transform: 'none !important',
   [theme.breakpoints.up('md')]: {
-    top: `${APPBAR_DESKTOP + 8}px !important`,
+    top: `${APPBAR_DESKTOP + 8}px !important`
   },
   '& .MuiAutocomplete-paper': {
-    padding: theme.spacing(1, 0),
+    padding: theme.spacing(1, 0)
   },
   '& .MuiListSubheader-root': {
     '&.MuiAutocomplete-groupLabel': {
@@ -57,8 +64,8 @@ const StyledPopper = styled((props) => <Popper {...props} />)(({ theme }) => ({
       top: 0,
       margin: 0,
       lineHeight: '48px',
-      borderRadius: theme.shape.borderRadius,
-    },
+      borderRadius: theme.shape.borderRadius
+    }
   },
   '& .MuiAutocomplete-listbox': {
     '& .MuiAutocomplete-option': {
@@ -68,14 +75,17 @@ const StyledPopper = styled((props) => <Popper {...props} />)(({ theme }) => ({
       border: `dashed 1px transparent`,
       borderBottomColor: theme.palette.divider,
       '&:last-of-type': {
-        borderBottomColor: 'transparent',
+        borderBottomColor: 'transparent'
       },
       '&:hover': {
         borderColor: theme.palette.primary.main,
-        backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.hoverOpacity),
-      },
-    },
-  },
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          theme.palette.action.hoverOpacity
+        )
+      }
+    }
+  }
 }));
 
 // ----------------------------------------------------------------------
@@ -89,7 +99,9 @@ function Searchbar() {
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  const reduceItems = NavConfig.map((list) => handleLoop(list.items, list.subheader)).flat();
+  const reduceItems = NavConfig.map((list) =>
+    handleLoop(list.items, list.subheader)
+  ).flat();
 
   const allItems = flattenArray(reduceItems).map((option) => {
     const group = splitPath(reduceItems, option.path);
@@ -97,7 +109,7 @@ function Searchbar() {
     return {
       group: group && group.length > 1 ? group[0] : option.subheader,
       title: option.title,
-      path: option.path,
+      path: option.path
     };
   });
 
@@ -150,14 +162,18 @@ function Searchbar() {
               popupIcon={null}
               PopperComponent={StyledPopper}
               onInputChange={(event, value) => setSearchQuery(value)}
-              noOptionsText={<SearchNotFound query={searchQuery} sx={{ py: 10 }} />}
+              noOptionsText={
+                <SearchNotFound query={searchQuery} sx={{ py: 10 }} />
+              }
               options={allItems.sort((a, b) => -b.group.localeCompare(a.group))}
               groupBy={(option) => option.group}
               getOptionLabel={(option) => option.path}
-              isOptionEqualToValue={(option, value) => option.path === value.path}
+              isOptionEqualToValue={(option, value) =>
+                option.path === value.path
+              }
               filterOptions={createFilterOptions({
                 matchFrom: 'start',
-                stringify: (option) => option.title || option.path,
+                stringify: (option) => option.title || option.path
               })}
               renderInput={(params) => (
                 <InputBase
@@ -169,7 +185,10 @@ function Searchbar() {
                   onKeyUp={handleKeyUp}
                   startAdornment={
                     <InputAdornment position="start">
-                      <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled' }} />
+                      <Iconify
+                        icon="eva:search-fill"
+                        sx={{ color: 'text.disabled' }}
+                      />
                     </InputAdornment>
                   }
                   sx={{ height: 1, typography: 'h6' }}
@@ -183,7 +202,11 @@ function Searchbar() {
                 const partsPath = parse(path, match(path, inputValue));
 
                 return (
-                  <Box component="li" {...props} onClick={() => handleClick(path)}>
+                  <Box
+                    component="li"
+                    {...props}
+                    onClick={() => handleClick(path)}
+                  >
                     <div>
                       {partsTitle.map((part, index) => (
                         <Box
@@ -192,7 +215,9 @@ function Searchbar() {
                           sx={{
                             typography: 'subtitle2',
                             textTransform: 'capitalize',
-                            color: part.highlight ? 'primary.main' : 'text,primary',
+                            color: part.highlight
+                              ? 'primary.main'
+                              : 'text,primary'
                           }}
                         >
                           {part.text}
@@ -207,7 +232,9 @@ function Searchbar() {
                           component="span"
                           sx={{
                             typography: 'caption',
-                            color: part.highlight ? 'primary.main' : 'text.secondary',
+                            color: part.highlight
+                              ? 'primary.main'
+                              : 'text.secondary'
                           }}
                         >
                           {part.text}
@@ -232,7 +259,7 @@ export default memo(Searchbar);
 function splitPath(array, key) {
   let stack = array.map((item) => ({
     path: [item.title],
-    currItem: item,
+    currItem: item
   }));
 
   while (stack.length) {
@@ -246,7 +273,7 @@ function splitPath(array, key) {
       stack = stack.concat(
         currItem.children.map((item) => ({
           path: path.concat(item.title),
-          currItem: item,
+          currItem: item
         }))
       );
     }
@@ -261,7 +288,7 @@ function handleLoop(array, subheader = '') {
     subheader,
     ...list,
     ...(list.children && {
-      children: handleLoop(list.children, subheader),
-    }),
+      children: handleLoop(list.children, subheader)
+    })
   }));
 }

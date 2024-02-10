@@ -10,27 +10,16 @@ const Loadable = (Component) => (props) =>
     </Suspense>
   );
 
-// ------- test pages
-
-export const PageTwo = Loadable(lazy(() => import('pages/dashboard/PageTwo')));
-export const PageThree = Loadable(
-  lazy(() => import('pages/dashboard/PageThree'))
-);
-export const PageFour = Loadable(
-  lazy(() => import('pages/dashboard/PageFour'))
-);
-export const PageFive = Loadable(
-  lazy(() => import('pages/dashboard/PageFive'))
-);
-export const PageSix = Loadable(lazy(() => import('pages/dashboard/PageSix')));
-
 // ----------------------------------------------------------------------
 
 // * Guest Pages
 
-export const LoginPage = Loadable(lazy(() => import('pages/guest/LoginPage')));
-export const RegisterPage = Loadable(
-  lazy(() => import('pages/guest/RegisterPage'))
+export const Login = Loadable(lazy(() => import('pages/guest/Login')));
+
+export const Register = Loadable(lazy(() => import('pages/guest/Register')));
+
+export const ChangePassword = Loadable(
+  lazy(() => import('pages/misc/ChangePassword'))
 );
 
 // ----------------------------------------------------------------------
@@ -112,8 +101,8 @@ export const NewRestaurantYourApplication = Loadable(
 
 // * Miscellaneous pages
 
-export const Page404 = Loadable(lazy(() => import('pages/misc/Page404')));
+export const Page404 = Loadable(lazy(() => import('pages/misc/404')));
 
 export const PageConfirmEmail = Loadable(
-  lazy(() => import('pages/misc/PageConfirmEmail'))
+  lazy(() => import('pages/misc/ConfirmEmail'))
 );

@@ -4,22 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 // routes
-import { PATH_AUTH } from '../../../routes/paths';
+import { PATH_AUTH } from 'routes/paths';
 // auth
-import { useAuthContext } from '../../../hooks/useAuthContext';
+import { useAuthContext } from 'hooks/useAuthContext';
 // components
-import { CustomAvatar } from '../../../components/custom-avatar';
-import { useSnackbar } from '../../../components/snackbar';
-import MenuPopover from '../../../components/menu-popover';
-import { IconButtonAnimate } from '../../../components/animate';
+import { CustomAvatar } from 'components/custom-avatar';
+import { useSnackbar } from 'components/snackbar';
+import MenuPopover from 'components/menu-popover';
+import { IconButtonAnimate } from 'components/animate';
 
 // ----------------------------------------------------------------------
 
 const OPTIONS = [
-  {
-    label: 'Home',
-    linkTo: '/'
-  },
   {
     label: 'Profile',
     linkTo: '/'

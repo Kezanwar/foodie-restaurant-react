@@ -59,7 +59,6 @@ export default function DashboardLayout() {
         <Main>
           {!isSubscribed && <NotSubscribedNotice />}
           <Outlet />
-          {/* <Footer /> */}
         </Main>
       </Box>
     </>

@@ -8,7 +8,8 @@ function path(root, sublink) {
 
 export const PATH_AUTH = {
   login: '/login',
-  register: '/register'
+  register: '/register',
+  change_password: '/change-password'
 };
 
 // ----------------------------------------------------------------------
