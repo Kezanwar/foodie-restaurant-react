@@ -22,3 +22,14 @@ export const RegisterSchema = Yup.object().shape({
     .required('Must confirm your password')
     .oneOf([Yup.ref('password')], 'Passwords must match')
 });
+
+export const ChangePasswordSchema = Yup.object().shape({
+  password: Yup.string()
+    .matches(/[@$!%*#?&]+/, 'Password must have special character')
+    .matches(/\d+/, 'Password must have one number')
+    .matches(/[a-z]+/, 'Password must have one lowercase character')
+    .matches(/[A-Z]+/, 'Password must have uppercase character'),
+  confirm_password: Yup.string()
+    .required('Must confirm your password')
+    .oneOf([Yup.ref('password')], 'Passwords must match')
+});

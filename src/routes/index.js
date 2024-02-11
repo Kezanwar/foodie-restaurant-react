@@ -28,7 +28,8 @@ import {
   LocationsAll,
   LocationsAdd,
   LocationEdit,
-  ChangePassword
+  ChangePassword,
+  ForgotPassword
 } from './elements';
 import { PATH_AUTH, PATH_MISC, PATH_NEW_RESTAURANT } from './paths';
 import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
@@ -64,6 +65,14 @@ export default function Router() {
         {
           path: PATH_AUTH.change_password,
           element: <ChangePassword />
+        },
+        {
+          path: PATH_AUTH.forgot_password,
+          element: (
+            <GuestGuard>
+              <ForgotPassword />
+            </GuestGuard>
+          )
         }
       ]
     },

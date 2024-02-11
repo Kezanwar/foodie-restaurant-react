@@ -22,12 +22,12 @@ import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
 import axiosInstance from 'utils/axios';
 import { AUTH_ENDPOINTS } from 'constants/auth.constants';
 
-export const LoadingBox = styled(Box)(({ theme }) => ({
+export const LoadingBox = styled(Box)(() => ({
   display: 'flex',
   justifyContent: 'center'
 }));
 
-const PageConfirmEmail = (props) => {
+const PageConfirmEmail = () => {
   const { user, emailConfirmed, initialize } = useAuthContext();
   const { isTablet, isMobile } = useCustomMediaQueries();
   const pathAfterLogin = usePathAfterLogin();
@@ -50,7 +50,9 @@ const PageConfirmEmail = (props) => {
 
   const onComplete = async (v) => {
     try {
+      setLoading(true);
       await axiosInstance.post(`${AUTH_ENDPOINTS.confirmEmailOTP}/${v}`);
+      setLoading(false);
       initialize();
     } catch (error) {
       setError(error?.message || 'An unexpected error occured');
@@ -84,20 +86,11 @@ const PageConfirmEmail = (props) => {
                 email
               </Typography>
             </Typography>
-
             <Spacer sp={3} />
-            {/* 
-            <Typography variant="body2">
-              <strong>Hello {user?.first_name},</strong> please{' '}
-              <strong>confirm your email address</strong> before proceeding to
-              use the foodie platform.
-            </Typography> */}
-
             <Typography variant="body2">
               Hello {user?.first_name}, please enter the 6 digit OTP sent to{' '}
               <strong>{user?.email}</strong>
             </Typography>
-
             <Spacer sp={3} />
             <MuiOtpInput
               my={4}
@@ -138,8 +131,6 @@ const PageConfirmEmail = (props) => {
               </LoadingButton>
             </Box>
           </Box>
-
-          {/* {!isMobile && ( */}
           <Image
             duration={200}
             width={isMobile ? 120 : 200}
@@ -151,7 +142,6 @@ const PageConfirmEmail = (props) => {
               flex: 0.65
             }}
           />
-          {/* )} */}
         </Box>
       </Box>
     </>
