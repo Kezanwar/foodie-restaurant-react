@@ -9,12 +9,10 @@ import Footer from 'features/footer/Footer';
 // ----------------------------------------------------------------------
 
 AuthLayout.propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.node,
-  illustration: PropTypes.string
+  children: PropTypes.node
 };
 
-export default function AuthLayout({ children, illustration, title }) {
+export default function AuthLayout({ children }) {
   return (
     <>
       <StyledRoot>

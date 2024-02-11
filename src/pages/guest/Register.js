@@ -22,7 +22,9 @@ export default function RegisterPage() {
           <Stack alignItems="center" direction="row" spacing={0.5}>
             <Typography variant="body2">Already a restaurant?</Typography>{' '}
             <RouterLink to={PATH_AUTH.login}>
-              <Link variant="subtitle2">Login here</Link>
+              <Typography color={'primary.main'} variant="subtitle2">
+                Login here
+              </Typography>
             </RouterLink>
           </Stack>
         </Stack>

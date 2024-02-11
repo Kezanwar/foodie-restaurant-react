@@ -32,7 +32,11 @@ const endpoints = {
   templateDeal: '/rest/deals/use-template',
 
   // options
-  getOptions: '/options'
+  getOptions: '/options',
+
+  // account management
+  forgotPassword: '/auth/forgot-password',
+  changePassword: '/auth/change-password'
 };
 
 //* ------ Overview --------
@@ -160,4 +164,18 @@ export const getDealTemplate = (id) => {
 
 export const getOptions = () => {
   return axiosInstance.get(endpoints.getOptions);
+};
+
+// * ---------------- Account Management -------------------
+
+export const forgotPassword = (email) => {
+  return axiosInstance.post(endpoints.forgotPassword, {
+    email
+  });
+};
+
+export const changePassword = (token, password) => {
+  return axiosInstance.patch(`${endpoints.changePassword}/${token}`, {
+    password
+  });
 };

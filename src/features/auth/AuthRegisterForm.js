@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import {
-  Link,
   Stack,
   Alert,
   IconButton,
@@ -198,10 +197,6 @@ export default function AuthRegisterForm() {
         <CustomTooltip
           tooltipText={auth_tooltips.password_requirements.tooltip}
         />
-
-        <Link variant="body2" color="inherit" underline="always">
-          Forgot password?
-        </Link>
       </Stack>
 
       <LoadingButton

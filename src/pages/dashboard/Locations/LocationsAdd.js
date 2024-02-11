@@ -40,7 +40,7 @@ import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 import ConfirmLocationModalDashboard from 'components/confirm-location-modal/ConfirmLocationModalDashboard';
 import { PATH_DASHBOARD } from 'routes/paths';
 
-const LocationsAdd = (props) => {
+const LocationsAdd = () => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const [addLocationModalOpen, setAddLocationModalOpen] = useState(false);
   const [addLocationLoading, setAddLocationLoading] = useState(false);
@@ -55,22 +55,16 @@ const LocationsAdd = (props) => {
   const resQuery = useRestaurantQuery();
   const { data, isLoading, updateQuery } = useLocationsQuery();
 
-  const { isTablet, isMobile } = useCustomMediaQueries();
+  const { isTablet } = useCustomMediaQueries();
 
   const navigate = useNavigate();
 
   const theme = useTheme();
 
-  const restaurant = resQuery?.data?.data;
-
   const restLoading = resQuery?.isLoading;
 
-  const {
-    openingTimes,
-    resetOpeningTimes,
-    updateOpeningTimes,
-    replaceOpeningTimes
-  } = useOpeningTimesForm();
+  const { openingTimes, resetOpeningTimes, updateOpeningTimes } =
+    useOpeningTimesForm();
 
   const defaultValues = useMemo(
     () => ({
@@ -94,17 +88,8 @@ const LocationsAdd = (props) => {
     defaultValues
   });
 
-  const {
-    watch,
-    trigger,
-    reset,
-    setError,
-    handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-    getValues,
-    getFieldState,
-    setValue
-  } = methods;
+  const { trigger, reset, handleSubmit, getValues, getFieldState, setValue } =
+    methods;
 
   const scrollToForm = useCallback(() => {
     window.scrollTo({
@@ -223,7 +208,7 @@ const LocationsAdd = (props) => {
 
   const onError = useCallback((errors) => {
     const errArr = Object.entries(errors);
-    errArr.forEach(([name, value]) =>
+    errArr.forEach(([, value]) =>
       value?.message
         ? enqueueSnackbar(value.message, { variant: 'error' })
         : null
@@ -404,7 +389,5 @@ const LocationsAdd = (props) => {
     </>
   );
 };
-
-LocationsAdd.propTypes = {};
 
 export default LocationsAdd;

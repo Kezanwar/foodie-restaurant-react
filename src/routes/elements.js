@@ -18,8 +18,12 @@ export const Login = Loadable(lazy(() => import('pages/guest/Login')));
 
 export const Register = Loadable(lazy(() => import('pages/guest/Register')));
 
+export const ForgotPassword = Loadable(
+  lazy(() => import('pages/guest/ForgotPassword'))
+);
+
 export const ChangePassword = Loadable(
-  lazy(() => import('pages/misc/ChangePassword'))
+  lazy(() => import('pages/guest/ChangePassword'))
 );
 
 // ----------------------------------------------------------------------

@@ -27,7 +27,9 @@ export default function LoginPage() {
             <Typography variant="body2">New user?</Typography>
 
             <RouterLink to={PATH_AUTH.register}>
-              <Link variant="subtitle2">Create an account</Link>
+              <Typography color={'primary.main'} variant="subtitle2">
+                Create an account
+              </Typography>
             </RouterLink>
           </Stack>
         </Stack>

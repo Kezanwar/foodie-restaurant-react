@@ -3,6 +3,7 @@ import { LoadingButton } from '@mui/lab';
 
 const sx = {
   bgcolor: 'text.primary',
+  py: 1.25,
   color: (theme) =>
     theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
   '&:hover': {
