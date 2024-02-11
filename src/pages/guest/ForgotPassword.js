@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { Helmet } from 'react-helmet-async';
 import { Box, Stack, Typography, Alert } from '@mui/material';
@@ -10,7 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormProvider, { RHFTextField } from 'components/hook-form';
 import BlackLoadingButton from 'components/black-loading-button/BlackLoadingButton';
 
-import { useAuthContext } from 'hooks/useAuthContext';
 import AuthLayout from 'layouts/auth/AuthLayout';
 
 import { ForgotPasswordSchema } from 'validation/auth';
@@ -18,12 +17,6 @@ import { useSnackbar } from 'notistack';
 import { forgotPassword } from 'utils/api';
 
 const ForgotPassword = () => {
-  const { logout, isAuthenticated } = useAuthContext();
-
-  useEffect(() => {
-    if (isAuthenticated) logout();
-  }, [isAuthenticated, logout]);
-
   const { enqueueSnackbar } = useSnackbar();
 
   const [loading, setLoading] = useState(false);
