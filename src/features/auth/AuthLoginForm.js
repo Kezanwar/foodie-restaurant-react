@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import {
-  Link,
   Stack,
   Alert,
   IconButton,
@@ -14,6 +13,8 @@ import {
   Button,
   Typography
 } from '@mui/material';
+
+import { Link as RouterLink } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 // auth
 import { useAuthContext } from 'hooks/useAuthContext';
@@ -24,6 +25,7 @@ import FormProvider, { RHFTextField } from 'components/hook-form';
 import Spacer from 'components/spacer/Spacer';
 import { LoginSchema } from 'validation/auth';
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { PATH_AUTH } from 'routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -146,9 +148,11 @@ export default function AuthLoginForm() {
       </Stack>
 
       <Stack alignItems="flex-end" sx={{ mt: 2, mb: 4 }}>
-        <Link variant="body2" color="inherit" underline="always">
-          Forgot password?
-        </Link>
+        <RouterLink to={PATH_AUTH.forgot_password}>
+          <Typography color={'text.primary'} variant="body2" component={'span'}>
+            Forgot password?
+          </Typography>
+        </RouterLink>
       </Stack>
 
       <LoadingButton
