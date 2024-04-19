@@ -58,9 +58,9 @@ export default function Header({ onOpenNav }) {
         spacing={{ xs: 0.5, sm: 1.5 }}
       >
         {/* <LanguagePopover /> */}
-        <Box mr={1}>
+        {/* <Box mr={1}>
           <ModeOptions />
-        </Box>
+        </Box> */}
 
         <AccountPopover />
       </Stack>

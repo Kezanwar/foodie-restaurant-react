@@ -66,7 +66,7 @@ export default function Header({ isOffset }) {
             {/* <Link variant="subtitle2" color="inherit">
             Need Help?
           </Link> */}
-            <ModeOptions />
+            {/* <ModeOptions /> */}
             {isAuthenticated ? <AccountPopover /> : null}
           </Box>
         </Box>
