@@ -5,7 +5,7 @@ import { alpha } from '@mui/material/styles';
 import { Alert, AlertTitle, Box, Paper, Typography } from '@mui/material';
 import { fileData } from '../../file-thumbnail';
 import { fData } from '../../../utils/formatNumber';
-import { MAX_IMAGE } from '../../../constants/files.constants';
+import { MAX_IMAGE } from '../../../constants/files';
 
 // utils
 

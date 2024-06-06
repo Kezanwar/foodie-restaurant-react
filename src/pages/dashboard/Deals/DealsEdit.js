@@ -28,7 +28,7 @@ import {
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
   InputWithInfoStack
-} from 'features/forms/styles';
+} from 'components/hook-form/styles';
 import DashboardTitle from 'components/dashboard-title/DashboardTitle';
 import { RHFTextField } from 'components/hook-form';
 import Subheader from 'components/subheader/Subheader';

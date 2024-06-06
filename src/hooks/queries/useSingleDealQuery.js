@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { DEALS_QUERY } from 'constants/react-query.constants';
+import { DEALS_QUERY } from 'constants/react-query';
 import { getSingleDeal } from 'utils/api';
 
 const useSingleDealQuery = (id) => {

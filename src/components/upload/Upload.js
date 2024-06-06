@@ -7,7 +7,7 @@ import Iconify from '../iconify';
 import RejectionFiles from './errors/RejectionFiles';
 import MultiFilePreview from './preview/MultiFilePreview';
 import SingleFilePreview from './preview/SingleFilePreview';
-import { MAX_IMAGE } from '../../constants/files.constants';
+import { MAX_IMAGE } from '../../constants/files';
 
 // ----------------------------------------------------------------------
 

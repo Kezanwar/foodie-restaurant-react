@@ -26,7 +26,7 @@ import {
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
   InputWithInfoStack
-} from 'features/forms/styles';
+} from 'components/hook-form/styles';
 import Subheader from 'components/subheader/Subheader';
 import Spacer from 'components/spacer/Spacer';
 import {
@@ -44,7 +44,7 @@ import { restaurantDetailsSchema } from 'validation/new-restaurant';
 import { getFormDataFromObject } from 'utils/formData';
 import { editRestaurant } from 'utils/api';
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
-import { image_tooltip } from 'constants/tooltips.constants';
+import { image_tooltip } from 'constants/tooltips';
 import { PATH_DASHBOARD } from 'routes/paths';
 
 const uploadAvatarSx = {

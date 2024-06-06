@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { DASHBOARD_QUERY, cacheValues } from 'constants/react-query.constants';
+import { DASHBOARD_QUERY, cacheValues } from 'constants/react-query';
 import { getDashboardOverview } from 'utils/api';
 
 const useDashboardOverviewQuery = () => {

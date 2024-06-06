@@ -1,8 +1,4 @@
-// @mui
-import { styled, alpha } from '@mui/material/styles';
-// utils
-
-// ----------------------------------------------------------------------
+import { styled } from '@mui/material/styles';
 
 export const StyledRoot = styled('main')(() => ({
   height: '100%',

@@ -20,7 +20,7 @@ import { RHFTextField } from 'components/hook-form';
 import {
   InputStack,
   InputStackSingleItemContainer
-} from 'features/forms/styles';
+} from 'components/hook-form/styles';
 import RHFCountriesAutocomplete from 'components/hook-form/RHFCountriesAutocomplete';
 import AddressAutocomplete from 'components/address-autocomplete/AddressAutocomplete';
 import FormProvider from 'components/hook-form/FormProvider';

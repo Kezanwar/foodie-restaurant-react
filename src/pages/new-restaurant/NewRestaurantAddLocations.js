@@ -31,7 +31,7 @@ import Spacer from '../../components/spacer/Spacer';
 import {
   InputStack,
   InputStackSingleItemContainer
-} from '../../features/forms/styles';
+} from '../../components/hook-form/styles';
 
 import { addLocationsSchema } from '../../validation/new-restaurant';
 import FormProvider from '../../components/hook-form/FormProvider';
@@ -159,10 +159,15 @@ const NewRestaurantAddLocation = () => {
     replaceOpeningTimes
   } = useOpeningTimesForm();
 
-  useCreateRestaurantGuard(
-    restaurantQuery?.data?.data,
-    PATH_NEW_RESTAURANT.step_3
-  );
+  const guard = useCreateRestaurantGuard();
+
+  const restaurant = restaurantQuery?.data?.data;
+
+  useEffect(() => {
+    if (restaurant) {
+      guard(restaurant, PATH_NEW_RESTAURANT.step_3);
+    }
+  }, [restaurant, guard]);
 
   const idToDelete = useRef(null);
 

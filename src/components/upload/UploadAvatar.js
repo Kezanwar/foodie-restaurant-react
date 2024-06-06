@@ -9,7 +9,7 @@ import Iconify from '../iconify';
 //
 import RejectionFiles from './errors/RejectionFiles';
 import AvatarPreview from './preview/AvatarPreview';
-import { MAX_IMAGE } from '../../constants/files.constants';
+import { MAX_IMAGE } from '../../constants/files';
 
 // ----------------------------------------------------------------------
 
