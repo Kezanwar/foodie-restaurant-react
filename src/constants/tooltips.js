@@ -1,4 +1,4 @@
-import { MAX_IMAGE } from './files.constants';
+import { MAX_IMAGE } from './files';
 
 export const auth_tooltips = {
   password_requirements: {

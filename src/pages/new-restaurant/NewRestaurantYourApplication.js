@@ -11,29 +11,29 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Helmet } from 'react-helmet-async';
 
-import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 
-import { pageScrollToTop } from '../../utils/scroll';
-import Subheader from '../../components/subheader/Subheader';
-import Spacer from '../../components/spacer/Spacer';
+import { pageScrollToTop } from 'utils/scroll';
+import Subheader from 'components/subheader/Subheader';
+import Spacer from 'components/spacer/Spacer';
 
-import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
-import useLocationsQuery from '../../hooks/queries/useLocationsQuery';
-import LoadingScreen from '../../components/loading-screen/LoadingScreen';
-import RestaurantProfileIphone from '../../features/iphone/RestaurantProfileIphone';
-import { PATH_NEW_RESTAURANT } from '../../routes/paths';
-import FormProvider from '../../components/hook-form/FormProvider';
-import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
+import useLocationsQuery from 'hooks/queries/useLocationsQuery';
+import LoadingScreen from 'components/loading-screen/LoadingScreen';
+import RestaurantProfileIphone from 'components/iphone/RestaurantProfileIphone';
+import { PATH_NEW_RESTAURANT } from 'routes/paths';
+import FormProvider from 'components/hook-form/FormProvider';
+import useCreateRestaurantGuard from 'hooks/useCreateRestaurantGuard';
 
-import { submitApplicationSchema } from '../../validation/new-restaurant';
-import { RHFCheckbox } from '../../components/hook-form';
+import { submitApplicationSchema } from 'validation/new-restaurant';
+import { RHFCheckbox } from 'components/hook-form';
 
-import { postSubmitApplicationStep } from '../../utils/api';
+import { postSubmitApplicationStep } from 'utils/api';
 
-import { RESTAURANT_STATUS } from '../../constants/restaurants.constants';
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 
-import { useAuthContext } from '../../hooks/useAuthContext';
+import { useAuthContext } from 'hooks/useAuthContext';
+import Permissions from 'utils/permissions';
 
 const NewRestaurantYourApplication = () => {
   const { isTablet, isMobile } = useCustomMediaQueries();
@@ -49,13 +49,21 @@ const NewRestaurantYourApplication = () => {
 
   const { data, updateQuery } = useRestaurantQuery();
 
-  useCreateRestaurantGuard(data?.data, PATH_NEW_RESTAURANT.step_4);
+  const restaurant = data?.data;
+
+  const guard = useCreateRestaurantGuard();
+
+  useEffect(() => {
+    if (restaurant) {
+      guard(restaurant, PATH_NEW_RESTAURANT.step_3);
+    }
+  }, [restaurant, guard]);
 
   const locationsQuery = useLocationsQuery();
 
   const locations = locationsQuery?.data?.data || null;
 
-  const { company_info } = data?.data || {};
+  const { company_info } = restaurant || {};
 
   const { company_address, company_name, company_number } = company_info || {};
 
@@ -91,7 +99,7 @@ const NewRestaurantYourApplication = () => {
   };
 
   const hasSubmit =
-    data?.data?.status === RESTAURANT_STATUS.APPLICATION_PROCESSING;
+    data?.data && Permissions.isApplicationProcessing(data.data.status);
 
   const onError = useCallback(
     (errors) => {

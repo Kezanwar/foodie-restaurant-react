@@ -24,7 +24,7 @@ import { useSearchParams } from 'react-router-dom';
 import { format, isPast } from 'date-fns';
 import BlackLoadingButton from 'components/black-loading-button/BlackLoadingButton';
 import CustomTooltip from 'components/custom-tooltip/CustomTooltip';
-import { auth_tooltips } from 'constants/tooltips.constants';
+import { auth_tooltips } from 'constants/tooltips';
 import { changePassword } from 'utils/api';
 
 const PageChangePassword = () => {

@@ -9,7 +9,7 @@ import LoadingScreen from 'components/loading-screen/LoadingScreen';
 import DashboardTitle from 'components/dashboard-title/DashboardTitle';
 
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
-import RestaurantProfileIphone from 'features/iphone/RestaurantProfileIphone';
+import RestaurantProfileIphone from 'components/iphone/RestaurantProfileIphone';
 import Spacer from 'components/spacer/Spacer';
 import Subheader from 'components/subheader/Subheader';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';

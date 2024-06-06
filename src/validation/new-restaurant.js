@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { MAX_IMAGE } from 'constants/files.constants';
+import { MAX_IMAGE } from 'constants/files';
 
 export const companyInfoSchema = Yup.object().shape({
   company_name: Yup.string().required('Company name is required'),

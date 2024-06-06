@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { DEALS_QUERY, cacheValues } from 'constants/react-query.constants';
+import { DEALS_QUERY, cacheValues } from 'constants/react-query';
 import { getActiveDeals } from 'utils/api';
 
 const useActiveDealsQuery = () => {

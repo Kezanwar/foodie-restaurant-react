@@ -10,7 +10,7 @@ import NotSubscribedNotice from 'components/not-subcribed-notice/NotSubscribedNo
 
 import { PATH_NEW_RESTAURANT } from 'routes/paths';
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
-import { RESTAURANT_STATUS } from 'constants/restaurants.constants';
+import Permissions from 'utils/permissions';
 
 // ----------------------------------------------------------------------
 
@@ -20,15 +20,18 @@ export default function DashboardLayout() {
 
   const { isLoading, data, isFetched } = useRestaurantQuery();
 
+  const status = data?.data?.status;
+
   useEffect(() => {
-    if (
-      (isFetched && !data?.data?.status) ||
-      data?.data?.status === RESTAURANT_STATUS.APPLICATION_PENDING ||
-      data?.data?.status === RESTAURANT_STATUS.APPLICATION_PROCESSING ||
-      data?.data?.status === RESTAURANT_STATUS.APPLICATION_REJECTED
-    )
-      navigate(PATH_NEW_RESTAURANT.new_restaurant);
-  }, [isFetched, data?.data?.status, navigate]);
+    if (isFetched) {
+      if (
+        !status ||
+        Permissions.isApplicationPending(status) ||
+        Permissions.isApplicationRejected(status)
+      )
+        navigate(PATH_NEW_RESTAURANT.new_restaurant);
+    }
+  }, [isFetched, status, navigate]);
 
   const handleOpen = () => {
     setOpen(true);

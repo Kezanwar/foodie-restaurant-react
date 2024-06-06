@@ -28,7 +28,7 @@ import {
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
   InputWithInfoStack
-} from 'features/forms/styles';
+} from 'components/hook-form/styles';
 import DashboardTitle from 'components/dashboard-title/DashboardTitle';
 import { RHFTextField } from 'components/hook-form';
 import Subheader from 'components/subheader/Subheader';
@@ -49,7 +49,7 @@ import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 
 import { newDealSchema } from 'validation/deals';
 import LoadingScreen from 'components/loading-screen/LoadingScreen';
-import { DEALS_PER_LOCATION } from 'constants/deals.constants';
+import { DEALS_PER_LOCATION } from 'constants/deals';
 import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
 
 function getElementsByText(str, tag = 'div') {

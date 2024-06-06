@@ -19,7 +19,7 @@ import Subheader from 'components/subheader/Subheader';
 import {
   InputStack,
   InputStackSingleItemContainer
-} from 'features/forms/styles';
+} from 'components/hook-form/styles';
 import AddressAutocomplete from 'components/address-autocomplete/AddressAutocomplete';
 import { RHFTextField } from 'components/hook-form';
 import Spacer from 'components/spacer/Spacer';

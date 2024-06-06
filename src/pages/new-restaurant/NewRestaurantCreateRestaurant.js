@@ -11,41 +11,40 @@ import { Box } from '@mui/system';
 import HelpIcon from '@mui/icons-material/Help';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import Subheader from '../../components/subheader/Subheader';
-import { RHFTextField } from '../../components/hook-form';
+import Subheader from 'components/subheader/Subheader';
+import { RHFTextField } from 'components/hook-form';
+import { pageScrollToTop } from 'utils/scroll';
 
-import { pageScrollToTop } from '../../utils/scroll';
-
-import Spacer from '../../components/spacer/Spacer';
+import Spacer from 'components/spacer/Spacer';
 import {
   FormSectionStack,
   InputStack,
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
   InputWithInfoStack
-} from '../../features/forms/styles';
+} from 'components/hook-form/styles';
 
-import { restaurantDetailsSchema } from '../../validation/new-restaurant';
+import { restaurantDetailsSchema } from 'validation/new-restaurant';
 
-import FormProvider from '../../components/hook-form/FormProvider';
+import FormProvider from 'components/hook-form/FormProvider';
 import {
   RHFUploadAvatar,
   RHFUploadWithCrop
-} from '../../components/hook-form/RHFUpload';
+} from 'components/hook-form/RHFUpload';
 
-import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
-import { PATH_NEW_RESTAURANT } from '../../routes/paths';
-import { postRestaurantDetails } from '../../utils/api';
-import { getFormDataFromObject } from '../../utils/formData';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
+import { PATH_NEW_RESTAURANT } from 'routes/paths';
+import { postRestaurantDetails } from 'utils/api';
+import { getFormDataFromObject } from 'utils/formData';
 
-import useOptionsQuery from '../../hooks/queries/useOptionsQuery';
-import RHFMultipleAutocomplete from '../../components/hook-form/RHFMultipleAutoComplete';
-import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
-import CustomTooltip from '../../components/custom-tooltip/CustomTooltip';
-import { image_tooltip } from '../../constants/tooltips.constants';
+import useOptionsQuery from 'hooks/queries/useOptionsQuery';
+import RHFMultipleAutocomplete from 'components/hook-form/RHFMultipleAutoComplete';
+import useCreateRestaurantGuard from 'hooks/useCreateRestaurantGuard';
+import CustomTooltip from 'components/custom-tooltip/CustomTooltip';
+import { image_tooltip } from 'constants/tooltips';
 
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
-import { useAuthContext } from '../../hooks/useAuthContext';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { useAuthContext } from 'hooks/useAuthContext';
 
 const uploadAvatarSx = {
   '& > *': {
@@ -69,7 +68,15 @@ const NewRestaurantCreateRestaurant = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuthContext();
 
-  useCreateRestaurantGuard(data?.data, PATH_NEW_RESTAURANT.step_2);
+  const guard = useCreateRestaurantGuard();
+
+  const restaurant = data?.data;
+
+  useEffect(() => {
+    if (restaurant) {
+      guard(restaurant, PATH_NEW_RESTAURANT.step_2);
+    }
+  }, [restaurant, guard]);
 
   const cuisineOptions = options?.data?.data?.cuisines;
   const dietaryOptions = options?.data?.data?.dietary_requirements;
@@ -77,34 +84,34 @@ const NewRestaurantCreateRestaurant = () => {
   const defaultValues = useMemo(
     () => ({
       // company info
-      name: data?.data?.name || '',
-      avatar: data?.data?.avatar || null,
-      cuisines: data?.data?.cuisines || [],
-      dietary_requirements: data?.data?.dietary_requirements || [],
-      is_new_avatar: !data?.data?.avatar,
-      cover_photo: data?.data?.cover_photo || null,
-      is_new_cover: !data?.data?.avatar,
-      bio: data?.data?.bio || '',
-      booking_link: data?.data?.booking_link || '',
+      name: restaurant?.name || '',
+      avatar: restaurant?.avatar || null,
+      cuisines: restaurant?.cuisines || [],
+      dietary_requirements: restaurant?.dietary_requirements || [],
+      is_new_avatar: !restaurant?.avatar,
+      cover_photo: restaurant?.cover_photo || null,
+      is_new_cover: !restaurant?.avatar,
+      bio: restaurant?.bio || '',
+      booking_link: restaurant?.booking_link || '',
       social_media: {
-        instagram: data?.data?.social_media?.instagram || '',
-        facebook: data?.data?.social_media?.facebook || '',
-        tiktok: data?.data?.social_media?.tiktok || '',
-        linkedin: data?.data?.social_media?.linkedin || ''
+        instagram: restaurant?.social_media?.instagram || '',
+        facebook: restaurant?.social_media?.facebook || '',
+        tiktok: restaurant?.social_media?.tiktok || '',
+        linkedin: restaurant?.social_media?.linkedin || ''
       }
     }),
     [
-      data?.data?.booking_link,
-      data?.data?.name,
-      data?.data?.avatar,
-      data?.data?.cover_photo,
-      data?.data?.cuisines,
-      data?.data?.dietary_requirements,
-      data?.data?.bio,
-      data?.data?.social_media?.instagram,
-      data?.data?.social_media?.facebook,
-      data?.data?.social_media?.tiktok,
-      data?.data?.social_media?.linkedin
+      restaurant?.booking_link,
+      restaurant?.name,
+      restaurant?.avatar,
+      restaurant?.cover_photo,
+      restaurant?.cuisines,
+      restaurant?.dietary_requirements,
+      restaurant?.bio,
+      restaurant?.social_media?.instagram,
+      restaurant?.social_media?.facebook,
+      restaurant?.social_media?.tiktok,
+      restaurant?.social_media?.linkedin
     ]
   );
 

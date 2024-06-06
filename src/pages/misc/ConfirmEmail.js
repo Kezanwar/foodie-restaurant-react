@@ -20,7 +20,7 @@ import UndrawSVG from 'assets/undraw-completing.svg';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
 import axiosInstance from 'utils/axios';
-import { AUTH_ENDPOINTS } from 'constants/auth.constants';
+import { AUTH_ENDPOINTS } from 'constants/auth';
 
 export const LoadingBox = styled(Box)(() => ({
   display: 'flex',

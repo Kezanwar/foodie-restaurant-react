@@ -30,8 +30,10 @@
   "rules": {
     "no-new": 0,
     "no-alert": 0,
+    "consistent-return": 0,
     "no-shadow": 0,
     "no-console": 0,
+    "no-bitwise": 0,
     "react/prop-types": 0,
     "import/order": 0,
     "react/jsx-key": 1,

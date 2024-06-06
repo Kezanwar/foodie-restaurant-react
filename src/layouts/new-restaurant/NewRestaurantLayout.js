@@ -14,8 +14,6 @@ import { Helmet } from 'react-helmet-async';
 import { StyledContent, StyledRoot } from './styles';
 
 import Header from './header';
-
-import { FORM_STEPS } from 'pages/new-restaurant/util';
 import { PATH_DASHBOARD } from 'routes/paths';
 import Spacer from 'components/spacer/Spacer';
 
@@ -24,14 +22,14 @@ import UndrawSVG from 'assets/undraw-content-team-8.svg';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import LoadingScreen from 'components/loading-screen/LoadingScreen';
 
-import { RESTAURANT_STATUS } from 'constants/restaurants.constants';
+import Permissions from 'utils/permissions';
 
-const disallowedRestStatusArr = Object.values(RESTAURANT_STATUS).filter(
-  (status) =>
-    status !== RESTAURANT_STATUS.APPLICATION_PENDING &&
-    status !== RESTAURANT_STATUS.APPLICATION_PROCESSING &&
-    status !== RESTAURANT_STATUS.APPLICATION_REJECTED
-);
+const FORM_STEPS = [
+  { label: 'Company Info', step: 'step-1' },
+  { label: 'Create Restaurant', step: 'step-2' },
+  { label: 'Add Locations', step: 'step-3' },
+  { label: 'Review Application', step: 'step-4' }
+];
 
 export default function NewRestaurantLayout() {
   const navigate = useNavigate();
@@ -56,9 +54,7 @@ export default function NewRestaurantLayout() {
 
   useEffect(() => {
     if (data?.data) {
-      if (
-        disallowedRestStatusArr.some((status) => status === data?.data?.status)
-      ) {
+      if (data.data.status && Permissions.canViewDashboard(data.data.status)) {
         navigate(PATH_DASHBOARD.overview);
       }
     }
@@ -90,14 +86,10 @@ export default function NewRestaurantLayout() {
                       </Box>
                     )}
                     <Box ml={isMobile ? 0 : 2}>
-                      <Box
-                        mb={isTablet ? 2 : 0.5}
-                        // sx={{ display: 'flex', alignItems: 'baseline' }}
-                      >
+                      <Box mb={isTablet ? 2 : 0.5}>
                         <Typography
                           variant="h3"
                           component="h3"
-                          // fontSize={isTablet ? '1.2rem' : '1.5rem'} d
                           display={'inline'}
                         >
                           {restName
@@ -108,7 +100,6 @@ export default function NewRestaurantLayout() {
                         <Typography
                           variant="h3"
                           component="h3"
-                          // fontSize={isTablet ? '1.2rem' : '1.5rem'}
                           color={'primary'}
                           ml={1}
                           display={'inline'}
@@ -130,7 +121,7 @@ export default function NewRestaurantLayout() {
                 </Box>
 
                 <Stepper activeStep={activeFormStep}>
-                  {FORM_STEPS.map((f, index) => (
+                  {FORM_STEPS.map((f, _) => (
                     <Step key={f.label}>
                       <StepLabel>{f.label}</StepLabel>
                     </Step>

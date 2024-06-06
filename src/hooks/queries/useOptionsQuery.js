@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { OPTIONS_QUERY } from 'constants/react-query.constants';
+import { OPTIONS_QUERY } from 'constants/react-query';
 import { getOptions } from 'utils/api';
 
 const useOptionsQuery = () => {

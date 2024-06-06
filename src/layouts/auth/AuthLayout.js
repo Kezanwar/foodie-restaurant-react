@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 // components
 import Logo from 'components/logo';
 import { StyledRoot, StyledContent } from './styles';
-import Footer from 'features/footer/Footer';
+import Footer from 'components/footer/Footer';
 
 // ----------------------------------------------------------------------
 

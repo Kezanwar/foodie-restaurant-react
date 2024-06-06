@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-
 import { useSnackbar } from 'notistack';
-
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router';
 import { Alert, AlertTitle, Button, Typography } from '@mui/material';
@@ -11,34 +9,29 @@ import { Box } from '@mui/system';
 import HelpIcon from '@mui/icons-material/Help';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import Subheader from '../../components/subheader/Subheader';
-import { RHFTextField } from '../../components/hook-form';
-
-import { countries } from '../../assets/data';
-import { pageScrollToTop } from '../../utils/scroll';
-
-import Spacer from '../../components/spacer/Spacer';
+import Subheader from 'components/subheader/Subheader';
+import { RHFTextField } from 'components/hook-form';
+import AddressAutocomplete from 'components/address-autocomplete/AddressAutocomplete';
+import RHFCountriesAutocomplete from 'components/hook-form/RHFCountriesAutocomplete';
+import Spacer from 'components/spacer/Spacer';
 import {
   InputStack,
   InputWithInfoInfoContainer,
   InputWithInfoInputContainer,
   InputWithInfoStack
-} from '../../features/forms/styles';
+} from 'components/hook-form/styles';
+import FormProvider from 'components/hook-form/FormProvider';
 
-import { companyInfoSchema } from '../../validation/new-restaurant';
+import { PATH_NEW_RESTAURANT } from 'routes/paths';
 
-import FormProvider from '../../components/hook-form/FormProvider';
-import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
-import { postCompanyInfo } from '../../utils/api';
-
-import { PATH_NEW_RESTAURANT } from '../../routes/paths';
-
-import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
-
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
-import { useAuthContext } from '../../hooks/useAuthContext';
-import AddressAutocomplete from '../../components/address-autocomplete/AddressAutocomplete';
-import RHFCountriesAutocomplete from '../../components/hook-form/RHFCountriesAutocomplete';
+import useCreateRestaurantGuard from 'hooks/useCreateRestaurantGuard';
+import { useAuthContext } from 'hooks/useAuthContext';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
+import { companyInfoSchema } from 'validation/new-restaurant';
+import { countries } from 'assets/data';
+import { pageScrollToTop } from 'utils/scroll';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { postCompanyInfo } from 'utils/api';
 
 const NewRestaurantCompanyInfo = () => {
   const { data, updateQuery } = useRestaurantQuery();
@@ -47,35 +40,43 @@ const NewRestaurantCompanyInfo = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { user } = useAuthContext();
 
-  useCreateRestaurantGuard(data?.data, PATH_NEW_RESTAURANT.step_1);
+  const guard = useCreateRestaurantGuard();
+
+  const restaurant = data?.data;
+
+  useEffect(() => {
+    if (restaurant) {
+      guard(restaurant, PATH_NEW_RESTAURANT.step_1);
+    }
+  }, [restaurant, guard]);
 
   const defaultValues = useMemo(
     () => ({
       // company info
-      company_name: data?.data?.company_info?.company_name || '',
-      company_number: data?.data?.company_info?.company_number || '',
+      company_name: restaurant?.company_info?.company_name || '',
+      company_number: restaurant?.company_info?.company_number || '',
       company_address: {
         address_line_1:
-          data?.data?.company_info?.company_address?.address_line_1 || '',
+          restaurant?.company_info?.company_address?.address_line_1 || '',
         address_line_2:
-          data?.data?.company_info?.company_address?.address_line_2 || '',
-        postcode: data?.data?.company_info?.company_address?.postcode || '',
-        city: data?.data?.company_info?.company_address?.city || '',
+          restaurant?.company_info?.company_address?.address_line_2 || '',
+        postcode: restaurant?.company_info?.company_address?.postcode || '',
+        city: restaurant?.company_info?.company_address?.city || '',
         country:
           countries.find(
             (el) =>
-              el.label === data?.data?.company_info?.company_address?.country
+              el.label === restaurant?.company_info?.company_address?.country
           ) || countries.find((el) => el.label === 'United Kingdom')
       }
     }),
     [
-      data?.data?.company_info?.company_name,
-      data?.data?.company_info?.company_number,
-      data?.data?.company_info?.company_address?.address_line_1,
-      data?.data?.company_info?.company_address?.address_line_2,
-      data?.data?.company_info?.company_address?.postcode,
-      data?.data?.company_info?.company_address?.city,
-      data?.data?.company_info?.company_address?.country
+      restaurant?.company_info?.company_name,
+      restaurant?.company_info?.company_number,
+      restaurant?.company_info?.company_address?.address_line_1,
+      restaurant?.company_info?.company_address?.address_line_2,
+      restaurant?.company_info?.company_address?.postcode,
+      restaurant?.company_info?.company_address?.city,
+      restaurant?.company_info?.company_address?.country
     ]
   );
 

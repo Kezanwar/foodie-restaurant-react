@@ -1,8 +1,4 @@
-// @mui
 import { styled } from '@mui/material/styles';
-// utils
-
-// ----------------------------------------------------------------------
 
 export const StyledRoot = styled('main')(() => ({
   minHeight: '60%',
