@@ -141,14 +141,12 @@ export default function Overview() {
     locations
   } = data?.data || {};
 
-  const { impressions, views, favourites } =
-    impressions_views_favourites?.[0] || {};
+  const { views, favourites } = impressions_views_favourites?.[0] || {};
 
   const dataArray = useMemo(() => {
     if (data?.data) {
       return Object.entries({
         views,
-        impressions,
         followers,
         favourites,
         booking_clicks

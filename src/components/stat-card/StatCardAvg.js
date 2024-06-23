@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Typography, styled, useTheme } from '@mui/material';
 
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 
@@ -72,10 +72,10 @@ const StatCardAvg = React.memo(({ title, avg_per_day, value }) => {
           titleIcon: (
             <TitleIconWrapper
               backgroundColor={
-                mode === 'light' ? 'success.lighter' : 'transparent'
+                mode === 'light' ? 'error.lighter' : 'transparent'
               }
             >
-              <BookmarkAddedOutlinedIcon color="success" />
+              <FavoriteBorderOutlinedIcon color="error" />
             </TitleIconWrapper>
           ),
           desc: 'Total user favourites'

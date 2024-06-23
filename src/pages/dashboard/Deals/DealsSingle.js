@@ -318,11 +318,6 @@ const DealsSingle = () => {
         </InsightsContainer>
         <DashboardStatGrid>
           <StatCardAvg
-            avg_per_day={deal?.averages?.unique_views || 0}
-            title={'Impressions'}
-            value={deal?.counts?.unique_views || 0}
-          />
-          <StatCardAvg
             avg_per_day={deal?.averages?.views || 0}
             title={'Views'}
             value={deal?.counts?.views || 0}

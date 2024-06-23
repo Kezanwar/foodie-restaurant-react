@@ -61,20 +61,20 @@ const StatCardDashboard = React.memo(({ name, value }) => {
               <MouseOutlinedIcon color="warning" />
             </TitleIconWrapper>
           ),
-          desc: 'Total book now clicks'
+          desc: 'Total Booking Link Clicks'
         };
       case 'Followers':
         return {
           titleIcon: (
             <TitleIconWrapper
               backgroundColor={
-                mode === 'light' ? 'error.lighter' : 'transparent'
+                mode === 'light' ? 'success.lighter' : 'transparent'
               }
             >
-              <FavoriteBorderOutlinedIcon color="error" />
+              <BookmarkAddedOutlinedIcon color="success" />
             </TitleIconWrapper>
           ),
-          desc: 'Total restaurant followers'
+          desc: 'Total Restaurant Followers'
         };
       case 'Views':
         return {
@@ -89,7 +89,7 @@ const StatCardDashboard = React.memo(({ name, value }) => {
               />
             </TitleIconWrapper>
           ),
-          desc: 'Total deal views'
+          desc: 'Total Locations & Deals Views'
         };
 
       case 'Favourites':
@@ -97,13 +97,13 @@ const StatCardDashboard = React.memo(({ name, value }) => {
           titleIcon: (
             <TitleIconWrapper
               backgroundColor={
-                mode === 'light' ? 'success.lighter' : 'transparent'
+                mode === 'light' ? 'error.lighter' : 'transparent'
               }
             >
-              <BookmarkAddedOutlinedIcon color="success" />
+              <FavoriteBorderOutlinedIcon color="error" />
             </TitleIconWrapper>
           ),
-          desc: 'Total deal favourites'
+          desc: 'Total Deal Favourites'
         };
       default:
         return {
