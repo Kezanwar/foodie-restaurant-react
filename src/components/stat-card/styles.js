@@ -12,7 +12,7 @@ export const StatCardWrapperStyled = styled(Box, {
         : title === 'Favourites'
         ? alpha(theme.palette.error.light, 0.1)
         : title === 'Booking Clicks'
-        ? alpha(theme.palette.warning.light, 0.1)
+        ? alpha(theme.palette.secondary.light, 0.1)
         : title === 'Followers'
         ? alpha(theme.palette.success.light, 0.1)
         : '',
@@ -24,7 +24,7 @@ export const StatCardWrapperStyled = styled(Box, {
         : title === 'Favourites'
         ? theme.palette.error.main
         : title === 'Booking Clicks'
-        ? theme.palette.warning.main
+        ? theme.palette.secondary.main
         : title === 'Followers'
         ? theme.palette.success.main
         : '',

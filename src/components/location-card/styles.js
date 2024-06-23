@@ -4,7 +4,7 @@ import MotionDivViewport from '../animate/MotionDivViewport';
 
 export const LocationCardStyled = styled(MotionDivViewport)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
-  border: `2px solid ${alpha(theme.palette.primary.lighter, 0.75)}`,
+  border: `1.5px solid ${alpha(theme.palette.primary.lighter, 0.75)}`,
   //   boxShadow: theme.shadows[19],
   width: `calc(33.33% - ${theme.spacing(2)})`,
   padding: theme.spacing(2.5),

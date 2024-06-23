@@ -1,24 +1,16 @@
 /* eslint-disable object-shorthand */
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
+
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router';
-import {
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
-import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 import useExpiredDealsQuery from 'hooks/queries/useExpiredDealsQuery';
@@ -30,48 +22,6 @@ import DealTableLoading from './DealTableLoading';
 import { CustomHeaderCell } from './styles';
 import Label from 'components/label/Label';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
-
-const menuIconProps = {
-  fontSize: 'small',
-  sx: { mr: 1 },
-  color: 'primary'
-};
-
-const ActionMenu = React.memo(
-  ({ dealId, handleView, handleEdit, handleExpire }) => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-      event.stopPropagation();
-      setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
-    return (
-      <div>
-        <IconButton color="info" onClick={handleClick}>
-          {/* {params.value} */}
-          <MoreVertIcon fontSize="small" />
-        </IconButton>
-        <Menu
-          // MenuListProps={{ sx: { minWidth: 120 } }}
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={() => handleView(dealId)}>
-            <VisibilityOutlinedIcon {...menuIconProps} /> View deal
-          </MenuItem>
-          <MenuItem onClick={handleEdit}>
-            <DriveFileRenameOutlineOutlinedIcon {...menuIconProps} /> Create new
-            from deal
-          </MenuItem>
-        </Menu>
-      </div>
-    );
-  }
-);
 
 ExpiredDealTable.propTypes = {};
 
@@ -129,7 +79,9 @@ export default function ExpiredDealTable() {
       },
       {
         field: 'start_date',
-        headerName: 'Start date',
+        headerName: 'Start',
+        align: 'right',
+        headerAlign: 'right',
         width: 160,
         type: 'date',
         renderCell: (params) => (
@@ -146,9 +98,11 @@ export default function ExpiredDealTable() {
       },
       {
         field: 'end_date',
-        headerName: 'End date',
+        headerName: 'End',
         type: 'date',
-        width: 160,
+        width: 130,
+        align: 'right',
+        headerAlign: 'right',
         flex: flex,
         renderCell: (params) => (
           <Typography>{format(params.value, 'dd/MM/yy')}</Typography>
@@ -164,11 +118,12 @@ export default function ExpiredDealTable() {
       },
       {
         field: 'days_active',
-        headerName: 'Days active',
+        headerName: 'Days Active',
         type: 'number',
+        align: 'right',
+        headerAlign: 'right',
         flex: flex,
-        align: 'center',
-        headerAlign: 'center',
+
         renderCell: (params) => {
           return (
             <Label variant={'filled'} color={'success'}>
@@ -197,8 +152,8 @@ export default function ExpiredDealTable() {
             headerName: 'Views',
             type: 'number',
             width: 120,
-            align: 'center',
-            headerAlign: 'center',
+            align: 'right',
+            headerAlign: 'right',
             flex: flex,
             renderCell: (params) => {
               const col = params.value <= 14 ? 'warning' : 'success';
@@ -218,39 +173,13 @@ export default function ExpiredDealTable() {
             }
           },
           {
-            field: 'unique_views',
-            headerName: 'Impressions',
-            type: 'number',
-            width: 180,
-            flex: flex,
-            align: 'center',
-            headerAlign: 'center',
-            renderCell: (params) => {
-              const col = params.value <= 6 ? 'warning' : 'success';
-              return (
-                <Label variant={'filled'} color={col}>
-                  {params.value}
-                </Label>
-              );
-            },
-            valueGetter: (params) => params.value,
-            renderHeader: (params) => {
-              return (
-                <CustomHeaderCell>
-                  <InsightsOutlinedIcon color="primary" />{' '}
-                  {params.colDef.headerName}
-                </CustomHeaderCell>
-              );
-            }
-          },
-          {
             field: 'favourites',
             headerName: 'Favourites',
             type: 'number',
             width: 120,
             flex: flex,
-            align: 'center',
-            headerAlign: 'center',
+            align: 'right',
+            headerAlign: 'right',
             renderCell: (params) => {
               const col = params.value <= 14 ? 'warning' : 'success';
               return (

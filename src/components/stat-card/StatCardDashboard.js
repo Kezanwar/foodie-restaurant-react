@@ -55,10 +55,10 @@ const StatCardDashboard = React.memo(({ name, value }) => {
           titleIcon: (
             <TitleIconWrapper
               backgroundColor={
-                mode === 'light' ? 'warning.lighter' : 'transparent'
+                mode === 'light' ? 'secondary.lighter' : 'transparent'
               }
             >
-              <MouseOutlinedIcon color="warning" />
+              <MouseOutlinedIcon color="secondary" />
             </TitleIconWrapper>
           ),
           desc: 'Total Booking Link Clicks'

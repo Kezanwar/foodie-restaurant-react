@@ -33,10 +33,10 @@ const DealsAll = (props) => {
 
       <Container sx={{ px: 3 }} maxWidth={'xl'}>
         <DashboardTitleContainer>
-          <DashboardTitle title={`${restaurant.name} Deals`} />
+          <DashboardTitle title="Deals" />
 
           <Typography mb={2} variant="body2" color={'text.secondary'}>
-            You can view and manage your deals here.
+            You can view and manage {restaurant.name}'s Deals here.
           </Typography>
 
           <LightLoadingButton

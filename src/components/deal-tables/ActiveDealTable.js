@@ -4,9 +4,9 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
   Box,
-  IconButton,
-  MenuItem,
-  Menu,
+  // IconButton,
+  // MenuItem,
+  // Menu,
   Typography,
   useMediaQuery
 } from '@mui/material';
@@ -19,9 +19,9 @@ import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
 import AvTimerOutlinedIcon from '@mui/icons-material/AvTimerOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
-import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
+// import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
 
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+// import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import MotionDivViewport from 'components/animate/MotionDivViewport';
 import { CustomHeaderCell } from './styles';
@@ -37,50 +37,50 @@ import { PATH_DASHBOARD } from 'routes/paths';
 
 const tableType = 'active';
 
-const menuIconProps = {
-  fontSize: 'small',
-  sx: { mr: 1 },
-  color: 'primary'
-};
+// const menuIconProps = {
+//   fontSize: 'small',
+//   sx: { mr: 1 },
+//   color: 'primary'
+// };
 
-const ActionMenu = React.memo(
-  ({ dealId, handleView, handleEdit, handleExpire }) => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-      event.stopPropagation();
-      setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
-    return (
-      <div>
-        <IconButton color="info" onClick={handleClick}>
-          {/* {params.value} */}
-          <MoreVertIcon fontSize="small" />
-        </IconButton>
-        <Menu
-          // MenuListProps={{ sx: { minWidth: 120 } }}
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={() => handleView(dealId)}>
-            <VisibilityOutlinedIcon {...menuIconProps} /> View deal
-          </MenuItem>
-          <MenuItem onClick={() => handleEdit(dealId)}>
-            <DriveFileRenameOutlineOutlinedIcon {...menuIconProps} /> Edit deal
-          </MenuItem>
-          <MenuItem onClick={() => handleExpire(dealId)}>
-            {' '}
-            <EventBusyIcon {...menuIconProps} /> Expire deal
-          </MenuItem>
-        </Menu>
-      </div>
-    );
-  }
-);
+// const ActionMenu = React.memo(
+//   ({ dealId, handleView, handleEdit, handleExpire }) => {
+//     const [anchorEl, setAnchorEl] = React.useState(null);
+//     const open = Boolean(anchorEl);
+//     const handleClick = (event) => {
+//       event.stopPropagation();
+//       setAnchorEl(event.currentTarget);
+//     };
+//     const handleClose = () => {
+//       setAnchorEl(null);
+//     };
+//     return (
+//       <div>
+//         <IconButton color="info" onClick={handleClick}>
+//           {/* {params.value} */}
+//           <MoreVertIcon fontSize="small" />
+//         </IconButton>
+//         <Menu
+//           // MenuListProps={{ sx: { minWidth: 120 } }}
+//           anchorEl={anchorEl}
+//           open={open}
+//           onClose={handleClose}
+//         >
+//           <MenuItem onClick={() => handleView(dealId)}>
+//             <VisibilityOutlinedIcon {...menuIconProps} /> View deal
+//           </MenuItem>
+//           <MenuItem onClick={() => handleEdit(dealId)}>
+//             <DriveFileRenameOutlineOutlinedIcon {...menuIconProps} /> Edit deal
+//           </MenuItem>
+//           <MenuItem onClick={() => handleExpire(dealId)}>
+//             {' '}
+//             <EventBusyIcon {...menuIconProps} /> Expire deal
+//           </MenuItem>
+//         </Menu>
+//       </div>
+//     );
+//   }
+// );
 
 ActiveDealTable.propTypes = {};
 
@@ -135,9 +135,11 @@ export default function ActiveDealTable() {
       },
       {
         field: 'end_date',
-        headerName: 'End date',
+        headerName: 'End',
+        align: 'right',
+        headerAlign: 'right',
         type: 'date',
-        width: 160,
+        width: 120,
         flex: flex,
         renderCell: (params) => (
           <Typography>{format(params.value, 'dd/MM/yy')}</Typography>
@@ -156,8 +158,8 @@ export default function ActiveDealTable() {
         headerName: 'Days active',
         type: 'number',
         flex: flex,
-        align: 'center',
-        headerAlign: 'center',
+        align: 'right',
+        headerAlign: 'right',
         renderCell: (params) => {
           return (
             <Label variant={'filled'} color={'success'}>
@@ -179,8 +181,8 @@ export default function ActiveDealTable() {
         headerName: 'Days left',
         type: 'number',
         flex: flex,
-        align: 'center',
-        headerAlign: 'center',
+        align: 'right',
+        headerAlign: 'right',
         renderCell: (params) => {
           const col =
             params.value <= 7
@@ -215,8 +217,8 @@ export default function ActiveDealTable() {
             headerName: 'Views',
             type: 'number',
             width: 120,
-            align: 'center',
-            headerAlign: 'center',
+            align: 'right',
+            headerAlign: 'right',
             flex: flex,
             renderCell: (params) => {
               const col = params.value <= 14 ? 'warning' : 'success';
@@ -236,39 +238,13 @@ export default function ActiveDealTable() {
             }
           },
           {
-            field: 'unique_views',
-            headerName: 'Impressions',
-            type: 'number',
-            width: 180,
-            flex: flex,
-            align: 'center',
-            headerAlign: 'center',
-            renderCell: (params) => {
-              const col = params.value <= 6 ? 'warning' : 'success';
-              return (
-                <Label variant={'filled'} color={col}>
-                  {params.value}
-                </Label>
-              );
-            },
-            valueGetter: (params) => params.value,
-            renderHeader: (params) => {
-              return (
-                <CustomHeaderCell>
-                  <InsightsOutlinedIcon color="primary" />{' '}
-                  {params.colDef.headerName}
-                </CustomHeaderCell>
-              );
-            }
-          },
-          {
             field: 'favourites',
             headerName: 'Favourites',
             type: 'number',
             width: 120,
             flex: flex,
-            align: 'center',
-            headerAlign: 'center',
+            align: 'right',
+            headerAlign: 'right',
             renderCell: (params) => {
               const col = params.value <= 14 ? 'warning' : 'success';
               return (

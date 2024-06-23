@@ -27,7 +27,7 @@ export const LocationsWrapper = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(6)
 }));
 
-const LocationsAll = (props) => {
+const LocationsAll = () => {
   const [deleteLocationLoading, setDeleteLocationLoading] = useState(false);
   const [deleteLocationModalOpen, setDeleteLocationModalOpen] = useState(false);
 
@@ -100,9 +100,9 @@ const LocationsAll = (props) => {
 
       <Container sx={{ px: 3, pb: 4 }} maxWidth={'xl'}>
         <DashboardTitleContainer>
-          <DashboardTitle title={`${restaurant.name} Locations`} />
+          <DashboardTitle title="Locations" />
           <Typography mb={2} variant="body2" color={'text.secondary'}>
-            You can view and manage your locations here.
+            You can view and manage {restaurant.name}'s Locations here.
           </Typography>
           <LightLoadingButton
             onClick={onAddLocationClick}

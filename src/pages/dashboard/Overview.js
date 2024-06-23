@@ -53,7 +53,7 @@ export const DealLocationStatCard = styled(Box)(({ theme }) => {
     borderRadius: theme.spacing(2),
     flex: 1,
     // boxShadow: theme.shadows[2]
-    border: `2px solid ${alpha(theme.palette.primary.lighter, 0.45)}`
+    border: `1.75px solid ${alpha(theme.palette.primary.lighter, 0.45)}`
   };
 });
 
@@ -170,10 +170,10 @@ export default function Overview() {
       <Container sx={{ px: 3, pb: 6 }} maxWidth={'xl'}>
         <Box mb={4}>
           <Typography variant="h3" component="h1">
-            {restName ? `${restName} Dashboard Overview` : 'Dashboard Overview'}
+            Dashboard Overview
           </Typography>
           <Typography variant="body2" color={'text.secondary'} paragraph>
-            Your restaurants current status and insights.
+            {restName}'s current Status and Insights.
           </Typography>
         </Box>
 
