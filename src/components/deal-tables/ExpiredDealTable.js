@@ -9,7 +9,7 @@ import DateRangeIcon from '@mui/icons-material/DateRange';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
@@ -79,7 +79,7 @@ export default function ExpiredDealTable() {
       },
       {
         field: 'start_date',
-        headerName: 'Start',
+        headerName: 'Start Date',
         align: 'right',
         headerAlign: 'right',
         width: 160,
@@ -98,7 +98,7 @@ export default function ExpiredDealTable() {
       },
       {
         field: 'end_date',
-        headerName: 'End',
+        headerName: 'End Date',
         type: 'date',
         width: 130,
         align: 'right',
@@ -191,7 +191,7 @@ export default function ExpiredDealTable() {
             renderHeader: (params) => {
               return (
                 <CustomHeaderCell>
-                  <BookmarkAddedOutlinedIcon color="primary" />{' '}
+                  <FavoriteBorderOutlinedIcon color="primary" />{' '}
                   {params.colDef.headerName}
                 </CustomHeaderCell>
               );

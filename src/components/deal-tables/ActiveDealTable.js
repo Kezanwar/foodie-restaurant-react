@@ -18,7 +18,7 @@ import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRen
 import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
 import AvTimerOutlinedIcon from '@mui/icons-material/AvTimerOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 // import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined';
 
 // import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -135,7 +135,7 @@ export default function ActiveDealTable() {
       },
       {
         field: 'end_date',
-        headerName: 'End',
+        headerName: 'End Date',
         align: 'right',
         headerAlign: 'right',
         type: 'date',
@@ -155,7 +155,7 @@ export default function ActiveDealTable() {
       },
       {
         field: 'days_active',
-        headerName: 'Days active',
+        headerName: 'Days Active',
         type: 'number',
         flex: flex,
         align: 'right',
@@ -178,7 +178,7 @@ export default function ActiveDealTable() {
       },
       {
         field: 'days_left',
-        headerName: 'Days left',
+        headerName: 'Days Left',
         type: 'number',
         flex: flex,
         align: 'right',
@@ -256,7 +256,7 @@ export default function ActiveDealTable() {
             renderHeader: (params) => {
               return (
                 <CustomHeaderCell>
-                  <BookmarkAddedOutlinedIcon color="primary" />{' '}
+                  <FavoriteBorderOutlinedIcon color="primary" />{' '}
                   {params.colDef.headerName}
                 </CustomHeaderCell>
               );
