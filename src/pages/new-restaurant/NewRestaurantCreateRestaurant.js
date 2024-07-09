@@ -376,7 +376,7 @@ const NewRestaurantCreateRestaurant = () => {
               sx={{ flex: 1 }}
               name="booking_link"
               label="Add your booking link"
-              placeholder={'e.g www.yourwebsite.com/booking'}
+              placeholder={'e.g https://www.yourwebsite.com/booking'}
               variant={'filled'}
             />
           </InputWithInfoInputContainer>

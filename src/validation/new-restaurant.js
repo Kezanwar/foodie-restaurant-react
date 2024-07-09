@@ -49,10 +49,19 @@ export const restaurantDetailsSchema = Yup.object().shape({
     .max(500, 'Bio is max 500 characters'),
   booking_link: Yup.string().test({
     test: (str) => {
-      if (str.length === 0) return true;
-      return !str.includes(' ') && str.includes('.');
+      const pattern = new RegExp(
+        '^([a-zA-Z]+:\\/\\/)?' + // protocol
+          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+          '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+          '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+          '(\\#[-a-z\\d_]*)?$', // fragment locator
+        'i'
+      );
+      return pattern.test(str);
     },
-    message: 'Booking link must not have any spaces and include a full stop',
+    message:
+      'Booking link must be a valid URL, including https:// and no spaces.',
     name: 'Booking link'
   })
 });
