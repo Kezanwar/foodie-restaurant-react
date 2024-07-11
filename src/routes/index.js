@@ -147,7 +147,14 @@ export default function Router() {
         { path: 'test', element: <Test /> }
       ]
     },
-
+    {
+      path: '/test',
+      element: (
+        <CompactLayout>
+          <Test />
+        </CompactLayout>
+      )
+    },
     { path: '*', element: <Navigate to={PATH_MISC.four0four} replace /> }
   ]);
 }

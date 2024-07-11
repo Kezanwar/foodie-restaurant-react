@@ -133,15 +133,10 @@ export default function Overview() {
   const onLocationsClick = () => nav(PATH_DASHBOARD.locations);
 
   const {
-    active_deals,
-    booking_clicks,
-    expired_deals,
-    followers,
-    impressions_views_favourites,
-    locations
+    deals: { active, expired },
+    locations,
+    stats: { views, favourites, booking_clicks, followers }
   } = data?.data || {};
-
-  const { views, favourites } = impressions_views_favourites?.[0] || {};
 
   const dataArray = useMemo(() => {
     if (data?.data) {
@@ -205,7 +200,7 @@ export default function Overview() {
                   Active
                 </Typography>
                 <Typography fontWeight={600} variant="h2" component="h2">
-                  {active_deals}
+                  {active}
                 </Typography>
               </Box>
               <Box>
@@ -217,7 +212,7 @@ export default function Overview() {
                   Expired
                 </Typography>
                 <Typography fontWeight={600} variant="h2" component="h2">
-                  {expired_deals}
+                  {expired}
                 </Typography>
               </Box>
             </DealDataWrapper>
