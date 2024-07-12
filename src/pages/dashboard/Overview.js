@@ -132,20 +132,11 @@ export default function Overview() {
   const onDealsClick = () => nav(PATH_DASHBOARD.deals);
   const onLocationsClick = () => nav(PATH_DASHBOARD.locations);
 
-  const {
-    deals: { active, expired },
-    locations,
-    stats: { views, favourites, booking_clicks, followers }
-  } = data?.data || {};
+  const { deals, locations, stats } = data?.data || {};
 
   const dataArray = useMemo(() => {
     if (data?.data) {
-      return Object.entries({
-        views,
-        followers,
-        favourites,
-        booking_clicks
-      });
+      return Object.entries(stats);
     }
     return [];
   }, [data?.data]);
@@ -200,7 +191,7 @@ export default function Overview() {
                   Active
                 </Typography>
                 <Typography fontWeight={600} variant="h2" component="h2">
-                  {active}
+                  {deals.active}
                 </Typography>
               </Box>
               <Box>
@@ -212,7 +203,7 @@ export default function Overview() {
                   Expired
                 </Typography>
                 <Typography fontWeight={600} variant="h2" component="h2">
-                  {expired}
+                  {deals.expired}
                 </Typography>
               </Box>
             </DealDataWrapper>
