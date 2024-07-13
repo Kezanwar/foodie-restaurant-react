@@ -99,7 +99,7 @@ export default function PricingPlanCard({ card, handleChoosePlan }) {
           </Stack>
         ))}
       </Stack>
-      <Box display={'flex'} justifyContent={'flex-end'}>
+      <Box display={'flex'}>
         <LightLoadingButton
           onClick={() => handleChoosePlan(subscription)}
           endIcon={<ArrowForwardIcon fontSize="inherit" />}

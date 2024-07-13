@@ -89,6 +89,7 @@ const LocationCard = ({
         <BodyText>{city}</BodyText>
         <BodyText>{country}</BodyText>
       </Stack>
+      <Box flex={1} />
       <Stack mb={2} gap={0.25}>
         <Box mb={2} display={'flex'} alignItems={'center'}>
           <Box
@@ -113,6 +114,7 @@ const LocationCard = ({
         <BodyText>{email}</BodyText>
         <BodyText>{phone_number}</BodyText>
       </Stack>
+
       <Stack gap={0.25}>
         <Box mb={2} display={'flex'} alignItems={'center'}>
           <Box
@@ -140,7 +142,7 @@ const LocationCard = ({
               key={`location-${key}`}
               flexDirection={'row'}
               alignItems={'center'}
-              mb={key !== 'sun' ? 1 : 0}
+              // mb={key !== 'sun' ? 1 : 0}
             >
               <Typography width={'50px'} mb={0.5} variant="body2">
                 {capitalize(key)}

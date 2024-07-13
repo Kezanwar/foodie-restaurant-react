@@ -8,6 +8,8 @@ export const LocationCardStyled = styled(MotionDivViewport)(({ theme }) => ({
   //   boxShadow: theme.shadows[19],
   width: `calc(33.33% - ${theme.spacing(2)})`,
   padding: theme.spacing(2.5),
+  display: 'flex',
+  flexDirection: 'column',
   borderRadius: '10px',
   position: 'relative',
   [theme.breakpoints.down(1200)]: {
