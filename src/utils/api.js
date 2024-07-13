@@ -31,6 +31,10 @@ const endpoints = {
   deleteDeal: '/rest/deals/delete',
   templateDeal: '/rest/deals/use-template',
 
+  // subscriptions
+
+  choosePlan: '/rest/subscriptions/choose-plan',
+
   // options
   getOptions: '/options',
 
@@ -177,5 +181,11 @@ export const forgotPassword = (email) => {
 export const changePassword = (token, password) => {
   return axiosInstance.patch(`${endpoints.changePassword}/${token}`, {
     password
+  });
+};
+
+export const choosePlan = (plan) => {
+  return axiosInstance.post(`${endpoints.choosePlan}`, {
+    plan
   });
 };

@@ -77,6 +77,12 @@ export const LocationEdit = Loadable(
   lazy(() => import('pages/dashboard/Locations/LocationEdit'))
 );
 
+// * Dashboard Subscription
+
+export const Subscription = Loadable(
+  lazy(() => import('pages/dashboard/Subscription/Subscription'))
+);
+
 // ----------------------------------------------------------------------
 
 // * New Restaurant Pages

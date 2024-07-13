@@ -134,7 +134,7 @@ export default function Overview() {
 
   const { deals, locations, stats } = data?.data || {};
 
-  const dataArray = useMemo(() => {
+  const statsArray = useMemo(() => {
     if (data?.data) {
       return Object.entries(stats);
     }
@@ -259,7 +259,7 @@ export default function Overview() {
         </DealLocationWrapper>
         <Subheader text={'Restaurant Insights'} />
         <DashboardStatGrid>
-          {dataArray?.map(([key, value]) => (
+          {statsArray?.map(([key, value]) => (
             <StatCardDashboard key={key} name={key} value={value || 0} />
           ))}
         </DashboardStatGrid>

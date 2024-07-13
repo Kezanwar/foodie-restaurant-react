@@ -29,7 +29,8 @@ import {
   LocationsAdd,
   LocationEdit,
   ChangePassword,
-  ForgotPassword
+  ForgotPassword,
+  Subscription
 } from './elements';
 import { PATH_AUTH, PATH_MISC, PATH_NEW_RESTAURANT } from './paths';
 import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
@@ -120,7 +121,7 @@ export default function Router() {
           ]
         },
         { path: 'users', element: <Test /> },
-        { path: 'subscription', element: <Test /> }
+        { path: 'subscription', element: <Subscription /> }
       ]
     },
     {
