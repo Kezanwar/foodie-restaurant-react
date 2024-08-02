@@ -1,6 +1,14 @@
 import PropTypes from 'prop-types';
 // @mui
-import { Card, Button, Typography, Box, Stack, styled } from '@mui/material';
+import {
+  Card,
+  Button,
+  Typography,
+  Box,
+  Stack,
+  styled,
+  useMediaQuery
+} from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 // components
 import Label from 'components/label';
@@ -12,6 +20,8 @@ import {
   PlanPremiumIcon
 } from '../../assets/icons';
 import LightLoadingButton from 'components/light-loading-button/LightLoadingButton';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
+import BlackLoadingButton from 'components/black-loading-button/BlackLoadingButton';
 
 // ----------------------------------------------------------------------
 
@@ -34,26 +44,37 @@ const CardWrapper = styled(Card)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {}
 }));
 
-export default function PricingPlanCard({ card, handleChoosePlan }) {
+export default function PricingPlanCard({ card, handleChoosePlan, isLoading }) {
   const { subscription, price, caption, lists } = card;
 
+  const isEnterprise = subscription === 'enterprise';
+
+  const { isTablet } = useCustomMediaQueries();
   return (
     <CardWrapper>
-      <Label sx={{ fontSize: 12 }} color={labelCols[subscription]}>
+      <Label sx={{ fontSize: 14 }} color={labelCols[subscription]}>
         {subscription}
       </Label>
 
       <Stack spacing={1} direction="row" sx={{ my: 2 }}>
-        <Typography variant="h5">£</Typography>
-
-        <Typography variant="h2">{price}</Typography>
+        {!isEnterprise && <Typography variant="h5">£</Typography>}
 
         <Typography
-          component="span"
-          sx={{ alignSelf: 'center', color: 'text.secondary' }}
+          mt={isEnterprise ? 0.75 : 0}
+          mb={isEnterprise ? 0.75 : 0}
+          variant={!isEnterprise ? 'h2' : 'h3'}
         >
-          .99 /mo
+          {price}
         </Typography>
+
+        {!isEnterprise && (
+          <Typography
+            component="span"
+            sx={{ alignSelf: 'center', color: 'text.secondary' }}
+          >
+            .99 /mo
+          </Typography>
+        )}
       </Stack>
 
       <Typography
@@ -68,12 +89,12 @@ export default function PricingPlanCard({ card, handleChoosePlan }) {
         {caption}
       </Typography>
 
-      <Box sx={{ width: 80, height: 80, mt: 3 }}>
+      {/* <Box sx={{ width: 80, height: 80, mt: 3 }}>
         {(subscription === 'individual' && <PlanFreeIcon />) ||
           (subscription === 'premium' && <PlanStarterIcon />) || (
             <PlanPremiumIcon />
           )}
-      </Box>
+      </Box> */}
 
       <Stack component="ul" spacing={2} sx={{ p: 0, mt: 4, mb: 5 }}>
         {lists.map((item) => (
@@ -99,13 +120,15 @@ export default function PricingPlanCard({ card, handleChoosePlan }) {
           </Stack>
         ))}
       </Stack>
-      <Box display={'flex'}>
-        <LightLoadingButton
+      <Box display={'flex'} justifyContent={isTablet ? 'flex-end' : undefined}>
+        <BlackLoadingButton
+          loading={isLoading}
+          size="md"
           onClick={() => handleChoosePlan(subscription)}
           endIcon={<ArrowForwardIcon fontSize="inherit" />}
         >
-          {'Choose Plan'}
-        </LightLoadingButton>
+          {isEnterprise ? 'Contact Sales' : 'Choose Plan'}
+        </BlackLoadingButton>
       </Box>
     </CardWrapper>
   );

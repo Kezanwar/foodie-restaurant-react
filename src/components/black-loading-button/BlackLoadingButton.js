@@ -1,22 +1,14 @@
-import React from 'react';
 import { LoadingButton } from '@mui/lab';
+import { alpha, styled } from '@mui/material';
 
-const sx = {
-  bgcolor: 'text.primary',
-  py: 1.25,
-  color: (theme) =>
-    theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+const BlackLoadingButton = styled(LoadingButton)(({ theme }) => ({
+  backgroundColor: theme.palette.grey['800'],
+  padding: theme.spacing(1),
+  color: theme.palette.common.white,
   '&:hover': {
-    bgcolor: 'text.primary',
-    color: (theme) =>
-      theme.palette.mode === 'light' ? 'common.white' : 'grey.800'
+    backgroundColor: theme.palette.grey['700']
+    // color: theme.palette.primary.main
   }
-};
-
-const BlackLoadingButton = (props) => {
-  return (
-    <LoadingButton variant="contained" color="inherit" sx={sx} {...props} />
-  );
-};
+}));
 
 export default BlackLoadingButton;

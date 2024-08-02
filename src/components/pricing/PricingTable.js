@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import PricingPlanCard from './PricingCard';
 import { Stack, styled } from '@mui/material';
 import { choosePlan } from 'utils/api';
+import { useSnackbar } from 'notistack';
+import { useAuthContext } from 'hooks/useAuthContext';
 
 export const _pricingPlans = [
   {
     subscription: 'individual',
-    price: 59,
+    price: 49,
     caption:
       'The perfect package for individual Restaurants with a single location',
     lists: [
@@ -19,7 +21,7 @@ export const _pricingPlans = [
   },
   {
     subscription: 'premium',
-    price: 109,
+    price: 89,
     caption: 'Ideal package for a medium sized business with 2-5 locations',
     lists: [
       { text: '3 prototypes', isAvailable: true },
@@ -31,7 +33,7 @@ export const _pricingPlans = [
   },
   {
     subscription: 'enterprise',
-    price: 149,
+    price: 'Contact Sales',
     caption: 'Ideal package for multi-chain Restaurants with 6+ locations',
     lists: [
       { text: '3 prototypes', isAvailable: true },
@@ -52,12 +54,33 @@ const PricingWrapper = styled(Stack)(({ theme }) => ({
 }));
 
 const PricingTable = () => {
-  const [choosePlanError, setChoosePlanError] = useState(false);
+  const [choosePlanLoading, setChoosePlanLoading] = useState(false);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { user } = useAuthContext();
+
   const handleChoosePlan = async (plan) => {
     try {
-      await choosePlan(plan);
+      setChoosePlanLoading(plan);
+      const res = await choosePlan(plan);
+
+      if (plan === 'enterprise') {
+        enqueueSnackbar(
+          `Our Sales team have been notified! They will respond to you via email to ${user.email}.`
+        );
+        return;
+      }
+
+      const link = res.data.checkout_link;
+
+      window.open('https://www.facebook.com', '_blank').focus();
     } catch (error) {
-      setChoosePlanError(error?.message || 'An error occured');
+      enqueueSnackbar(error?.message || 'Sorry, an unexpected error occured.', {
+        variant: 'error'
+      });
+    } finally {
+      setChoosePlanLoading(false);
     }
   };
 
@@ -68,6 +91,9 @@ const PricingTable = () => {
           key={card.subscription}
           handleChoosePlan={handleChoosePlan}
           card={card}
+          isLoading={
+            choosePlanLoading && card.subscription === choosePlanLoading
+          }
         />
       ))}
     </PricingWrapper>

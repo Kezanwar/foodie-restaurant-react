@@ -33,9 +33,9 @@ export default function SnackbarProvider({ children }) {
       <NotistackProvider
         ref={notistackRef}
         dense
-        maxSnack={5}
+        maxSnack={6}
         preventDuplicate
-        autoHideDuration={3000}
+        autoHideDuration={4000}
         variant="success" // Set default variant
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         iconVariant={{
