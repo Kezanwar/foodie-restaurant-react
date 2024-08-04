@@ -72,9 +72,8 @@ const PricingTable = () => {
         return;
       }
 
-      const link = res.data.checkout_link;
-
-      window.open('https://www.facebook.com', '_blank').focus();
+      const link = res.data.checkout_url;
+      window.location.href = link;
     } catch (error) {
       enqueueSnackbar(error?.message || 'Sorry, an unexpected error occured.', {
         variant: 'error'
