@@ -61,11 +61,11 @@ const navConfig = [
   {
     subheader: 'Account Management',
     items: [
-      {
-        title: 'users',
-        path: PATH_DASHBOARD.users,
-        icon: ICONS.user
-      },
+      // {
+      //   title: 'users',
+      //   path: PATH_DASHBOARD.users,
+      //   icon: ICONS.user
+      // },
       {
         title: 'subscription',
         path: PATH_DASHBOARD.subscription,

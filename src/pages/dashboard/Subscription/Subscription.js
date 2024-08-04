@@ -28,7 +28,8 @@ const LocationsAll = () => {
         <DashboardTitleContainer>
           <DashboardTitle title="Subscriptions" />
           <Typography mb={2} variant="body2" color={'text.secondary'}>
-            You can view and manage {restaurant.name}'s subscriptions here.
+            You can create, view and manage {restaurant.name}'s subscription
+            here.
           </Typography>
         </DashboardTitleContainer>
         <PricingTable />

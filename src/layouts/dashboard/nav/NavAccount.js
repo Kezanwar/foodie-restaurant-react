@@ -13,9 +13,9 @@ import useRestaurantQuery from '../../../hooks/queries/useRestaurantQuery';
 const StyledRoot = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
+  padding: theme.spacing(2),
   borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: alpha(theme.palette.grey[500], 0.12)
+  backgroundColor: alpha(theme.palette.grey[500], 0.09)
 }));
 
 // ----------------------------------------------------------------------
@@ -35,7 +35,7 @@ export default function NavAccount() {
 
       <Box sx={{ ml: 2, minWidth: 0 }}>
         <Typography variant="body1" fontWeight={'500'} noWrap>
-          {`${user?.first_name} ${user?.last_name}`}
+          {`${user?.first_name?.charAt(0)} ${user?.last_name}`}
         </Typography>
 
         <Typography

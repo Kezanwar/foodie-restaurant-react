@@ -7,7 +7,7 @@ import { ICON, NAV } from '../../../config';
 // ----------------------------------------------------------------------
 
 export const StyledItem = styled(ListItemButton, {
-  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'caption',
+  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'caption'
 })(({ active, disabled, depth, caption, theme }) => {
   const isLight = theme.palette.mode === 'light';
 
@@ -15,15 +15,18 @@ export const StyledItem = styled(ListItemButton, {
 
   const activeStyle = {
     color: theme.palette.primary.main,
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+    backgroundColor: alpha(
+      theme.palette.primary.main,
+      theme.palette.action.selectedOpacity
+    ),
     ...(!isLight && {
-      color: theme.palette.primary.light,
-    }),
+      color: theme.palette.primary.light
+    })
   };
 
   const activeSubStyle = {
     color: theme.palette.text.primary,
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   };
 
   return {
@@ -39,33 +42,33 @@ export const StyledItem = styled(ListItemButton, {
     ...(subItem && {
       height: NAV.H_DASHBOARD_ITEM_SUB,
       ...(depth > 2 && {
-        paddingLeft: theme.spacing(depth),
+        paddingLeft: theme.spacing(depth)
       }),
       ...(caption && {
-        height: NAV.H_DASHBOARD_ITEM,
-      }),
+        height: NAV.H_DASHBOARD_ITEM
+      })
     }),
     // Active item
     ...(active && {
       ...activeStyle,
       '&:hover': {
-        ...activeStyle,
-      },
+        ...activeStyle
+      }
     }),
     // Active sub item
     ...(subItem &&
       active && {
         ...activeSubStyle,
         '&:hover': {
-          ...activeSubStyle,
-        },
+          ...activeSubStyle
+        }
       }),
     // Disabled
     ...(disabled && {
       '&.Mui-disabled': {
-        opacity: 0.64,
-      },
-    }),
+        opacity: 0.64
+      }
+    })
   };
 });
 
@@ -77,24 +80,25 @@ export const StyledIcon = styled(ListItemIcon)({
   justifyContent: 'center',
   width: ICON.NAV_ITEM,
   height: ICON.NAV_ITEM,
+  marginRight: 10
 });
 
 // ----------------------------------------------------------------------
 
 export const StyledDotIcon = styled('span', {
-  shouldForwardProp: (prop) => prop !== 'active',
+  shouldForwardProp: (prop) => prop !== 'active'
 })(({ active, theme }) => ({
   width: 4,
   height: 4,
   borderRadius: '50%',
   backgroundColor: theme.palette.text.disabled,
   transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shorter,
+    duration: theme.transitions.duration.shorter
   }),
   ...(active && {
     transform: 'scale(2)',
-    backgroundColor: theme.palette.primary.main,
-  }),
+    backgroundColor: theme.palette.primary.main
+  })
 }));
 
 // ----------------------------------------------------------------------
@@ -104,5 +108,5 @@ export const StyledSubheader = styled(ListSubheader)(({ theme }) => ({
   fontSize: 11,
   paddingTop: theme.spacing(3),
   paddingBottom: theme.spacing(1),
-  color: theme.palette.text.secondary,
+  color: theme.palette.text.secondary
 }));
