@@ -17,7 +17,7 @@ import { useSettingsContext } from 'components/settings';
 import Searchbar from './Searchbar';
 import AccountPopover from 'components/account-popover/index';
 
-import ModeOptions from 'components/settings/ModeOptions';
+// import ModeOptions from 'components/settings/ModeOptions';
 
 // ----------------------------------------------------------------------
 
@@ -55,13 +55,12 @@ export default function Header({ onOpenNav }) {
         direction="row"
         alignItems="center"
         justifyContent="flex-end"
-        spacing={{ xs: 0.5, sm: 1.5 }}
+        spacing={{ xs: 0.5, sm: 2 }}
       >
         {/* <LanguagePopover /> */}
         {/* <Box mr={1}>
           <ModeOptions />
         </Box> */}
-
         <AccountPopover />
       </Stack>
     </>

@@ -17,7 +17,7 @@ import { IconButtonAnimate } from 'components/animate';
 
 const OPTIONS = [
   {
-    label: 'Profile',
+    label: 'Need Help?',
     linkTo: '/'
   },
   {

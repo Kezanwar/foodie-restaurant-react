@@ -41,7 +41,8 @@ const CardWrapper = styled(Card)(({ theme }) => ({
   padding: theme.spacing(3),
   flex: 1,
   border: `dashed 1px ${theme.palette.divider}`,
-  [theme.breakpoints.down('md')]: {}
+  [theme.breakpoints.down('md')]: {},
+  boxShadow: 'none'
 }));
 
 export default function PricingPlanCard({ card, handleChoosePlan, isLoading }) {

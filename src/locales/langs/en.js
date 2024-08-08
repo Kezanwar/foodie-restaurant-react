@@ -7,8 +7,8 @@ const en = {
   },
   docs: {
     hi: `Hi`,
-    description: `Need help? \n Please check our help guide.`,
-    documentation: `Help Guide`
+    description: `Need help? \n Please check our AI powered chat service.`,
+    documentation: `Get Support`
   },
   app: `app`,
   user: `user`,

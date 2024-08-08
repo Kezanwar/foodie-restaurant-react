@@ -35,7 +35,7 @@ export default function NavAccount() {
 
       <Box sx={{ ml: 2, minWidth: 0 }}>
         <Typography variant="body1" fontWeight={'500'} noWrap>
-          {`${user?.first_name?.charAt(0)} ${user?.last_name}`}
+          {`${user?.first_name?.charAt(0)}. ${user?.last_name}`}
         </Typography>
 
         <Typography
@@ -44,7 +44,6 @@ export default function NavAccount() {
           sx={{ color: 'text.secondary', fontSize: '0.75rem' }}
         >
           {restaurantName}
-          {/* {capitalCase(user?.restaurant?.role.replace(/_/g, ' '))} */}
         </Typography>
       </Box>
     </StyledRoot>

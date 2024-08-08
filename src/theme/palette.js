@@ -15,7 +15,7 @@ const GREY = {
   700: '#454F5B',
   800: '#212B36',
   900: '#161C24',
-  901: '#171a21'
+  901: '#1e1e1f'
 };
 
 const PRIMARY = {
@@ -125,7 +125,7 @@ export default function palette(themeMode) {
     background: {
       paper: GREY[800],
       paperOpposite: GREY[100],
-      default: GREY[900],
+      default: GREY[901],
       neutral: alpha(GREY[500], 0.16)
     },
     action: {

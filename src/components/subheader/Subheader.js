@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyledSubheader } from './styles';
 
-const Subheader = ({ text, sx }) => (
-  <StyledSubheader sx={sx}>{text}</StyledSubheader>
+const Subheader = ({ text, ...props }) => (
+  <StyledSubheader {...props}>{text}</StyledSubheader>
 );
 
 Subheader.propTypes = {};

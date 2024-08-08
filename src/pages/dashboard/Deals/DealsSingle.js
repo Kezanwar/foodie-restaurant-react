@@ -24,6 +24,7 @@ import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import useExpiredDealsQuery from 'hooks/queries/useExpiredDealsQuery';
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
+import Subheader from 'components/subheader/Subheader';
 
 const DealDetailsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -306,16 +307,7 @@ const DealsSingle = () => {
             </LightLoadingButton>
           </ActionsContainer>
         </DealDetailsContainer>
-        <InsightsContainer>
-          <QueryStatsIcon color={'primary'} />
-          <Typography
-            fontSize={'22px!important'}
-            textAlign={'center'}
-            variant="h4"
-          >
-            Insights
-          </Typography>
-        </InsightsContainer>
+        <Subheader sx={{ textAlign: 'center' }} text={'Insights'} />
         <DashboardStatGrid>
           <StatCardAvg
             avg_per_day={deal?.averages?.views || 0}

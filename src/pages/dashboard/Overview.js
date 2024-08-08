@@ -156,14 +156,14 @@ export default function Overview() {
       <Container sx={{ px: 3, pb: 6 }} maxWidth={'xl'}>
         <Box mb={4}>
           <Typography variant="h3" component="h1">
-            Dashboard Overview
+            Overview
           </Typography>
           <Typography variant="body2" color={'text.secondary'} paragraph>
             {restName}'s current Status and Insights.
           </Typography>
         </Box>
 
-        <Subheader text={'Restaurant Status'} />
+        <Subheader text={'Status'} />
         <DealLocationWrapper>
           <DealLocationStatCard>
             <Box
@@ -183,25 +183,13 @@ export default function Overview() {
 
             <DealDataWrapper>
               <Box>
-                <Typography
-                  color={'text.secondary'}
-                  fontWeight={500}
-                  component="h4"
-                >
-                  Active
-                </Typography>
+                <Subheader mb={0} text={'Active'} />
                 <Typography fontWeight={600} variant="h2" component="h2">
                   {deals.active}
                 </Typography>
               </Box>
               <Box>
-                <Typography
-                  color={'text.secondary'}
-                  fontWeight={500}
-                  component="h4"
-                >
-                  Expired
-                </Typography>
+                <Subheader mb={0} text={'Expired'} />
                 <Typography fontWeight={600} variant="h2" component="h2">
                   {deals.expired}
                 </Typography>
@@ -235,13 +223,7 @@ export default function Overview() {
 
             <DealDataWrapper>
               <Box>
-                <Typography
-                  color={'text.secondary'}
-                  fontWeight={500}
-                  component="h4"
-                >
-                  Total
-                </Typography>
+                <Subheader mb={0} text={'Total'} />
                 <Typography variant="h2" fontWeight={600} component="h2">
                   {locations}
                 </Typography>
@@ -257,7 +239,7 @@ export default function Overview() {
             </Box>
           </DealLocationStatCard>
         </DealLocationWrapper>
-        <Subheader text={'Restaurant Insights'} />
+        <Subheader text={'Insights'} />
         <DashboardStatGrid>
           {statsArray?.map(([key, value]) => (
             <StatCardDashboard key={key} name={key} value={value || 0} />

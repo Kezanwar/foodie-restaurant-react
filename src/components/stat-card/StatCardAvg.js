@@ -116,7 +116,7 @@ const StatCardAvg = React.memo(({ title, avg_per_day, value }) => {
       </Typography>
       <Box display={'flex'} alignItems={'center'} gap={1} mt={4} mb={1}>
         <Typography color={'text.secondary'} variant="body2">
-          Avg per day: {avg_per_day?.toLocaleString()}
+          Avg per day: {avg_per_day?.toFixed(2)}
         </Typography>
       </Box>
     </StatCardWrapperStyled>
