@@ -39,6 +39,9 @@ import { addLocation, checkLocation } from 'utils/api';
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 import ConfirmLocationModalDashboard from 'components/confirm-location-modal/ConfirmLocationModalDashboard';
 import { PATH_DASHBOARD } from 'routes/paths';
+import Breadcrumbs from 'components/breadcrumbs';
+
+const breadcrumbs = [{ name: 'Locations', link: '/dashboard/locations' }];
 
 const LocationsAdd = () => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
@@ -229,6 +232,7 @@ const LocationsAdd = () => {
       </Helmet>
 
       <Container sx={{ px: 3, pb: 4 }} maxWidth={'xl'}>
+        <Breadcrumbs mb={2} current={'Add New'} trail={breadcrumbs} />
         <DashboardTitleContainer>
           <DashboardTitle title={'Add A Location'} />
           <Typography mb={2} variant="body2" color={'text.secondary'}>

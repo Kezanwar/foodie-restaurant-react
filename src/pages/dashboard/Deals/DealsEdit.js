@@ -47,6 +47,7 @@ import useLocationsQuery from 'hooks/queries/useLocationsQuery';
 import { editDeal } from 'utils/api';
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 import { editDealSchema } from 'validation/deals';
+import Breadcrumbs from 'components/breadcrumbs';
 
 function getElementsByText(str, tag = 'div') {
   return Array.prototype.slice
@@ -229,6 +230,14 @@ export default function DealsEdit() {
     [isTablet]
   );
 
+  const breadcrumbs = useMemo(
+    () => [
+      { name: 'Deals', link: '/dashboard/deals' },
+      { name: dealData?.data.name, link: '/dashboard/deals' }
+    ],
+    [dealData?.data.name]
+  );
+
   const dateErrorText = errors?.end_date?.message;
 
   return isLoading || locationsLoading ? (
@@ -241,7 +250,8 @@ export default function DealsEdit() {
 
       <Container sx={{ px: 3 }} maxWidth={'xl'}>
         <DashboardTitleContainer>
-          <DashboardTitle title={`Edit deal: ${dealData?.data.name}`} />
+          <Breadcrumbs mb={2} current={'Edit'} trail={breadcrumbs} />
+          <DashboardTitle title={`Edit deal`} />
           <Typography variant="body2" color={'text.secondary'}>
             {/* Use this form to create a new deal, you're allowed to have a{' '}
             <strong>maximum of {MAX_DEALS} active deals </strong> at one time.

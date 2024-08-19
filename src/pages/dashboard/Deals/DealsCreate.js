@@ -51,6 +51,9 @@ import { newDealSchema } from 'validation/deals';
 import LoadingScreen from 'components/loading-screen/LoadingScreen';
 import { DEALS_PER_LOCATION } from 'constants/deals';
 import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
+import Breadcrumbs from 'components/breadcrumbs';
+
+const breadcrumbs = [{ name: 'Deals', link: '/dashboard/deals' }];
 
 function getElementsByText(str, tag = 'div') {
   return Array.prototype.slice
@@ -353,6 +356,7 @@ export default function DealsCreate() {
       </Helmet>
 
       <Container sx={{ px: 3 }} maxWidth={'xl'}>
+        <Breadcrumbs mb={2} current={'Create New'} trail={breadcrumbs} />
         <DashboardTitleContainer>
           <DashboardTitle title="Create a new deal" />
         </DashboardTitleContainer>

@@ -15,12 +15,12 @@ export const CustomHeaderCell = styled(Box)(({ theme }) => ({
     height: '1.25rem',
     marginRight: '0.25rem',
     marginLeft: '-0.225rem'
+  },
+  [theme.breakpoints.down(1200)]: {
+    '& svg': {
+      display: 'none'
+    }
   }
-  // [theme.breakpoints.down(768)]: {
-  //   '& svg': {
-  //     display: 'none'
-  //   }
-  // }
 }));
 
 export const TableColumnHeaderText = ({ text }) => {

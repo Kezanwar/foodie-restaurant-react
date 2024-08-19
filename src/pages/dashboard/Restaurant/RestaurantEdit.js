@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   Container,
+  Link,
   Typography
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
@@ -46,6 +47,7 @@ import { editRestaurant } from 'utils/api';
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 import { image_tooltip } from 'constants/tooltips';
 import { PATH_DASHBOARD } from 'routes/paths';
+import Breadcrumbs from 'components/breadcrumbs';
 
 const uploadAvatarSx = {
   '& > *': {
@@ -61,6 +63,8 @@ const uploadAvatarSx = {
 const optEqVal = (option, value) => {
   return option.slug === value.slug;
 };
+
+const breadcrumbs = [{ name: 'Restaurant', link: '/dashboard/restaurant' }];
 
 const RestaurantEdit = () => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
@@ -208,6 +212,7 @@ const RestaurantEdit = () => {
       </Helmet>
 
       <Container sx={{ px: 3, pb: 6 }} maxWidth={'xl'}>
+        <Breadcrumbs mb={2} current={'Edit'} trail={breadcrumbs} />
         <DashboardTitleContainer>
           <DashboardTitle title={`${restaurant.name}`} />
           <Typography variant="body2" color={'text.secondary'}>

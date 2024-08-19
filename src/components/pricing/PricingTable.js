@@ -8,7 +8,7 @@ import { useAuthContext } from 'hooks/useAuthContext';
 export const _pricingPlans = [
   {
     subscription: 'individual',
-    price: 49,
+    price: 55,
     caption:
       'The perfect package for individual Restaurants with a single location',
     lists: [
@@ -21,7 +21,7 @@ export const _pricingPlans = [
   },
   {
     subscription: 'premium',
-    price: 89,
+    price: 100,
     caption: 'Ideal package for a medium sized business with 2-5 locations',
     lists: [
       { text: '3 prototypes', isAvailable: true },

@@ -3,12 +3,22 @@ import { useSnackbar } from 'notistack';
 import { format, isAfter } from 'date-fns';
 import { useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
-import { Box, Chip, Container, Typography, styled } from '@mui/material';
+import {
+  Box,
+  Chip,
+  Container,
+  IconButton,
+  MenuItem,
+  Typography,
+  styled
+} from '@mui/material';
 
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 
 import { DashboardStatGrid } from '../styles';
 import LoadingScreen from 'components/loading-screen/LoadingScreen';
@@ -25,17 +35,10 @@ import useExpiredDealsQuery from 'hooks/queries/useExpiredDealsQuery';
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
 import Subheader from 'components/subheader/Subheader';
-
-const DealDetailsContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexDirection: 'column',
-  gap: theme.spacing(2),
-  paddingTop: theme.spacing(4),
-  paddingBottom: theme.spacing(2),
-  marginBottom: theme.spacing(2)
-}));
+import Breadcrumbs from 'components/breadcrumbs';
+import Label from 'components/label';
+import { IconButtonAnimate } from 'components/animate';
+import MenuPopover from 'components/menu-popover';
 
 const StartDot = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.success.main,
@@ -60,50 +63,20 @@ const DateContainer = styled(Box)(({ theme }) => ({
 const DateWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  gap: theme.spacing(2),
+  gap: theme.spacing(4),
   marginBottom: theme.spacing(2)
 }));
 
-const ActionsContainer = styled(Box)(({ theme }) => ({
+const TitleStatusContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
-  gap: theme.spacing(8),
-  marginBottom: theme.spacing(2),
-  marginTop: theme.spacing(5),
-  [theme.breakpoints.down('md')]: {
-    gap: theme.spacing(3)
-  }
-}));
-
-const ExpiredStatusContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'isExpired'
-})(({ theme, isExpired }) => ({
-  display: 'flex',
-  borderRadius: theme.spacing(1),
-  padding: theme.spacing(1),
-  marginBottom: theme.spacing(2),
-  marginTop: theme.spacing(0),
-  backgroundColor: isExpired
-    ? theme.palette.error.main
-    : theme.palette.success.main,
-  fontSize: '14px',
-  fontWeight: 600,
-  color: '#fff'
-}));
-
-const InsightsContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
+  gap: theme.spacing(2),
   alignItems: 'center',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  gap: theme.spacing(1),
-  marginBottom: theme.spacing(3),
-  marginTop: theme.spacing(3)
+  marginBottom: theme.spacing(1)
 }));
 
 const LocationChipsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
   gap: theme.spacing(1),
   flexWrap: 'wrap'
 }));
@@ -113,12 +86,19 @@ const LocationChipList = React.memo(({ locations }) => {
     <LocationChipsContainer>
       {locations?.map((lo) => {
         return (
-          <Chip key={lo.nickname} variant="outlined" label={lo.nickname} />
+          <Chip
+            size="small"
+            key={lo.nickname}
+            variant="filled"
+            label={lo.nickname}
+          />
         );
       })}
     </LocationChipsContainer>
   );
 });
+
+const breadcrumbs = [{ name: 'Deals', link: '/dashboard/deals' }];
 
 // --------------------------------------------------------
 
@@ -127,6 +107,11 @@ const DealsSingle = () => {
   const { data, error, isLoading, refetch, remove } = useSingleDealQuery(id);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [openPopover, setOpenPopover] = useState(null);
+
+  const handleOpenPopover = (event) => {
+    setOpenPopover(event.currentTarget);
+  };
 
   const { isTablet } = useCustomMediaQueries();
 
@@ -173,6 +158,8 @@ const DealsSingle = () => {
         enqueueSnackbar(`Unable to expire ${deal?.name} please try again`, {
           variant: 'error'
         });
+      } finally {
+        setOpenPopover(false);
       }
     }
   }, [deal?._id, deal?.name]);
@@ -239,38 +226,93 @@ const DealsSingle = () => {
         <title> {deal?.name ? `${deal?.name} | Deal` : 'Foodie'}</title>
       </Helmet>
       <Container sx={{ px: 3, pb: 6 }} maxWidth={'xl'}>
-        <DealDetailsContainer>
-          <Typography textAlign={'center'} variant="h1">
-            {deal?.name}
-          </Typography>
+        <Breadcrumbs mb={2} current={deal?.name} trail={breadcrumbs} />
+        <Box mb={4}>
+          <TitleStatusContainer>
+            <Typography variant="h3">{deal?.name}</Typography>
+            <Label
+              sx={{ fontSize: 14 }}
+              color={isExpired ? 'error' : 'success'}
+              mt={0.5}
+            >
+              {isExpired ? 'Expired' : 'Active'}
+            </Label>
+            <IconButton
+              onClick={handleOpenPopover}
+              sx={{ ml: -1, mt: 0.5 }}
+              size="small"
+            >
+              <MoreHorizOutlinedIcon />
+            </IconButton>
+            <MenuPopover
+              open={openPopover}
+              onClose={() => setOpenPopover(false)}
+              sx={{ width: 200, p: 0 }}
+            >
+              {isExpired && (
+                <MenuItem onClick={onUseAsTemplate} sx={{ m: 1 }}>
+                  <DriveFileRenameOutlineOutlinedIcon /> Use as template
+                </MenuItem>
+              )}
+              {!isExpired && (
+                <MenuItem onClick={onEdit} sx={{ m: 1 }}>
+                  <DriveFileRenameOutlineOutlinedIcon />
+                  Edit
+                </MenuItem>
+              )}
+              {!isExpired && startsLater && (
+                <MenuItem onClick={onExpireOpen} sx={{ m: 1 }}>
+                  <EventBusyIcon /> Expire
+                </MenuItem>
+              )}
+              <MenuItem onClick={onDeleteOpen} sx={{ m: 1 }}>
+                <DeleteOutlineIcon /> Delete
+              </MenuItem>
+            </MenuPopover>
+          </TitleStatusContainer>
+
           <Typography
-            mb={2}
-            textAlign={'center'}
+            mb={4}
             maxWidth={isTablet ? '90%' : '60%'}
             variant="body2"
             color={'text.secondary'}
           >
-            {deal?.description}
+            {deal?.description} Lorem ipsum dolor, sit amet consectetur
+            adipisicing elit. Saepe qui animi velit, eum a eius minus voluptates
+            nisi vel laborum consequatur. Error totam voluptates rerum iste quis
+            cum aspernatur perferendis sunt debitis praesentium, animi
+            consectetur suscipit enim eos fugiat asperiores.
           </Typography>
-          <ExpiredStatusContainer isExpired={isExpired}>
-            {isExpired ? 'Expired' : 'Active'}
-          </ExpiredStatusContainer>
+
           <DateWrapper>
-            <DateContainer>
-              <StartDot />{' '}
-              <Typography fontSize={'16px'}>
-                {format(new Date(deal?.start_date || null), 'EEE do MMM yyyy')}
-              </Typography>
-            </DateContainer>
-            <DateContainer>
-              <EndDot />{' '}
-              <Typography fontSize={'16px'}>
-                {format(new Date(deal?.end_date || null), 'EEE do MMM yyyy')}
-              </Typography>
-            </DateContainer>
+            <div>
+              <Subheader mb={1.5} text={'Start date'} />
+              <DateContainer>
+                <StartDot />{' '}
+                <Typography fontSize={'16px'}>
+                  {format(
+                    new Date(deal?.start_date || null),
+                    'EEE do MMM yyyy'
+                  )}
+                </Typography>
+              </DateContainer>
+            </div>
+            <div>
+              <Subheader mb={1.5} text={'End date'} />
+              <DateContainer>
+                <EndDot />{' '}
+                <Typography fontSize={'16px'}>
+                  {format(new Date(deal?.end_date || null), 'EEE do MMM yyyy')}
+                </Typography>
+              </DateContainer>
+            </div>
           </DateWrapper>
-          <LocationChipList locations={deal?.locations} />
-          <ActionsContainer>
+          <Box>
+            <Subheader mt={4} mb={1.5} text={'Locations'} />
+            <LocationChipList locations={deal?.locations} />
+          </Box>
+
+          {/* <ActionsContainer>
             {isExpired && (
               <LightLoadingButton
                 onClick={onUseAsTemplate}
@@ -305,9 +347,9 @@ const DealsSingle = () => {
             >
               Delete
             </LightLoadingButton>
-          </ActionsContainer>
-        </DealDetailsContainer>
-        <Subheader sx={{ textAlign: 'center' }} text={'Insights'} />
+          </ActionsContainer> */}
+        </Box>
+        <Subheader text={'Insights'} />
         <DashboardStatGrid>
           <StatCardAvg
             avg_per_day={deal?.averages?.views || 0}

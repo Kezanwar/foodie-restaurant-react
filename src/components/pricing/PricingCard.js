@@ -1,24 +1,16 @@
 import PropTypes from 'prop-types';
 // @mui
-import {
-  Card,
-  Button,
-  Typography,
-  Box,
-  Stack,
-  styled,
-  useMediaQuery
-} from '@mui/material';
+import { Card, Typography, Box, Stack, styled } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 // components
 import Label from 'components/label';
 import Iconify from 'components/iconify';
 // assets
-import {
-  PlanFreeIcon,
-  PlanStarterIcon,
-  PlanPremiumIcon
-} from '../../assets/icons';
+// import {
+//   PlanFreeIcon,
+//   PlanStarterIcon,
+//   PlanPremiumIcon
+// } from '../../assets/icons';
 import LightLoadingButton from 'components/light-loading-button/LightLoadingButton';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import BlackLoadingButton from 'components/black-loading-button/BlackLoadingButton';
@@ -53,7 +45,10 @@ export default function PricingPlanCard({ card, handleChoosePlan, isLoading }) {
   const { isTablet } = useCustomMediaQueries();
   return (
     <CardWrapper>
-      <Label sx={{ fontSize: 14 }} color={labelCols[subscription]}>
+      <Label
+        sx={{ fontSize: 12, textTransform: 'uppercase' }}
+        color={labelCols[subscription]}
+      >
         {subscription}
       </Label>
 
@@ -73,7 +68,7 @@ export default function PricingPlanCard({ card, handleChoosePlan, isLoading }) {
             component="span"
             sx={{ alignSelf: 'center', color: 'text.secondary' }}
           >
-            .99 /mo
+            /mo
           </Typography>
         )}
       </Stack>

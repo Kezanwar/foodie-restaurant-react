@@ -33,6 +33,9 @@ import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 import { checkEditLocation, editLocation } from 'utils/api';
 import useLocationsQuery from 'hooks/queries/useLocationsQuery';
 import { countries } from 'assets/data';
+import Breadcrumbs from 'components/breadcrumbs';
+
+const breadcrumbs = [{ name: 'Locations', link: '/dashboard/locations' }];
 
 const LocationEdit = (props) => {
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
@@ -280,8 +283,9 @@ const LocationEdit = (props) => {
       </Helmet>
 
       <Container sx={{ px: 3, pb: 4 }} maxWidth={'xl'}>
+        <Breadcrumbs mb={2} current={location.nickname} trail={breadcrumbs} />
         <DashboardTitleContainer>
-          <DashboardTitle title={`Edit Location: ${location?.nickname}`} />
+          <DashboardTitle title={`Edit Location`} />
           <Typography mb={2} variant="body2" color={'text.secondary'}>
             Edit your location using the form below.
           </Typography>
