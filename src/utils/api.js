@@ -33,7 +33,7 @@ const endpoints = {
 
   // subscriptions
 
-  choosePlan: '/rest/subscriptions/choose-plan',
+  choosePlan: '/rest/subscriptions/new/choose-plan',
 
   // options
   getOptions: '/options',
