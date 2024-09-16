@@ -91,9 +91,11 @@ export default function Router() {
           path: 'deals',
           children: [
             {
-              element: <DealsAll />,
+              element: <Navigate to={'/dashboard/deals/active'} replace />,
               index: true
             },
+            { path: 'active', element: <DealsAll /> },
+            { path: 'expired', element: <DealsAll /> },
             { path: 'create', element: <DealsCreate /> },
             { path: 'single/:id', element: <DealsSingle /> },
             { path: 'edit/:id', element: <DealsEdit /> }

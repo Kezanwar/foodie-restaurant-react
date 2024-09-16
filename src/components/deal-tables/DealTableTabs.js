@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
 import AlarmOffOutlinedIcon from '@mui/icons-material/AlarmOffOutlined';
@@ -7,6 +7,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import ActiveDealTable from './ActiveDealTable';
 import ExpiredDealTable from './ExpiredDealTable';
+import { useLocation, useNavigate } from 'react-router';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -37,11 +38,21 @@ function a11yProps(index) {
   };
 }
 
+const tabs = { active: 0, expired: 1 };
+const to = { 0: 'active', 1: 'expired' };
+
 export default function DealTableTabs() {
-  const [value, setValue] = React.useState(0);
+  const location = useLocation();
+
+  const nav = useNavigate();
+
+  const value = useMemo(() => {
+    const split = location.pathname.split('/');
+    return tabs[split[split.length - 1]];
+  }, [location.pathname]);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    nav(`/dashboard/deals/${to[newValue]}`);
   };
 
   return (
@@ -74,6 +85,7 @@ export default function DealTableTabs() {
           />
         </Tabs>
       </Box>
+
       <TabPanel value={value} index={0}>
         <ActiveDealTable />
       </TabPanel>
