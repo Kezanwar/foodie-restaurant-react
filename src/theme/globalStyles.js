@@ -26,6 +26,7 @@ export default function GlobalStyles() {
         '*': {
           boxSizing: 'border-box'
         },
+
         html: {
           margin: 0,
           padding: 0,
@@ -70,6 +71,14 @@ export default function GlobalStyles() {
         ul: {
           margin: 0,
           padding: 0
+        },
+        '.SnackbarItem-message ': {
+          alignItems: 'start!important',
+          maxWidth: '320px',
+          span: {
+            height: 'max-content',
+            width: 'max-content'
+          }
         },
         '.scroll-styles': {
           ...scrollBarStyles
