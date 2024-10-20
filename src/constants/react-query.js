@@ -19,7 +19,8 @@ export const DEALS_QUERY = {
 export const OPTIONS_QUERY = 'OPTIONS';
 
 export const SUBSCRIPTION_QUERY = {
-  SUB: 'SUB'
+  SUB: 'SUB',
+  INVOICES: 'INVOICES'
 };
 
 export const cacheValues = {

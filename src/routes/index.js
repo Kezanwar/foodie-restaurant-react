@@ -31,7 +31,8 @@ import {
   ChangePassword,
   ForgotPassword,
   ChoosePlan,
-  Plan
+  Plan,
+  Invoices
 } from './elements';
 import { PATH_AUTH, PATH_MISC, PATH_NEW_RESTAURANT } from './paths';
 import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
@@ -135,7 +136,7 @@ export default function Router() {
             },
             { path: 'plan', element: <Plan /> },
             { path: 'billing', element: <ChoosePlan /> },
-            { path: 'invoices', element: <ChoosePlan /> },
+            { path: 'invoices', element: <Invoices /> },
             { path: 'choose-plan', element: <ChoosePlan /> }
           ]
         }

@@ -1,17 +1,13 @@
-import {
-  Box,
-  CircularProgress,
-  Stack,
-  styled,
-  Typography
-} from '@mui/material';
+import React from 'react';
+import { Box, Stack, styled, Typography } from '@mui/material';
+import { differenceInDays, format } from 'date-fns';
+import { Helmet } from 'react-helmet-async';
 
 import PlanLabel, { StyledLabel } from 'components/plan-label';
 import Subheader from 'components/subheader/Subheader';
-import { differenceInDays, format } from 'date-fns';
+
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
-import React, { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+
 import Permissions from 'utils/permissions';
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import useSubscriptionQuery from 'hooks/queries/useSubscriptionQuery';
@@ -19,6 +15,7 @@ import LightLoadingButton from 'components/light-loading-button/LightLoadingButt
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
+import { PlanLoading } from './styles';
 
 const PlanWrapper = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -92,19 +89,6 @@ const plan_details = {
     price: 'Contact Sales',
     caption: 'Ideal package for multi-chain Restaurants with 6+ locations'
   }
-};
-
-const PlanLoading = () => {
-  return (
-    <Box
-      display={'flex'}
-      justifyContent={'center'}
-      alignItems={'center'}
-      flexDirection={'column'}
-    >
-      <CircularProgress size={24} />
-    </Box>
-  );
 };
 
 const Plan = () => {

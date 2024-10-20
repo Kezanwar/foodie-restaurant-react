@@ -31,10 +31,6 @@ const endpoints = {
   deleteDeal: '/rest/deals/delete',
   templateDeal: '/rest/deals/use-template',
 
-  // subscriptions
-
-  choosePlan: '/rest/subscriptions/new/choose-plan',
-
   // options
   getOptions: '/options',
 
@@ -42,8 +38,11 @@ const endpoints = {
   forgotPassword: '/auth/forgot-password',
   changePassword: '/auth/change-password',
 
-  // subsription
-  getSubscription: '/rest/subscriptions/manage'
+  // subsrciptions
+
+  getSubscription: '/rest/subscriptions/manage',
+  getInvoices: '/rest/subscriptions/manage/invoices',
+  choosePlan: '/rest/subscriptions/new/choose-plan'
 };
 
 //* ------ Overview --------
@@ -197,4 +196,8 @@ export const choosePlan = (plan) => {
 
 export const getSubscription = () => {
   return axiosInstance.get(endpoints.getSubscription);
+};
+
+export const getInvoices = () => {
+  return axiosInstance.get(endpoints.getInvoices);
 };

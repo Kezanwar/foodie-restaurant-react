@@ -83,6 +83,10 @@ export const Plan = Loadable(
   lazy(() => import('pages/dashboard/Subscription/Plan'))
 );
 
+export const Invoices = Loadable(
+  lazy(() => import('pages/dashboard/Subscription/Invoices'))
+);
+
 export const ChoosePlan = Loadable(
   lazy(() => import('pages/dashboard/Subscription/ChoosePlan'))
 );

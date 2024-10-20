@@ -27,3 +27,7 @@ export function fToNow(date) {
 }
 
 export const formattedDateString = (date) => format(date, 'yyyy-MM-dd');
+
+export const formatInvoiceDate = (unix) => {
+  return format(new Date(unix), 'd/M/yy');
+};
