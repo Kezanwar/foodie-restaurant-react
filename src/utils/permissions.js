@@ -208,6 +208,42 @@ class Permissions {
     return this.#SUBSCRIBES_STATUS.NOT_SUBSCRIBED;
   }
 
+  static isSubscribed(sub) {
+    return this.check(this.#SUBSCRIBES_STATUS.SUBSCRIBED, sub);
+  }
+
+  static #SUBSCRIPTION_TIER = {
+    INDIVIDUAL: 1,
+    PREMIUM: 2,
+    ENTERPRISE: 4
+  };
+
+  static get individual_tier() {
+    return this.#SUBSCRIPTION_TIER.INDIVIDUAL;
+  }
+
+  static get premium_tier() {
+    return this.#SUBSCRIPTION_TIER.PREMIUM;
+  }
+
+  static get enterpise_tier() {
+    return this.#SUBSCRIPTION_TIER.ENTERPRISE;
+  }
+
+  static #TIER_MAP = {
+    1: 'individual',
+    2: 'premium',
+    4: 'enterprise'
+  };
+
+  static getTier(tier) {
+    return this.#TIER_MAP[tier];
+  }
+
+  static isEnterprise(tier) {
+    return this.check(this.#SUBSCRIPTION_TIER.ENTERPRISE, tier);
+  }
+
   // generic
   static check(haystack, needle) {
     return !!(haystack & needle);

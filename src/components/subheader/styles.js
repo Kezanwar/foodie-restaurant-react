@@ -7,7 +7,6 @@ export const StyledSubheader = styled(Typography)(
     // letterSpacing: 1.15,
     textTransform: 'uppercase',
     fontWeight,
-    color: theme.palette.text.primary,
     padding: 0,
     marginBottom: theme.spacing(mb),
     ...sx

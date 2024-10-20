@@ -47,13 +47,12 @@ export const StyledIcon = styled(ListItemIcon)({
 export const DealLocationStatCard = styled(Box)(({ theme }) => {
   const isDark = theme.palette.mode === 'dark';
   return {
-    backgroundColor: alpha(theme.palette.primary.light, 0.01),
     color: isDark ? 'white' : theme.palette.grey[900],
     padding: theme.spacing(2.5),
     borderRadius: theme.spacing(2),
     flex: 1,
     // boxShadow: theme.shadows[2]
-    border: `1.75px solid ${alpha(theme.palette.primary.lighter, 0.45)}`
+    border: `dashed 1px ${theme.palette.divider}`
   };
 });
 

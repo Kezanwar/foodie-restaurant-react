@@ -267,7 +267,7 @@ const AddressAutocomplete = ({ handleOnAddressSelect }) => {
                       handleOnSelectPostcode(result);
                     }}
                   >
-                    {`${formatted}`}
+                    {formatted}
                   </MenuItem>
                 );
               })

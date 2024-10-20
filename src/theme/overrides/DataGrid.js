@@ -7,10 +7,9 @@ export default function DataGrid(theme) {
     MuiDataGrid: {
       styleOverrides: {
         root: {
-          // borderRadius: 0,
-          borderRadius: '8px',
-          // paddingTop: 4,
-          border: `none`,
+          borderRadius: theme.spacing(2),
+          // border: `dashed 1px ${theme.palette.divider}`,
+          border: 'none',
           '& .MuiTablePagination-root': {
             borderTop: 0
           }
@@ -32,7 +31,7 @@ export default function DataGrid(theme) {
           }
         },
         row: {
-          borderBottom: `1px solid ${theme.palette.divider}`,
+          borderBottom: `1px dashed ${theme.palette.divider}`,
           '&:last-of-type': {
             borderBottom: `none`
           },

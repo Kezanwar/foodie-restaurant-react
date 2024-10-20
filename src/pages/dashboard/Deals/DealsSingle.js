@@ -16,15 +16,13 @@ import {
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 
 import { DashboardStatGrid } from '../styles';
 import LoadingScreen from 'components/loading-screen/LoadingScreen';
 import StatCardAvg from 'components/stat-card/StatCardAvg';
 import AcceptDeclineModal from 'components/accept-decline-modal/AcceptDeclineModal';
-import LightLoadingButton from 'components/light-loading-button/LightLoadingButton';
 
 import { PATH_DASHBOARD } from 'routes/paths';
 import { deleteDeal, expireDeal } from 'utils/api';
@@ -37,7 +35,7 @@ import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
 import Subheader from 'components/subheader/Subheader';
 import Breadcrumbs from 'components/breadcrumbs';
 import Label from 'components/label';
-import { IconButtonAnimate } from 'components/animate';
+
 import MenuPopover from 'components/menu-popover';
 
 const StartDot = styled(Box)(({ theme }) => ({
@@ -79,6 +77,12 @@ const LocationChipsContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   gap: theme.spacing(1),
   flexWrap: 'wrap'
+}));
+
+const DealWrapper = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(3),
+  border: `1px dashed ${theme.palette.divider}`,
+  borderRadius: theme.spacing(2)
 }));
 
 const LocationChipList = React.memo(({ locations }) => {
@@ -226,8 +230,8 @@ const DealsSingle = () => {
         <title> {deal?.name ? `${deal?.name} | Deal` : 'Foodie'}</title>
       </Helmet>
       <Container sx={{ px: 3, pb: 6 }} maxWidth={'xl'}>
-        <Breadcrumbs mb={2} current={deal?.name} trail={breadcrumbs} />
-        <Box mb={4}>
+        <Breadcrumbs mb={3} current={deal?.name} trail={breadcrumbs} />
+        <DealWrapper mb={4}>
           <TitleStatusContainer>
             <Typography variant="h3">{deal?.name}</Typography>
             <Label
@@ -348,7 +352,7 @@ const DealsSingle = () => {
               Delete
             </LightLoadingButton>
           </ActionsContainer> */}
-        </Box>
+        </DealWrapper>
         <Subheader text={'Insights'} />
         <DashboardStatGrid>
           <StatCardAvg

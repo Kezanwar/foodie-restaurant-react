@@ -32,7 +32,7 @@ const DealsAll = (props) => {
       </Helmet>
 
       <Container sx={{ px: 3 }} maxWidth={'xl'}>
-        <DashboardTitleContainer>
+        <DashboardTitleContainer key={'deals-all'}>
           <DashboardTitle title="Deals" />
 
           <Typography mb={2} variant="body2" color={'text.secondary'}>

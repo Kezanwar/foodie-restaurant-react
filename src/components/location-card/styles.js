@@ -1,16 +1,18 @@
-import { alpha, Box, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import { m } from 'framer-motion';
 import MotionDivViewport from '../animate/MotionDivViewport';
 
-export const LocationCardStyled = styled(MotionDivViewport)(({ theme }) => ({
+export const LocationCardStyled = styled(MotionDivViewport, {
+  shouldForwardProp: (p) => p !== 'layout'
+})(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
-  border: `1.5px solid ${alpha(theme.palette.primary.lighter, 0.75)}`,
+  border: `dashed 1px ${theme.palette.divider}`,
   //   boxShadow: theme.shadows[19],
   width: `calc(33.33% - ${theme.spacing(2)})`,
   padding: theme.spacing(2.5),
   display: 'flex',
   flexDirection: 'column',
-  borderRadius: '10px',
+  borderRadius: theme.spacing(2),
   position: 'relative',
   [theme.breakpoints.down(1200)]: {
     width: `calc(50% - ${theme.spacing(1.5)})`

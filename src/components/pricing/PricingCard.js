@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
 // @mui
 import { Card, Typography, Box, Stack, styled } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 // components
-import Label from 'components/label';
+
 import Iconify from 'components/iconify';
 // assets
 // import {
@@ -11,23 +10,10 @@ import Iconify from 'components/iconify';
 //   PlanStarterIcon,
 //   PlanPremiumIcon
 // } from '../../assets/icons';
-import LightLoadingButton from 'components/light-loading-button/LightLoadingButton';
+
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import BlackLoadingButton from 'components/black-loading-button/BlackLoadingButton';
-
-// ----------------------------------------------------------------------
-
-PricingPlanCard.propTypes = {
-  sx: PropTypes.object,
-  card: PropTypes.object,
-  index: PropTypes.number
-};
-
-const labelCols = {
-  individual: 'secondary',
-  premium: 'success',
-  enterprise: 'primary'
-};
+import PlanLabel from 'components/plan-label';
 
 const CardWrapper = styled(Card)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -45,12 +31,7 @@ export default function PricingPlanCard({ card, handleChoosePlan, isLoading }) {
   const { isTablet } = useCustomMediaQueries();
   return (
     <CardWrapper>
-      <Label
-        sx={{ fontSize: 12, textTransform: 'uppercase' }}
-        color={labelCols[subscription]}
-      >
-        {subscription}
-      </Label>
+      <PlanLabel plan={subscription} />
 
       <Stack spacing={1} direction="row" sx={{ my: 2 }}>
         {!isEnterprise && <Typography variant="h5">£</Typography>}
@@ -78,7 +59,7 @@ export default function PricingPlanCard({ card, handleChoosePlan, isLoading }) {
         sx={{
           fontSize: 13,
           color: 'text.secondary',
-          textTransform: 'capitalize',
+
           maxWidth: '20px'
         }}
       >

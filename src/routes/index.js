@@ -30,12 +30,14 @@ import {
   LocationEdit,
   ChangePassword,
   ForgotPassword,
-  Subscription
+  ChoosePlan,
+  Plan
 } from './elements';
 import { PATH_AUTH, PATH_MISC, PATH_NEW_RESTAURANT } from './paths';
 import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
 import NewRestaurantLayout from 'layouts/new-restaurant/NewRestaurantLayout';
 import Test from 'pages/misc/Test';
+import SubscriptionLayout from 'layouts/dashboard/subscription/SubscriptionLayout';
 
 // ----------------------------------------------------------------------
 
@@ -123,7 +125,20 @@ export default function Router() {
           ]
         },
         { path: 'users', element: <Test /> },
-        { path: 'subscription', element: <Subscription /> }
+        {
+          path: 'subscription',
+          element: <SubscriptionLayout />,
+          children: [
+            {
+              element: <Navigate to={'/dashboard/subscription/plan'} replace />,
+              index: true
+            },
+            { path: 'plan', element: <Plan /> },
+            { path: 'billing', element: <ChoosePlan /> },
+            { path: 'invoices', element: <ChoosePlan /> },
+            { path: 'choose-plan', element: <ChoosePlan /> }
+          ]
+        }
       ]
     },
     {
@@ -138,8 +153,7 @@ export default function Router() {
         { path: 'step-1', element: <NewRestaurantCompanyInfo /> },
         { path: 'step-2', element: <NewRestaurantCreateRestaurant /> },
         { path: 'step-3', element: <NewRestaurantAddLocations /> },
-        { path: 'step-4', element: <NewRestaurantYourApplication /> },
-        { path: 'subscription', element: <Box /> }
+        { path: 'step-4', element: <NewRestaurantYourApplication /> }
       ]
     },
     {

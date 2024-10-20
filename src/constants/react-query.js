@@ -18,6 +18,10 @@ export const DEALS_QUERY = {
 
 export const OPTIONS_QUERY = 'OPTIONS';
 
+export const SUBSCRIPTION_QUERY = {
+  SUB: 'SUB'
+};
+
 export const cacheValues = {
   staleTime: 10 * (60 * 1000),
   cacheTime: 15 * (60 * 1000)

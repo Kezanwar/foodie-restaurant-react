@@ -37,16 +37,12 @@ const LocationCard = ({
   const { data } = useRestaurantQuery();
 
   return (
-    <LocationCardStyled key={`location-card-${_id}`} layout>
+    <LocationCardStyled key={`location-card-${_id}`}>
       <EditIconsWrapper>
         <IconButton onClick={() => onEdit(_id)} color="info" size="small">
           <EditIcon fontSize="small" />
         </IconButton>
-        <IconButton
-          onClick={() => onDelete(_id)}
-          color="secondary"
-          size="small"
-        >
+        <IconButton onClick={() => onDelete(_id)} color="error" size="small">
           <DeleteOutlineIcon fontSize="small" />
         </IconButton>
       </EditIconsWrapper>
@@ -59,11 +55,9 @@ const LocationCard = ({
       >
         <Box mb={2} display={'flex'} alignItems={'flex-start'}>
           <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'center'}
             color={theme.palette.primary.main}
           >
             <SvgColor
@@ -71,16 +65,14 @@ const LocationCard = ({
               sx={{ width: 24, height: 24, marginLeft: -0.3 }}
             />
           </Box>
-
-          <Typography
-            ml={1}
-            pr={5.5}
-            fontWeight={600}
-            fontSize={14}
-            variant="body2"
-          >
-            {data?.data?.name} ({nickname})
-          </Typography>
+          <Box ml={1}>
+            <Typography fontWeight={600} fontSize={14} variant="body2">
+              {data?.data?.name}
+            </Typography>
+            <Typography fontWeight={500} fontSize={11} variant="body2">
+              {nickname}
+            </Typography>
+          </Box>
         </Box>
 
         <BodyText>{address_line_1}</BodyText>
@@ -93,11 +85,9 @@ const LocationCard = ({
       <Stack mb={2} gap={0.25}>
         <Box mb={2} display={'flex'} alignItems={'center'}>
           <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
+            display={'flex'}
+            alignItems={'center'}
+            justifyContent={'center'}
             margin={0}
             color={theme.palette.primary.main}
           >

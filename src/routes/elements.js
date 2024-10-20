@@ -77,10 +77,14 @@ export const LocationEdit = Loadable(
   lazy(() => import('pages/dashboard/Locations/LocationEdit'))
 );
 
-// * Dashboard Subscription
+// * Dashboard Subscriptions
 
-export const Subscription = Loadable(
-  lazy(() => import('pages/dashboard/Subscription/Subscription'))
+export const Plan = Loadable(
+  lazy(() => import('pages/dashboard/Subscription/Plan'))
+);
+
+export const ChoosePlan = Loadable(
+  lazy(() => import('pages/dashboard/Subscription/ChoosePlan'))
 );
 
 // ----------------------------------------------------------------------

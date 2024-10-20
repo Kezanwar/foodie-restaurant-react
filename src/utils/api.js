@@ -40,7 +40,10 @@ const endpoints = {
 
   // account management
   forgotPassword: '/auth/forgot-password',
-  changePassword: '/auth/change-password'
+  changePassword: '/auth/change-password',
+
+  // subsription
+  getSubscription: '/rest/subscriptions/manage'
 };
 
 //* ------ Overview --------
@@ -184,8 +187,14 @@ export const changePassword = (token, password) => {
   });
 };
 
+// * ---------------- Subscription  -------------------
+
 export const choosePlan = (plan) => {
   return axiosInstance.post(`${endpoints.choosePlan}`, {
     plan
   });
+};
+
+export const getSubscription = () => {
+  return axiosInstance.get(endpoints.getSubscription);
 };
