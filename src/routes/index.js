@@ -32,7 +32,8 @@ import {
   ForgotPassword,
   ChoosePlan,
   Plan,
-  Invoices
+  Invoices,
+  MaintenanceMode
 } from './elements';
 import { PATH_AUTH, PATH_MISC, PATH_NEW_RESTAURANT } from './paths';
 import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
@@ -162,16 +163,8 @@ export default function Router() {
       children: [
         { path: PATH_MISC.four0four, element: <Page404 /> },
         { path: PATH_MISC.confirm_email, element: <PageConfirmEmail /> },
-        { path: 'test', element: <Test /> }
+        { path: PATH_MISC.maintenance_mode, element: <MaintenanceMode /> }
       ]
-    },
-    {
-      path: '/test',
-      element: (
-        <CompactLayout>
-          <Test />
-        </CompactLayout>
-      )
     },
     { path: '*', element: <Navigate to={PATH_MISC.four0four} replace /> }
   ]);

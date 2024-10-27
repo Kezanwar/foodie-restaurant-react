@@ -62,5 +62,6 @@ export const PATH_NEW_RESTAURANT = {
 
 export const PATH_MISC = {
   four0four: '/404',
-  confirm_email: '/confirm-email'
+  confirm_email: '/confirm-email',
+  maintenance_mode: '/maintenance'
 };

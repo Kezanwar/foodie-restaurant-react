@@ -124,3 +124,7 @@ export const Page404 = Loadable(lazy(() => import('pages/misc/404')));
 export const PageConfirmEmail = Loadable(
   lazy(() => import('pages/misc/ConfirmEmail'))
 );
+
+export const MaintenanceMode = Loadable(
+  lazy(() => import('pages/misc/MaintenanceMode'))
+);
