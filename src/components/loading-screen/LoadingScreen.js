@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 
 import Logo from 'components/logo/Logo';
@@ -17,7 +17,7 @@ const StyledRoot = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: theme.palette.background.default
+  backgroundColor: alpha(theme.palette.background.default, 0.8)
 }));
 
 // ----------------------------------------------------------------------

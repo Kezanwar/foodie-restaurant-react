@@ -1,6 +1,7 @@
 // @mui
 import { Card, Typography, Box, Stack, styled } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
 // components
 
 import Iconify from 'components/iconify';
@@ -23,12 +24,20 @@ const CardWrapper = styled(Card)(({ theme }) => ({
   boxShadow: 'none'
 }));
 
-export default function PricingPlanCard({ card, handleChoosePlan, isLoading }) {
+export default function PricingPlanCard({
+  card,
+  handleChoosePlan,
+  isLoading,
+  currentTier
+}) {
   const { subscription, price, caption, lists } = card;
 
   const isEnterprise = subscription === 'enterprise';
 
   const { isTablet } = useCustomMediaQueries();
+
+  const isCurrentTier = currentTier === subscription;
+
   return (
     <CardWrapper>
       <PlanLabel plan={subscription} />
@@ -101,10 +110,21 @@ export default function PricingPlanCard({ card, handleChoosePlan, isLoading }) {
         <BlackLoadingButton
           loading={isLoading}
           size="md"
+          disabled={isCurrentTier}
           onClick={() => handleChoosePlan(subscription)}
-          endIcon={<ArrowForwardIcon fontSize="inherit" />}
+          endIcon={
+            isCurrentTier ? (
+              <BookmarkAddedOutlinedIcon />
+            ) : (
+              <ArrowForwardIcon fontSize="inherit" />
+            )
+          }
         >
-          {isEnterprise ? 'Contact Sales' : 'Choose Plan'}
+          {isEnterprise
+            ? 'Contact Sales'
+            : isCurrentTier
+            ? 'Current Plan'
+            : 'Choose Plan'}
         </BlackLoadingButton>
       </Box>
     </CardWrapper>

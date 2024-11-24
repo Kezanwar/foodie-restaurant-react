@@ -41,6 +41,7 @@ const endpoints = {
   // subsrciptions
 
   getSubscription: '/rest/subscriptions/manage',
+  getBilling: '/rest/subscriptions/manage/billing',
   getInvoices: '/rest/subscriptions/manage/invoices',
   choosePlan: '/rest/subscriptions/new/choose-plan'
 };
@@ -196,6 +197,10 @@ export const choosePlan = (plan) => {
 
 export const getSubscription = () => {
   return axiosInstance.get(endpoints.getSubscription);
+};
+
+export const getBilling = () => {
+  return axiosInstance.get(endpoints.getBilling);
 };
 
 export const getInvoices = () => {

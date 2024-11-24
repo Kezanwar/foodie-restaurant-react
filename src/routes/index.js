@@ -33,7 +33,8 @@ import {
   ChoosePlan,
   Plan,
   Invoices,
-  MaintenanceMode
+  MaintenanceMode,
+  Billing
 } from './elements';
 import { PATH_AUTH, PATH_MISC, PATH_NEW_RESTAURANT } from './paths';
 import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
@@ -136,7 +137,7 @@ export default function Router() {
               index: true
             },
             { path: 'plan', element: <Plan /> },
-            { path: 'billing', element: <ChoosePlan /> },
+            { path: 'billing', element: <Billing /> },
             { path: 'invoices', element: <Invoices /> },
             { path: 'choose-plan', element: <ChoosePlan /> }
           ]

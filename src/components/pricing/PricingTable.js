@@ -4,6 +4,9 @@ import { Stack, styled } from '@mui/material';
 import { choosePlan } from 'utils/api';
 import { useSnackbar } from 'notistack';
 import { useAuthContext } from 'hooks/useAuthContext';
+import Permissions from 'utils/permissions';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
+import LoadingScreen from 'components/loading-screen';
 
 export const _pricingPlans = [
   {
@@ -60,6 +63,12 @@ const PricingTable = () => {
 
   const { user } = useAuthContext();
 
+  const resQuery = useRestaurantQuery();
+
+  const restaurant = resQuery?.data?.data || {};
+
+  const TIER = Permissions.getTier(restaurant.tier);
+
   const handleChoosePlan = async (plan) => {
     try {
       setChoosePlanLoading(plan);
@@ -83,6 +92,8 @@ const PricingTable = () => {
     }
   };
 
+  if (resQuery.isLoading) return <LoadingScreen />;
+
   return (
     <PricingWrapper>
       {_pricingPlans.map((card) => (
@@ -90,6 +101,7 @@ const PricingTable = () => {
           key={card.subscription}
           handleChoosePlan={handleChoosePlan}
           card={card}
+          currentTier={TIER}
           isLoading={
             choosePlanLoading && card.subscription === choosePlanLoading
           }

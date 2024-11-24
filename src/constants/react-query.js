@@ -20,6 +20,7 @@ export const OPTIONS_QUERY = 'OPTIONS';
 
 export const SUBSCRIPTION_QUERY = {
   SUB: 'SUB',
+  BILLING: 'BILLING',
   INVOICES: 'INVOICES'
 };
 
