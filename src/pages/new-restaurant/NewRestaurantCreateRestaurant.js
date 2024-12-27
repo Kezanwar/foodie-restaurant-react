@@ -12,7 +12,7 @@ import HelpIcon from '@mui/icons-material/Help';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import Subheader from 'components/subheader/Subheader';
-import { RHFTextField } from 'components/hook-form';
+import { RHFSelect, RHFTextField } from 'components/hook-form';
 import { pageScrollToTop } from 'utils/scroll';
 
 import Spacer from 'components/spacer/Spacer';
@@ -45,6 +45,7 @@ import { image_tooltip } from 'constants/tooltips';
 
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 import { useAuthContext } from 'hooks/useAuthContext';
+import { alcohol_license_options } from 'constants/options';
 
 const uploadAvatarSx = {
   '& > *': {
@@ -87,6 +88,7 @@ const NewRestaurantCreateRestaurant = () => {
       name: restaurant?.name || '',
       avatar: restaurant?.avatar || null,
       cuisines: restaurant?.cuisines || [],
+      alcohol_license: restaurant?.alcohol_license ?? true,
       dietary_requirements: restaurant?.dietary_requirements || [],
       is_new_avatar: !restaurant?.avatar,
       cover_photo: restaurant?.cover_photo || null,
@@ -101,6 +103,7 @@ const NewRestaurantCreateRestaurant = () => {
       }
     }),
     [
+      restaurant?.alcohol_license,
       restaurant?.booking_link,
       restaurant?.name,
       restaurant?.avatar,
@@ -160,7 +163,8 @@ const NewRestaurantCreateRestaurant = () => {
         social_media,
         cuisines,
         dietary_requirements,
-        booking_link
+        booking_link,
+        alcohol_license
       } = data;
       setFormSubmitLoading(true);
       const formData = getFormDataFromObject({
@@ -169,6 +173,7 @@ const NewRestaurantCreateRestaurant = () => {
         ...(is_new_cover && { cover_photo }),
         cuisines,
         dietary_requirements,
+        alcohol_license,
         bio,
         social_media,
         booking_link
@@ -283,6 +288,26 @@ const NewRestaurantCreateRestaurant = () => {
             </Alert>
           </InputWithInfoInfoContainer>
         </InputWithInfoStack>
+
+        <Subheader text={'Is your restaurant licensed to serve Alcohol?'} />
+        <InputWithInfoStack>
+          <InputWithInfoInputContainer>
+            <RHFSelect
+              variant="outlined"
+              label={'Alcohol license'}
+              name={'alcohol_license'}
+              options={alcohol_license_options}
+            />
+          </InputWithInfoInputContainer>
+          <InputWithInfoInfoContainer>
+            <Alert icon={<HelpIcon />} severity={'success'}>
+              <AlertTitle>Why do we need this?</AlertTitle>
+              To ensure everything is above board when promoting Alcohol deals
+              on our platform.
+            </Alert>
+          </InputWithInfoInfoContainer>
+        </InputWithInfoStack>
+
         <Subheader
           text={
             'Add dietary requirements you cater for (Choose multiple or one)'

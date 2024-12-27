@@ -16,6 +16,24 @@ export const companyInfoSchema = Yup.object().shape({
   })
 });
 
+const ALCOHOLIC_CUISINES = {
+  Wine: true,
+  'Beer & Ale': true,
+  Spirits: true,
+  Liquors: true,
+  Cocktails: true
+};
+
+const BOOKING_LINK_PATTERN = new RegExp(
+  '^(https?:\\/\\/)' + // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+    '(\\#[-a-z\\d_]*)?$', // fragment locator
+  'i'
+);
+
 export const restaurantDetailsSchema = Yup.object().shape({
   name: Yup.string().required('Restaurant name is required'),
   avatar: Yup.mixed().when(['is_new_avatar'], {
@@ -32,6 +50,23 @@ export const restaurantDetailsSchema = Yup.object().shape({
   cuisines: Yup.array()
     .min(1, 'Must choose atleast one cuisine')
     .max(4, 'Can only choose up to four cuisines'),
+  alcohol_license: Yup.mixed().when(['cuisines'], {
+    is: (cuisines) => {
+      let hasAlcoholic = false;
+      cuisines?.forEach((c) => {
+        hasAlcoholic = !!ALCOHOLIC_CUISINES[c.name];
+      });
+      return hasAlcoholic;
+    },
+    then: Yup.bool()
+      .required()
+      .test(
+        'Alcohol license',
+        'You must have an Alcohol license if your cuisines contain Alcoholic options.',
+        (v) => Boolean(v)
+      ),
+    otherwise: Yup.bool().required()
+  }),
   cover_photo: Yup.mixed().when(['is_new_cover'], {
     is: (isNewCoverPhoto) => !!isNewCoverPhoto,
     then: Yup.mixed()
@@ -49,16 +84,10 @@ export const restaurantDetailsSchema = Yup.object().shape({
     .max(500, 'Bio is max 500 characters'),
   booking_link: Yup.string().test({
     test: (str) => {
-      const pattern = new RegExp(
-        '^(https?:\\/\\/)' + // protocol
-          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-          '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-          '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-          '(\\#[-a-z\\d_]*)?$', // fragment locator
-        'i'
-      );
-      return pattern.test(str);
+      if (!str) {
+        return true;
+      }
+      return BOOKING_LINK_PATTERN.test(str);
     },
     message:
       'Booking link must be a valid URL, including https:// and no spaces.',

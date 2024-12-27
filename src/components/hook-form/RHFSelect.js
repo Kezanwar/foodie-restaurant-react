@@ -1,13 +1,19 @@
 import PropTypes from 'prop-types';
 import { useFormContext, Controller } from 'react-hook-form';
-import { TextField } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 
 RHFSelect.propTypes = {
   name: PropTypes.string,
   children: PropTypes.node
 };
 
-export default function RHFSelect({ name, children, ...other }) {
+const selectProps = {
+  sx: {
+    '.MuiSelect-icon': { marginRight: 0.75 }
+  }
+};
+
+export default function RHFSelect({ name, options, ...other }) {
   const { control } = useFormContext();
 
   return (
@@ -17,15 +23,19 @@ export default function RHFSelect({ name, children, ...other }) {
       render={({ field, fieldState: { error } }) => {
         return (
           <TextField
+            SelectProps={selectProps}
             {...field}
             select
             fullWidth
-            SelectProps={{ native: true }}
             error={!!error}
             helperText={error?.message}
             {...other}
           >
-            {children}
+            {options.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
           </TextField>
         );
       }}

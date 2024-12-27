@@ -7,7 +7,8 @@ import {
   Box,
   Button,
   Container,
-  Link,
+  Stack,
+  styled,
   Typography
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
@@ -20,7 +21,7 @@ import { LoadingButton } from '@mui/lab';
 import LoadingScreen from 'components/loading-screen/LoadingScreen';
 import { DashboardTitleContainer } from '../styles';
 import DashboardTitle from 'components/dashboard-title/DashboardTitle';
-import { RHFTextField } from 'components/hook-form';
+import { RHFSelect, RHFTextField } from 'components/hook-form';
 import {
   FormSectionStack,
   InputStack,
@@ -48,6 +49,7 @@ import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 import { image_tooltip } from 'constants/tooltips';
 import { PATH_DASHBOARD } from 'routes/paths';
 import Breadcrumbs from 'components/breadcrumbs';
+import { alcohol_license_options } from 'constants/options';
 
 const uploadAvatarSx = {
   '& > *': {
@@ -88,6 +90,7 @@ const RestaurantEdit = () => {
       name: data?.data?.name || '',
       avatar: data?.data?.avatar || null,
       cuisines: data?.data?.cuisines || [],
+      alcohol_license: data?.data?.alcohol_license ?? true,
       dietary_requirements: data?.data?.dietary_requirements || [],
       is_new_avatar: !data?.data?.avatar,
       cover_photo: data?.data?.cover_photo || null,
@@ -107,6 +110,7 @@ const RestaurantEdit = () => {
       data?.data?.avatar,
       data?.data?.cover_photo,
       data?.data?.cuisines,
+      data?.data?.alcohol_license,
       data?.data?.dietary_requirements,
       data?.data?.bio,
       data?.data?.social_media?.instagram,
@@ -135,7 +139,8 @@ const RestaurantEdit = () => {
         social_media,
         cuisines,
         dietary_requirements,
-        booking_link
+        booking_link,
+        alcohol_license
       } = data;
       setFormSubmitLoading(true);
       const formData = getFormDataFromObject({
@@ -143,6 +148,7 @@ const RestaurantEdit = () => {
         ...(is_new_avatar && { avatar }),
         ...(is_new_cover && { cover_photo }),
         cuisines,
+        alcohol_license,
         dietary_requirements,
         bio,
         social_media,
@@ -272,12 +278,31 @@ const RestaurantEdit = () => {
                 </Alert>
               </InputWithInfoInfoContainer>
             </InputWithInfoStack>
+
+            <Subheader text={'Is your restaurant licensed to serve Alcohol?'} />
+            <InputWithInfoStack>
+              <InputWithInfoInputContainer>
+                <RHFSelect
+                  variant="outlined"
+                  label={'Alcohol license'}
+                  name={'alcohol_license'}
+                  options={alcohol_license_options}
+                />
+              </InputWithInfoInputContainer>
+              <InputWithInfoInfoContainer>
+                <Alert icon={<HelpIcon />} severity={'success'}>
+                  <AlertTitle>Why do we need this?</AlertTitle>
+                  To ensure everything is above board when promoting Alcohol
+                  deals on our platform.
+                </Alert>
+              </InputWithInfoInfoContainer>
+            </InputWithInfoStack>
+
             <Subheader
               text={
                 'Add dietary requirements you cater for (Choose multiple or one)'
               }
             />
-
             <InputWithInfoStack>
               <InputWithInfoInputContainer>
                 {dietaryOptions && (
