@@ -52,6 +52,10 @@ import LoadingScreen from 'components/loading-screen/LoadingScreen';
 import { DEALS_PER_LOCATION } from 'constants/deals';
 import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
 import Breadcrumbs from 'components/breadcrumbs';
+import useTierLimits from 'hooks/useTierLimits';
+import { ca } from 'date-fns/locale';
+import { useAuthContext } from 'hooks/useAuthContext';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 
 const breadcrumbs = [{ name: 'Deals', link: '/dashboard/deals' }];
 
@@ -117,6 +121,8 @@ export default function DealsCreate() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const { search } = useLocation();
+
+  const rest = useRestaurantQuery();
 
   const dashQuery = useDashboardOverviewQuery();
 
@@ -326,28 +332,25 @@ export default function DealsCreate() {
     [isTablet]
   );
 
-  const cantCreate = useMemo(() => {
-    if (isLoading || allActiveDeals?.isLoading) return false;
-    const locationsLength = data?.data?.length;
-    const activeDealsLength = allActiveDeals?.data?.data.length;
-    if (activeDealsLength >= locationsLength * DEALS_PER_LOCATION) return true;
-    return false;
-  }, [
-    allActiveDeals?.data?.data?.length,
-    data?.data?.length,
-    isLoading,
-    allActiveDeals?.isLoading
-  ]);
+  const limits = useTierLimits();
+  const canAddDeal =
+    limits.deals.current < limits.deals.limit && rest.data?.data?.is_subscribed;
+
+  const loading =
+    allActiveDeals?.isLoading ||
+    isLoading ||
+    limits.isLoading ||
+    rest.isLoading;
 
   useEffect(() => {
-    if (!cantCreate) {
+    if (!loading && canAddDeal) {
       removeLicenseEl();
+    } else {
+      navigate('/dashboard/deals', { replace: true });
     }
-  }, [showDatePicker, cantCreate]);
+  }, [showDatePicker, canAddDeal]);
 
-  if (allActiveDeals?.isLoading || isLoading) return <LoadingScreen />;
-
-  if (cantCreate) return <CantCreate />;
+  if (loading) return <LoadingScreen />;
 
   return (
     <>
@@ -608,59 +611,4 @@ const sx = {
   color: (theme) =>
     theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
   width: 'max-content'
-};
-
-export const CantCreateContentWrapper = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  paddingTop: theme.spacing(2),
-  paddingBottom: theme.spacing(2)
-}));
-
-export const CantCreateAlert = styled(Alert)(({ theme }) => ({
-  maxWidth: '80%',
-  marginBottom: theme.spacing(4),
-  [theme.breakpoints.down('md')]: {
-    maxWidth: 'unset'
-  }
-}));
-
-const CantCreate = () => {
-  const nav = useNavigate();
-  return (
-    <>
-      <Helmet>
-        <title> Create a new deal | Foodie</title>
-      </Helmet>
-      <Container sx={{ px: 3 }} maxWidth={'xl'}>
-        <CantCreateContentWrapper>
-          <CantCreateAlert severity="warning">
-            <AlertTitle>Maximum active deals reached</AlertTitle>
-            <Box>You've reached the maximum amount of active deals.</Box>
-          </CantCreateAlert>
-          <Typography
-            textAlign={'center'}
-            mb={4}
-            variant="body2"
-            color={'text.secondary'}
-          >
-            Sorry, A restaurant can have a maxmim of{' '}
-            <strong>{DEALS_PER_LOCATION} active deals per location.</strong>
-            <br />
-            <br />
-            You must wait for an active deal to expire, or expire an active deal
-            manually to create a new one.
-          </Typography>
-          <Button
-            variant="contained"
-            onClick={() => nav(PATH_DASHBOARD.deals_all)}
-            sx={sx}
-          >
-            Manage your deals
-          </Button>
-        </CantCreateContentWrapper>
-      </Container>
-    </>
-  );
 };

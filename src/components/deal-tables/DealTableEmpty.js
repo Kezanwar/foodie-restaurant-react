@@ -4,6 +4,7 @@ import { Box, Button, Typography, styled } from '@mui/material';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { useNavigate } from 'react-router';
 import { PATH_DASHBOARD } from 'routes/paths';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 
 export const Container = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -23,17 +24,22 @@ const sx = {
 
 const DealTableEmpty = ({ type }) => {
   const nav = useNavigate();
+  const restQuery = useRestaurantQuery();
+
+  const isSubscribed = !!restQuery.data?.data?.is_subscribed;
   return (
     <Container>
       <SentimentVeryDissatisfiedIcon color="primary" fontSize="large" />
       <Typography>Sorry their aren't any {type} deals to show </Typography>
-      <Button
-        variant="contained"
-        onClick={() => nav(PATH_DASHBOARD.deals_create)}
-        sx={sx}
-      >
-        Create a new deal
-      </Button>
+      {isSubscribed && (
+        <Button
+          variant="contained"
+          onClick={() => nav(PATH_DASHBOARD.deals_create)}
+          sx={sx}
+        >
+          Create a new deal
+        </Button>
+      )}
     </Container>
   );
 };

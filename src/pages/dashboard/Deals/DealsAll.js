@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
-import { Box, Container, Typography } from '@mui/material';
+import { Alert, Box, Container, Typography } from '@mui/material';
 import { useNavigate } from 'react-router';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 
@@ -13,9 +13,20 @@ import LoadingScreen from 'components/loading-screen/LoadingScreen';
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 import LightLoadingButton from 'components/light-loading-button/LightLoadingButton';
 import { PATH_DASHBOARD } from 'routes/paths';
+import useTierLimits from 'hooks/useTierLimits';
 
-const DealsAll = (props) => {
+const alertSx = { maxWidth: 500, mt: 2 };
+
+const DealsAll = () => {
   const resQuery = useRestaurantQuery();
+
+  const limits = useTierLimits();
+  const canAddDeal = limits.deals.current < limits.deals.limit;
+
+  const isSubscribed = resQuery.data?.data?.is_subscribed;
+
+  const disableButton = !canAddDeal || !isSubscribed;
+
   const nav = useNavigate();
 
   const restaurant = resQuery?.data?.data;
@@ -24,7 +35,8 @@ const DealsAll = (props) => {
 
   const onCreateDeal = () => nav(PATH_DASHBOARD.deals_create);
 
-  if (restLoading) return <LoadingScreen />;
+  if (restLoading || limits.isLoading) return <LoadingScreen />;
+
   return (
     <>
       <Helmet>
@@ -40,11 +52,18 @@ const DealsAll = (props) => {
           </Typography>
 
           <LightLoadingButton
+            variant={disableButton ? 'contained' : undefined}
+            disabled={disableButton}
             onClick={onCreateDeal}
             endIcon={<DriveFileRenameOutlineOutlinedIcon />}
           >
             Create a new deal
           </LightLoadingButton>
+          {!!isSubscribed && !canAddDeal && (
+            <Alert sx={alertSx} severity="info">
+              You've hit the limit of active deals you can have (5 x Locations )
+            </Alert>
+          )}
         </DashboardTitleContainer>
         <Box>
           <DealTableTabs />
@@ -53,7 +72,5 @@ const DealsAll = (props) => {
     </>
   );
 };
-
-DealsAll.propTypes = {};
 
 export default DealsAll;

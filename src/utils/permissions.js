@@ -8,6 +8,8 @@ class Permissions {
     USER: 1
   };
 
+  static DEALS_PER_LOCATION = 5;
+
   static get ROLE_SUPER_ADMIN() {
     return this.#USER_ROLES.SUPER_ADMIN;
   }
@@ -217,6 +219,23 @@ class Permissions {
     PREMIUM: 2,
     ENTERPRISE: 4
   };
+
+  static getLocationLimit(tier) {
+    switch (tier) {
+      case this.#SUBSCRIPTION_TIER.INDIVIDUAL:
+        return 1;
+      case this.#SUBSCRIPTION_TIER.PREMIUM:
+        return 3;
+      case this.#SUBSCRIPTION_TIER.ENTERPRISE:
+        return Infinity;
+      default:
+        return 0;
+    }
+  }
+
+  static getDealLimit(location_count) {
+    return location_count * this.DEALS_PER_LOCATION;
+  }
 
   static get individual_tier() {
     return this.#SUBSCRIPTION_TIER.INDIVIDUAL;

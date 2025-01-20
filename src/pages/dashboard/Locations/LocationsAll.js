@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSnackbar } from 'notistack';
-import { Box, Container, Typography, styled } from '@mui/material';
+import { Alert, Box, Container, Typography, styled } from '@mui/material';
 import { useNavigate } from 'react-router';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 
@@ -19,6 +19,9 @@ import { PATH_DASHBOARD } from 'routes/paths';
 import { deleteLocation } from 'utils/api';
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
+import { useAuthContext } from 'hooks/useAuthContext';
+import Permissions from 'utils/permissions';
+import useTierLimits from 'hooks/useTierLimits';
 
 export const LocationsWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -27,17 +30,28 @@ export const LocationsWrapper = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(6)
 }));
 
+const alertSx = { maxWidth: 500, mt: 2 };
+
 const LocationsAll = () => {
   const [deleteLocationLoading, setDeleteLocationLoading] = useState(false);
   const [deleteLocationModalOpen, setDeleteLocationModalOpen] = useState(false);
+
+  const resQuery = useRestaurantQuery();
+  const locQuery = useLocationsQuery();
+  const dashQuery = useDashboardOverviewQuery();
+
+  const limits = useTierLimits();
+
+  const canAddLocation = limits.locations.current < limits.locations.limit;
+
+  const isSubscribed = resQuery.data?.data?.is_subscribed;
+
+  const disableButton = !canAddLocation || !isSubscribed;
 
   const { enqueueSnackbar } = useSnackbar();
 
   const idToDelete = useRef(null);
 
-  const resQuery = useRestaurantQuery();
-  const locQuery = useLocationsQuery();
-  const dashQuery = useDashboardOverviewQuery();
   const nav = useNavigate();
 
   const locations = locQuery?.data?.data;
@@ -91,7 +105,8 @@ const LocationsAll = () => {
     return '';
   }, [idToDelete.current]);
 
-  if (restLoading) return <LoadingScreen />;
+  if (restLoading || limits.isLoading || locQuery.isLoading)
+    return <LoadingScreen />;
   return (
     <>
       <Helmet>
@@ -105,11 +120,18 @@ const LocationsAll = () => {
             You can view and manage {restaurant.name}'s Locations here.
           </Typography>
           <LightLoadingButton
+            variant={disableButton ? 'contained' : undefined}
+            disabled={disableButton}
             onClick={onAddLocationClick}
             endIcon={<DriveFileRenameOutlineOutlinedIcon />}
           >
             Add a new location
           </LightLoadingButton>
+          {!!isSubscribed && !canAddLocation && (
+            <Alert sx={alertSx} severity="info">
+              You've hit the max number of Locations for your Subscription Tier.
+            </Alert>
+          )}
         </DashboardTitleContainer>
         <LocationsWrapper>
           {locations?.length

@@ -60,6 +60,10 @@ const SEARCH_TYPES = {
   ADDRESS: 'ADDRESS'
 };
 
+const containsHouseNum = (houseNum, address_line1) => {
+  return address_line1.split(' ')[0].includes(houseNum);
+};
+
 const AddressAutocomplete = ({ handleOnAddressSelect }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -117,6 +121,7 @@ const AddressAutocomplete = ({ handleOnAddressSelect }) => {
             const res = await fetchAddressesTextSearch(searchTerm);
             const resultz = res?.data?.features;
             const houseNum = res?.data?.query?.parsed?.housenumber;
+            console.log({ res, resultz, houseNum });
             setResults(resultz?.length ? resultz : []);
             setHouseNumber(houseNum || '');
             handleShow();
@@ -176,9 +181,13 @@ const AddressAutocomplete = ({ handleOnAddressSelect }) => {
         timezone
       } = properties;
 
+      console.log(address_line1);
+
       if (handleOnAddressSelect) {
         handleOnAddressSelect({
-          address_line_1: `${houseNumber} ${address_line1}`,
+          address_line_1: containsHouseNum(houseNumber, address_line1)
+            ? address_line1
+            : `${houseNumber} ${address_line1}`,
           address_line_2: suburb || '',
           city,
           country: countries.find(

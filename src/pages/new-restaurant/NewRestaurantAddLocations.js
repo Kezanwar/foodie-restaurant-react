@@ -22,24 +22,24 @@ import { Box } from '@mui/system';
 import HelpIcon from '@mui/icons-material/Help';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import Subheader from '../../components/subheader/Subheader';
-import { RHFTextField } from '../../components/hook-form';
+import Subheader from 'components/subheader/Subheader';
+import { RHFTextField } from 'components/hook-form';
 
-import { countries } from '../../assets/data';
-import { pageScrollToTop } from '../../utils/scroll';
-import Spacer from '../../components/spacer/Spacer';
+import { countries } from 'assets/data';
+import { pageScrollToTop } from 'utils/scroll';
+import Spacer from 'components/spacer/Spacer';
 import {
   InputStack,
   InputStackSingleItemContainer
-} from '../../components/hook-form/styles';
+} from 'components/hook-form/styles';
 
-import { addLocationsSchema } from '../../validation/new-restaurant';
-import FormProvider from '../../components/hook-form/FormProvider';
-import useCustomMediaQueries from '../../hooks/useCustomMediaQueries';
-import LocationCard from '../../components/location-card/LocationCard';
-import useLocationsQuery from '../../hooks/queries/useLocationsQuery';
-import { PATH_NEW_RESTAURANT } from '../../routes/paths';
-import MotionDivViewport from '../../components/animate/MotionDivViewport';
+import { addLocationsSchema } from 'validation/new-restaurant';
+import FormProvider from 'components/hook-form/FormProvider';
+import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
+import LocationCard from 'components/location-card/LocationCard';
+import useLocationsQuery from 'hooks/queries/useLocationsQuery';
+import { PATH_NEW_RESTAURANT } from 'routes/paths';
+import MotionDivViewport from 'components/animate/MotionDivViewport';
 
 import {
   addLocation,
@@ -48,18 +48,18 @@ import {
   deleteLocation,
   editLocation,
   postLocationsStep
-} from '../../utils/api';
-import ConfirmLocationModal from '../../components/confirm-location-modal/ConfirmLocationModal';
-import AcceptDeclineModal from '../../components/accept-decline-modal/AcceptDeclineModal';
-import OpeningTimeInput from '../../components/opening-time-input/OpeningTimeInput';
-import useOpeningTimesForm from '../../hooks/useOpeningTimesForm';
-import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
-import useCreateRestaurantGuard from '../../hooks/useCreateRestaurantGuard';
+} from 'utils/api';
+import ConfirmLocationModal from 'components/confirm-location-modal/ConfirmLocationModal';
+import AcceptDeclineModal from 'components/accept-decline-modal/AcceptDeclineModal';
+import OpeningTimeInput from 'components/opening-time-input/OpeningTimeInput';
+import useOpeningTimesForm from 'hooks/useOpeningTimesForm';
+import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
+import useCreateRestaurantGuard from 'hooks/useCreateRestaurantGuard';
 
-import { MIXPANEL_EVENTS, mixpanelTrack } from '../../utils/mixpanel';
-import { useAuthContext } from '../../hooks/useAuthContext';
-import RHFCountriesAutocomplete from '../../components/hook-form/RHFCountriesAutocomplete';
-import AddressAutocomplete from '../../components/address-autocomplete/AddressAutocomplete';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { useAuthContext } from 'hooks/useAuthContext';
+import RHFCountriesAutocomplete from 'components/hook-form/RHFCountriesAutocomplete';
+import AddressAutocomplete from 'components/address-autocomplete/AddressAutocomplete';
 
 const motionStyles = {
   display: 'flex',
@@ -79,9 +79,6 @@ export const LocationsTopAlert = () => {
           We list your location on the users feed with your Restaurants name and
           nickname in brackets after,{' '}
           <strong>e.g - Nandos (Trafford Centre)</strong>
-        </Box>
-        <Box mt={1}>
-          If you only have one location, the nickname will not be shown.
         </Box>
         <Box mt={1}>
           This in turn helps us{' '}
@@ -140,6 +137,8 @@ const NewRestaurantAddLocation = () => {
   const { data, updateQuery } = useLocationsQuery();
 
   const restaurantQuery = useRestaurantQuery();
+
+  const hideAddForm = data?.data?.length === 1 && !editLocationID;
 
   const editLocationObj = useMemo(() => {
     if (!editLocationID) return null;
@@ -546,174 +545,193 @@ const NewRestaurantAddLocation = () => {
           methods={methods}
           onSubmit={handleSubmit(onSubmit, onError)}
         >
-          <Typography mb={6} variant="h4">
-            Add a single or multiple location/s (Minimum 1 required)
-          </Typography>
-          {editLocationObj ? (
-            <EditAlert editLocationObj={editLocationObj} isTablet={isTablet} />
-          ) : null}
-          <Subheader text={'Add Location Address'} />
-          <InputStackSingleItemContainer>
-            <AddressAutocomplete
-              handleOnAddressSelect={handleOnAddressSelect}
-            />
-          </InputStackSingleItemContainer>
-          <Box sx={{ mt: 3.5, mb: 3 }}>
-            <Typography variant="body2" color={'primary'}>
-              Or enter an address manually...
-            </Typography>
-          </Box>
-
-          <InputStack>
-            <RHFTextField
-              autoComplete={false}
-              variant={'filled'}
-              name="add_location.address.address_line_1"
-              placeholder={'e.g 23 Red Baloon Street'}
-              label="Address line 1"
-            />
-            <RHFTextField
-              autoComplete={false}
-              variant={'filled'}
-              name="add_location.address.address_line_2"
-              placeholder={'e.g Didsbury'}
-              label="Address line 2 (Optional)"
-            />
-          </InputStack>
-          <InputStack>
-            <RHFTextField
-              autoComplete={false}
-              variant={'filled'}
-              name="add_location.address.postcode"
-              label="Postcode"
-              placeholder={'e.g M20 2FG'}
-            />
-            <RHFTextField
-              autoComplete={false}
-              variant={'filled'}
-              name="add_location.address.city"
-              label="City"
-              placeholder={'e.g Manchester'}
-            />
-          </InputStack>
-          <InputStack>
-            <RHFCountriesAutocomplete name={'add_location.address.country'} />
-            <Box />
-          </InputStack>
-          <Spacer sp={6} />
-          <Subheader text={'Location Contact Details'} />
-          <InputStack>
-            <RHFTextField
-              autoComplete={false}
-              variant={'filled'}
-              name="add_location.email"
-              label="E-mail address"
-              placeholder={'e.g your@email.com'}
-            />
-            <RHFTextField
-              autoComplete={false}
-              variant={'filled'}
-              name="add_location.phone_number"
-              placeholder={'e.g 07917620399'}
-              label="Contact number"
-            />
-          </InputStack>
-          <Spacer sp={6} />
-          <Subheader text={'Location Nickname'} />
-
-          <InputStack>
-            <RHFTextField
-              autoComplete={false}
-              variant={'filled'}
-              name="add_location.nickname"
-              placeholder={'e.g Ancoats NQ'}
-              label="Nickname"
-            />
-            <Box />
-          </InputStack>
-          <Spacer sp={6} />
-          <Subheader
-            sx={{ marginBottom: 20 }}
-            text={'Location Opening Times'}
-          />
-          <Box
-            width={!isTablet ? `calc(50% - ${theme.spacing(1.5)})` : '100%'}
-            mb={2}
-          >
-            {Object.entries(openingTimes).map(([key, value]) => {
-              return (
-                <OpeningTimeInput
-                  key={`opening-times-form-${key}`}
-                  name={capitalize(key)}
-                  value={value}
-                  setIsOpen={() =>
-                    updateOpeningTimes(
-                      key,
-                      'is_open',
-                      !openingTimes[key].is_open
-                    )
-                  }
-                  onCloseChange={(value) =>
-                    updateOpeningTimes(key, 'close', value)
-                  }
-                  onOpenChange={(value) =>
-                    updateOpeningTimes(key, 'open', value)
-                  }
+          {!hideAddForm && (
+            <>
+              <Typography variant="h4">Add a location</Typography>
+              <Typography
+                mb={6}
+                color={'text.secondary'}
+                maxWidth={600}
+                variant="body2"
+              >
+                You will be able to add more locations in the dashboard
+                depending on your choice of subscription. But for now we just
+                need your 1 location for your application.
+              </Typography>
+              {editLocationObj ? (
+                <EditAlert
+                  editLocationObj={editLocationObj}
+                  isTablet={isTablet}
                 />
-              );
-            })}
-          </Box>
+              ) : null}
+              <Subheader text={'Add Location Address'} />
+              <InputStackSingleItemContainer>
+                <AddressAutocomplete
+                  handleOnAddressSelect={handleOnAddressSelect}
+                />
+              </InputStackSingleItemContainer>
+              <Box sx={{ mt: 3.5, mb: 3 }}>
+                <Typography variant="body2" color={'primary'}>
+                  Or enter an address manually...
+                </Typography>
+              </Box>
 
-          <Stack alignItems={'flex-end'} mb={8}>
-            <Stack alignItems={'flex-end'}>
-              {editLocationID ? (
-                <Box>
-                  <Button
-                    sx={{ mr: 2 }}
-                    color="inherit"
-                    onClick={resetForm}
-                    variant="outlined"
-                  >
-                    Cancel edit
-                  </Button>
-                  <LoadingButton
-                    loading={addLocationLoading}
-                    color="primary"
-                    onClick={onSaveEditLocationClick}
-                    variant="contained"
-                  >
-                    Save location
-                  </LoadingButton>
-                </Box>
-              ) : (
-                <Box>
-                  <Button
-                    sx={{ mr: 2 }}
-                    color="inherit"
-                    onClick={resetForm}
-                    variant="outlined"
-                  >
-                    Reset form
-                  </Button>
-                  <LoadingButton
-                    loading={addLocationLoading}
-                    color="primary"
-                    onClick={onAddLocationClick}
-                    variant="contained"
-                  >
-                    Add Location
-                  </LoadingButton>
-                </Box>
-              )}
+              <InputStack>
+                <RHFTextField
+                  autoComplete={false}
+                  variant={'filled'}
+                  name="add_location.address.address_line_1"
+                  placeholder={'e.g 23 Red Baloon Street'}
+                  label="Address line 1"
+                />
+                <RHFTextField
+                  autoComplete={false}
+                  variant={'filled'}
+                  name="add_location.address.address_line_2"
+                  placeholder={'e.g Didsbury'}
+                  label="Address line 2 (Optional)"
+                />
+              </InputStack>
+              <InputStack>
+                <RHFTextField
+                  autoComplete={false}
+                  variant={'filled'}
+                  name="add_location.address.postcode"
+                  label="Postcode"
+                  placeholder={'e.g M20 2FG'}
+                />
+                <RHFTextField
+                  autoComplete={false}
+                  variant={'filled'}
+                  name="add_location.address.city"
+                  label="City"
+                  placeholder={'e.g Manchester'}
+                />
+              </InputStack>
+              <InputStack>
+                <RHFCountriesAutocomplete
+                  name={'add_location.address.country'}
+                />
+                <Box />
+              </InputStack>
+              <Spacer sp={6} />
+              <Subheader text={'Location Contact Details'} />
+              <InputStack>
+                <RHFTextField
+                  autoComplete={false}
+                  variant={'filled'}
+                  name="add_location.email"
+                  label="E-mail address"
+                  placeholder={'e.g your@email.com'}
+                />
+                <RHFTextField
+                  autoComplete={false}
+                  variant={'filled'}
+                  name="add_location.phone_number"
+                  placeholder={'e.g 07917620399'}
+                  label="Contact number"
+                />
+              </InputStack>
+              <Spacer sp={6} />
+              <Subheader text={'Location Nickname'} />
 
-              {!!errors.afterSubmit && (
-                <>
-                  <Spacer />
-                  <Alert severity="error">{errors.afterSubmit.message}</Alert>
-                </>
-              )}
-            </Stack>
-          </Stack>
+              <InputStack>
+                <RHFTextField
+                  autoComplete={false}
+                  variant={'filled'}
+                  name="add_location.nickname"
+                  placeholder={'e.g Ancoats NQ'}
+                  label="Nickname"
+                />
+                <Box />
+              </InputStack>
+              <Spacer sp={6} />
+              <Subheader
+                sx={{ marginBottom: 20 }}
+                text={'Location Opening Times'}
+              />
+              <Box
+                width={!isTablet ? `calc(50% - ${theme.spacing(1.5)})` : '100%'}
+                mb={2}
+              >
+                {Object.entries(openingTimes).map(([key, value]) => {
+                  return (
+                    <OpeningTimeInput
+                      key={`opening-times-form-${key}`}
+                      name={capitalize(key)}
+                      value={value}
+                      setIsOpen={() =>
+                        updateOpeningTimes(
+                          key,
+                          'is_open',
+                          !openingTimes[key].is_open
+                        )
+                      }
+                      onCloseChange={(value) =>
+                        updateOpeningTimes(key, 'close', value)
+                      }
+                      onOpenChange={(value) =>
+                        updateOpeningTimes(key, 'open', value)
+                      }
+                    />
+                  );
+                })}
+              </Box>
+
+              <Stack alignItems={'flex-end'} mb={8}>
+                <Stack alignItems={'flex-end'}>
+                  {editLocationID ? (
+                    <Box>
+                      <Button
+                        sx={{ mr: 2 }}
+                        color="inherit"
+                        onClick={resetForm}
+                        variant="outlined"
+                      >
+                        Cancel edit
+                      </Button>
+                      <LoadingButton
+                        loading={addLocationLoading}
+                        color="primary"
+                        onClick={onSaveEditLocationClick}
+                        variant="contained"
+                      >
+                        Save location
+                      </LoadingButton>
+                    </Box>
+                  ) : (
+                    <Box>
+                      <Button
+                        sx={{ mr: 2 }}
+                        color="inherit"
+                        onClick={resetForm}
+                        variant="outlined"
+                      >
+                        Reset form
+                      </Button>
+                      <LoadingButton
+                        loading={addLocationLoading}
+                        color="primary"
+                        onClick={onAddLocationClick}
+                        variant="contained"
+                      >
+                        Add Location
+                      </LoadingButton>
+                    </Box>
+                  )}
+
+                  {!!errors.afterSubmit && (
+                    <>
+                      <Spacer />
+                      <Alert severity="error">
+                        {errors.afterSubmit.message}
+                      </Alert>
+                    </>
+                  )}
+                </Stack>
+              </Stack>
+            </>
+          )}
 
           <Subheader text={`Your Restaurant Locations (${locations.length})`} />
           {locations.length ? (
@@ -739,7 +757,7 @@ const NewRestaurantAddLocation = () => {
             <Box mb={6}>
               <Alert severity="error">
                 You haven't added any locations yet - use the form above to get
-                started. (Minimum 1 required)
+                started. (1 required)
               </Alert>
             </Box>
           )}

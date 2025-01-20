@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Helmet } from 'react-helmet-async';
 import { useSnackbar } from 'notistack';
@@ -40,6 +40,7 @@ import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 import ConfirmLocationModalDashboard from 'components/confirm-location-modal/ConfirmLocationModalDashboard';
 import { PATH_DASHBOARD } from 'routes/paths';
 import Breadcrumbs from 'components/breadcrumbs';
+import useTierLimits from 'hooks/useTierLimits';
 
 const breadcrumbs = [{ name: 'Locations', link: '/dashboard/locations' }];
 
@@ -56,11 +57,21 @@ const LocationsAdd = () => {
   });
 
   const resQuery = useRestaurantQuery();
-  const { data, isLoading, updateQuery } = useLocationsQuery();
+  const { updateQuery } = useLocationsQuery();
+
+  const limits = useTierLimits();
+
+  const canAddLocation = limits.locations.current < limits.locations.limit;
 
   const { isTablet } = useCustomMediaQueries();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!canAddLocation) {
+      navigate('/dashboard/locations', { replace: true });
+    }
+  }, [canAddLocation]);
 
   const theme = useTheme();
 
@@ -83,7 +94,7 @@ const LocationsAdd = () => {
       phone_number: '',
       nickname: ''
     }),
-    [data?.data]
+    []
   );
 
   const methods = useForm({
@@ -224,7 +235,7 @@ const LocationsAdd = () => {
     });
   }, []);
 
-  if (restLoading || isLoading) return <LoadingScreen />;
+  if (restLoading || limits.isLoading) return <LoadingScreen />;
   return (
     <>
       <Helmet>

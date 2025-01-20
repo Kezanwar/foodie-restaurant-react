@@ -16,6 +16,7 @@ import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
 import { PlanLoading } from './styles';
+import useTierLimits from 'hooks/useTierLimits';
 
 const PlanWrapper = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -82,8 +83,8 @@ const plan_details = {
   premium: {
     price: 100,
     caption: 'Ideal package for a medium sized business with 2-5 locations',
-    location_limit: 5,
-    deal_limit: 25
+    location_limit: 3,
+    deal_limit: 15
   },
   enterprise: {
     price: 'Contact Sales',
@@ -99,6 +100,8 @@ const Plan = () => {
   const plan = Permissions.getTier(rest?.tier);
 
   const subQuery = useSubscriptionQuery();
+
+  const limits = useTierLimits();
 
   const sub = subQuery?.data?.data;
 
@@ -221,6 +224,7 @@ const Plan = () => {
                 />
                 <Stack spacing={1} direction="row" alignItems={'center'}>
                   <Typography fontWeight={600} variant={'h4'}>
+                    {limits.locations.current} /{' '}
                     {plan_details[plan].location_limit}
                   </Typography>
                 </Stack>
@@ -234,7 +238,7 @@ const Plan = () => {
                 />
                 <Stack spacing={1} direction="row" alignItems={'center'}>
                   <Typography fontWeight={600} variant={'h4'}>
-                    {plan_details[plan].deal_limit}
+                    {limits.deals.current} / {limits.deals.limit}
                   </Typography>
                 </Stack>
               </Box>
@@ -266,3 +270,5 @@ const Plan = () => {
 };
 
 export default Plan;
+
+/*{plan_details[plan].deal_limit}*/
