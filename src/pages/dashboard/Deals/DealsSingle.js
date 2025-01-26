@@ -281,11 +281,7 @@ const DealsSingle = () => {
             variant="body2"
             color={'text.secondary'}
           >
-            {deal?.description} Lorem ipsum dolor, sit amet consectetur
-            adipisicing elit. Saepe qui animi velit, eum a eius minus voluptates
-            nisi vel laborum consequatur. Error totam voluptates rerum iste quis
-            cum aspernatur perferendis sunt debitis praesentium, animi
-            consectetur suscipit enim eos fugiat asperiores.
+            {deal?.description}
           </Typography>
 
           <DateWrapper>

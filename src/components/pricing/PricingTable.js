@@ -12,10 +12,9 @@ export const _pricingPlans = [
   {
     subscription: 'individual',
     price: 55,
-    caption:
-      'The perfect package for individual Restaurants with a single location',
+    caption: 'The perfect package for individual Restaurants',
     lists: [
-      { text: '3 prototypes', isAvailable: true },
+      { text: '1 Location', isAvailable: true },
       { text: '3 boards', isAvailable: true },
       { text: 'Up to 5 team members', isAvailable: false },
       { text: 'Advanced security', isAvailable: false },
@@ -25,9 +24,9 @@ export const _pricingPlans = [
   {
     subscription: 'premium',
     price: 100,
-    caption: 'Ideal package for a medium sized business with 2-5 locations',
+    caption: 'Ideal package for a medium sized businesses',
     lists: [
-      { text: '3 prototypes', isAvailable: true },
+      { text: '1 - 3 Locations', isAvailable: true },
       { text: '3 boards', isAvailable: true },
       { text: 'Up to 5 team members', isAvailable: true },
       { text: 'Advanced security', isAvailable: false },
@@ -37,9 +36,9 @@ export const _pricingPlans = [
   {
     subscription: 'enterprise',
     price: 'Contact Sales',
-    caption: 'Ideal package for multi-chain Restaurants with 6+ locations',
+    caption: 'Ideal package for multi-chain Restaurants',
     lists: [
-      { text: '3 prototypes', isAvailable: true },
+      { text: '3 + Locations', isAvailable: true },
       { text: '3 boards', isAvailable: true },
       { text: 'Up to 5 team members', isAvailable: true },
       { text: 'Advanced security', isAvailable: true },
@@ -47,7 +46,6 @@ export const _pricingPlans = [
     ]
   }
 ];
-
 const PricingWrapper = styled(Stack)(({ theme }) => ({
   flexDirection: 'row',
   gap: 16,
