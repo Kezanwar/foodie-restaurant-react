@@ -333,6 +333,7 @@ export default function DealsCreate() {
   );
 
   const limits = useTierLimits();
+
   const canAddDeal =
     limits.deals.current < limits.deals.limit && rest.data?.data?.is_subscribed;
 

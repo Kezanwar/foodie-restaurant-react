@@ -220,7 +220,7 @@ function Placeholder({ sx, ...other }) {
             color: 'primary.main'
           }}
         >
-          uplaod a photo
+          upload a photo
         </Typography>
       </Box>
     </Stack>

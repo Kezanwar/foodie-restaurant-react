@@ -61,7 +61,11 @@ const DealsAll = () => {
           </LightLoadingButton>
           {!!isSubscribed && !canAddDeal && (
             <Alert sx={alertSx} severity="info">
-              You've hit the limit of active deals you can have (5 x Locations )
+              You've hit the limit of Active Deals you can create for your
+              Subscription Tier.
+              <strong>
+                {limits.deals.limit === 3 ? ' (3)' : ' (5 x Locations)'}
+              </strong>
             </Alert>
           )}
         </DashboardTitleContainer>

@@ -19,7 +19,10 @@ const useTierLimits = () => {
         current: locations.data?.data?.length || 0
       },
       deals: {
-        limit: Permissions.getDealLimit(locations.data?.data?.length || 0),
+        limit: Permissions.getDealLimit(
+          user?.subscription?.subscription_tier,
+          locations.data?.data?.length || 0
+        ),
         current: activeDeals.data?.data?.length || 0
       },
       isLoading: activeDeals.isLoading || locations.isLoading

@@ -8,7 +8,11 @@ class Permissions {
     USER: 1
   };
 
-  static DEALS_PER_LOCATION = 5;
+  static DEALS_PER_LOCATION = {
+    1: 3,
+    2: 5,
+    4: 5
+  };
 
   static get ROLE_SUPER_ADMIN() {
     return this.#USER_ROLES.SUPER_ADMIN;
@@ -233,8 +237,11 @@ class Permissions {
     }
   }
 
-  static getDealLimit(location_count) {
-    return location_count * this.DEALS_PER_LOCATION;
+  static getDealLimit(tier, location_count) {
+    if (this.check(this.#SUBSCRIPTION_TIER.INDIVIDUAL, tier)) {
+      return this.DEALS_PER_LOCATION[tier];
+    }
+    return location_count * this.DEALS_PER_LOCATION[tier];
   }
 
   static get individual_tier() {
