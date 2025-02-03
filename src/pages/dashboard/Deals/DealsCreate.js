@@ -7,8 +7,8 @@ import { useSnackbar } from 'notistack';
 import { useLocation, useNavigate } from 'react-router';
 import { StaticDateRangePicker } from '@mui/x-date-pickers-pro/StaticDateRangePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro';
-import { add, format } from 'date-fns';
-import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
+import { add, format, startOfDay } from 'date-fns';
+import { AdapterDateFns } from '@mui/x-date-pickers-pro/AdapterDateFns';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
@@ -41,7 +41,6 @@ import AcceptDeclineModal from 'components/accept-decline-modal/AcceptDeclineMod
 
 import { PATH_DASHBOARD } from 'routes/paths';
 import useActiveDealsQuery from 'hooks/queries/useActiveDealsQuery';
-import { formattedDateString } from 'utils/formatTime';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import useLocationsQuery from 'hooks/queries/useLocationsQuery';
 import { addDeal, getDealTemplate } from 'utils/api';
@@ -49,13 +48,14 @@ import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 
 import { newDealSchema } from 'validation/deals';
 import LoadingScreen from 'components/loading-screen/LoadingScreen';
-import { DEALS_PER_LOCATION } from 'constants/deals';
+
 import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
 import Breadcrumbs from 'components/breadcrumbs';
 import useTierLimits from 'hooks/useTierLimits';
-import { ca } from 'date-fns/locale';
-import { useAuthContext } from 'hooks/useAuthContext';
+
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
+import { useUtilityContext } from 'hooks/useUtilityContext';
+import { DateButtonsWrapper } from './styles';
 
 const breadcrumbs = [{ name: 'Deals', link: '/dashboard/deals' }];
 
@@ -78,40 +78,37 @@ function removeLicenseEl() {
   }
 }
 
+const today = startOfDay(new Date());
+
+const todayISO = today.toISOString();
+
 const DateInputOptions = [
   {
+    text: 'No End Date',
+    start_date: todayISO,
+    end_date: ''
+  },
+  {
     text: '6 Months',
-    start_date: formattedDateString(new Date()),
-    end_date: formattedDateString(add(new Date(), { months: 6 }))
+    start_date: todayISO,
+    end_date: add(today, { months: 6 }).toISOString()
   },
   {
     text: '3 Months',
-    start_date: formattedDateString(new Date()),
-    end_date: formattedDateString(add(new Date(), { months: 3 }))
+    start_date: todayISO,
+    end_date: add(today, { months: 3 }).toISOString()
   },
   {
     text: '1 Month',
-    start_date: formattedDateString(new Date()),
-    end_date: formattedDateString(add(new Date(), { months: 1 }))
+    start_date: todayISO,
+    end_date: add(today, { months: 1 }).toISOString()
   },
   {
     text: '2 Weeks',
-    start_date: formattedDateString(new Date()),
-    end_date: formattedDateString(add(new Date(), { weeks: 2 }))
+    start_date: todayISO,
+    end_date: add(today, { weeks: 2 }).toISOString()
   }
 ];
-
-export const DateButtonsWrapper = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  gap: theme.spacing(1),
-  flexWrap: 'wrap',
-  justifyContent: 'flex-start',
-  marginTop: 0,
-  [theme.breakpoints.down('md')]: {
-    justifyContent: 'center',
-    marginTop: theme.spacing(3)
-  }
-}));
 
 // ----------------------------------------------------------------------
 
@@ -134,7 +131,7 @@ export default function DealsCreate() {
     () => ({
       name: '',
       description: '',
-      start_date: '',
+      start_date: todayISO,
       end_date: '',
       locations: []
     }),
@@ -148,6 +145,8 @@ export default function DealsCreate() {
 
   const datePickerRef = useRef();
   const staticPickerValues = useRef({ start: '', end: '' });
+
+  const { locale } = useUtilityContext();
 
   const {
     reset,
@@ -201,14 +200,17 @@ export default function DealsCreate() {
   };
 
   const updateStaticDatePicker = ([start, end]) => {
-    staticPickerValues.current = { start, end };
+    const s = startOfDay(start);
+    const e = startOfDay(end);
+    staticPickerValues.current = { start: s, end: e };
+
     if (start) {
-      setValue('start_date', formattedDateString(start?.$d));
+      setValue('start_date', s.toISOString());
     } else {
       setValue('start_date', '');
     }
     if (end) {
-      setValue('end_date', formattedDateString(end?.$d));
+      setValue('end_date', e.toISOString());
     } else {
       setValue('end_date', '');
     }
@@ -221,12 +223,12 @@ export default function DealsCreate() {
     clearErrors(['start_date', 'end_date']);
 
     if (start) {
-      setValue('start_date', formattedDateString(start?.$d));
+      setValue('start_date', start.toISOString());
     } else {
       setValue('start_date', '');
     }
     if (end) {
-      setValue('end_date', formattedDateString(end?.$d));
+      setValue('end_date', end.toISOString());
     } else {
       setValue('end_date', '');
     }
@@ -460,7 +462,10 @@ export default function DealsCreate() {
                     </SelectButton>
                   </DateButtonsWrapper>
 
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <LocalizationProvider
+                    adapterLocale={locale}
+                    dateAdapter={AdapterDateFns}
+                  >
                     <ExpandableBox expanded={showDatePicker}>
                       <Box
                         sx={{
@@ -596,7 +601,9 @@ const CreateDealModal = ({ onCancel, onAccept, submitLoading, isOpen }) => {
           <Box>
             <ModalTitle>End</ModalTitle>
             <Typography fontSize={14}>
-              {format(new Date(values?.end_date), 'EEE do MMM yyyy')}
+              {values?.end_date
+                ? format(new Date(values?.end_date), 'EEE do MMM yyyy')
+                : 'N/A'}
             </Typography>
           </Box>
         </Box>

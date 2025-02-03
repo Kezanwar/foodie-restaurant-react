@@ -302,7 +302,12 @@ const DealsSingle = () => {
               <DateContainer>
                 <EndDot />{' '}
                 <Typography fontSize={'16px'}>
-                  {format(new Date(deal?.end_date || null), 'EEE do MMM yyyy')}
+                  {deal?.end_date
+                    ? format(
+                        new Date(deal?.end_date || null),
+                        'EEE do MMM yyyy'
+                      )
+                    : 'N/A'}
                 </Typography>
               </DateContainer>
             </div>

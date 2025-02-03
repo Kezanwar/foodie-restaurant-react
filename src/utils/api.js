@@ -1,5 +1,5 @@
+import { startOfDay } from 'date-fns';
 import axiosInstance from './axios';
-import { formattedDateString } from './formatTime';
 
 const endpoints = {
   getDashboardOverview: '/rest/dashboard/overview',
@@ -49,11 +49,7 @@ const endpoints = {
 //* ------ Overview --------
 
 export const getDashboardOverview = () => {
-  return axiosInstance.get(endpoints.getDashboardOverview, {
-    params: {
-      current_date: formattedDateString(new Date())
-    }
-  });
+  return axiosInstance.get(endpoints.getDashboardOverview);
 };
 //* ------ Restaurant --------
 
@@ -118,35 +114,19 @@ export const deleteLocation = (id) => {
 //* ----------------- Deals -----------------
 
 export const getActiveDeals = async () => {
-  return axiosInstance.get(endpoints.getActiveDeals, {
-    params: {
-      current_date: formattedDateString(new Date())
-    }
-  });
+  return axiosInstance.get(endpoints.getActiveDeals);
 };
 
 export const getExpiredDeals = async () => {
-  return axiosInstance.get(endpoints.getExpiredDeals, {
-    params: {
-      current_date: formattedDateString(new Date())
-    }
-  });
+  return axiosInstance.get(endpoints.getExpiredDeals);
 };
 
 export const getSingleDeal = async (id) => {
-  return axiosInstance.get(`${endpoints.getSingleDeal}/${id}`, {
-    params: {
-      current_date: formattedDateString(new Date())
-    }
-  });
+  return axiosInstance.get(`${endpoints.getSingleDeal}/${id}`);
 };
 
 export const addDeal = (data) => {
-  return axiosInstance.post(endpoints.addDeal, data, {
-    params: {
-      current_date: formattedDateString(new Date())
-    }
-  });
+  return axiosInstance.post(endpoints.addDeal, data);
 };
 
 export const editDeal = (id, data) => {
@@ -155,7 +135,7 @@ export const editDeal = (id, data) => {
 
 export const expireDeal = (id) => {
   return axiosInstance.patch(`${endpoints.expireDeal}/${id}`, {
-    end_date: formattedDateString(new Date())
+    end_date: startOfDay(new Date()).toISOString()
   });
 };
 

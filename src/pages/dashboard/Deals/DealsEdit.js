@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import dayjs from 'dayjs';
+
 import { Helmet } from 'react-helmet-async';
 import { useForm, useFormContext } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
@@ -9,8 +9,8 @@ import {
   LocalizationProvider,
   StaticDatePicker
 } from '@mui/x-date-pickers-pro';
-import { format } from 'date-fns';
-import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
+import { add, addDays, format, startOfDay } from 'date-fns';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
@@ -41,13 +41,18 @@ import AcceptDeclineModal from 'components/accept-decline-modal/AcceptDeclineMod
 import { PATH_DASHBOARD } from 'routes/paths';
 import useSingleDealQuery from 'hooks/queries/useSingleDealQuery';
 import useActiveDealsQuery from 'hooks/queries/useActiveDealsQuery';
-import { formattedDateString } from 'utils/formatTime';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import useLocationsQuery from 'hooks/queries/useLocationsQuery';
 import { editDeal } from 'utils/api';
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
 import { editDealSchema } from 'validation/deals';
 import Breadcrumbs from 'components/breadcrumbs';
+
+import { AdapterDateFns } from '@mui/x-date-pickers-pro/AdapterDateFns';
+import { useUtilityContext } from 'hooks/useUtilityContext';
+import ExpandableBox from 'components/expandable-box/ExpandableBox';
+import { DateButtonsWrapper } from './styles';
+import { SelectButton } from 'components/select-button/SelectButton';
 
 function getElementsByText(str, tag = 'div') {
   return Array.prototype.slice
@@ -59,11 +64,12 @@ function removeLicenseEl() {
   getElementsByText('MUI X Missing license key').forEach((el) => el.remove());
 }
 
-const MIN_DATE = dayjs(new Date()).add(1, 'day');
+const MIN_DATE = add(new Date(), { days: 1 });
 
 // ----------------------------------------------------------------------
 
 export default function DealsEdit() {
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [datePickerValue, setDatePickerValue] = useState('');
@@ -85,6 +91,8 @@ export default function DealsEdit() {
     []
   );
 
+  const { locale } = useUtilityContext();
+
   const {
     data,
     isLoading: locationsLoading,
@@ -103,7 +111,7 @@ export default function DealsEdit() {
     trigger,
     formState: { errors, isSubmitting, isSubmitSuccessful },
     getValues,
-
+    watch,
     setValue
   } = methods;
 
@@ -130,8 +138,11 @@ export default function DealsEdit() {
           locations.some((dealLoc) => loc._id === dealLoc.location_id)
         )
       );
-      setValue('end_date', end_date);
-      setDatePickerValue(dayjs(end_date));
+      setValue('end_date', end_date || '');
+      setDatePickerValue(end_date ? new Date(end_date) : '');
+      if (end_date) {
+        setShowDatePicker(true);
+      }
     }
   }, [dealData?.data, data?.data]);
 
@@ -140,8 +151,9 @@ export default function DealsEdit() {
   const allActiveDeals = useActiveDealsQuery();
 
   const updateStaticDatePicker = (v) => {
-    setValue('end_date', formattedDateString(v?.$d));
-    setDatePickerValue(v);
+    const s = startOfDay(v);
+    setValue('end_date', s.toISOString());
+    setDatePickerValue(s);
   };
 
   const onCancelModal = () => {
@@ -158,7 +170,7 @@ export default function DealsEdit() {
     try {
       setFormSubmitLoading(true);
       const postLocations = data?.locations?.map((l) => l._id);
-      const updatedDeal = await editDeal(id, {
+      await editDeal(id, {
         ...data,
         locations: postLocations
       });
@@ -240,6 +252,27 @@ export default function DealsEdit() {
 
   const dateErrorText = errors?.end_date?.message;
 
+  const onNoEndDate = () => {
+    setShowDatePicker(false);
+    setValue('end_date', '');
+  };
+
+  const onCustomDateRange = () => {
+    const v = data.data.end_date;
+    if (v) {
+      setValue('end_date', v);
+      setDatePickerValue(new Date(v));
+      setShowDatePicker(true);
+    } else {
+      const d = startOfDay(addDays(new Date(), 1));
+      setValue('end_date', d.toISOString());
+      setDatePickerValue(d);
+      setShowDatePicker(true);
+    }
+  };
+
+  const end = getValues().end_date;
+
   return isLoading || locationsLoading ? (
     <LoadingScreen />
   ) : (
@@ -306,24 +339,47 @@ export default function DealsEdit() {
                   <Typography mb={2} variant="body2" color={'text.secondary'}>
                     * You can expire a deal at any time from your dashboard
                   </Typography>
-
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DateButtonsWrapper>
+                    <SelectButton
+                      isSelected={!showDatePicker}
+                      variant="outlined"
+                      color={!showDatePicker ? 'primary' : 'inherit'}
+                      onClick={onNoEndDate}
+                    >
+                      No End Date
+                    </SelectButton>
+                    <SelectButton
+                      isSelected={showDatePicker}
+                      variant="outlined"
+                      color={showDatePicker ? 'primary' : 'inherit'}
+                      onClick={onCustomDateRange}
+                    >
+                      End Date
+                    </SelectButton>
+                  </DateButtonsWrapper>
+                  <ExpandableBox expanded={showDatePicker}>
                     <Box
                       sx={{
                         display: 'flex',
                         justifyContent: isTablet ? 'center' : 'flex-start'
                       }}
                     >
-                      <StaticDatePicker
-                        disablePast
-                        minDate={MIN_DATE}
-                        reduceAnimations={isTablet}
-                        sx={datePickerSx}
-                        value={datePickerValue}
-                        onChange={(v) => updateStaticDatePicker(v)}
-                      />
+                      <LocalizationProvider
+                        adapterLocale={locale}
+                        dateAdapter={AdapterDateFns}
+                      >
+                        <StaticDatePicker
+                          disablePast
+                          minDate={MIN_DATE}
+                          reduceAnimations={isTablet}
+                          sx={datePickerSx}
+                          value={datePickerValue}
+                          onChange={(v) => updateStaticDatePicker(v)}
+                        />
+                      </LocalizationProvider>
                     </Box>
-                  </LocalizationProvider>
+                  </ExpandableBox>
+
                   {dateErrors && (
                     <Box mt={2}>
                       <FormHelperText error>{dateErrorText}</FormHelperText>
@@ -444,7 +500,9 @@ const EditDealModal = ({
           <Box>
             <ModalTitle>End</ModalTitle>
             <Typography fontSize={14}>
-              {format(new Date(values?.end_date || ''), 'EEE do MMM yyyy')}
+              {values?.end_date
+                ? format(new Date(values?.end_date), 'EEE do MMM yyyy')
+                : 'N/A'}
             </Typography>
           </Box>
         </Box>

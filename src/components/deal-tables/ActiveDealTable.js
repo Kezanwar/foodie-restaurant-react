@@ -82,6 +82,10 @@ const tableType = 'active';
 //   }
 // );
 
+const unixzeroiso = '1970-01-01T00:00:00.000Z';
+
+const unixzerodate = new Date('1970-01-01T00:00:00.000Z');
+
 ActiveDealTable.propTypes = {};
 
 const TableSx = { width: '100%' };
@@ -138,13 +142,20 @@ export default function ActiveDealTable() {
         headerName: 'End Date',
         align: 'right',
         headerAlign: 'right',
-        type: 'date',
         width: 120,
+        type: 'date',
         flex: flex,
-        renderCell: (params) => (
-          <Typography>{format(params.value, 'dd/MM/yy')}</Typography>
-        ),
-        valueGetter: (params) => new Date(params.value),
+        renderCell: (params) => {
+          return params.value.toISOString() !== unixzeroiso ? (
+            <Typography>
+              {format(new Date(params.value), 'dd/MM/yy')}
+            </Typography>
+          ) : (
+            'N/A'
+          );
+        },
+        valueGetter: (params) =>
+          !params.value ? unixzerodate : new Date(params.value), //no end date comes as null. to preserve table sorting we must set it to unix zero
         renderHeader: (params) => {
           return (
             <CustomHeaderCell>
@@ -184,6 +195,9 @@ export default function ActiveDealTable() {
         align: 'right',
         headerAlign: 'right',
         renderCell: (params) => {
+          if (params.value === null) {
+            return 'N/A';
+          }
           const col =
             params.value <= 7
               ? 'error'
