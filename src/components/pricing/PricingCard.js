@@ -2,19 +2,16 @@
 import { Card, Typography, Box, Stack, styled } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
-// components
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
-import Iconify from 'components/iconify';
-// assets
-// import {
-//   PlanFreeIcon,
-//   PlanStarterIcon,
-//   PlanPremiumIcon
-// } from '../../assets/icons';
+import PlanLabel from 'components/plan-label';
+
+import { CancelOutlined } from '@mui/icons-material';
 
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import BlackLoadingButton from 'components/black-loading-button/BlackLoadingButton';
-import PlanLabel from 'components/plan-label';
+
+import { memo } from 'react';
 
 const CardWrapper = styled(Card)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -24,12 +21,7 @@ const CardWrapper = styled(Card)(({ theme }) => ({
   boxShadow: 'none'
 }));
 
-export default function PricingPlanCard({
-  card,
-  handleChoosePlan,
-  isLoading,
-  currentTier
-}) {
+function PricingPlanCard({ card, handleChoosePlan, isLoading, currentTier }) {
   const { subscription, price, caption, lists } = card;
 
   const isEnterprise = subscription === 'enterprise';
@@ -58,7 +50,10 @@ export default function PricingPlanCard({
             component="span"
             sx={{ alignSelf: 'center', color: 'text.secondary' }}
           >
-            /mo
+            /mo{' '}
+            <Typography component={'span'} variant="caption">
+              incl VAT
+            </Typography>
           </Typography>
         )}
       </Stack>
@@ -68,19 +63,12 @@ export default function PricingPlanCard({
         sx={{
           fontSize: 13,
           color: 'text.secondary',
-
-          maxWidth: '20px'
+          display: 'block',
+          width: '90%'
         }}
       >
         {caption}
       </Typography>
-
-      {/* <Box sx={{ width: 80, height: 80, mt: 3 }}>
-        {(subscription === 'individual' && <PlanFreeIcon />) ||
-          (subscription === 'premium' && <PlanStarterIcon />) || (
-            <PlanPremiumIcon />
-          )}
-      </Box> */}
 
       <Stack component="ul" spacing={2} sx={{ p: 0, mt: 4, mb: 5 }}>
         {lists.map((item) => (
@@ -95,13 +83,11 @@ export default function PricingPlanCard({
               color: item.isAvailable ? 'text.primary' : 'text.disabled'
             }}
           >
-            <Iconify
-              icon={item.isAvailable ? 'eva:checkmark-fill' : 'eva:close-fill'}
-              width={16}
-              sx={{
-                color: item.isAvailable ? 'success.main' : 'inherit'
-              }}
-            />
+            {item.isAvailable ? (
+              <CheckCircleOutlinedIcon fontSize="small" color="success" />
+            ) : (
+              <CancelOutlined fontSize="small" color="inherit" />
+            )}
             <Typography variant="body2">{item.text}</Typography>
           </Stack>
         ))}
@@ -130,3 +116,5 @@ export default function PricingPlanCard({
     </CardWrapper>
   );
 }
+
+export default memo(PricingPlanCard);

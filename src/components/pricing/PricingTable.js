@@ -11,38 +11,45 @@ import LoadingScreen from 'components/loading-screen';
 export const _pricingPlans = [
   {
     subscription: 'individual',
-    price: 55,
-    caption: 'The perfect package for individual Restaurants',
+    price: 66,
+    caption:
+      'Perfect for start-ups and small restaurants with a single location.',
     lists: [
-      { text: '1 Location', isAvailable: true },
-      { text: '3 boards', isAvailable: true },
-      { text: 'Up to 5 team members', isAvailable: false },
-      { text: 'Advanced security', isAvailable: false },
-      { text: 'Permissions & workflows', isAvailable: false }
+      { text: 'Single location', isAvailable: true },
+      { text: 'Max 3 deals at any time', isAvailable: true },
+      { text: 'Partner Dashboard to manage deals', isAvailable: true },
+      {
+        text: 'Analytics to track deal performance and customer engagement.',
+        isAvailable: true
+      }
     ]
   },
   {
     subscription: 'premium',
-    price: 100,
-    caption: 'Ideal package for a medium sized businesses',
+    price: 120,
+    caption: 'Suitable for growing businesses with up to 3 locations.',
     lists: [
-      { text: '1 - 3 Locations', isAvailable: true },
-      { text: '3 boards', isAvailable: true },
-      { text: 'Up to 5 team members', isAvailable: true },
-      { text: 'Advanced security', isAvailable: false },
-      { text: 'Permissions & workflows', isAvailable: false }
+      { text: 'Up to 3 Locations', isAvailable: true },
+      { text: 'Max 15 deals across the locations', isAvailable: true },
+      { text: 'Partner Dashboard to manage deals.', isAvailable: true },
+      {
+        text: 'Analytics to track deal performance and customer engagement.',
+        isAvailable: true
+      }
     ]
   },
   {
     subscription: 'enterprise',
     price: 'Contact Sales',
-    caption: 'Ideal package for multi-chain Restaurants',
+    caption: 'Tailored for large enterprises with unlimited locations.',
     lists: [
-      { text: '3 + Locations', isAvailable: true },
-      { text: '3 boards', isAvailable: true },
-      { text: 'Up to 5 team members', isAvailable: true },
-      { text: 'Advanced security', isAvailable: true },
-      { text: 'Permissions & workflows', isAvailable: true }
+      { text: 'Unlimited locations', isAvailable: true },
+      { text: 'Unlimited deals', isAvailable: true },
+      { text: 'Partner Dashboard to manage deals.', isAvailable: true },
+      {
+        text: 'Analytics to track deal performance and customer engagement.',
+        isAvailable: true
+      }
     ]
   }
 ];

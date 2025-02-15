@@ -74,21 +74,21 @@ const InvoiceCaption = ({ title, text }) => {
 
 const plan_details = {
   individual: {
-    price: 55,
+    price: 66,
     caption:
-      'The perfect package for individual Restaurants with a single location',
+      'Perfect for start-ups and small restaurants with a single location.',
     location_limit: 1,
     deal_limit: 5
   },
   premium: {
-    price: 100,
-    caption: 'Ideal package for a medium sized business with 2-5 locations',
+    price: 120,
+    caption: 'Suitable for growing businesses with up to 3 locations.',
     location_limit: 3,
     deal_limit: 15
   },
   enterprise: {
     price: 'Contact Sales',
-    caption: 'Ideal package for multi-chain Restaurants with 6+ locations'
+    caption: 'Tailored for large enterprises with unlimited locations.'
   }
 };
 
@@ -151,7 +151,10 @@ const Plan = () => {
                     component="span"
                     sx={{ alignSelf: 'center', color: 'text.secondary' }}
                   >
-                    /mo
+                    /mo{' '}
+                    <Typography component={'span'} variant="caption">
+                      incl VAT
+                    </Typography>
                   </Typography>
                 </Stack>
               </Box>
