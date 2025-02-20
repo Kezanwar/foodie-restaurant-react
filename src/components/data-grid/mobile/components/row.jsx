@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import {
+  Box,
   Card,
   CardActions,
   CardContent,
@@ -35,7 +36,7 @@ const DisplayColumn = ({ value, colDef, row }) => {
       {typeof displayValue === 'string' ? (
         <Typography variant="body2">{displayValue}</Typography>
       ) : (
-        <div>{displayValue}</div>
+        <Box mt={0.5}>{displayValue}</Box>
       )}
     </Stack>
   );
