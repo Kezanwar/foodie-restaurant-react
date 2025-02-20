@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useTheme } from '@emotion/react';
 import { LoadingButton } from '@mui/lab';
-import { alpha, Stack } from '@mui/system';
+import { Stack } from '@mui/system';
 import { capitalize } from 'lodash';
 import {
   Box,
@@ -10,7 +10,6 @@ import {
   Dialog,
   Typography,
   useMediaQuery,
-  styled,
   DialogContent,
   DialogActions
 } from '@mui/material';
@@ -20,44 +19,12 @@ import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 
 import Spacer from 'components/spacer/Spacer';
 import CustomMarker from 'components/leaflet/CustomMarker';
-
-const MainContent = styled(Box)(({ theme }) => ({
-  background: theme.palette.common.white,
-  width: '480px',
-  maxWidth: '95vw',
-  borderRadius: 1
-}));
-
-const StyledMapContainer = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  '& .leaflet-container': {
-    height: 400,
-    margin: '0 auto',
-    width: '100%',
-    borderRadius: theme.shape.borderRadius,
-    [theme.breakpoints.down(420)]: {
-      height: 200
-    }
-  }
-}));
-
-const StyledMapDragMarkerMessage = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  top: '12px',
-  zIndex: '5000',
-  right: '12px',
-  padding: '10px 14px',
-  borderRadius: '8px',
-  backgroundColor: alpha(theme.palette.common.white, 0.3),
-  boxShadow: theme.shadows[12],
-  backdropFilter: 'blur(4px)'
-}));
-
-const StyledLowerContentContainer = styled(Box)(() => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-  position: 'relative'
-}));
+import {
+  MainContent,
+  StyledLowerContentContainer,
+  StyledMapContainer,
+  StyledMapDragMarkerMessage
+} from './styles';
 
 const ConfirmLocationModal = ({
   isOpen,
