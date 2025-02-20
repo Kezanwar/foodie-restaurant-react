@@ -121,14 +121,14 @@ const columns = [
     type: 'date',
     flex: 1,
     renderCell: (params) => {
-      return params.value?.toISOString() !== unixzeroiso ? (
+      return params.value &&
+        new Date(params.value).toISOString() !== unixzeroiso ? (
         <Typography>{format(new Date(params.value), 'dd/MM/yy')}</Typography>
       ) : (
         'N/A'
       );
     },
     valueGetter: (params) => {
-      console.log(params);
       return !params.value ? unixzerodate : new Date(params.value); //no end date comes as null. to preserve table sorting we must set it to unix zero
     },
     renderHeader: (params) => {
