@@ -1,20 +1,9 @@
 /* eslint-disable object-shorthand */
-import React, { useCallback, useMemo } from 'react';
-
+import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router';
-import {
-  Box,
-  IconButton,
-  MenuItem,
-  // IconButton,
-  // MenuItem,
-  // Menu,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { Box, IconButton, MenuItem, Typography } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
 import { format } from 'date-fns';
-
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
@@ -23,19 +12,13 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-
-// import MoreVertIcon from '@mui/icons-material/MoreVert';
-
 import MotionDivViewport from 'components/animate/MotionDivViewport';
 import { CustomHeaderCell } from './styles';
 import Label from 'components/label/Label';
-
 import DealTableLoading from './DealTableLoading';
 import DealTableEmpty from './DealTableEmpty';
-
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import useActiveDealsQuery from 'hooks/queries/useActiveDealsQuery';
-
 import { PATH_DASHBOARD } from 'routes/paths';
 import MenuPopover from 'components/menu-popover';
 import LocalMobileCardsDataGrid from 'components/data-grid/mobile/local';
@@ -44,15 +27,9 @@ import { MoreHoriz } from '@mui/icons-material';
 import {
   DATA_GRID_COMPONENTS,
   PAGE_SIZE_OPTIONS
-} from 'components/data-grid/rows/sizes';
+} from 'components/data-grid/constants';
 
 const tableType = 'active';
-
-// const menuIconProps = {
-//   fontSize: 'small',
-//   sx: { mr: 1 },
-//   color: 'primary'
-// };
 
 const ActionMenu = React.memo((params) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -115,16 +92,6 @@ const ActionMenu = React.memo((params) => {
 });
 
 const columns = [
-  // {
-  //   field: 'actions',
-  //   headerName: 'Actions',
-  //   width: isTablet ? 80 : 100,
-  //   sortable: false,
-  //   type: 'actions',
-  //   renderCell: (params) => (
-  //     <ActionMenu dealId={params.id} handleView={handleView} />
-  //   )
-  // },
   {
     field: 'name',
     headerName: 'Name',

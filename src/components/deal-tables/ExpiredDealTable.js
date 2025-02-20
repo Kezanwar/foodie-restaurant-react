@@ -1,21 +1,16 @@
-/* eslint-disable object-shorthand */
-import React, { useCallback, useMemo } from 'react';
-
+import React, { useCallback } from 'react';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router';
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-
+import { DataGrid } from '@mui/x-data-grid';
 import useExpiredDealsQuery from 'hooks/queries/useExpiredDealsQuery';
 import { PATH_DASHBOARD } from 'routes/paths';
-
 import MotionDivViewport from '../animate/MotionDivViewport';
 import DealTableEmpty from './DealTableEmpty';
 import DealTableLoading from './DealTableLoading';
@@ -25,27 +20,15 @@ import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import {
   DATA_GRID_COMPONENTS,
   PAGE_SIZE_OPTIONS
-} from 'components/data-grid/rows/sizes';
+} from 'components/data-grid/constants';
 import LocalMobileCardsDataGrid from 'components/data-grid/mobile/local';
 
 const columns = [
-  // {
-  //   field: 'actions',
-  //   headerName: 'Actions',
-  //   width: 100,
-  //   sortable: false,
-  //   type: 'actions',
-
-  //   renderCell: (params) => (
-  //     <ActionMenu dealId={params.id} handleView={handleView} />
-  //   )
-  // },
   {
     field: 'name',
     headerName: 'Name',
     width: 220,
     flex: 1,
-
     renderHeader: (params) => {
       return (
         <CustomHeaderCell>
