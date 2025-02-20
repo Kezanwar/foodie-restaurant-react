@@ -36,7 +36,7 @@ import { DashboardTitleContainer } from '../styles';
 import RHFMultipleAutocomplete from 'components/hook-form/RHFMultipleAutoComplete';
 import Spacer from 'components/spacer/Spacer';
 import LoadingScreen from 'components/loading-screen/LoadingScreen';
-import AcceptDeclineModal from 'components/accept-decline-modal/AcceptDeclineModal';
+import AcceptDeclineModal from 'components/modals/accept-decline-modal/AcceptDeclineModal';
 
 import { PATH_DASHBOARD } from 'routes/paths';
 import useSingleDealQuery from 'hooks/queries/useSingleDealQuery';

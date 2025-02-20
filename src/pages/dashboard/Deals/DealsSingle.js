@@ -22,7 +22,7 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import { DashboardStatGrid } from '../styles';
 import LoadingScreen from 'components/loading-screen/LoadingScreen';
 import StatCardAvg from 'components/stat-card/StatCardAvg';
-import AcceptDeclineModal from 'components/accept-decline-modal/AcceptDeclineModal';
+import AcceptDeclineModal from 'components/modals/accept-decline-modal/AcceptDeclineModal';
 
 import { PATH_DASHBOARD } from 'routes/paths';
 import { deleteDeal, expireDeal } from 'utils/api';
@@ -407,23 +407,14 @@ const ExpireDealModal = ({
       onAccept={onAccept}
       acceptText={'Yes, expire'}
       cancelText={'Cancel'}
+      destructive
       submitLoading={submitLoading}
-      title={'Expire this deal'}
-      subtitle={'Are you sure you want to expire this deal?'}
+      title={`Expire ${dealName}`}
+      subtitle={
+        'Are you sure you want to expire this deal? Once expired the deal will no longer appear on users feed and will move over to your expired deals.'
+      }
       isOpen={isOpen}
-    >
-      <Box mt={2}>
-        <Box mb={2}>
-          <Typography mb={1} fontSize={18} fontWeight={700}>
-            {dealName}
-          </Typography>
-          <Typography color={'text.secondary'} variant="body2">
-            Once expired the deal will no longer appear on users feed and will
-            move over to your expired deals.
-          </Typography>
-        </Box>
-      </Box>
-    </AcceptDeclineModal>
+    />
   );
 };
 
@@ -440,21 +431,13 @@ const DeleteDealModal = ({
       onAccept={onAccept}
       acceptText={'Yes, delete'}
       cancelText={'Cancel'}
+      destructive
       submitLoading={submitLoading}
-      title={'Delete this deal'}
-      subtitle={'Are you sure you want to delete this deal?'}
+      title={`Delete ${dealName}`}
+      subtitle={
+        'Are you sure you want to delete this deal? This deal and its stats will be deleted forever.'
+      }
       isOpen={isOpen}
-    >
-      <Box mt={2}>
-        <Box mb={2}>
-          <Typography mb={1} fontSize={18} fontWeight={700}>
-            {dealName}
-          </Typography>
-          <Typography color={'text.secondary'} variant="body2">
-            This deal and its stats will be deleted forever.
-          </Typography>
-        </Box>
-      </Box>
-    </AcceptDeclineModal>
+    />
   );
 };

@@ -37,7 +37,7 @@ import RHFMultipleAutocomplete from 'components/hook-form/RHFMultipleAutoComplet
 import Spacer from 'components/spacer/Spacer';
 import { SelectButton } from 'components/select-button/SelectButton';
 import ExpandableBox from 'components/expandable-box/ExpandableBox';
-import AcceptDeclineModal from 'components/accept-decline-modal/AcceptDeclineModal';
+import AcceptDeclineModal from 'components/modals/accept-decline-modal/AcceptDeclineModal';
 
 import { PATH_DASHBOARD } from 'routes/paths';
 import useActiveDealsQuery from 'hooks/queries/useActiveDealsQuery';

@@ -12,7 +12,7 @@ import { DashboardTitleContainer } from '../styles';
 import DashboardTitle from 'components/dashboard-title/DashboardTitle';
 import LoadingScreen from 'components/loading-screen/LoadingScreen';
 import { addLocationsDashboardSchema } from 'validation/new-restaurant';
-import ConfirmLocationModalDashboard from 'components/confirm-location-modal/ConfirmLocationModalDashboard';
+import ConfirmLocationModalDashboard from 'components/modals/confirm-location-modal/ConfirmLocationModalDashboard';
 import OpeningTimeInput from 'components/opening-time-input/OpeningTimeInput';
 import Subheader from 'components/subheader/Subheader';
 import Spacer from 'components/spacer/Spacer';

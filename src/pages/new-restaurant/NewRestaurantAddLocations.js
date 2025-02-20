@@ -49,8 +49,8 @@ import {
   editLocation,
   postLocationsStep
 } from 'utils/api';
-import ConfirmLocationModal from 'components/confirm-location-modal/ConfirmLocationModal';
-import AcceptDeclineModal from 'components/accept-decline-modal/AcceptDeclineModal';
+import ConfirmLocationModal from 'components/modals/confirm-location-modal/ConfirmLocationModal';
+import AcceptDeclineModal from 'components/modals/accept-decline-modal/AcceptDeclineModal';
 import OpeningTimeInput from 'components/opening-time-input/OpeningTimeInput';
 import useOpeningTimesForm from 'hooks/useOpeningTimesForm';
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
@@ -789,7 +789,7 @@ const NewRestaurantAddLocation = () => {
           )}
           {deleteLocationModalOpen && (
             <AcceptDeclineModal
-              title={'Confirm delete location'}
+              title={'Delete Location'}
               subtitle={deleteModalText}
               isOpen={deleteLocationModalOpen}
               submitLoading={deleteLocationLoading}
