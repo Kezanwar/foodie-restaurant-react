@@ -1,24 +1,30 @@
 // ----------------------------------------------------------------------
 
+import { alpha } from '@mui/material';
+
 export default function Tabs(theme) {
   return {
     MuiTabs: {
       defaultProps: {
         textColor: 'inherit',
         allowScrollButtonsMobile: true,
-        variant: 'scrollable',
+        variant: 'scrollable'
       },
       styleOverrides: {
         scrollButtons: {
           width: 48,
-          borderRadius: '50%',
+          borderRadius: '50%'
         },
-      },
+        indicator: {
+          backgroundColor: theme.palette.grey[700],
+          height: 1
+        }
+      }
     },
     MuiTab: {
       defaultProps: {
         disableRipple: true,
-        iconPosition: 'start',
+        iconPosition: 'start'
       },
       styleOverrides: {
         root: ({ ownerState }) => ({
@@ -29,17 +35,18 @@ export default function Tabs(theme) {
           '&:not(:last-of-type)': {
             marginRight: theme.spacing(3),
             [theme.breakpoints.up('sm')]: {
-              marginRight: theme.spacing(5),
-            },
+              marginRight: theme.spacing(5)
+            }
           },
           '&:not(.Mui-selected)': {
-            color: theme.palette.text.secondary,
+            opacity: 0.6
           },
-          ...((ownerState.iconPosition === 'start' || ownerState.iconPosition === 'end') && {
-            minHeight: 48,
-          }),
-        }),
-      },
-    },
+          ...((ownerState.iconPosition === 'start' ||
+            ownerState.iconPosition === 'end') && {
+            minHeight: 48
+          })
+        })
+      }
+    }
   };
 }

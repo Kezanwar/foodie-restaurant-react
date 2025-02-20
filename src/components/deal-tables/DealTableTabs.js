@@ -8,6 +8,9 @@ import Box from '@mui/material/Box';
 import ActiveDealTable from './ActiveDealTable';
 import ExpiredDealTable from './ExpiredDealTable';
 import { useLocation, useNavigate } from 'react-router';
+import LiveTvIcon from '@mui/icons-material/LiveTv';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -38,8 +41,8 @@ function a11yProps(index) {
   };
 }
 
-const tabs = { active: 0, expired: 1 };
-const to = { 0: 'active', 1: 'expired' };
+const tabs = { live: 0, expired: 1 };
+const to = { 0: 'live', 1: 'expired' };
 
 export default function DealTableTabs() {
   const location = useLocation();
@@ -65,17 +68,19 @@ export default function DealTableTabs() {
         >
           <Tab
             icon={
-              <AlarmOnOutlinedIcon
+              <CheckCircleOutlineOutlinedIcon
+                color="success"
                 sx={{ marginRight: '6px!important' }}
                 fontSize="small"
               />
             }
-            label="Active"
+            label="Live"
             {...a11yProps(0)}
           />
           <Tab
             icon={
-              <AlarmOffOutlinedIcon
+              <CancelOutlinedIcon
+                color="error"
                 sx={{ marginRight: '6px!important' }}
                 fontSize="small"
               />

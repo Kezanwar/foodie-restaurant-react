@@ -24,11 +24,18 @@ MenuPopover.propTypes = {
     'left-bottom',
     'right-top',
     'right-center',
-    'right-bottom',
-  ]),
+    'right-bottom'
+  ])
 };
 
-export default function MenuPopover({ open, children, arrow = 'top-right', disabledArrow, sx, ...other }) {
+export default function MenuPopover({
+  open,
+  children,
+  arrow = 'top-right',
+  disabledArrow,
+  sx,
+  ...other
+}) {
   const { style, anchorOrigin, transformOrigin } = getPosition(arrow);
 
   return (
@@ -39,18 +46,17 @@ export default function MenuPopover({ open, children, arrow = 'top-right', disab
       transformOrigin={transformOrigin}
       PaperProps={{
         sx: {
-          p: 1,
+          minWidth: 200,
           width: 'auto',
           overflow: 'inherit',
           ...style,
           '& .MuiMenuItem-root': {
-            px: 1,
             typography: 'body2',
             borderRadius: 0.75,
-            '& svg': { mr: 2, width: 20, height: 20, flexShrink: 0 },
+            '& svg': { mr: 2, width: 20, height: 20, flexShrink: 0 }
           },
-          ...sx,
-        },
+          ...sx
+        }
       }}
       {...other}
     >

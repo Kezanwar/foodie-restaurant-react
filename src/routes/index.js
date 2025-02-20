@@ -96,10 +96,10 @@ export default function Router() {
           path: 'deals',
           children: [
             {
-              element: <Navigate to={'/dashboard/deals/active'} replace />,
+              element: <Navigate to={'/dashboard/deals/live'} replace />,
               index: true
             },
-            { path: 'active', element: <DealsAll /> },
+            { path: 'live', element: <DealsAll /> },
             { path: 'expired', element: <DealsAll /> },
             { path: 'create', element: <DealsCreate /> },
             { path: 'single/:id', element: <DealsSingle /> },

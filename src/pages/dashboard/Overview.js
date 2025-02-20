@@ -182,7 +182,7 @@ export default function Overview() {
 
             <DealDataWrapper>
               <Box>
-                <Subheader mb={0} text={'Active'} />
+                <Subheader mb={0} text={'Live'} />
                 <Typography fontWeight={600} variant="h2" component="h2">
                   {deals.active}
                 </Typography>

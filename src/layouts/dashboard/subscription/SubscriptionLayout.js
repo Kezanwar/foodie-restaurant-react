@@ -60,23 +60,45 @@ const SubscriptionLayout = () => {
               aria-label="basic tabs example"
             >
               <Tab
-                icon={<DiamondOutlinedIcon sx={iconSx} fontSize="small" />}
+                icon={
+                  <DiamondOutlinedIcon
+                    color="primary"
+                    sx={iconSx}
+                    fontSize="small"
+                  />
+                }
                 label="Plan"
                 {...a11yProps(0)}
               />
               <Tab
-                icon={<CreditCardOutlinedIcon sx={iconSx} fontSize="small" />}
+                icon={
+                  <CreditCardOutlinedIcon
+                    color="success"
+                    sx={iconSx}
+                    fontSize="small"
+                  />
+                }
                 label="Billing"
                 {...a11yProps(1)}
               />
               <Tab
-                icon={<ReceiptLongOutlinedIcon sx={iconSx} fontSize="small" />}
+                icon={
+                  <ReceiptLongOutlinedIcon
+                    color="info"
+                    sx={iconSx}
+                    fontSize="small"
+                  />
+                }
                 label="Invoices"
                 {...a11yProps(1)}
               />
               <Tab
                 icon={
-                  <AppRegistrationOutlinedIcon sx={iconSx} fontSize="small" />
+                  <AppRegistrationOutlinedIcon
+                    color="secondary"
+                    sx={iconSx}
+                    fontSize="small"
+                  />
                 }
                 label={isSubscribed ? 'Change Plan' : 'Choose Plan'}
                 {...a11yProps(1)}

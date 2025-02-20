@@ -254,22 +254,22 @@ const DealsSingle = () => {
               sx={{ width: 200, p: 0 }}
             >
               {isExpired && (
-                <MenuItem onClick={onUseAsTemplate} sx={{ m: 1 }}>
+                <MenuItem onClick={onUseAsTemplate}>
                   <DriveFileRenameOutlineOutlinedIcon /> Use as template
                 </MenuItem>
               )}
               {!isExpired && (
-                <MenuItem onClick={onEdit} sx={{ m: 1 }}>
+                <MenuItem onClick={onEdit}>
                   <DriveFileRenameOutlineOutlinedIcon />
                   Edit
                 </MenuItem>
               )}
               {!isExpired && startsLater && (
-                <MenuItem onClick={onExpireOpen} sx={{ m: 1 }}>
+                <MenuItem onClick={onExpireOpen}>
                   <EventBusyIcon /> Expire
                 </MenuItem>
               )}
-              <MenuItem onClick={onDeleteOpen} sx={{ m: 1 }}>
+              <MenuItem onClick={onDeleteOpen}>
                 <DeleteOutlineIcon /> Delete
               </MenuItem>
             </MenuPopover>
