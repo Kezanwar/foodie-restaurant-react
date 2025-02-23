@@ -29,14 +29,16 @@ const DisplayColumn = ({ value, colDef, row }) => {
   }
 
   return (
-    <Stack gap={0.5}>
-      <Typography color="text.primary" variant="caption">
+    <Stack direction={'row'} alignItems={'center'} gap={1.5}>
+      <Typography color="text.secondary" component={'span'} variant="caption">
         {colDef.headerName}
       </Typography>
       {typeof displayValue === 'string' ? (
-        <Typography variant="body2">{displayValue}</Typography>
+        <Typography component={'span'} variant="body2">
+          {displayValue}
+        </Typography>
       ) : (
-        <Box mt={0.5}>{displayValue}</Box>
+        <Box>{displayValue}</Box>
       )}
     </Stack>
   );
