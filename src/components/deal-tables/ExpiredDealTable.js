@@ -22,6 +22,7 @@ import {
   PAGE_SIZE_OPTIONS
 } from 'components/data-grid/constants';
 import LocalMobileCardsDataGrid from 'components/data-grid/mobile/local';
+import { ActionContextProvider, ActionMenu } from './RowActions';
 
 const columns = [
   {
@@ -153,6 +154,12 @@ const columns = [
         </CustomHeaderCell>
       );
     }
+  },
+  {
+    field: 'actions',
+    type: 'actions',
+    width: 42,
+    getActions: (params) => [<ActionMenu key={params.row._id} {...params} />]
   }
 ];
 
@@ -182,31 +189,33 @@ export default function ExpiredDealTable() {
   if (loading) return <DealTableLoading type={tableType} />;
   if (!deals?.length) return <DealTableEmpty type={tableType} />;
   return (
-    <Box
-      component={MotionDivViewport}
-      initial={TableStartAnim}
-      animate={TableEntranceAnim}
-      sx={TableSx}
-      transition={TableAnimDur}
-    >
-      {!isTablet ? (
-        <DataGrid
-          components={DATA_GRID_COMPONENTS}
-          rowSelection={false}
-          rows={deals}
-          columns={columns}
-          getRowId={getRowID}
-          pageSizeOptions={PAGE_SIZE_OPTIONS}
-          onRowClick={onRowClick}
-        />
-      ) : (
-        <LocalMobileCardsDataGrid
-          getRowID={getRowID}
-          onRowClick={onRowClick}
-          rows={deals}
-          columnDefinitions={columns}
-        />
-      )}
-    </Box>
+    <ActionContextProvider>
+      <Box
+        component={MotionDivViewport}
+        initial={TableStartAnim}
+        animate={TableEntranceAnim}
+        sx={TableSx}
+        transition={TableAnimDur}
+      >
+        {!isTablet ? (
+          <DataGrid
+            components={DATA_GRID_COMPONENTS}
+            rowSelection={false}
+            rows={deals}
+            columns={columns}
+            getRowId={getRowID}
+            pageSizeOptions={PAGE_SIZE_OPTIONS}
+            onRowClick={onRowClick}
+          />
+        ) : (
+          <LocalMobileCardsDataGrid
+            getRowID={getRowID}
+            onRowClick={onRowClick}
+            rows={deals}
+            columnDefinitions={columns}
+          />
+        )}
+      </Box>
+    </ActionContextProvider>
   );
 }
