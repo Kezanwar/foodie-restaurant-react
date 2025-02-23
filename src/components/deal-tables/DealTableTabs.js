@@ -1,16 +1,17 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import AlarmOnOutlinedIcon from '@mui/icons-material/AlarmOnOutlined';
-import AlarmOffOutlinedIcon from '@mui/icons-material/AlarmOffOutlined';
+
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import ActiveDealTable from './ActiveDealTable';
 import ExpiredDealTable from './ExpiredDealTable';
 import { useLocation, useNavigate } from 'react-router';
-import LiveTvIcon from '@mui/icons-material/LiveTv';
+
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+
+import DashboardStickyBar from 'components/dashboard-sticky-bar';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -23,7 +24,7 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
+      {value === index && <Box py={3}>{children}</Box>}
     </Box>
   );
 }
@@ -60,7 +61,7 @@ export default function DealTableTabs() {
 
   return (
     <Box key={'deals-tabs-header'} sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <DashboardStickyBar>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -89,8 +90,7 @@ export default function DealTableTabs() {
             {...a11yProps(1)}
           />
         </Tabs>
-      </Box>
-
+      </DashboardStickyBar>
       <TabPanel value={value} index={0}>
         <ActiveDealTable />
       </TabPanel>

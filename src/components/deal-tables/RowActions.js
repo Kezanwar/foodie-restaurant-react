@@ -170,8 +170,6 @@ export const ActionMenu = React.memo((params) => {
 
   const isExpired = params.row.is_expired;
 
-  console.log(params.row);
-
   const { onExpireDealOpen, onDeleteDealOpen } = useActionContext();
 
   const onEdit = () => nav(`/dashboard/deals/edit/${params.row._id}`);

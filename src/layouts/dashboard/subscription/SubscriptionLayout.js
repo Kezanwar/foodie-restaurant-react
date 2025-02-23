@@ -1,4 +1,4 @@
-import { Box, Container, Tab, Tabs, Typography } from '@mui/material';
+import { Container, Tab, Tabs, Typography } from '@mui/material';
 import DashboardTitle from 'components/dashboard-title/DashboardTitle';
 import DiamondOutlinedIcon from '@mui/icons-material/DiamondOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
@@ -9,10 +9,9 @@ import { DashboardTitleContainer } from 'pages/dashboard/styles';
 import React, { useMemo } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import PricingTable from 'components/pricing';
+import DashboardStickyBar from 'components/dashboard-sticky-bar';
 
 const iconSx = { marginRight: '6px!important' };
-
-const tabSx = { borderBottom: 1, borderColor: 'divider' };
 
 function a11yProps(index) {
   return {
@@ -51,62 +50,61 @@ const SubscriptionLayout = () => {
         <Typography mb={4} variant="body2" color={'text.secondary'}>
           You can view and manage {restaurant?.name}'s Deals here.
         </Typography>
-
-        {isSubscribed && (
-          <Box sx={tabSx}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="basic tabs example"
-            >
-              <Tab
-                icon={
-                  <DiamondOutlinedIcon
-                    color="primary"
-                    sx={iconSx}
-                    fontSize="small"
-                  />
-                }
-                label="Plan"
-                {...a11yProps(0)}
-              />
-              <Tab
-                icon={
-                  <CreditCardOutlinedIcon
-                    color="success"
-                    sx={iconSx}
-                    fontSize="small"
-                  />
-                }
-                label="Billing"
-                {...a11yProps(1)}
-              />
-              <Tab
-                icon={
-                  <ReceiptLongOutlinedIcon
-                    color="info"
-                    sx={iconSx}
-                    fontSize="small"
-                  />
-                }
-                label="Invoices"
-                {...a11yProps(1)}
-              />
-              <Tab
-                icon={
-                  <AppRegistrationOutlinedIcon
-                    color="secondary"
-                    sx={iconSx}
-                    fontSize="small"
-                  />
-                }
-                label={isSubscribed ? 'Change Plan' : 'Choose Plan'}
-                {...a11yProps(1)}
-              />
-            </Tabs>
-          </Box>
-        )}
       </DashboardTitleContainer>
+      {isSubscribed && (
+        <DashboardStickyBar>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+          >
+            <Tab
+              icon={
+                <DiamondOutlinedIcon
+                  color="primary"
+                  sx={iconSx}
+                  fontSize="small"
+                />
+              }
+              label="Plan"
+              {...a11yProps(0)}
+            />
+            <Tab
+              icon={
+                <CreditCardOutlinedIcon
+                  color="success"
+                  sx={iconSx}
+                  fontSize="small"
+                />
+              }
+              label="Billing"
+              {...a11yProps(1)}
+            />
+            <Tab
+              icon={
+                <ReceiptLongOutlinedIcon
+                  color="info"
+                  sx={iconSx}
+                  fontSize="small"
+                />
+              }
+              label="Invoices"
+              {...a11yProps(1)}
+            />
+            <Tab
+              icon={
+                <AppRegistrationOutlinedIcon
+                  color="secondary"
+                  sx={iconSx}
+                  fontSize="small"
+                />
+              }
+              label={isSubscribed ? 'Change Plan' : 'Choose Plan'}
+              {...a11yProps(1)}
+            />
+          </Tabs>
+        </DashboardStickyBar>
+      )}
       {isSubscribed ? <Outlet /> : <PricingTable />}
     </Container>
   );
