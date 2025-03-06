@@ -29,7 +29,12 @@ const DisplayColumn = ({ value, colDef, row }) => {
   }
 
   return (
-    <Stack direction={'row'} alignItems={'center'} gap={1.5}>
+    <Stack
+      direction={'row'}
+      alignItems={'center'}
+      justifyContent={'space-between'}
+      gap={1.5}
+    >
       <Typography color="text.secondary" component={'span'} variant="caption">
         {colDef.headerName}
       </Typography>
