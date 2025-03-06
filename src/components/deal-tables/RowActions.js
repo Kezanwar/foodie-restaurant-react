@@ -57,9 +57,11 @@ export const ActionContextProvider = ({ children }) => {
       setSubmitLoading(true);
       try {
         await expireDeal(dealToExpire?._id);
-        activeDeals.refetch();
-        expiredDeals.remove();
-        dash.remove();
+        await Promise.all([
+          activeDeals.refetch(),
+          expiredDeals.remove(),
+          dash.remove()
+        ]);
         mixpanelTrack(MIXPANEL_EVENTS.expire_deal_success);
         enqueueSnackbar(`Successfully expired ${dealToExpire.name}`, {
           variant: 'success'
@@ -85,9 +87,11 @@ export const ActionContextProvider = ({ children }) => {
       setSubmitLoading(true);
       try {
         await deleteDeal(dealToDelete._id);
-        activeDeals.refetch();
-        expiredDeals.remove();
-        dash.remove();
+        await Promise.all([
+          activeDeals.refetch(),
+          expiredDeals.remove(),
+          dash.remove()
+        ]);
 
         enqueueSnackbar(`Successfully deleted ${dealToDelete.name}`, {
           variant: 'success'
@@ -188,18 +192,20 @@ export const ActionMenu = React.memo((params) => {
       )}
 
       <MenuPopover open={anchorEl} onClose={handleClose}>
-        {/* {isExpired && (
+        {isExpired && (
           <MenuItem
           // onClick={onUseAsTemplate}
           >
             <DriveFileRenameOutlineOutlinedIcon /> Use as template
           </MenuItem>
-        )} */}
+        )}
 
-        <MenuItem onClick={onEdit}>
-          <DriveFileRenameOutlineOutlinedIcon />
-          {!isExpired ? 'Edit' : 'Make Live'}
-        </MenuItem>
+        {!isExpired && (
+          <MenuItem onClick={onEdit}>
+            <DriveFileRenameOutlineOutlinedIcon />
+            Edit
+          </MenuItem>
+        )}
 
         {!isExpired && (
           <MenuItem onClick={() => onExpireDealOpen(params.row)}>

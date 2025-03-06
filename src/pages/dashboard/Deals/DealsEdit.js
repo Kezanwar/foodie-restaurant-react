@@ -208,10 +208,10 @@ export default function DealsEdit() {
   }, []);
 
   useEffect(() => {
-    if (error || locationsError) {
-      navigate(PATH_DASHBOARD.deals_all, { replace: true });
+    if (error || locationsError || dealData?.data?.is_expired) {
+      navigate('/dashboard/deals/live', { replace: true });
     }
-  }, [error, locationsError]);
+  }, [error, locationsError, dealData?.data?.is_expired]);
 
   const { isTablet } = useCustomMediaQueries();
 
@@ -271,8 +271,6 @@ export default function DealsEdit() {
     }
   };
 
-  const end = getValues().end_date;
-
   return isLoading || locationsLoading ? (
     <LoadingScreen />
   ) : (
@@ -296,22 +294,28 @@ export default function DealsEdit() {
             <Box pb={1}>
               <InputWithInfoStack reverseMob>
                 <InputWithInfoInputContainer>
-                  <Subheader
-                    sx={{ marginBottom: 8 }}
-                    text={'Edit your deals a name & description'}
-                  />
+                  <Subheader sx={{ marginBottom: 8 }} text={'Deal name'} />
                   <Typography mb={2} variant="body2" color={'text.secondary'}>
-                    * Please include all relevant information including any
-                    restricted times the offer is available here, e.g Lunch time
-                    special, available between 12-4pm...
+                    Once created, you can't edit a deals name as this will
+                    comprimise the integrity of the data.
                   </Typography>
                   <RHFTextField
-                    sx={{ flex: 1, marginBottom: 3 }}
+                    sx={{ mb: 6 }}
                     name="name"
+                    disabled
                     label="Give your deal a name"
                     placeholder="e.g 2 for 1 Lunch Menu (Mon - Fri)"
                     variant={'filled'}
                   />
+                  <Subheader
+                    sx={{ marginBottom: 8 }}
+                    text={'Edit your deals description'}
+                  />
+                  <Typography mb={2} variant="body2" color={'text.secondary'}>
+                    * Please include all relevant information including any
+                    restricted times the offer is available here, e.g Lunch time
+                    special, available between 12-4pm etc.
+                  </Typography>
                   <RHFTextField
                     multiline
                     variant={'filled'}
@@ -337,7 +341,7 @@ export default function DealsEdit() {
                     text={'Edit deal end date'}
                   />
                   <Typography mb={2} variant="body2" color={'text.secondary'}>
-                    * You can expire a deal at any time from your dashboard
+                    * You can expire a deal at any time from your dashboard.
                   </Typography>
                   <DateButtonsWrapper>
                     <SelectButton
@@ -409,23 +413,29 @@ export default function DealsEdit() {
                     icon={<HelpIcon />}
                     severity={'success'}
                   >
-                    <AlertTitle>How do deals work?</AlertTitle>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. At
-                    neque minima sit doloribus harum soluta necessitatibus hic?
-                    Dolorum, pariatur eligendi{' '}
-                    <strong>Siganti et il gido!</strong>
+                    <AlertTitle>How do deals work?</AlertTitle>A Deal requires a
+                    name, description and 1 or more locations assigned to it.
+                    You also need to specify how long you would like the deal to
+                    appear on the mobile app.
                     <br />
                     <br />
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Unde temporibus hic vel minima incidunt rem similique
-                    placeat voluptatibus omnis ipsam quia eligendi dolor
-                    consequatur dolorem, ipsa magni!
+                    <strong>
+                      Please include any time restrictions in the title or
+                      description.
+                    </strong>
                     <br />
                     <br />
-                    Sapiente neque, suscipit deserunt porro explicabo iusto
-                    doloribus? Molestiae voluptatum facilis tenetur aperiam
-                    doloribus officiis architecto. Dolor minus sit, obcaecati
-                    reiciendis culpa inventore.
+                    Foodie's deal system streamlines the process for restaurants
+                    to showcase their special offers. As soon as you post a
+                    deal, it seamlessly integrates into our app and is filtered
+                    by customer preferences such as cuisine, dietary
+                    requirements, and location and can be time-restricted.
+                    <br />
+                    <br />
+                    Our advanced search function takes into account keywords
+                    found in both the deal's title and description, facilitating
+                    a more efficient and personalized connection between diners
+                    and enticing discounts.
                   </Alert>
                 </InputWithInfoInfoContainer>
               </InputWithInfoStack>

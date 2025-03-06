@@ -57,7 +57,7 @@ export default function Input(theme) {
             backgroundColor: alpha(theme.palette.grey[400], 0.15)
           },
           '&.Mui-disabled': {
-            backgroundColor: theme.palette.action.disabledBackground
+            backgroundColor: alpha(theme.palette.action.disabledBackground, 0.1)
           }
         },
         underline: {

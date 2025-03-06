@@ -144,11 +144,13 @@ const DealsSingle = () => {
     if (deal?._id) {
       setSubmitLoading(true);
       try {
-        const res = await expireDeal(deal?._id);
-        refetch();
-        activeDeals.remove();
-        expiredDeals.remove();
-        dash.remove();
+        await expireDeal(deal?._id);
+        await Promise.all([
+          refetch(),
+          activeDeals.remove(),
+          expiredDeals.remove(),
+          dash.remove()
+        ]);
         mixpanelTrack(MIXPANEL_EVENTS.expire_deal_success);
         enqueueSnackbar(`Successfully expired ${deal?.name}`, {
           variant: 'success'
@@ -172,11 +174,13 @@ const DealsSingle = () => {
     if (deal?._id) {
       setSubmitLoading(true);
       try {
-        const res = await deleteDeal(deal?._id);
+        await deleteDeal(deal?._id);
         remove();
-        activeDeals.remove();
-        expiredDeals.remove();
-        dash.remove();
+        await Promise.all([
+          activeDeals.remove(),
+          expiredDeals.remove(),
+          dash.remove()
+        ]);
 
         enqueueSnackbar(`Successfully deleted ${deal?.name}`, {
           variant: 'success'

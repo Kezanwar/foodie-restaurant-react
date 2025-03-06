@@ -350,6 +350,10 @@ export default function DealsCreate() {
       removeLicenseEl();
     } else {
       navigate('/dashboard/deals', { replace: true });
+      enqueueSnackbar(
+        "   You've hit the limit of Active Deals you can create for your Subscription Tier.",
+        { variant: 'warning' }
+      );
     }
   }, [showDatePicker, canAddDeal]);
 

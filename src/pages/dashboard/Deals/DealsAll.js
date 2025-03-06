@@ -60,7 +60,7 @@ const DealsAll = () => {
             Create a new deal
           </LightLoadingButton>
           {!!isSubscribed && !canAddDeal && (
-            <Alert sx={alertSx} severity="info">
+            <Alert sx={alertSx} severity="warning">
               You've hit the limit of Active Deals you can create for your
               Subscription Tier.
               <strong>

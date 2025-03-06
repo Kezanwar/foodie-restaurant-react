@@ -1,3 +1,4 @@
+import { isBefore, startOfDay } from 'date-fns';
 import * as Yup from 'yup';
 
 export const newDealSchema = Yup.object().shape({
@@ -13,8 +14,18 @@ export const newDealSchema = Yup.object().shape({
       if (value === '') {
         return true;
       }
+
+      if (isBefore(startOfDay(new Date(value)), startOfDay(new Date()))) {
+        return false;
+      }
+
       const s = this.parent.start_date;
-      return s !== value;
+
+      if (isBefore(startOfDay(new Date(value)), startOfDay(new Date(s)))) {
+        return false;
+      }
+
+      return true;
     },
     message: 'Start and end date cannot be the same'
   }),
@@ -33,10 +44,15 @@ export const editDealSchema = Yup.object().shape({
         return true;
       }
 
-      const s = this.parent.start_date;
-      return s !== value;
+      console.log(value);
+
+      if (isBefore(startOfDay(new Date(value)), new Date())) {
+        return false;
+      }
+
+      return true;
     },
-    message: 'Start and end date cannot be the same'
+    message: 'End date must be in the future'
   }),
   locations: Yup.array().min(1, 'Minimum 1 required')
 });
