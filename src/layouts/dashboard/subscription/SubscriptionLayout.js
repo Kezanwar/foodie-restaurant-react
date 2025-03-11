@@ -52,7 +52,7 @@ const SubscriptionLayout = () => {
         </Typography>
       </DashboardTitleContainer>
       {isSubscribed && (
-        <DashboardStickyBar>
+        <DashboardStickyBar mb={3}>
           <Tabs
             value={value}
             onChange={handleChange}
