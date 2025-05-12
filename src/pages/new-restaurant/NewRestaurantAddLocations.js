@@ -48,7 +48,7 @@ import {
   deleteLocation,
   editLocation,
   postLocationsStep
-} from 'utils/api';
+} from 'lib/api';
 import ConfirmLocationModal from 'components/modals/confirm-location-modal/ConfirmLocationModal';
 import AcceptDeclineModal from 'components/modals/accept-decline-modal/AcceptDeclineModal';
 import OpeningTimeInput from 'components/opening-time-input/OpeningTimeInput';
@@ -56,7 +56,7 @@ import useOpeningTimesForm from 'hooks/useOpeningTimesForm';
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 import useCreateRestaurantGuard from 'hooks/useCreateRestaurantGuard';
 
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 import { useAuthContext } from 'hooks/useAuthContext';
 import RHFCountriesAutocomplete from 'components/hook-form/RHFCountriesAutocomplete';
 import AddressAutocomplete from 'components/address-autocomplete/AddressAutocomplete';
@@ -744,6 +744,7 @@ const NewRestaurantAddLocation = () => {
                 .map((location, index) => {
                   return (
                     <LocationCard
+                      withArchive={false}
                       {...location}
                       key={location._id}
                       onEdit={onEditLocationClick}

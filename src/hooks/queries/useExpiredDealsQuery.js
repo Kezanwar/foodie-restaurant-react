@@ -1,23 +1,14 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { DEALS_QUERY, cacheValues } from 'constants/react-query';
-import { getExpiredDeals } from 'utils/api';
+import { getExpiredDeals } from 'lib/api';
 
 const useExpiredDealsQuery = () => {
-  // const queryClient = useQueryClient();
-  const query = useQuery(DEALS_QUERY.EXPIRED_DEALS, () => getExpiredDeals(), {
+  return useQuery({
+    queryKey: [DEALS_QUERY.EXPIRED_DEALS],
+    queryFn: getExpiredDeals,
     enabled: true,
     ...cacheValues
   });
-
-  // const invalidateQuery = useCallback(() => {
-  //   queryClient.invalidateQueries({
-  //     queryKey: [DEALS_QUERY.EXPIRED_DEALS]
-  //   });
-  // });
-
-  // query.invalidateQuery = invalidateQuery;
-
-  return query;
 };
 
 export default useExpiredDealsQuery;

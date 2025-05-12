@@ -10,7 +10,7 @@ import NotSubscribedNotice from 'components/not-subcribed-notice/NotSubscribedNo
 
 import { PATH_NEW_RESTAURANT } from 'routes/paths';
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
-import Permissions from 'utils/permissions';
+import Permissions from 'lib/permissions';
 
 // ----------------------------------------------------------------------
 

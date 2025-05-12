@@ -15,7 +15,7 @@ import { useAuthContext } from 'hooks/useAuthContext';
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 
 import RestaurantProfileIphone from 'components/iphone/RestaurantProfileIphone';
-import Permissions from 'utils/permissions';
+import Permissions from 'lib/permissions';
 
 const NewRestaurantGetStarted = (props) => {
   const navigate = useNavigate();

@@ -1,23 +1,25 @@
 import { useCallback } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { LOCATIONS_QUERY, cacheValues } from 'constants/react-query';
-import { getLocations } from 'utils/api';
+import { getLocations } from 'lib/api';
+import queryClient from 'lib/query-client';
 
 const useLocationsQuery = () => {
   const queryClient = useQueryClient();
-  const query = useQuery(LOCATIONS_QUERY.LOCATIONS, () => getLocations(), {
+
+  const query = useQuery({
+    queryKey: [LOCATIONS_QUERY.LOCATIONS],
+    queryFn: getLocations,
     enabled: true,
     ...cacheValues
   });
 
   const updateQuery = useCallback(
     (data) => {
-      queryClient.setQueryData(LOCATIONS_QUERY.LOCATIONS, (oldData) => {
-        return {
-          ...oldData,
-          data
-        };
-      });
+      queryClient.setQueryData([LOCATIONS_QUERY.LOCATIONS], (oldData) => ({
+        ...oldData,
+        data
+      }));
     },
     [queryClient]
   );
@@ -28,10 +30,11 @@ const useLocationsQuery = () => {
     });
   }, [queryClient]);
 
-  query.invalidateQuery = invalidateQuery;
-
-  query.updateQuery = updateQuery;
-  return query;
+  return {
+    ...query,
+    invalidateQuery,
+    updateQuery
+  };
 };
 
 export default useLocationsQuery;

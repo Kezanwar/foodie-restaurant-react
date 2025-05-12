@@ -8,7 +8,7 @@ import Subheader from 'components/subheader/Subheader';
 
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 
-import Permissions from 'utils/permissions';
+import Permissions from 'lib/permissions';
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import useSubscriptionQuery from 'hooks/queries/useSubscriptionQuery';
 import LightLoadingButton from 'components/light-loading-button/LightLoadingButton';

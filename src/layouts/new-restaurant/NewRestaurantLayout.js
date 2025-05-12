@@ -22,7 +22,7 @@ import UndrawSVG from 'assets/undraw-content-team-8.svg';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import LoadingScreen from 'components/loading-screen/LoadingScreen';
 
-import Permissions from 'utils/permissions';
+import Permissions from 'lib/permissions';
 
 const FORM_STEPS = [
   { label: 'Company Info', step: 'step-1' },

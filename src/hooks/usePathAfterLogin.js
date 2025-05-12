@@ -1,6 +1,6 @@
 import { PATH_AUTH, PATH_DASHBOARD, PATH_NEW_RESTAURANT } from 'routes/paths';
 import { useAuthContext } from './useAuthContext';
-import Permissions from 'utils/permissions';
+import Permissions from 'lib/permissions';
 
 export const usePathAfterLogin = () => {
   const { isAuthenticated, initialRestuarantStatus } = useAuthContext();

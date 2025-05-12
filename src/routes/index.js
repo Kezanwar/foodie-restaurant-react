@@ -120,9 +120,11 @@ export default function Router() {
           path: 'locations',
           children: [
             {
-              element: <LocationsAll />,
+              element: <Navigate to={'/dashboard/locations/active'} replace />,
               index: true
             },
+            { path: 'active', element: <LocationsAll /> },
+            { path: 'archived', element: <LocationsAll /> },
             { path: 'add', element: <LocationsAdd /> },
             { path: 'edit/:id', element: <LocationEdit /> }
           ]

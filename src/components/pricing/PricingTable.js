@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PricingPlanCard from './PricingCard';
 import { Stack, styled } from '@mui/material';
-import { choosePlan } from 'utils/api';
+import { choosePlan } from 'lib/api';
 import { useSnackbar } from 'notistack';
 import { useAuthContext } from 'hooks/useAuthContext';
-import Permissions from 'utils/permissions';
+import Permissions from 'lib/permissions';
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 import LoadingScreen from 'components/loading-screen';
 

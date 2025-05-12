@@ -14,7 +14,7 @@ import AuthLayout from 'layouts/auth/AuthLayout';
 
 import { ForgotPasswordSchema } from 'validation/auth';
 import { useSnackbar } from 'notistack';
-import { forgotPassword } from 'utils/api';
+import { forgotPassword } from 'lib/api';
 
 const ForgotPassword = () => {
   const { enqueueSnackbar } = useSnackbar();

@@ -19,8 +19,8 @@ import { MoreHoriz } from '@mui/icons-material';
 import AcceptDeclineModal from 'components/modals/accept-decline-modal/AcceptDeclineModal';
 import useExpiredDealsQuery from 'hooks/queries/useExpiredDealsQuery';
 import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
-import { deleteDeal, expireDeal } from 'utils/api';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { deleteDeal, expireDeal } from 'lib/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 import { useSnackbar } from 'notistack';
 
 const ActionContext = createContext(null);

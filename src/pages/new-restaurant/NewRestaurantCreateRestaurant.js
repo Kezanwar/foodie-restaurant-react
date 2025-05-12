@@ -34,7 +34,7 @@ import {
 
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 import { PATH_NEW_RESTAURANT } from 'routes/paths';
-import { postRestaurantDetails } from 'utils/api';
+import { postRestaurantDetails } from 'lib/api';
 import { getFormDataFromObject } from 'utils/formData';
 
 import useOptionsQuery from 'hooks/queries/useOptionsQuery';
@@ -43,7 +43,7 @@ import useCreateRestaurantGuard from 'hooks/useCreateRestaurantGuard';
 import CustomTooltip from 'components/custom-tooltip/CustomTooltip';
 import { image_tooltip } from 'constants/tooltips';
 
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 import { useAuthContext } from 'hooks/useAuthContext';
 import { alcohol_license_options } from 'constants/options';
 

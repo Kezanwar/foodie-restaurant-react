@@ -28,12 +28,12 @@ import useCreateRestaurantGuard from 'hooks/useCreateRestaurantGuard';
 import { submitApplicationSchema } from 'validation/new-restaurant';
 import { RHFCheckbox } from 'components/hook-form';
 
-import { postSubmitApplicationStep } from 'utils/api';
+import { postSubmitApplicationStep } from 'lib/api';
 
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 
 import { useAuthContext } from 'hooks/useAuthContext';
-import Permissions from 'utils/permissions';
+import Permissions from 'lib/permissions';
 
 const NewRestaurantYourApplication = () => {
   const { isTablet, isMobile } = useCustomMediaQueries();

@@ -1,14 +1,14 @@
 import { SUBSCRIPTION_QUERY } from 'constants/react-query';
-import { useQuery } from 'react-query';
-import { getBilling } from 'utils/api';
+import { useQuery } from '@tanstack/react-query';
+import { getBilling } from 'lib/api';
 
 const useBillingQuery = () => {
-  const query = useQuery(SUBSCRIPTION_QUERY.BILLING, () => getBilling(), {
+  return useQuery({
+    queryKey: [SUBSCRIPTION_QUERY.BILLING],
+    queryFn: getBilling,
     staleTime: 10 * 1000 * 60,
     cacheTime: 10 * 1000 * 60
   });
-
-  return query;
 };
 
 export default useBillingQuery;

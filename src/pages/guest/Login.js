@@ -26,7 +26,7 @@ import GOOGLE from 'assets/icons/google.svg';
 import FormProvider, { RHFTextField } from 'components/hook-form';
 import Spacer from 'components/spacer/Spacer';
 import { LoginSchema } from 'validation/auth';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 
 // ----------------------------------------------------------------------
 

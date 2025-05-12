@@ -1,14 +1,14 @@
 import { SUBSCRIPTION_QUERY } from 'constants/react-query';
-import { useQuery } from 'react-query';
-import { getSubscription } from 'utils/api';
+import { useQuery } from '@tanstack/react-query';
+import { getSubscription } from 'lib/api';
 
 const useSubscriptionQuery = () => {
-  const query = useQuery(SUBSCRIPTION_QUERY.SUB, () => getSubscription(), {
+  return useQuery({
+    queryKey: [SUBSCRIPTION_QUERY.SUB],
+    queryFn: getSubscription,
     staleTime: 10 * 1000 * 60,
     cacheTime: 10 * 1000 * 60
   });
-
-  return query;
 };
 
 export default useSubscriptionQuery;

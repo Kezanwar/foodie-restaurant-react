@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 import {
   createContext,
@@ -10,9 +10,9 @@ import {
 } from 'react';
 
 // utils
-import axios from 'utils/axios';
+import axios from 'lib/axios';
 import { setSession } from './utils';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 
 // config
 import { AUTH_ENDPOINTS } from '../../constants/auth';

@@ -30,8 +30,8 @@ import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 import { companyInfoSchema } from 'validation/new-restaurant';
 import { countries } from 'assets/data';
 import { pageScrollToTop } from 'utils/scroll';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
-import { postCompanyInfo } from 'utils/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
+import { postCompanyInfo } from 'lib/api';
 
 const NewRestaurantCompanyInfo = () => {
   const { data, updateQuery } = useRestaurantQuery();

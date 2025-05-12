@@ -31,7 +31,7 @@ import CustomTooltip from 'components/custom-tooltip/CustomTooltip';
 
 import { RegisterSchema } from 'validation/auth';
 import { auth_tooltips } from 'constants/tooltips';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 import GOOGLE from 'assets/icons/google.svg';
 // ----------------------------------------------------------------------
 

@@ -19,6 +19,8 @@ const endpoints = {
   addLocation: '/rest/locations/add',
   editLocation: '/rest/locations/edit',
   deleteLocation: '/rest/locations/delete',
+  archiveLocation: '/rest/locations/archive',
+  unarchiveLocation: '/rest/locations/unarchive',
 
   // deals
   getActiveDeals: '/rest/deals/active',
@@ -109,6 +111,14 @@ export const editLocation = (data, id) => {
 
 export const deleteLocation = (id) => {
   return axiosInstance.post(`${endpoints.deleteLocation}/${id}`);
+};
+
+export const archiveLocation = (id) => {
+  return axiosInstance.post(`${endpoints.archiveLocation}/${id}`);
+};
+
+export const unarchiveLocation = (id) => {
+  return axiosInstance.post(`${endpoints.unarchiveLocation}/${id}`);
 };
 
 //* ----------------- Deals -----------------

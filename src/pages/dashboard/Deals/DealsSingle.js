@@ -4,7 +4,10 @@ import { format, isAfter } from 'date-fns';
 import { useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet-async';
 import {
+  Alert,
+  AlertTitle,
   Box,
+  Button,
   Chip,
   Container,
   IconButton,
@@ -25,12 +28,12 @@ import StatCardAvg from 'components/stat-card/StatCardAvg';
 import AcceptDeclineModal from 'components/modals/accept-decline-modal/AcceptDeclineModal';
 
 import { PATH_DASHBOARD } from 'routes/paths';
-import { deleteDeal, expireDeal } from 'utils/api';
+import { deleteDeal, expireDeal } from 'lib/api';
 import useSingleDealQuery from 'hooks/queries/useSingleDealQuery';
 import useActiveDealsQuery from 'hooks/queries/useActiveDealsQuery';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import useExpiredDealsQuery from 'hooks/queries/useExpiredDealsQuery';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
 import Subheader from 'components/subheader/Subheader';
 import Breadcrumbs from 'components/breadcrumbs';
@@ -222,11 +225,13 @@ const DealsSingle = () => {
     [deal?.start_date]
   );
 
-  const isExpired = deal?.is_expired;
-
   if (isLoading) return <LoadingScreen />;
 
   if (!deal) return null;
+
+  const isExpired = deal?.is_expired;
+
+  const needsAttention = !isExpired && deal.locations.length === 0;
 
   return (
     <>
@@ -240,10 +245,12 @@ const DealsSingle = () => {
             <Typography variant="h3">{deal?.name}</Typography>
             <Label
               sx={{ fontSize: 14 }}
-              color={isExpired ? 'error' : 'success'}
+              color={
+                needsAttention ? 'warning' : isExpired ? 'error' : 'success'
+              }
               mt={0.5}
             >
-              {isExpired ? 'Expired' : 'Active'}
+              {needsAttention ? 'Issue' : isExpired ? 'Expired' : 'Live'}
             </Label>
             <IconButton
               onClick={handleOpenPopover}
@@ -318,7 +325,21 @@ const DealsSingle = () => {
           </DateWrapper>
           <Box>
             <Subheader mt={4} mb={1.5} text={'Locations'} />
-            <LocationChipList locations={deal?.locations} />
+            {needsAttention ? (
+              <Alert sx={{ width: 'max-content' }} severity="warning">
+                <AlertTitle>Needs Attention</AlertTitle>
+                This deal doesn't have any locations assigned, so it's currently
+                not visible in the customer app.
+                <br />
+                Please add at least one location to make it live again.
+                <br />
+                <Button onClick={onEdit} sx={{ mt: 1 }} variant="contained">
+                  Edit Location
+                </Button>
+              </Alert>
+            ) : (
+              <LocationChipList locations={deal?.locations} />
+            )}
           </Box>
 
           {/* <ActionsContainer>

@@ -25,7 +25,7 @@ import { format, isPast } from 'date-fns';
 import BlackLoadingButton from 'components/black-loading-button/BlackLoadingButton';
 import CustomTooltip from 'components/custom-tooltip/CustomTooltip';
 import { auth_tooltips } from 'constants/tooltips';
-import { changePassword } from 'utils/api';
+import { changePassword } from 'lib/api';
 
 const PageChangePassword = () => {
   const { logout, isAuthenticated } = useAuthContext();
