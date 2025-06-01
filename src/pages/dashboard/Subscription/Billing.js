@@ -7,11 +7,18 @@ import useBillingQuery from 'hooks/queries/useBillingQuery';
 
 import { DashedWrapper } from './styles';
 import LoadingScreen from 'components/loading-screen';
+import { Navigate } from 'react-router';
 
 const Billing = () => {
   const billingQuery = useBillingQuery();
 
-  if (billingQuery.isLoading) return <LoadingScreen />;
+  if (billingQuery.isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (billingQuery.isError) {
+    return <Navigate to={'/dashboard/overview'} />;
+  }
 
   return (
     <>

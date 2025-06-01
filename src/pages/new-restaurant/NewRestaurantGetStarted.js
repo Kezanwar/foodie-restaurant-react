@@ -11,15 +11,16 @@ import UndrawSVG from 'assets/undraw-content-team-8.svg';
 
 import { PATH_NEW_RESTAURANT } from 'routes/paths';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
-import { useAuthContext } from 'hooks/useAuthContext';
+
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 
 import RestaurantProfileIphone from 'components/iphone/RestaurantProfileIphone';
 import Permissions from 'lib/permissions';
+import useAuthStore from 'stores/auth';
 
 const NewRestaurantGetStarted = (props) => {
   const navigate = useNavigate();
-  const { user } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
   const { isMobile } = useCustomMediaQueries();
   const { data } = useRestaurantQuery();
 

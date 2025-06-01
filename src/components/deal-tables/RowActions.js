@@ -59,8 +59,8 @@ export const ActionContextProvider = ({ children }) => {
         await expireDeal(dealToExpire?._id);
         await Promise.all([
           activeDeals.refetch(),
-          expiredDeals.remove(),
-          dash.remove()
+          expiredDeals.refetch(),
+          dash.invalidateQuery()
         ]);
         mixpanelTrack(MIXPANEL_EVENTS.expire_deal_success);
         enqueueSnackbar(`Successfully expired ${dealToExpire.name}`, {
@@ -89,8 +89,8 @@ export const ActionContextProvider = ({ children }) => {
         await deleteDeal(dealToDelete._id);
         await Promise.all([
           activeDeals.refetch(),
-          expiredDeals.remove(),
-          dash.remove()
+          expiredDeals.refetch(),
+          dash.invalidateQuery()
         ]);
 
         enqueueSnackbar(`Successfully deleted ${dealToDelete.name}`, {

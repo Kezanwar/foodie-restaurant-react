@@ -44,8 +44,9 @@ import CustomTooltip from 'components/custom-tooltip/CustomTooltip';
 import { image_tooltip } from 'constants/tooltips';
 
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
-import { useAuthContext } from 'hooks/useAuthContext';
+
 import { alcohol_license_options } from 'constants/options';
+import useAuthStore from 'stores/auth';
 
 const uploadAvatarSx = {
   '& > *': {
@@ -67,7 +68,7 @@ const NewRestaurantCreateRestaurant = () => {
   const { data, updateQuery } = useRestaurantQuery();
   const options = useOptionsQuery();
   const { enqueueSnackbar } = useSnackbar();
-  const { user } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
 
   const guard = useCreateRestaurantGuard();
 

@@ -2,6 +2,16 @@ import { startOfDay } from 'date-fns';
 import axiosInstance from './axios';
 
 const endpoints = {
+  //auth
+
+  login: '/auth/login',
+  loginWithGoogle: '/auth/login-google',
+  register: '/auth/register',
+  confirmEmailOTP: '/auth/confirm-email',
+  resendEmailOTP: '/auth/confirm-email/resend-otp',
+  registerWithGoogle: '/auth/register-google',
+  intialize: '/auth/initialize',
+
   getDashboardOverview: '/rest/dashboard/overview',
   getRestaurant: '/rest/restaurant',
   editRestaurant: 'rest/restaurant/edit',
@@ -45,7 +55,45 @@ const endpoints = {
   getSubscription: '/rest/subscriptions/manage',
   getBilling: '/rest/subscriptions/manage/billing',
   getInvoices: '/rest/subscriptions/manage/invoices',
+  cancelPlan: '/rest/subscriptions/manage/cancel-plan',
   choosePlan: '/rest/subscriptions/new/choose-plan'
+};
+
+//* ------ Auth --------
+
+export const initialize = () => {
+  return axiosInstance.get(endpoints.intialize);
+};
+
+export const login = (email, password) => {
+  return axiosInstance.post(endpoints.login, { email, password });
+};
+
+export const loginWithGoogle = (token) => {
+  return axiosInstance.post(endpoints.loginWithGoogle, { token });
+};
+
+export const registerWithGoogle = (token) => {
+  return axiosInstance.post(endpoints.registerWithGoogle, {
+    token
+  });
+};
+
+export const register = (email, password, firstName, lastName) => {
+  return axiosInstance.post(endpoints.register, {
+    email,
+    password,
+    first_name: firstName,
+    last_name: lastName
+  });
+};
+
+export const confirmEmailOTP = (value) => {
+  return axiosInstance.post(`${endpoints.confirmEmailOTP}/${value}`);
+};
+
+export const resendEmailOTP = () => {
+  return axiosInstance.patch(endpoints.resendEmailOTP);
 };
 
 //* ------ Overview --------
@@ -183,6 +231,10 @@ export const choosePlan = (plan) => {
   return axiosInstance.post(`${endpoints.choosePlan}`, {
     plan
   });
+};
+
+export const cancelPlan = () => {
+  return axiosInstance.post(endpoints.cancelPlan);
 };
 
 export const getSubscription = () => {

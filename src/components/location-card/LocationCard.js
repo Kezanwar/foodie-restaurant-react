@@ -71,15 +71,25 @@ const LocationCard = ({
         <IconButton onClick={handleClick}>
           <MoreVertOutlinedIcon fontSize="small" />
         </IconButton>
+
         <MenuPopover open={anchorEl} onClose={handleClose}>
-          <MenuItem onClick={() => onEdit(_id)}>
+          <MenuItem
+            onClick={() => {
+              onEdit(_id);
+              handleClose();
+            }}
+          >
             <EditIcon color="info" fontSize="small" />
             Edit
           </MenuItem>
           {withArchive && (
             <MenuItem
               disabled={archived && !canAddLocation}
-              onClick={() => (!archived ? onArchive(_id) : onUnarchive(_id))}
+              onClick={() => {
+                if (!archived) onArchive(_id);
+                else onUnarchive(_id);
+                handleClose();
+              }}
             >
               {archived ? (
                 <ArchiveOutlinedIcon color="warning" fontSize="small" />
@@ -89,7 +99,13 @@ const LocationCard = ({
               {archived ? 'Unarchive' : 'Archive'}
             </MenuItem>
           )}
-          <MenuItem onClick={() => onDelete(_id)}>
+          <MenuItem
+            onClick={() => {
+              onDelete(_id);
+              console.log('runs');
+              handleClose();
+            }}
+          >
             <DeleteOutlineIcon color="error" fontSize="small" />
             Delete
           </MenuItem>

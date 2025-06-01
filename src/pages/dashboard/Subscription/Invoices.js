@@ -1,14 +1,18 @@
 import React from 'react';
-import { Box, styled } from '@mui/material';
 
 import { Helmet } from 'react-helmet-async';
 import useInvoicesQuery from 'hooks/queries/useInvoicesQuery';
 import { DashedWrapper, PlanLoading } from './styles';
 import InvoicesTable from 'components/invoices/InvoiceTable';
 import Subheader from 'components/subheader/Subheader';
+import { Navigate } from 'react-router';
 
 const Invoices = () => {
-  const { data, isLoading } = useInvoicesQuery();
+  const { data, isLoading, isError } = useInvoicesQuery();
+
+  if (isError) {
+    return <Navigate to={'/dashboard/overview'} />;
+  }
 
   return (
     <>

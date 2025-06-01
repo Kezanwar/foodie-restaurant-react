@@ -2,11 +2,11 @@ import { capitalCase } from 'change-case';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
-// auth
-import { useAuthContext } from '../../../hooks/useAuthContext';
+
 // components
 import { CustomAvatar } from '../../../components/custom-avatar';
 import useRestaurantQuery from '../../../hooks/queries/useRestaurantQuery';
+import useAuthStore from 'stores/auth';
 
 // ----------------------------------------------------------------------
 
@@ -21,7 +21,8 @@ const StyledRoot = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function NavAccount() {
-  const { user } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
+
   const { data } = useRestaurantQuery();
 
   const restaurantName = data?.data?.name;

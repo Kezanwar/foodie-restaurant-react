@@ -6,12 +6,13 @@ import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 // routes
 import { PATH_AUTH } from 'routes/paths';
 // auth
-import { useAuthContext } from 'hooks/useAuthContext';
+
 // components
 import { CustomAvatar } from 'components/custom-avatar';
 import { useSnackbar } from 'components/snackbar';
 import MenuPopover from 'components/menu-popover';
 import { IconButtonAnimate } from 'components/animate';
+import useAuthStore from 'stores/auth';
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +32,7 @@ const OPTIONS = [
 export default function AccountPopover() {
   const navigate = useNavigate();
 
-  const { user, logout } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -47,7 +48,7 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
-      logout();
+      useAuthStore.getState().logout();
       navigate(PATH_AUTH.login, { replace: true });
       handleClosePopover();
     } catch (error) {

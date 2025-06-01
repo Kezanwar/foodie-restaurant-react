@@ -21,14 +21,20 @@ const CardWrapper = styled(Card)(({ theme }) => ({
   boxShadow: 'none'
 }));
 
-function PricingPlanCard({ card, handleChoosePlan, isLoading, currentTier }) {
+function PricingPlanCard({
+  card,
+  handleChoosePlan,
+  isLoading,
+  currentTier,
+  userSub
+}) {
   const { subscription, price, caption, lists } = card;
 
   const isEnterprise = subscription === 'enterprise';
 
   const { isTablet } = useCustomMediaQueries();
 
-  const isCurrentTier = currentTier === subscription;
+  const isCurrentTier = userSub?.subscribed && currentTier === subscription;
 
   return (
     <CardWrapper>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Stack, styled, Typography } from '@mui/material';
 import { differenceInDays, format } from 'date-fns';
 import { Helmet } from 'react-helmet-async';
@@ -15,8 +15,14 @@ import LightLoadingButton from 'components/light-loading-button/LightLoadingButt
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import { PlanLoading } from './styles';
 import useTierLimits from 'hooks/useTierLimits';
+import AcceptDeclineModal from 'components/modals/accept-decline-modal/AcceptDeclineModal';
+import { cancelPlan } from 'lib/api';
+import useAuthStore from 'stores/auth';
+import LightChip from 'components/light-chip';
+import { Navigate } from 'react-router';
 
 const PlanWrapper = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -29,10 +35,7 @@ const PlanInnerContainer = styled(Box)(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
   gridGap: '12px',
-  // gridAutoRows: '1fr',
   gap: theme.spacing(12),
-
-  // gap: theme.spacing(6),
   [theme.breakpoints.down('md')]: {
     gridTemplateColumns: '1fr',
     gap: theme.spacing(4)
@@ -93,6 +96,11 @@ const plan_details = {
 };
 
 const Plan = () => {
+  const [showCancelSubModal, setShowCancelSubModal] = useState(false);
+  const [cancelSubLoading, setCancelSubLoading] = useState(false);
+
+  const user = useAuthStore((state) => state.user);
+
   const query = useRestaurantQuery();
 
   const rest = query?.data?.data;
@@ -111,6 +119,24 @@ const Plan = () => {
       : null;
 
   const { isMobile } = useCustomMediaQueries();
+
+  const handleOnCancelSubSubmit = async () => {
+    try {
+      setCancelSubLoading(true);
+      await cancelPlan();
+      const { initialize } = useAuthStore.getState();
+      await initialize(); //refetch user/current sub
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setCancelSubLoading(false);
+      setShowCancelSubModal(false);
+    }
+  };
+
+  if (subQuery.isError) {
+    return <Navigate to={'/dashboard/overview'} />;
+  }
 
   return (
     <>
@@ -207,7 +233,7 @@ const Plan = () => {
                         )
                       }
                       size="small"
-                      sx={{ maxWidth: 'max-content', px: 1.5 }}
+                      sx={{ maxWidth: 'max-content' }}
                       onClick={() =>
                         window.open(sub.latest_invoice.url, '_blank')
                       }
@@ -245,7 +271,7 @@ const Plan = () => {
                   </Typography>
                 </Stack>
               </Box>
-              <Box>
+              <Box pb={4}>
                 <Subheader
                   color={'text.secondary'}
                   mb={1}
@@ -264,8 +290,58 @@ const Plan = () => {
                   )}
                 </Stack>
               </Box>
+              <Box>
+                <Subheader
+                  mb={2}
+                  color={'text.secondary'}
+                  text={'Cancel Subscription'}
+                />
+                <Box>
+                  {user.subscription.has_cancelled ? (
+                    <Stack gap={1} direction={'row'} alignItems={'center'}>
+                      <LightChip
+                        sx={{ width: 'max-content' }}
+                        size="small"
+                        color="error"
+                        label="Cancelled"
+                      />
+
+                      <Typography color={'text.secondary'} variant={'caption'}>
+                        {user.subscription.subscribed ? `Ends on` : `Ended on`}{' '}
+                        {format(
+                          new Date(user.subscription.cancelled_period_end),
+                          'd/M/yy'
+                        )}
+                      </Typography>
+                    </Stack>
+                  ) : (
+                    <LightLoadingButton
+                      endIcon={<HighlightOffOutlinedIcon />}
+                      size="small"
+                      onClick={() => setShowCancelSubModal(true)}
+                      sx={{ maxWidth: 'max-content' }}
+                      color="error"
+                    >
+                      End Plan
+                    </LightLoadingButton>
+                  )}
+                </Box>
+              </Box>
             </Box>
           </PlanInnerContainer>
+          <AcceptDeclineModal
+            onCancel={() => setShowCancelSubModal(false)}
+            onAccept={handleOnCancelSubSubmit}
+            acceptText={'Yes, Cancel'}
+            cancelText={'Go back'}
+            destructive
+            submitLoading={cancelSubLoading}
+            title={'Cancel your Subscription'}
+            subtitle={
+              'Are you sure you want to cancel your subscription? Once cancelled all your Locations will become archived and all deals will expire.'
+            }
+            isOpen={showCancelSubModal}
+          />
         </PlanWrapper>
       )}
     </>

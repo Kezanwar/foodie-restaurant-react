@@ -1,7 +1,7 @@
-import axios from 'axios';
 // config
+import axios from 'axios';
 import { HOST_API_KEY } from '../config';
-import { setSession } from 'hocs/auth/utils';
+
 import { PATH_MISC } from 'routes/paths';
 
 // ----------------------------------------------------------------------
@@ -14,7 +14,7 @@ axiosInstance.interceptors.response.use(
     switch (error.response.status) {
       case 499:
         /*expired token*/
-        setSession(null);
+        endSession();
         window.location.reload();
         break;
       case 599:
@@ -32,3 +32,13 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
+
+export const setSession = (accessToken) => {
+  localStorage.setItem('accessToken', accessToken);
+  axiosInstance.defaults.headers['x-auth-token'] = accessToken;
+};
+
+export const endSession = () => {
+  localStorage.removeItem('accessToken');
+  delete axiosInstance.defaults.headers['x-auth-token'];
+};

@@ -258,7 +258,7 @@ export default function DealsCreate() {
       const postLocations = data?.locations?.map((l) => l._id);
       await addDeal({ ...data, locations: postLocations });
       await allActiveDeals.refetch();
-      dashQuery.remove();
+      dashQuery.invalidateQuery();
       mixpanelTrack(MIXPANEL_EVENTS.add_deal_success, {
         data
       });

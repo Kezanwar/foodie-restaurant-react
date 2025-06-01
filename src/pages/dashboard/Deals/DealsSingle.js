@@ -111,7 +111,7 @@ const breadcrumbs = [{ name: 'Deals', link: '/dashboard/deals' }];
 
 const DealsSingle = () => {
   const { id } = useParams();
-  const { data, error, isLoading, refetch, remove } = useSingleDealQuery(id);
+  const { data, error, isLoading, refetch } = useSingleDealQuery(id);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [openPopover, setOpenPopover] = useState(null);
@@ -150,9 +150,9 @@ const DealsSingle = () => {
         await expireDeal(deal?._id);
         await Promise.all([
           refetch(),
-          activeDeals.remove(),
-          expiredDeals.remove(),
-          dash.remove()
+          activeDeals.refetch(),
+          expiredDeals.refetch(),
+          dash.invalidateQuery()
         ]);
         mixpanelTrack(MIXPANEL_EVENTS.expire_deal_success);
         enqueueSnackbar(`Successfully expired ${deal?.name}`, {
@@ -178,11 +178,11 @@ const DealsSingle = () => {
       setSubmitLoading(true);
       try {
         await deleteDeal(deal?._id);
-        remove();
+
         await Promise.all([
-          activeDeals.remove(),
-          expiredDeals.remove(),
-          dash.remove()
+          activeDeals.refetch(),
+          expiredDeals.refetch(),
+          dash.invalidateQuery()
         ]);
 
         enqueueSnackbar(`Successfully deleted ${deal?.name}`, {

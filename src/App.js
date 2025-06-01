@@ -12,7 +12,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Router from './routes';
 
 // providers
-import { AuthProvider } from 'hocs/auth/AuthContext';
+
 import ThemeProvider from 'theme/index';
 import SnackbarProvider from 'components/snackbar/SnackbarProvider';
 import UtilityProvider from 'hocs/utility/UtilityContext';
@@ -24,6 +24,7 @@ import { MotionLazyContainer } from 'components/animate';
 import { ENVIRONMENT, GOOGLE_CLIENT_ID, MIXPANEL_API_KEY } from './config';
 import queryClient from 'lib/query-client';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import AuthInitializer from 'hocs/auth/AuthInitializer';
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +37,7 @@ export default function App() {
         {ENVIRONMENT === 'DEVELOPMENT' && (
           <ReactQueryDevtools initialIsOpen={false} />
         )}
-        <AuthProvider>
+        <AuthInitializer>
           <UtilityProvider>
             <MotionLazyContainer>
               <ThemeProvider>
@@ -46,7 +47,7 @@ export default function App() {
               </ThemeProvider>
             </MotionLazyContainer>
           </UtilityProvider>
-        </AuthProvider>
+        </AuthInitializer>
       </QueryClientProvider>
     </GoogleOAuthProvider>
   );

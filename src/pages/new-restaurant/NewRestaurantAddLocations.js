@@ -57,9 +57,10 @@ import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 import useCreateRestaurantGuard from 'hooks/useCreateRestaurantGuard';
 
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
-import { useAuthContext } from 'hooks/useAuthContext';
+
 import RHFCountriesAutocomplete from 'components/hook-form/RHFCountriesAutocomplete';
 import AddressAutocomplete from 'components/address-autocomplete/AddressAutocomplete';
+import useAuthStore from 'stores/auth';
 
 const motionStyles = {
   display: 'flex',
@@ -132,7 +133,7 @@ const NewRestaurantAddLocation = () => {
   const [editLocationID, setEditLocationID] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
-  const { user } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
 
   const { data, updateQuery } = useLocationsQuery();
 

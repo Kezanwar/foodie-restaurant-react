@@ -1,14 +1,15 @@
 // @mui
 import { Stack, Button, Typography, Box } from '@mui/material';
 // hooks
-import { useAuthContext } from '../../../hooks/useAuthContext';
+
 // locales
 import { useLocales } from '../../../locales';
+import useAuthStore from 'stores/auth';
 
 // ----------------------------------------------------------------------
 
 export default function NavDocs() {
-  const { user } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
 
   const { translate } = useLocales();
 
@@ -21,7 +22,7 @@ export default function NavDocs() {
         mt: 10,
         width: 1,
         display: 'block',
-        textAlign: 'center',
+        textAlign: 'center'
       }}
     >
       <Box component="img" src="/assets/illustrations/illustration_docs.svg" />
@@ -31,7 +32,10 @@ export default function NavDocs() {
           {translate('docs.hi')}, {user?.first_name}
         </Typography>
 
-        <Typography variant="body2" sx={{ color: 'text.secondary', whiteSpace: 'pre-line' }}>
+        <Typography
+          variant="body2"
+          sx={{ color: 'text.secondary', whiteSpace: 'pre-line' }}
+        >
           {translate('docs.description')}
         </Typography>
       </div>

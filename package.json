@@ -90,7 +90,8 @@
     "stylis": "^4.1.2",
     "stylis-plugin-rtl": "^2.1.1",
     "web-vitals": "^3.0.3",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",

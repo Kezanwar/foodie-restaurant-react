@@ -15,7 +15,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Iconify from 'components/iconify';
 import FormProvider, { RHFTextField } from 'components/hook-form';
 
-import { useAuthContext } from 'hooks/useAuthContext';
 import AuthLayout from 'layouts/auth/AuthLayout';
 
 import { ChangePasswordSchema } from 'validation/auth';
@@ -26,13 +25,16 @@ import BlackLoadingButton from 'components/black-loading-button/BlackLoadingButt
 import CustomTooltip from 'components/custom-tooltip/CustomTooltip';
 import { auth_tooltips } from 'constants/tooltips';
 import { changePassword } from 'lib/api';
+import useAuthStore from 'stores/auth';
 
 const PageChangePassword = () => {
-  const { logout, isAuthenticated } = useAuthContext();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   useEffect(() => {
-    if (isAuthenticated) logout();
-  }, [isAuthenticated, logout]);
+    if (isAuthenticated) {
+      useAuthStore.getState().logout();
+    }
+  }, [isAuthenticated]);
 
   const { enqueueSnackbar } = useSnackbar();
 

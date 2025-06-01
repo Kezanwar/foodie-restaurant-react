@@ -20,18 +20,19 @@ import { LoadingButton } from '@mui/lab';
 import HelpIcon from '@mui/icons-material/Help';
 import AuthLayout from 'layouts/auth/AuthLayout';
 import { PATH_AUTH } from 'routes/paths';
-import { useAuthContext } from 'hooks/useAuthContext';
+
 import Iconify from 'components/iconify';
 import GOOGLE from 'assets/icons/google.svg';
 import FormProvider, { RHFTextField } from 'components/hook-form';
 import Spacer from 'components/spacer/Spacer';
 import { LoginSchema } from 'validation/auth';
 import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
+import useAuthStore from 'stores/auth';
 
 // ----------------------------------------------------------------------
 
 export default function LoginPage() {
-  const { login, loginWithGoogle } = useAuthContext();
+  const { login, loginWithGoogle } = useAuthStore.getState();
   const { enqueueSnackbar } = useSnackbar();
 
   const [showPassword, setShowPassword] = useState(false);

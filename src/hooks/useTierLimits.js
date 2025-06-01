@@ -1,14 +1,15 @@
 import { useMemo } from 'react';
 import useActiveDealsQuery from './queries/useActiveDealsQuery';
 import useLocationsQuery from './queries/useLocationsQuery';
-import { useAuthContext } from './useAuthContext';
+
 import Permissions from 'lib/permissions';
+import useAuthStore from 'stores/auth';
 
 const useTierLimits = () => {
   const activeDeals = useActiveDealsQuery();
   const locations = useLocationsQuery();
 
-  const { user } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
 
   const limits = useMemo(() => {
     return {

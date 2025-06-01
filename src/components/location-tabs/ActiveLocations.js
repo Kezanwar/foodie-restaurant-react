@@ -89,7 +89,7 @@ const ActiveLocations = () => {
       locQuery.updateQuery(data);
       enqueueSnackbar('Location deleted successfully');
       mixpanelTrack(MIXPANEL_EVENTS.delete_location_success);
-      dashQuery.remove();
+      dashQuery.invalidateQuery();
     } catch (error) {
       enqueueSnackbar(`${error?.message || 'Unexpected error occured'}`, {
         variant: 'error'
