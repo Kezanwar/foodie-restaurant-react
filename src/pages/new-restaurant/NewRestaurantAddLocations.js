@@ -48,7 +48,7 @@ import {
   deleteLocation,
   editLocation,
   postLocationsStep
-} from 'utils/api';
+} from 'lib/api';
 import ConfirmLocationModal from 'components/modals/confirm-location-modal/ConfirmLocationModal';
 import AcceptDeclineModal from 'components/modals/accept-decline-modal/AcceptDeclineModal';
 import OpeningTimeInput from 'components/opening-time-input/OpeningTimeInput';
@@ -56,10 +56,11 @@ import useOpeningTimesForm from 'hooks/useOpeningTimesForm';
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 import useCreateRestaurantGuard from 'hooks/useCreateRestaurantGuard';
 
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
-import { useAuthContext } from 'hooks/useAuthContext';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
+
 import RHFCountriesAutocomplete from 'components/hook-form/RHFCountriesAutocomplete';
 import AddressAutocomplete from 'components/address-autocomplete/AddressAutocomplete';
+import useAuthStore from 'stores/auth';
 
 const motionStyles = {
   display: 'flex',
@@ -132,7 +133,7 @@ const NewRestaurantAddLocation = () => {
   const [editLocationID, setEditLocationID] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
-  const { user } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
 
   const { data, updateQuery } = useLocationsQuery();
 
@@ -744,6 +745,7 @@ const NewRestaurantAddLocation = () => {
                 .map((location, index) => {
                   return (
                     <LocationCard
+                      withArchive={false}
                       {...location}
                       key={location._id}
                       onEdit={onEditLocationClick}

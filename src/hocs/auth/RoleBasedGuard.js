@@ -5,8 +5,9 @@ import { MotionContainer, varBounce } from 'components/animate';
 // assets
 import { ForbiddenIllustration } from 'assets/illustrations';
 //
-import { useAuthContext } from 'hooks/useAuthContext';
+
 import MotionDivViewport from 'components/animate/MotionDivViewport';
+import useAuthStore from 'stores/auth';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +19,7 @@ RoleBasedGuard.propTypes = {
 
 export default function RoleBasedGuard({ hasContent, roles, children }) {
   // Logic here to get current user role
-  const { user } = useAuthContext();
+  const user = useAuthStore((s) => s.user);
 
   // const currentRole = 'user';
   const currentRole = user?.role; // admin;

@@ -1,14 +1,15 @@
 import { useMemo } from 'react';
 import useActiveDealsQuery from './queries/useActiveDealsQuery';
 import useLocationsQuery from './queries/useLocationsQuery';
-import { useAuthContext } from './useAuthContext';
-import Permissions from 'utils/permissions';
+
+import Permissions from 'lib/permissions';
+import useAuthStore from 'stores/auth';
 
 const useTierLimits = () => {
   const activeDeals = useActiveDealsQuery();
   const locations = useLocationsQuery();
 
-  const { user } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
 
   const limits = useMemo(() => {
     return {
@@ -16,7 +17,7 @@ const useTierLimits = () => {
         limit: Permissions.getLocationLimit(
           user?.subscription?.subscription_tier || 0
         ),
-        current: locations.data?.data?.length || 0
+        current: locations.data?.data?.filter((l) => !l.archived)?.length || 0
       },
       deals: {
         limit: Permissions.getDealLimit(
@@ -29,8 +30,8 @@ const useTierLimits = () => {
     };
   }, [
     user?.subscription?.subscription_tier,
-    locations.data?.data?.length,
-    activeDeals.data?.data?.length,
+    locations.data?.data,
+    activeDeals.data?.data,
     activeDeals.isLoading,
     locations.isLoading
   ]);

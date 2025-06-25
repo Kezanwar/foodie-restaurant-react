@@ -34,7 +34,7 @@ import {
 
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 import { PATH_NEW_RESTAURANT } from 'routes/paths';
-import { postRestaurantDetails } from 'utils/api';
+import { postRestaurantDetails } from 'lib/api';
 import { getFormDataFromObject } from 'utils/formData';
 
 import useOptionsQuery from 'hooks/queries/useOptionsQuery';
@@ -43,9 +43,10 @@ import useCreateRestaurantGuard from 'hooks/useCreateRestaurantGuard';
 import CustomTooltip from 'components/custom-tooltip/CustomTooltip';
 import { image_tooltip } from 'constants/tooltips';
 
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
-import { useAuthContext } from 'hooks/useAuthContext';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
+
 import { alcohol_license_options } from 'constants/options';
+import useAuthStore from 'stores/auth';
 
 const uploadAvatarSx = {
   '& > *': {
@@ -67,7 +68,7 @@ const NewRestaurantCreateRestaurant = () => {
   const { data, updateQuery } = useRestaurantQuery();
   const options = useOptionsQuery();
   const { enqueueSnackbar } = useSnackbar();
-  const { user } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
 
   const guard = useCreateRestaurantGuard();
 

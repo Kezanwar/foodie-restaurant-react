@@ -1,5 +1,5 @@
 import { Navigate, useRoutes } from 'react-router-dom';
-import { Box } from '@mui/material';
+
 // auth
 import AuthGuard from 'hocs/auth/AuthGuard';
 import GuestGuard from 'hocs/auth/GuestGuard';
@@ -36,8 +36,9 @@ import {
   MaintenanceMode,
   Billing
 } from './elements';
+
 import { PATH_AUTH, PATH_MISC, PATH_NEW_RESTAURANT } from './paths';
-import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
+
 import NewRestaurantLayout from 'layouts/new-restaurant/NewRestaurantLayout';
 import Test from 'pages/misc/Test';
 import SubscriptionLayout from 'layouts/dashboard/subscription/SubscriptionLayout';
@@ -45,13 +46,11 @@ import SubscriptionLayout from 'layouts/dashboard/subscription/SubscriptionLayou
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  const pathAfterLogin = usePathAfterLogin();
-
   return useRoutes([
     {
       path: '/',
       children: [
-        { element: <Navigate to={pathAfterLogin} replace />, index: true },
+        { element: <Navigate to={'/login'} replace />, index: true },
         {
           path: PATH_AUTH.login,
           element: (
@@ -90,7 +89,10 @@ export default function Router() {
         </AuthGuard>
       ),
       children: [
-        { element: <Navigate to={pathAfterLogin} replace />, index: true },
+        {
+          element: <Navigate to={'/dashboard/overview'} replace />,
+          index: true
+        },
         { path: 'overview', element: <Overview /> },
         {
           path: 'deals',
@@ -120,9 +122,11 @@ export default function Router() {
           path: 'locations',
           children: [
             {
-              element: <LocationsAll />,
+              element: <Navigate to={'/dashboard/locations/active'} replace />,
               index: true
             },
+            { path: 'active', element: <LocationsAll /> },
+            { path: 'archived', element: <LocationsAll /> },
             { path: 'add', element: <LocationsAdd /> },
             { path: 'edit/:id', element: <LocationEdit /> }
           ]

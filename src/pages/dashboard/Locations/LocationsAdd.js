@@ -35,8 +35,8 @@ import { addLocationsDashboardSchema } from 'validation/new-restaurant';
 import { countries } from 'assets/data';
 
 import { LocationsTopAlert } from '../../new-restaurant/NewRestaurantAddLocations';
-import { addLocation, checkLocation } from 'utils/api';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { addLocation, checkLocation } from 'lib/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 import ConfirmLocationModalDashboard from 'components/modals/confirm-location-modal/ConfirmLocationModalDashboard';
 import { PATH_DASHBOARD } from 'routes/paths';
 import Breadcrumbs from 'components/breadcrumbs';

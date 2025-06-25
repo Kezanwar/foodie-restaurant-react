@@ -4,9 +4,12 @@ import AnnouncementIcon from '@mui/icons-material/Announcement';
 import { NotSubbedContainerStyled } from './styles';
 import { useLocation, useNavigate } from 'react-router';
 import { PATH_DASHBOARD } from 'routes/paths';
+import useAuthStore from 'stores/auth';
 
 const NotSubscribedNotice = () => {
   const page = useLocation();
+  const user = useAuthStore((state) => state.user);
+
   const nav = useNavigate();
   const [isSubscriptionPage, setIsSubscriptionPage] = useState(false);
 
@@ -16,13 +19,29 @@ const NotSubscribedNotice = () => {
 
   const navToSubscription = () => nav(PATH_DASHBOARD.subscription);
 
+  const hasPreviouslySubscribed = !!(
+    user.subscription || user.past_subscriptions.length
+  );
+
+  console.log(hasPreviouslySubscribed);
+
   return (
     <NotSubbedContainerStyled>
       <Alert icon={<AnnouncementIcon />} severity={'info'}>
-        <AlertTitle>You haven't subscribed yet!</AlertTitle>
-        You can explore the dashboard and get a feel for the system but you'll
-        be unable to create a deal for the customer mobile app until you
-        subscribe. <strong>(The first month is free!)</strong>
+        <AlertTitle>
+          {hasPreviouslySubscribed
+            ? "You aren't subscribed anymore..."
+            : "You haven't subscribed yet!"}
+        </AlertTitle>
+        {hasPreviouslySubscribed ? (
+          'You must resubscribe to use the Foodie Platform again.'
+        ) : (
+          <>
+            You can explore the dashboard and get a feel for the system but
+            you'll be unable to create a deal for the customer mobile app until
+            you subscribe. <strong>(The first month is free!)</strong>
+          </>
+        )}
         {!isSubscriptionPage && (
           <Box mt={2}>
             <Button
@@ -30,7 +49,7 @@ const NotSubscribedNotice = () => {
               color="info"
               variant="contained"
             >
-              Subscribe
+              {hasPreviouslySubscribed ? 'Resubcribe' : 'Subscribe'}
             </Button>
           </Box>
         )}

@@ -2,17 +2,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/system';
-import { IconButton, Stack, Typography } from '@mui/material';
+import { IconButton, MenuItem, Stack, Typography } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
+import UnarchiveOutlinedIcon from '@mui/icons-material/UnarchiveOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import { useTheme } from '@emotion/react';
 import { capitalize } from 'lodash';
+import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 
 import { EditIconsWrapper, LocationCardStyled } from './styles';
 
 import SvgColor from '../svg-color/SvgColor';
 
 import useRestaurantQuery from '../../hooks/queries/useRestaurantQuery';
+import LightChip from 'components/light-chip';
+import MenuPopover from 'components/menu-popover';
+
+const iconsx = { width: 24, height: 24, marginLeft: -0.3 };
 
 const BodyText = ({ children }) => {
   return (
@@ -28,10 +35,24 @@ const LocationCard = ({
   phone_number,
   nickname,
   opening_times,
+  archived,
   _id,
   onDelete,
-  onEdit
+  onEdit,
+  onArchive,
+  onUnarchive,
+  withArchive = true,
+  canAddLocation
 }) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const theme = useTheme();
 
   const { data } = useRestaurantQuery();
@@ -39,20 +60,58 @@ const LocationCard = ({
   return (
     <LocationCardStyled key={`location-card-${_id}`}>
       <EditIconsWrapper>
-        <IconButton onClick={() => onEdit(_id)} color="info" size="small">
-          <EditIcon fontSize="small" />
+        {withArchive && (
+          <LightChip
+            sx={{ fontSize: 12 }}
+            color={archived ? 'warning' : 'success'}
+            size="small"
+            label={archived ? 'Archived' : 'Active'}
+          />
+        )}
+        <IconButton onClick={handleClick}>
+          <MoreVertOutlinedIcon fontSize="small" />
         </IconButton>
-        <IconButton onClick={() => onDelete(_id)} color="error" size="small">
-          <DeleteOutlineIcon fontSize="small" />
-        </IconButton>
-      </EditIconsWrapper>
 
-      <Stack
-        sx={{
-          gap: 0.25
-        }}
-        mb={2}
-      >
+        <MenuPopover open={anchorEl} onClose={handleClose}>
+          <MenuItem
+            onClick={() => {
+              onEdit(_id);
+              handleClose();
+            }}
+          >
+            <EditIcon color="info" fontSize="small" />
+            Edit
+          </MenuItem>
+          {withArchive && (
+            <MenuItem
+              disabled={archived && !canAddLocation}
+              onClick={() => {
+                if (!archived) onArchive(_id);
+                else onUnarchive(_id);
+                handleClose();
+              }}
+            >
+              {archived ? (
+                <ArchiveOutlinedIcon color="warning" fontSize="small" />
+              ) : (
+                <UnarchiveOutlinedIcon fontSize="small" color="warning" />
+              )}
+              {archived ? 'Unarchive' : 'Archive'}
+            </MenuItem>
+          )}
+          <MenuItem
+            onClick={() => {
+              onDelete(_id);
+              console.log('runs');
+              handleClose();
+            }}
+          >
+            <DeleteOutlineIcon color="error" fontSize="small" />
+            Delete
+          </MenuItem>
+        </MenuPopover>
+      </EditIconsWrapper>
+      <Stack spacing={0.25} mb={2}>
         <Box mb={2} display={'flex'} alignItems={'flex-start'}>
           <Box
             display={'flex'}
@@ -60,10 +119,7 @@ const LocationCard = ({
             justifyContent={'center'}
             color={theme.palette.primary.main}
           >
-            <SvgColor
-              src={`/assets/icons/navbar/ic_store.svg`}
-              sx={{ width: 24, height: 24, marginLeft: -0.3 }}
-            />
+            <SvgColor src={`/assets/icons/navbar/ic_store.svg`} sx={iconsx} />
           </Box>
           <Box ml={1}>
             <Typography fontWeight={600} fontSize={14} variant="body2">
@@ -74,7 +130,6 @@ const LocationCard = ({
             </Typography>
           </Box>
         </Box>
-
         <BodyText>{address_line_1}</BodyText>
         <BodyText>{address_line_2}</BodyText>
         <BodyText>{postcode}</BodyText>
@@ -91,10 +146,7 @@ const LocationCard = ({
             margin={0}
             color={theme.palette.primary.main}
           >
-            <SvgColor
-              src={`/assets/icons/navbar/ic_chat.svg`}
-              sx={{ width: 24, height: 24, marginLeft: -0.3 }}
-            />
+            <SvgColor src={`/assets/icons/navbar/ic_chat.svg`} sx={iconsx} />
           </Box>
           <Typography ml={1} fontWeight={600} fontSize={13} variant="body2">
             Contact Details

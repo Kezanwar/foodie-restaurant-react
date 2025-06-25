@@ -15,8 +15,6 @@ const ChoosePlan = () => {
 
   const restaurant = resQuery?.data?.data || {};
 
-  const isSubscribed = !!restaurant.is_subscribed;
-
   return (
     <>
       <Helmet>

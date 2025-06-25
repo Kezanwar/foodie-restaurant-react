@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import PricingPlanCard from './PricingCard';
 import { Stack, styled } from '@mui/material';
-import { choosePlan } from 'utils/api';
+import { choosePlan } from 'lib/api';
 import { useSnackbar } from 'notistack';
-import { useAuthContext } from 'hooks/useAuthContext';
-import Permissions from 'utils/permissions';
+import Permissions from 'lib/permissions';
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 import LoadingScreen from 'components/loading-screen';
+import useAuthStore from 'stores/auth';
 
 export const _pricingPlans = [
   {
@@ -66,7 +66,7 @@ const PricingTable = () => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const { user } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
 
   const resQuery = useRestaurantQuery();
 
@@ -106,6 +106,7 @@ const PricingTable = () => {
           key={card.subscription}
           handleChoosePlan={handleChoosePlan}
           card={card}
+          userSub={user?.subscription}
           currentTier={TIER}
           isLoading={
             choosePlanLoading && card.subscription === choosePlanLoading

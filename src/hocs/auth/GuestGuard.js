@@ -1,29 +1,12 @@
-import PropTypes from 'prop-types';
 import { Navigate } from 'react-router-dom';
-
-import LoadingScreen from 'components/loading-screen';
-
-import { useAuthContext } from 'hooks/useAuthContext';
-import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
-
-// ----------------------------------------------------------------------
-
-GuestGuard.propTypes = {
-  children: PropTypes.node
-};
+import useAuthStore from 'stores/auth';
 
 export default function GuestGuard({ children }) {
-  const { isAuthenticated, isInitialized } = useAuthContext();
-
-  const p = usePathAfterLogin();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   if (isAuthenticated) {
-    return <Navigate to={p} />;
+    return <Navigate to={'/dashboard/overview'} />;
   }
 
-  if (!isInitialized) {
-    return <LoadingScreen />;
-  }
-
-  return <>{children}</>;
+  return children;
 }

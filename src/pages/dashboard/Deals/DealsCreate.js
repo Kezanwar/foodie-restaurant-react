@@ -43,8 +43,8 @@ import { PATH_DASHBOARD } from 'routes/paths';
 import useActiveDealsQuery from 'hooks/queries/useActiveDealsQuery';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import useLocationsQuery from 'hooks/queries/useLocationsQuery';
-import { addDeal, getDealTemplate } from 'utils/api';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { addDeal, getDealTemplate } from 'lib/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 
 import { newDealSchema } from 'validation/deals';
 import LoadingScreen from 'components/loading-screen/LoadingScreen';
@@ -258,7 +258,7 @@ export default function DealsCreate() {
       const postLocations = data?.locations?.map((l) => l._id);
       await addDeal({ ...data, locations: postLocations });
       await allActiveDeals.refetch();
-      dashQuery.remove();
+      dashQuery.invalidateQuery();
       mixpanelTrack(MIXPANEL_EVENTS.add_deal_success, {
         data
       });
@@ -293,12 +293,14 @@ export default function DealsCreate() {
   const locationOptions = useMemo(() => {
     const locs = data?.data;
     if (!locs?.length) return [];
-    return locs.map((l) => {
-      return {
-        name: `${l.nickname}, ${l.address.address_line_1}, ${l.address.postcode}`,
-        _id: l._id
-      };
-    });
+    return locs
+      .filter((x) => !x.archived)
+      .map((l) => {
+        return {
+          name: `${l.nickname}, ${l.address.address_line_1}, ${l.address.postcode}`,
+          _id: l._id
+        };
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.data?.length]);
 

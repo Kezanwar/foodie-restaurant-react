@@ -58,6 +58,10 @@ export const MIXPANEL_EVENTS = {
   edit_location_failed: 'fe_edit_location_failed',
   delete_location_success: 'fe_delete_location_success',
   delete_location_failed: 'fe_delete_location_failed',
+  archive_location_success: 'fe_archive_location_success',
+  archive_location_failed: 'fe_archive_location_failed',
+  unarchive_location_success: 'fe_unarchive_location_success',
+  unarchive_location_failed: 'fe_unarchive_location_failed',
 
   // ---- DEALS
   add_deal_success: 'fe_add_deal_sucess',

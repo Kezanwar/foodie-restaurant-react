@@ -41,15 +41,16 @@ import RHFMultipleAutocomplete from 'components/hook-form/RHFMultipleAutoComplet
 
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 import useOptionsQuery from 'hooks/queries/useOptionsQuery';
-import { useAuthContext } from 'hooks/useAuthContext';
+
 import { restaurantDetailsSchema } from 'validation/new-restaurant';
 import { getFormDataFromObject } from 'utils/formData';
-import { editRestaurant } from 'utils/api';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { editRestaurant } from 'lib/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 import { image_tooltip } from 'constants/tooltips';
 import { PATH_DASHBOARD } from 'routes/paths';
 import Breadcrumbs from 'components/breadcrumbs';
 import { alcohol_license_options } from 'constants/options';
+import useAuthStore from 'stores/auth';
 
 const uploadAvatarSx = {
   '& > *': {
@@ -79,7 +80,7 @@ const RestaurantEdit = () => {
 
   const options = useOptionsQuery();
   const { enqueueSnackbar } = useSnackbar();
-  const { user } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
 
   const cuisineOptions = options?.data?.data?.cuisines;
   const dietaryOptions = options?.data?.data?.dietary_requirements;

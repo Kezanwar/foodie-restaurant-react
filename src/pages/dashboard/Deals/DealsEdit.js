@@ -43,8 +43,8 @@ import useSingleDealQuery from 'hooks/queries/useSingleDealQuery';
 import useActiveDealsQuery from 'hooks/queries/useActiveDealsQuery';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import useLocationsQuery from 'hooks/queries/useLocationsQuery';
-import { editDeal } from 'utils/api';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { editDeal } from 'lib/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 import { editDealSchema } from 'validation/deals';
 import Breadcrumbs from 'components/breadcrumbs';
 
@@ -118,12 +118,14 @@ export default function DealsEdit() {
   const locationOptions = useMemo(() => {
     const locs = data?.data;
     if (!locs?.length) return [];
-    return locs.map((l) => {
-      return {
-        name: `${l.nickname}, ${l.address.address_line_1}, ${l.address.postcode}`,
-        _id: l._id
-      };
-    });
+    return locs
+      .filter((x) => !x.archived)
+      .map((l) => {
+        return {
+          name: `${l.nickname}, ${l.address.address_line_1}, ${l.address.postcode}`,
+          _id: l._id
+        };
+      });
   }, [data?.data?.length]);
 
   useEffect(() => {
@@ -327,6 +329,7 @@ export default function DealsEdit() {
                   <Spacer sp={6} />
                   <Subheader text={'Edit selected locations for this deal'} />
                   <RHFMultipleAutocomplete
+                    noOptionsText={'No Active Locations'}
                     isOptionEqualToValue={(option, value) => {
                       return option.name === value.name;
                     }}

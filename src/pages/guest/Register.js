@@ -23,7 +23,7 @@ import { PATH_AUTH } from 'routes/paths';
 import RouterLink from 'components/router-link/RouterLink';
 
 // auth
-import { useAuthContext } from 'hooks/useAuthContext';
+
 // components
 import Iconify from 'components/iconify';
 import FormProvider, { RHFTextField } from 'components/hook-form';
@@ -31,12 +31,13 @@ import CustomTooltip from 'components/custom-tooltip/CustomTooltip';
 
 import { RegisterSchema } from 'validation/auth';
 import { auth_tooltips } from 'constants/tooltips';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 import GOOGLE from 'assets/icons/google.svg';
+import useAuthStore from 'stores/auth';
 // ----------------------------------------------------------------------
 
 export default function RegisterPage() {
-  const { register, registerWithGoogle } = useAuthContext();
+  const { register, registerWithGoogle } = useAuthStore.getState();
   const { enqueueSnackbar } = useSnackbar();
 
   const [showPassword, setShowPassword] = useState(false);

@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
 import { PATH_NEW_RESTAURANT } from 'routes/paths';
-import Permissions from 'utils/permissions';
+import Permissions from 'lib/permissions';
 
 // eslint-disable-next-line consistent-return
 const useCreateRestaurantGuard = () => {

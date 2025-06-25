@@ -25,20 +25,21 @@ import FormProvider from 'components/hook-form/FormProvider';
 import { PATH_NEW_RESTAURANT } from 'routes/paths';
 
 import useCreateRestaurantGuard from 'hooks/useCreateRestaurantGuard';
-import { useAuthContext } from 'hooks/useAuthContext';
+
 import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 import { companyInfoSchema } from 'validation/new-restaurant';
 import { countries } from 'assets/data';
 import { pageScrollToTop } from 'utils/scroll';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
-import { postCompanyInfo } from 'utils/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
+import { postCompanyInfo } from 'lib/api';
+import useAuthStore from 'stores/auth';
 
 const NewRestaurantCompanyInfo = () => {
   const { data, updateQuery } = useRestaurantQuery();
   const [formSubmitLoading, setFormSubmitLoading] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
-  const { user } = useAuthContext();
+  const user = useAuthStore((state) => state.user);
 
   const guard = useCreateRestaurantGuard();
 

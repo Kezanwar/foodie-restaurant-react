@@ -4,15 +4,15 @@
 //  |__| |_____|_____|_____|__|_____|
 
 import mixpanel from 'mixpanel-browser';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClientProvider } from '@tanstack/react-query';
+
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 // routes
 import Router from './routes';
 
 // providers
-import { AuthProvider } from 'hocs/auth/AuthContext';
+
 import ThemeProvider from 'theme/index';
 import SnackbarProvider from 'components/snackbar/SnackbarProvider';
 import UtilityProvider from 'hocs/utility/UtilityContext';
@@ -22,20 +22,22 @@ import { MotionLazyContainer } from 'components/animate';
 
 // config
 import { ENVIRONMENT, GOOGLE_CLIENT_ID, MIXPANEL_API_KEY } from './config';
+import queryClient from 'lib/query-client';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import AuthInitializer from 'hocs/auth/AuthInitializer';
 
 // ----------------------------------------------------------------------
 
-export default function App() {
-  mixpanel.init(MIXPANEL_API_KEY, { debug: ENVIRONMENT === 'DEVELOPMENT' });
-  const queryClient = new QueryClient();
+mixpanel.init(MIXPANEL_API_KEY, { debug: ENVIRONMENT === 'DEVELOPMENT' });
 
+export default function App() {
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <QueryClientProvider client={queryClient}>
         {ENVIRONMENT === 'DEVELOPMENT' && (
           <ReactQueryDevtools initialIsOpen={false} />
         )}
-        <AuthProvider>
+        <AuthInitializer>
           <UtilityProvider>
             <MotionLazyContainer>
               <ThemeProvider>
@@ -45,7 +47,7 @@ export default function App() {
               </ThemeProvider>
             </MotionLazyContainer>
           </UtilityProvider>
-        </AuthProvider>
+        </AuthInitializer>
       </QueryClientProvider>
     </GoogleOAuthProvider>
   );

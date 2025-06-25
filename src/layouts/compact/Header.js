@@ -8,11 +8,12 @@ import { HEADER } from '../../config';
 import { bgBlur } from 'utils/cssStyles';
 // components
 import Logo from 'components/logo';
-import { useAuthContext } from 'hooks/useAuthContext';
+
 import AccountPopover from './AccountPopover';
 
 import useResponsive from 'hooks/useResponsive';
-import ModeOptions from 'components/settings/ModeOptions';
+
+import useAuthStore from 'stores/auth';
 
 // ----------------------------------------------------------------------
 
@@ -23,7 +24,7 @@ Header.propTypes = {
 export default function Header({ isOffset }) {
   const theme = useTheme();
 
-  const { isAuthenticated } = useAuthContext();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const isDesktop = useResponsive('up', 'lg');
 

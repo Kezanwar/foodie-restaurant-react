@@ -19,8 +19,8 @@ import { MoreHoriz } from '@mui/icons-material';
 import AcceptDeclineModal from 'components/modals/accept-decline-modal/AcceptDeclineModal';
 import useExpiredDealsQuery from 'hooks/queries/useExpiredDealsQuery';
 import useDashboardOverviewQuery from 'hooks/queries/useDashboardOverviewQuery';
-import { deleteDeal, expireDeal } from 'utils/api';
-import { MIXPANEL_EVENTS, mixpanelTrack } from 'utils/mixpanel';
+import { deleteDeal, expireDeal } from 'lib/api';
+import { MIXPANEL_EVENTS, mixpanelTrack } from 'lib/mixpanel';
 import { useSnackbar } from 'notistack';
 
 const ActionContext = createContext(null);
@@ -59,8 +59,8 @@ export const ActionContextProvider = ({ children }) => {
         await expireDeal(dealToExpire?._id);
         await Promise.all([
           activeDeals.refetch(),
-          expiredDeals.remove(),
-          dash.remove()
+          expiredDeals.refetch(),
+          dash.invalidateQuery()
         ]);
         mixpanelTrack(MIXPANEL_EVENTS.expire_deal_success);
         enqueueSnackbar(`Successfully expired ${dealToExpire.name}`, {
@@ -89,8 +89,8 @@ export const ActionContextProvider = ({ children }) => {
         await deleteDeal(dealToDelete._id);
         await Promise.all([
           activeDeals.refetch(),
-          expiredDeals.remove(),
-          dash.remove()
+          expiredDeals.refetch(),
+          dash.invalidateQuery()
         ]);
 
         enqueueSnackbar(`Successfully deleted ${dealToDelete.name}`, {

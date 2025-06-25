@@ -2,12 +2,9 @@ import { Box, styled } from '@mui/material';
 import { m } from 'framer-motion';
 import MotionDivViewport from '../animate/MotionDivViewport';
 
-export const LocationCardStyled = styled(MotionDivViewport, {
-  shouldForwardProp: (p) => p !== 'layout'
-})(({ theme }) => ({
+export const LocationCardStyled = styled(MotionDivViewport)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   border: `dashed 1px ${theme.palette.divider}`,
-  //   boxShadow: theme.shadows[19],
   width: `calc(33.33% - ${theme.spacing(2)})`,
   padding: theme.spacing(2.5),
   display: 'flex',
@@ -33,5 +30,6 @@ export const EditIconsWrapper = styled(Box)(({ theme }) => ({
   position: 'absolute',
   top: theme.spacing(2),
   right: theme.spacing(1.5),
-  display: 'flex'
+  display: 'flex',
+  alignItems: 'center'
 }));

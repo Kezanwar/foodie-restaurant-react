@@ -1,29 +1,25 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 // components
 import LoadingScreen from 'components/loading-screen';
-//
 import Login from 'pages/guest/Login';
-import { useAuthContext } from 'hooks/useAuthContext';
+// constants
 import { PATH_MISC } from 'routes/paths';
-
-// ----------------------------------------------------------------------
+// zustand store
+import useAuthStore from 'stores/auth';
 
 AuthGuard.propTypes = {
   children: PropTypes.node
 };
 
 export default function AuthGuard({ children }) {
-  const { isAuthenticated, isInitialized, emailConfirmed } = useAuthContext();
-
   const { pathname } = useLocation();
 
   const [requestedLocation, setRequestedLocation] = useState(null);
 
-  if (!isInitialized) {
-    return <LoadingScreen />;
-  }
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const emailConfirmed = useAuthStore((state) => state.user?.email_confirmed);
 
   if (!isAuthenticated) {
     if (pathname !== requestedLocation) {
@@ -41,5 +37,5 @@ export default function AuthGuard({ children }) {
     return <Navigate to={requestedLocation} />;
   }
 
-  return <>{children}</>;
+  return children;
 }

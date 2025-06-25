@@ -14,13 +14,12 @@ import { LoadingButton } from '@mui/lab';
 
 import Image from 'mui-image';
 
-import { useAuthContext } from 'hooks/useAuthContext';
 import Spacer from 'components/spacer/Spacer';
 import UndrawSVG from 'assets/undraw-completing.svg';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
-import { usePathAfterLogin } from 'hooks/usePathAfterLogin';
-import axiosInstance from 'utils/axios';
-import { AUTH_ENDPOINTS } from 'constants/auth';
+
+import useAuthStore from 'stores/auth';
+import { confirmEmailOTP, resendEmailOTP } from 'lib/api';
 
 export const LoadingBox = styled(Box)(() => ({
   display: 'flex',
@@ -28,9 +27,12 @@ export const LoadingBox = styled(Box)(() => ({
 }));
 
 const PageConfirmEmail = () => {
-  const { user, emailConfirmed, initialize } = useAuthContext();
+  const { initialize } = useAuthStore.getState();
+  const user = useAuthStore((state) => state.user);
+
+  const emailConfirmed = user?.email_confirmed;
   const { isTablet, isMobile } = useCustomMediaQueries();
-  const pathAfterLogin = usePathAfterLogin();
+
   const navigate = useNavigate();
 
   const [OTP, setOTP] = useState('');
@@ -39,9 +41,9 @@ const PageConfirmEmail = () => {
 
   useEffect(() => {
     if (emailConfirmed) {
-      navigate(pathAfterLogin);
+      navigate('/dashboard/overview');
     }
-  }, [emailConfirmed, navigate, pathAfterLogin]);
+  }, [emailConfirmed, navigate]);
 
   const onChange = (v) => {
     setError('');
@@ -51,7 +53,7 @@ const PageConfirmEmail = () => {
   const onComplete = async (v) => {
     try {
       setLoading(true);
-      await axiosInstance.post(`${AUTH_ENDPOINTS.confirmEmailOTP}/${v}`);
+      await confirmEmailOTP(v);
       setLoading(false);
       initialize();
     } catch (error) {
@@ -61,7 +63,7 @@ const PageConfirmEmail = () => {
 
   const onResend = async () => {
     try {
-      await axiosInstance.patch(AUTH_ENDPOINTS.resendEmailOTP);
+      await resendEmailOTP();
     } catch (error) {
       setError(error?.message || 'An unexpected error occured');
     }
