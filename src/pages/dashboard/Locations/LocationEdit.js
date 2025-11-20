@@ -25,7 +25,6 @@ import RHFCountriesAutocomplete from 'components/hook-form/RHFCountriesAutocompl
 import AddressAutocomplete from 'components/address-autocomplete/AddressAutocomplete';
 import FormProvider from 'components/hook-form/FormProvider';
 
-import useRestaurantQuery from 'hooks/queries/useRestaurantQuery';
 import useCustomMediaQueries from 'hooks/useCustomMediaQueries';
 import useOpeningTimesForm from 'hooks/useOpeningTimesForm';
 import { PATH_DASHBOARD } from 'routes/paths';
@@ -46,7 +45,7 @@ const LocationEdit = (props) => {
     lng: -2.235525662503866
   });
 
-  const locations = useLocationsQuery();
+  const locQuery = useLocationsQuery();
   const { id } = useParams();
   const nav = useNavigate();
 
@@ -58,28 +57,24 @@ const LocationEdit = (props) => {
   } = useOpeningTimesForm();
 
   const location = useMemo(() => {
-    return locations?.data?.data
-      ? locations?.data?.data?.find((l) => l._id === id)
+    return locQuery.data?.locations
+      ? locQuery.data.locations.find((l) => l._id === id)
       : null;
-  }, [id, locations?.data?.data]);
+  }, [id, locQuery.data?.locations]);
 
   useEffect(() => {
-    if (locations?.error || !id) nav(PATH_DASHBOARD.locations);
-  }, [locations?.error, id]);
+    if (locQuery.error || !id) {
+      nav(PATH_DASHBOARD.locations);
+    }
+  }, [locQuery.error, id]);
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const resQuery = useRestaurantQuery();
-
-  const { isTablet, isMobile } = useCustomMediaQueries();
+  const { isTablet } = useCustomMediaQueries();
 
   const navigate = useNavigate();
 
   const theme = useTheme();
-
-  const restaurant = resQuery?.data?.data;
-
-  const restLoading = resQuery?.isLoading;
 
   const defaultValues = useMemo(
     () => ({
@@ -106,10 +101,8 @@ const LocationEdit = (props) => {
   });
 
   const {
-    watch,
     trigger,
     reset,
-    setError,
     handleSubmit,
     formState: { errors, isSubmitting, isSubmitSuccessful },
     getValues,
@@ -215,9 +208,7 @@ const LocationEdit = (props) => {
       setFormSubmitLoading(true);
       try {
         const res = await editLocation(newLocation, id);
-        const data = res?.data;
-
-        locations.updateQuery(data);
+        locQuery.updateQuery(res);
         setAddLocationModalOpen(false);
         setFormSubmitLoading(false);
         setAddLocationLoading(false);
@@ -274,7 +265,7 @@ const LocationEdit = (props) => {
     });
   }, []);
 
-  if (locations?.isLoading) return <LoadingScreen />;
+  if (locQuery?.isLoading) return <LoadingScreen />;
 
   return (
     <>

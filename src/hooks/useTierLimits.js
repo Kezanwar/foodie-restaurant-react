@@ -17,12 +17,13 @@ const useTierLimits = () => {
         limit: Permissions.getLocationLimit(
           user?.subscription?.subscription_tier || 0
         ),
-        current: locations.data?.data?.filter((l) => !l.archived)?.length || 0
+        current:
+          locations.data?.locations?.filter((l) => !l.archived)?.length || 0
       },
       deals: {
         limit: Permissions.getDealLimit(
           user?.subscription?.subscription_tier,
-          locations.data?.data?.length || 0
+          locations.data?.locations?.length || 0
         ),
         current: activeDeals.data?.data?.length || 0
       },
@@ -30,7 +31,7 @@ const useTierLimits = () => {
     };
   }, [
     user?.subscription?.subscription_tier,
-    locations.data?.data,
+    locations.data?.locations,
     activeDeals.data?.data,
     activeDeals.isLoading,
     locations.isLoading

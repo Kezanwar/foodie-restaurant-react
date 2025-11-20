@@ -139,11 +139,11 @@ const NewRestaurantAddLocation = () => {
 
   const restaurantQuery = useRestaurantQuery();
 
-  const hideAddForm = data?.data?.length === 1 && !editLocationID;
+  const hideAddForm = data?.locations?.length === 1 && !editLocationID;
 
   const editLocationObj = useMemo(() => {
     if (!editLocationID) return null;
-    return data?.data?.find((l) => l._id === editLocationID);
+    return data?.locations?.find((l) => l._id === editLocationID);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editLocationID]);
 
@@ -173,7 +173,7 @@ const NewRestaurantAddLocation = () => {
 
   const defaultValues = useMemo(
     () => ({
-      locations: data?.data || [],
+      locations: data?.locations || [],
       is_new_location: false,
       add_location: {
         address: {
@@ -189,7 +189,7 @@ const NewRestaurantAddLocation = () => {
         nickname: ''
       }
     }),
-    [data?.data]
+    [data?.locations]
   );
 
   const navigate = useNavigate();
@@ -353,9 +353,7 @@ const NewRestaurantAddLocation = () => {
       setConfirmLocationLoading(true);
       try {
         const res = await addLocation(newLocation);
-        const data = res?.data;
-
-        updateQuery(data);
+        updateQuery(res);
         setAddLocationModalOpen(false);
         setConfirmLocationLoading(false);
         setAddLocationLoading(false);
@@ -391,9 +389,7 @@ const NewRestaurantAddLocation = () => {
       setConfirmLocationLoading(true);
       try {
         const res = await editLocation(newLocation, editLocationID);
-        const data = res?.data;
-
-        updateQuery(data);
+        updateQuery(res);
         mixpanelTrack(MIXPANEL_EVENTS.edit_location_success);
         setAddLocationModalOpen(false);
         setConfirmLocationLoading(false);
@@ -429,8 +425,7 @@ const NewRestaurantAddLocation = () => {
     try {
       setDeleteLocationLoading(true);
       const res = await deleteLocation(idToDelete.current);
-      const data = res?.data;
-      updateQuery(data);
+      updateQuery(res);
       mixpanelTrack(MIXPANEL_EVENTS.delete_location_success);
       setDeleteLocationLoading(false);
       setDeleteLocationModalOpen(false);
@@ -459,7 +454,7 @@ const NewRestaurantAddLocation = () => {
 
   const onEditLocationClick = (_id) => {
     setEditLocationID(_id);
-    const editLocation = data?.data?.find((l) => l._id === _id);
+    const editLocation = data?.locations?.find((l) => l._id === _id);
     if (editLocation) {
       const { address, email, phone_number, nickname } = editLocation;
       setValue('add_location', {

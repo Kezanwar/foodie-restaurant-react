@@ -291,7 +291,7 @@ export default function DealsCreate() {
   const { data, isLoading } = useLocationsQuery();
 
   const locationOptions = useMemo(() => {
-    const locs = data?.data;
+    const locs = data?.locations;
     if (!locs?.length) return [];
     return locs
       .filter((x) => !x.archived)
@@ -302,7 +302,7 @@ export default function DealsCreate() {
         };
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.data?.length]);
+  }, [data?.locations]);
 
   const endDate = watch('end_date');
   const startDate = watch('start_date');
