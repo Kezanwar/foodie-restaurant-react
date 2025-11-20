@@ -174,9 +174,7 @@ const LocationsAdd = () => {
       setFormSubmitLoading(true);
       try {
         const res = await addLocation(newLocation);
-        const data = res?.data;
-
-        updateQuery(data);
+        updateQuery(res);
         setAddLocationModalOpen(false);
         setFormSubmitLoading(false);
         setAddLocationLoading(false);

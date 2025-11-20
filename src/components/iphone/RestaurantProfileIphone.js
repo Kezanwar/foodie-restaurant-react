@@ -142,7 +142,7 @@ const RestaurantProfileIphone = () => {
 
   const locationsQuery = useLocationsQuery();
 
-  const locations = locationsQuery?.data?.data || null;
+  const locations = locationsQuery?.data?.locations || null;
 
   const [selectedLocationID, setSelectedLocationID] = useState('');
 
@@ -248,7 +248,7 @@ const RestaurantProfileIphone = () => {
                     setSelectedLocationID(e.target.value);
                   }}
                 >
-                  {locations?.map((location) => {
+                  {locations.map((location) => {
                     return (
                       <option
                         key={`option-${location._id}`}

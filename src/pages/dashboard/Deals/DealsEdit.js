@@ -116,7 +116,7 @@ export default function DealsEdit() {
   } = methods;
 
   const locationOptions = useMemo(() => {
-    const locs = data?.data;
+    const locs = data?.locations;
     if (!locs?.length) return [];
     return locs
       .filter((x) => !x.archived)
@@ -126,7 +126,7 @@ export default function DealsEdit() {
           _id: l._id
         };
       });
-  }, [data?.data?.length]);
+  }, [data?.locations]);
 
   useEffect(() => {
     if (dealData?.data) {
@@ -168,20 +168,20 @@ export default function DealsEdit() {
       onCancelModal();
       return;
     }
-    const data = getValues();
+    const formData = getValues();
     try {
       setFormSubmitLoading(true);
-      const postLocations = data?.locations?.map((l) => l._id);
+      const postLocations = formData?.locations?.map((l) => l._id);
       await editDeal(id, {
-        ...data,
+        ...formData,
         locations: postLocations
       });
       await allActiveDeals.refetch();
       refetch();
       mixpanelTrack(MIXPANEL_EVENTS.edit_deal_success, {
-        data
+        formData
       });
-      enqueueSnackbar(`${data.name} edited successfully`, {
+      enqueueSnackbar(`${formData.name} edited successfully`, {
         variant: 'success'
       });
       reset();
@@ -194,7 +194,7 @@ export default function DealsEdit() {
         message: error.message
       });
       mixpanelTrack(MIXPANEL_EVENTS.edit_deal_error, {
-        data
+        formData
       });
       setFormSubmitLoading(false);
       setShowConfirmModal(false);

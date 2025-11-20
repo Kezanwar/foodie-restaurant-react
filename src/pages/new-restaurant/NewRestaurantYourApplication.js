@@ -61,7 +61,7 @@ const NewRestaurantYourApplication = () => {
 
   const locationsQuery = useLocationsQuery();
 
-  const locations = locationsQuery?.data?.data || null;
+  const locations = locationsQuery?.data?.locations || null;
 
   const { company_info } = restaurant || {};
 
