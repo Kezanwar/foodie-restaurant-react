@@ -184,8 +184,8 @@ export default function ExpiredDealTable() {
     []
   );
 
-  const deals = dealQuery?.data?.data;
-  const loading = dealQuery?.isLoading;
+  const deals = dealQuery.data?.deals;
+  const loading = dealQuery.isLoading;
   if (loading) return <DealTableLoading type={tableType} />;
   if (!deals?.length) return <DealTableEmpty type={tableType} />;
   return (

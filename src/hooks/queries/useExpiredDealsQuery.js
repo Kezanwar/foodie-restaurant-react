@@ -7,6 +7,7 @@ const useExpiredDealsQuery = () => {
     queryKey: [DEALS_QUERY.EXPIRED_DEALS],
     queryFn: getExpiredDeals,
     enabled: true,
+    select: (data) => data.data,
     ...cacheValues
   });
 };

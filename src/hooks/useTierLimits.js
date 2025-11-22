@@ -25,14 +25,14 @@ const useTierLimits = () => {
           user?.subscription?.subscription_tier,
           locations.data?.locations?.length || 0
         ),
-        current: activeDeals.data?.data?.length || 0
+        current: activeDeals.data?.deals?.length || 0
       },
       isLoading: activeDeals.isLoading || locations.isLoading
     };
   }, [
     user?.subscription?.subscription_tier,
     locations.data?.locations,
-    activeDeals.data?.data,
+    activeDeals.data,
     activeDeals.isLoading,
     locations.isLoading
   ]);

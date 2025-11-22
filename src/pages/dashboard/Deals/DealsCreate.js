@@ -167,8 +167,8 @@ export default function DealsCreate() {
         mixpanelTrack(MIXPANEL_EVENTS.use_template_deal);
         getDealTemplate(id)
           .then((res) => {
-            const name = res?.data?.name || '';
-            const description = res?.data?.description || '';
+            const name = res?.data?.deal.name || '';
+            const description = res?.data?.deal.description || '';
             setValue('name', name);
             setValue('description', description);
           })
