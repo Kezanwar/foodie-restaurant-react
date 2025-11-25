@@ -103,7 +103,7 @@ const Plan = () => {
 
   const query = useRestaurantQuery();
 
-  const rest = query?.data?.data;
+  const rest = query?.data?.restaurant;
 
   const plan = Permissions.getTier(rest?.tier);
 

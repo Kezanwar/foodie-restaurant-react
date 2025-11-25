@@ -153,7 +153,7 @@ const RestaurantProfileIphone = () => {
   }, [locations, selectedLocationID]);
 
   const { avatar, name, bio, cover_photo, dietary_requirements, cuisines } =
-    data?.data || {};
+    data?.restaurant || {};
 
   const height = iphoneRef?.current?.height || 1;
   const width = iphoneRef?.current?.width || 1;
@@ -164,7 +164,7 @@ const RestaurantProfileIphone = () => {
     }
   }, [locations, setSelectedLocationID]);
 
-  const bookingLink = data?.data?.booking_link;
+  const bookingLink = data?.restaurant?.booking_link;
 
   const wrapperSx = useMemo(() => {
     return isMobile
@@ -183,7 +183,7 @@ const RestaurantProfileIphone = () => {
         };
   }, [isMobile, isSmallMobile]);
 
-  return !data?.data ? null : (
+  return !data?.restaurant ? null : (
     <Stack
       flex={1}
       maxWidth={'100vw'}

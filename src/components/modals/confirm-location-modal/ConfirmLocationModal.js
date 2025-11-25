@@ -92,7 +92,7 @@ const ConfirmLocationModal = ({
                   fontSize={isSmallMob ? 12 : 16}
                   variant="body2"
                 >
-                  {data?.data?.name} ({add_location.nickname})
+                  {data?.restaurant?.name} ({add_location.nickname})
                 </Typography>
                 <Spacer sp={1} />
                 <Typography

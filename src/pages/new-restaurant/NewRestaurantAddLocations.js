@@ -161,7 +161,7 @@ const NewRestaurantAddLocation = () => {
 
   const guard = useCreateRestaurantGuard();
 
-  const restaurant = restaurantQuery?.data?.data;
+  const restaurant = restaurantQuery?.data?.restaurant;
 
   useEffect(() => {
     if (restaurant) {
@@ -232,7 +232,7 @@ const NewRestaurantAddLocation = () => {
     try {
       setFormSubmitLoading(true);
       const updatedRestaurant = await postLocationsStep();
-      restaurantQuery.updateQuery(updatedRestaurant?.data);
+      restaurantQuery.updateQuery(updatedRestaurant);
       navigate(PATH_NEW_RESTAURANT.step_4);
     } catch (error) {
       console.error(error);

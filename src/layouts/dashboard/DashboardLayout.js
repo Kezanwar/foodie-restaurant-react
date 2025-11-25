@@ -20,7 +20,7 @@ export default function DashboardLayout() {
 
   const { isLoading, data, isFetched } = useRestaurantQuery();
 
-  const status = data?.data?.status;
+  const status = data?.restaurant?.status;
 
   useEffect(() => {
     if (isFetched) {
@@ -45,7 +45,7 @@ export default function DashboardLayout() {
     <NavVertical openNav={open} onCloseNav={handleClose} />
   );
 
-  const isSubscribed = data?.data?.is_subscribed;
+  const isSubscribed = data?.restaurant?.is_subscribed;
 
   return isLoading ? (
     <LoadingScreen />

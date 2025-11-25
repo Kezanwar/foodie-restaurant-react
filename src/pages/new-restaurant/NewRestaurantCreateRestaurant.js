@@ -72,7 +72,7 @@ const NewRestaurantCreateRestaurant = () => {
 
   const guard = useCreateRestaurantGuard();
 
-  const restaurant = data?.data;
+  const restaurant = data?.restaurant;
 
   useEffect(() => {
     if (restaurant) {
@@ -181,7 +181,7 @@ const NewRestaurantCreateRestaurant = () => {
       });
       const updatedRestaurant = await postRestaurantDetails(formData);
       mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_rest_profile_success, {});
-      updateQuery(updatedRestaurant.data);
+      updateQuery(updatedRestaurant);
       handleNext();
     } catch (error) {
       mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_rest_profile_failed, {

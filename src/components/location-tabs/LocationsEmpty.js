@@ -26,7 +26,7 @@ const LocationsEmpty = ({ type }) => {
   const nav = useNavigate();
   const restQuery = useRestaurantQuery();
 
-  const isSubscribed = !!restQuery.data?.data?.is_subscribed;
+  const isSubscribed = !!restQuery.data?.restaurant?.is_subscribed;
   return (
     <Container>
       <SentimentVeryDissatisfiedIcon color="primary" fontSize="large" />
