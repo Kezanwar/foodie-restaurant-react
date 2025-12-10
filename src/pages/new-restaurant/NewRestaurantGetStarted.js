@@ -26,8 +26,8 @@ const NewRestaurantGetStarted = (props) => {
 
   // eslint-disable-next-line consistent-return
   const content = useMemo(() => {
-    const regStep = data?.data?.registration_step;
-    const status = data?.data?.status;
+    const regStep = data?.restaurant?.registration_step;
+    const status = data?.restaurant?.status;
 
     if (Permissions.isApplicationRejected(status)) {
       return {
@@ -102,13 +102,13 @@ const NewRestaurantGetStarted = (props) => {
         ctaTo: PATH_NEW_RESTAURANT.step_1
       };
     }
-  }, [data?.data]);
+  }, [data?.restaurant]);
 
   const { mainText, subText, strongText, ctaText, ctaTo } = content;
 
   const hasSubmit =
-    Permissions.isApplicationProcessing(data?.data?.status || 0) ||
-    Permissions.isApplicationProcessing(data?.data?.status || 0);
+    Permissions.isApplicationProcessing(data?.restaurant?.status || 0) ||
+    Permissions.isApplicationProcessing(data?.restaurant?.status || 0);
 
   return (
     <Box>

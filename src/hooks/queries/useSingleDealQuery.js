@@ -4,11 +4,11 @@ import { getSingleDeal } from 'lib/api';
 import queryClient from 'lib/query-client';
 
 const useSingleDealQuery = (id) => {
-  console.log('realkey', id);
   return useQuery({
     queryKey: [DEALS_QUERY.SINGLE_DEAL, id],
     queryFn: () => getSingleDeal(id),
     enabled: !!id,
+    select: (data) => data.data,
     staleTime: 10 * 1000 * 60,
     cacheTime: 10 * 1000 * 60
   });

@@ -70,7 +70,7 @@ const PricingTable = () => {
 
   const resQuery = useRestaurantQuery();
 
-  const restaurant = resQuery?.data?.data || {};
+  const restaurant = resQuery?.data?.restaurant || {};
 
   const TIER = Permissions.getTier(restaurant.tier);
 

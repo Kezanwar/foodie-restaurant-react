@@ -25,7 +25,7 @@ export default function NavAccount() {
 
   const { data } = useRestaurantQuery();
 
-  const restaurantName = data?.data?.name;
+  const restaurantName = data?.restaurant?.name;
   return (
     <StyledRoot>
       <CustomAvatar

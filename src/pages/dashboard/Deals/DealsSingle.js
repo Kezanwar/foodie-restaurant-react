@@ -141,7 +141,7 @@ const DealsSingle = () => {
   const expiredDeals = useExpiredDealsQuery();
   const dash = useDashboardOverviewQuery();
 
-  const deal = data?.data;
+  const deal = data?.deal;
 
   const handleOnExpireSubmit = useCallback(async () => {
     if (deal?._id) {

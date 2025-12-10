@@ -49,16 +49,21 @@ export default function NewRestaurantLayout() {
   const { isMobile, isTablet } = useCustomMediaQueries();
 
   const restName = useMemo(() => {
-    return data?.data?.name || data?.data?.company_info?.company_name;
-  }, [data?.data?.name, data?.data?.company_info?.company_name]);
+    return (
+      data?.restaurant?.name || data?.restaurant?.company_info?.company_name
+    );
+  }, [data?.restaurant?.name, data?.restaurant?.company_info?.company_name]);
 
   useEffect(() => {
-    if (data?.data) {
-      if (data.data.status && Permissions.canViewDashboard(data.data.status)) {
+    if (data?.restaurant) {
+      if (
+        data.restaurant.status &&
+        Permissions.canViewDashboard(data.restaurant.status)
+      ) {
         navigate(PATH_DASHBOARD.overview);
       }
     }
-  }, [data?.data, navigate]);
+  }, [data?.restaurant, navigate]);
 
   return (
     <StyledRoot>

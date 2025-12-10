@@ -34,9 +34,11 @@ const ActiveLocations = () => {
 
   const nav = useNavigate();
 
+  console.log(locQuery.data);
+
   const locations = useMemo(() => {
-    return locQuery?.data?.data?.filter((l) => !l.archived) || [];
-  }, [locQuery?.data?.data]);
+    return locQuery?.data?.locations?.filter((l) => !l.archived) || [];
+  }, [locQuery?.data]);
 
   const onEditLocationClick = (id) =>
     nav(`${PATH_DASHBOARD.locations_edit}/${id}`);
@@ -63,8 +65,7 @@ const ActiveLocations = () => {
     try {
       setArchiveLocationLoading(true);
       const res = await archiveLocation(idToAction.current);
-      const data = res?.data;
-      locQuery.updateQuery(data);
+      locQuery.updateQuery(res);
       invalidateSingleDeal();
       enqueueSnackbar('Location archived successfully');
       mixpanelTrack(MIXPANEL_EVENTS.archive_location_success);
@@ -85,8 +86,7 @@ const ActiveLocations = () => {
     try {
       setDeleteLocationLoading(true);
       const res = await deleteLocation(idToAction.current);
-      const data = res?.data;
-      locQuery.updateQuery(data);
+      locQuery.updateQuery(res);
       enqueueSnackbar('Location deleted successfully');
       mixpanelTrack(MIXPANEL_EVENTS.delete_location_success);
       dashQuery.invalidateQuery();

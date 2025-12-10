@@ -25,7 +25,7 @@ const to = { 0: 'plan', 1: 'billing', 2: 'invoices', 3: 'choose-plan' };
 
 const SubscriptionLayout = () => {
   const { data } = useRestaurantQuery();
-  const restaurant = data?.data;
+  const restaurant = data?.restaurant;
 
   const isSubscribed = !!restaurant?.is_subscribed;
 

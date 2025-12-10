@@ -28,13 +28,13 @@ const LocationsAll = () => {
 
   const canAddLocation = limits.locations.current < limits.locations.limit;
 
-  const isSubscribed = resQuery.data?.data?.is_subscribed;
+  const restaurant = resQuery?.data?.restaurant;
+
+  const isSubscribed = restaurant?.is_subscribed;
 
   const disableButton = !canAddLocation || !isSubscribed;
 
   const nav = useNavigate();
-
-  const restaurant = resQuery?.data?.data;
 
   const restLoading = resQuery?.isLoading;
 

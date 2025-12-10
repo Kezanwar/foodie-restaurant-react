@@ -9,16 +9,14 @@ const useRestaurantQuery = () => {
   const query = useQuery({
     queryKey: [RESTAURANT_QUERY.RESTAURANT],
     queryFn: getRestaurant,
+    select: (data) => data.data,
     enabled: true,
     ...cacheValues
   });
 
   const updateQuery = useCallback(
     (data) => {
-      queryClient.setQueryData([RESTAURANT_QUERY.RESTAURANT], (oldData) => ({
-        ...oldData,
-        data
-      }));
+      queryClient.setQueryData([RESTAURANT_QUERY.RESTAURANT], () => data);
     },
     [queryClient]
   );

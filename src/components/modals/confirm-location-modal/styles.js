@@ -10,7 +10,7 @@ export const MainContent = styled(Box)(({ theme }) => ({
 export const StyledMapContainer = styled(Box)(({ theme }) => ({
   position: 'relative',
   '& .leaflet-container': {
-    height: 400,
+    height: 320,
     margin: '0 auto',
     width: '100%',
     borderRadius: theme.shape.borderRadius,

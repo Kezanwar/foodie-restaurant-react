@@ -49,7 +49,7 @@ const NewRestaurantYourApplication = () => {
 
   const { data, updateQuery } = useRestaurantQuery();
 
-  const restaurant = data?.data;
+  const restaurant = data?.restaurant;
 
   const guard = useCreateRestaurantGuard();
 
@@ -61,7 +61,7 @@ const NewRestaurantYourApplication = () => {
 
   const locationsQuery = useLocationsQuery();
 
-  const locations = locationsQuery?.data?.data || null;
+  const locations = locationsQuery?.data?.locations || null;
 
   const { company_info } = restaurant || {};
 
@@ -84,7 +84,7 @@ const NewRestaurantYourApplication = () => {
   const onSubmit = async (data) => {
     try {
       const updatedRestaurant = await postSubmitApplicationStep(data);
-      updateQuery(updatedRestaurant?.data);
+      updateQuery(updatedRestaurant);
       enqueueSnackbar('🎉 Application submitted successfully!');
       setFormSubmitLoading(false);
     } catch (error) {
@@ -99,7 +99,8 @@ const NewRestaurantYourApplication = () => {
   };
 
   const hasSubmit =
-    data?.data && Permissions.isApplicationProcessing(data.data.status);
+    data?.restaurant &&
+    Permissions.isApplicationProcessing(data.restaurant.status);
 
   const onError = useCallback(
     (errors) => {
@@ -125,7 +126,7 @@ const NewRestaurantYourApplication = () => {
     [user?.email]
   );
 
-  if (!data?.data || !locations) return <LoadingScreen />;
+  if (!data?.restaurant || !locations) return <LoadingScreen />;
 
   return (
     <Box>

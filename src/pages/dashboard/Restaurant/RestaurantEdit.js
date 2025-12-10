@@ -76,7 +76,7 @@ const RestaurantEdit = () => {
 
   const onCancel = () => navigate(-1);
 
-  const restaurant = data?.data;
+  const restaurant = data?.restaurant;
 
   const options = useOptionsQuery();
   const { enqueueSnackbar } = useSnackbar();
@@ -88,36 +88,36 @@ const RestaurantEdit = () => {
   const defaultValues = useMemo(
     () => ({
       // company info
-      name: data?.data?.name || '',
-      avatar: data?.data?.avatar || null,
-      cuisines: data?.data?.cuisines || [],
-      alcohol_license: data?.data?.alcohol_license ?? true,
-      dietary_requirements: data?.data?.dietary_requirements || [],
-      is_new_avatar: !data?.data?.avatar,
-      cover_photo: data?.data?.cover_photo || null,
-      is_new_cover: !data?.data?.avatar,
-      bio: data?.data?.bio || '',
-      booking_link: data?.data?.booking_link || '',
+      name: restaurant?.name || '',
+      avatar: restaurant?.avatar || null,
+      cuisines: restaurant?.cuisines || [],
+      alcohol_license: restaurant?.alcohol_license ?? true,
+      dietary_requirements: restaurant?.dietary_requirements || [],
+      is_new_avatar: !restaurant?.avatar,
+      cover_photo: restaurant?.cover_photo || null,
+      is_new_cover: !restaurant?.avatar,
+      bio: restaurant?.bio || '',
+      booking_link: restaurant?.booking_link || '',
       social_media: {
-        instagram: data?.data?.social_media?.instagram || '',
-        facebook: data?.data?.social_media?.facebook || '',
-        tiktok: data?.data?.social_media?.tiktok || '',
-        linkedin: data?.data?.social_media?.linkedin || ''
+        instagram: restaurant?.social_media?.instagram || '',
+        facebook: restaurant?.social_media?.facebook || '',
+        tiktok: restaurant?.social_media?.tiktok || '',
+        linkedin: restaurant?.social_media?.linkedin || ''
       }
     }),
     [
-      data?.data?.booking_link,
-      data?.data?.name,
-      data?.data?.avatar,
-      data?.data?.cover_photo,
-      data?.data?.cuisines,
-      data?.data?.alcohol_license,
-      data?.data?.dietary_requirements,
-      data?.data?.bio,
-      data?.data?.social_media?.instagram,
-      data?.data?.social_media?.facebook,
-      data?.data?.social_media?.tiktok,
-      data?.data?.social_media?.linkedin
+      restaurant?.booking_link,
+      restaurant?.name,
+      restaurant?.avatar,
+      restaurant?.cover_photo,
+      restaurant?.cuisines,
+      restaurant?.alcohol_license,
+      restaurant?.dietary_requirements,
+      restaurant?.bio,
+      restaurant?.social_media?.instagram,
+      restaurant?.social_media?.facebook,
+      restaurant?.social_media?.tiktok,
+      restaurant?.social_media?.linkedin
     ]
   );
 
@@ -157,7 +157,7 @@ const RestaurantEdit = () => {
       });
       const updatedRestaurant = await editRestaurant(formData);
       mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_rest_profile_success, {});
-      updateQuery(updatedRestaurant.data);
+      updateQuery(updatedRestaurant);
       enqueueSnackbar('Restaurant profile updated 🚀', { variant: 'success' });
       navigate(PATH_DASHBOARD.restaurant);
     } catch (error) {
