@@ -260,7 +260,7 @@ export default function DealsEdit() {
   };
 
   const onCustomDateRange = () => {
-    const v = data.data.end_date;
+    const v = dealData?.deal.end_date;
     if (v) {
       setValue('end_date', v);
       setDatePickerValue(new Date(v));
