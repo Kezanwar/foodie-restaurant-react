@@ -34,8 +34,6 @@ const ActiveLocations = () => {
 
   const nav = useNavigate();
 
-  console.log(locQuery.data);
-
   const locations = useMemo(() => {
     return locQuery?.data?.locations?.filter((l) => !l.archived) || [];
   }, [locQuery?.data]);

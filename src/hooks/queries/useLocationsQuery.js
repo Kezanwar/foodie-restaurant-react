@@ -16,8 +16,7 @@ const useLocationsQuery = () => {
 
   const updateQuery = useCallback(
     (data) => {
-      queryClient.setQueryData([LOCATIONS_QUERY.LOCATIONS], (oldData) => {
-        console.log(data, oldData);
+      queryClient.setQueryData([LOCATIONS_QUERY.LOCATIONS], () => {
         return data;
       });
     },

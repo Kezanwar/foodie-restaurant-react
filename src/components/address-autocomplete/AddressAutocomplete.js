@@ -121,7 +121,6 @@ const AddressAutocomplete = ({ handleOnAddressSelect }) => {
         const res = await fetchAddressesTextSearch(searchTerm);
         const resultz = res?.data?.features;
         const houseNum = res?.data?.query?.parsed?.housenumber;
-        console.log({ res, resultz, houseNum });
         setResults(resultz?.length ? resultz : []);
         setHouseNumber(houseNum || '');
         handleShow();
@@ -180,8 +179,6 @@ const AddressAutocomplete = ({ handleOnAddressSelect }) => {
         suburb,
         timezone
       } = properties;
-
-      console.log(address_line1);
 
       if (handleOnAddressSelect) {
         handleOnAddressSelect({

@@ -35,7 +35,6 @@ const useAuthStore = create(
             user
           });
         } else {
-          console.log('runs');
           set({ isInitialized: true, isAuthenticated: false, user: null });
         }
       } catch (err) {
