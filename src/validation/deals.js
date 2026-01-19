@@ -44,8 +44,6 @@ export const editDealSchema = Yup.object().shape({
         return true;
       }
 
-      console.log(value);
-
       if (isBefore(startOfDay(new Date(value)), new Date())) {
         return false;
       }

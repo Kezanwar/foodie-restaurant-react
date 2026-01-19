@@ -123,7 +123,7 @@ const LocationCard = ({
           </Box>
           <Box ml={1}>
             <Typography fontWeight={600} fontSize={14} variant="body2">
-              {data?.data?.name}
+              {data?.restaurant?.name}
             </Typography>
             <Typography fontWeight={500} fontSize={11} variant="body2">
               {nickname}

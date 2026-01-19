@@ -95,7 +95,7 @@ const ConfirmLocationModalDashboard = ({
                   fontSize={isSmallMob ? 12 : 16}
                   variant="body2"
                 >
-                  {data?.data?.name} ({form.nickname})
+                  {data?.restaurant?.name} ({form.nickname})
                 </Typography>
                 <Spacer sp={1} />
                 <Typography

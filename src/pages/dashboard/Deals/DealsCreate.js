@@ -167,8 +167,8 @@ export default function DealsCreate() {
         mixpanelTrack(MIXPANEL_EVENTS.use_template_deal);
         getDealTemplate(id)
           .then((res) => {
-            const name = res?.data?.name || '';
-            const description = res?.data?.description || '';
+            const name = res?.data?.deal.name || '';
+            const description = res?.data?.deal.description || '';
             setValue('name', name);
             setValue('description', description);
           })
@@ -291,7 +291,7 @@ export default function DealsCreate() {
   const { data, isLoading } = useLocationsQuery();
 
   const locationOptions = useMemo(() => {
-    const locs = data?.data;
+    const locs = data?.locations;
     if (!locs?.length) return [];
     return locs
       .filter((x) => !x.archived)
@@ -302,7 +302,7 @@ export default function DealsCreate() {
         };
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.data?.length]);
+  }, [data?.locations]);
 
   const endDate = watch('end_date');
   const startDate = watch('start_date');
@@ -339,7 +339,8 @@ export default function DealsCreate() {
   const limits = useTierLimits();
 
   const canAddDeal =
-    limits.deals.current < limits.deals.limit && rest.data?.data?.is_subscribed;
+    limits.deals.current < limits.deals.limit &&
+    rest.data?.restaurant?.is_subscribed;
 
   const loading =
     allActiveDeals?.isLoading ||

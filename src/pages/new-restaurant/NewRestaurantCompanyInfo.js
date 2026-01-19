@@ -43,7 +43,7 @@ const NewRestaurantCompanyInfo = () => {
 
   const guard = useCreateRestaurantGuard();
 
-  const restaurant = data?.data;
+  const restaurant = data?.restaurant;
 
   useEffect(() => {
     if (restaurant) {
@@ -144,7 +144,7 @@ const NewRestaurantCompanyInfo = () => {
       mixpanelTrack(MIXPANEL_EVENTS.create_restaurant_company_info_success, {
         data
       });
-      updateQuery(updatedRestaurant.data);
+      updateQuery(updatedRestaurant);
       handleNext();
     } catch (error) {
       console.error(error);

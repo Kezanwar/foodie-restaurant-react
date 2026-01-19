@@ -109,14 +109,14 @@ export default function DealsEdit() {
     setError,
     handleSubmit,
     trigger,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors },
     getValues,
-    watch,
+
     setValue
   } = methods;
 
   const locationOptions = useMemo(() => {
-    const locs = data?.data;
+    const locs = data?.locations;
     if (!locs?.length) return [];
     return locs
       .filter((x) => !x.archived)
@@ -126,11 +126,11 @@ export default function DealsEdit() {
           _id: l._id
         };
       });
-  }, [data?.data?.length]);
+  }, [data?.locations]);
 
   useEffect(() => {
-    if (dealData?.data) {
-      const { name, description, end_date, locations } = dealData?.data;
+    if (dealData?.deal) {
+      const { name, description, end_date, locations } = dealData?.deal;
 
       setValue('name', name);
       setValue('description', description);
@@ -146,7 +146,7 @@ export default function DealsEdit() {
         setShowDatePicker(true);
       }
     }
-  }, [dealData?.data, data?.data]);
+  }, [dealData?.deal, data?.data]);
 
   const dateErrors = errors.start_date || errors.end_date;
 
@@ -168,20 +168,20 @@ export default function DealsEdit() {
       onCancelModal();
       return;
     }
-    const data = getValues();
+    const formData = getValues();
     try {
       setFormSubmitLoading(true);
-      const postLocations = data?.locations?.map((l) => l._id);
+      const postLocations = formData?.locations?.map((l) => l._id);
       await editDeal(id, {
-        ...data,
+        ...formData,
         locations: postLocations
       });
       await allActiveDeals.refetch();
       refetch();
       mixpanelTrack(MIXPANEL_EVENTS.edit_deal_success, {
-        data
+        formData
       });
-      enqueueSnackbar(`${data.name} edited successfully`, {
+      enqueueSnackbar(`${formData.name} edited successfully`, {
         variant: 'success'
       });
       reset();
@@ -194,7 +194,7 @@ export default function DealsEdit() {
         message: error.message
       });
       mixpanelTrack(MIXPANEL_EVENTS.edit_deal_error, {
-        data
+        formData
       });
       setFormSubmitLoading(false);
       setShowConfirmModal(false);
@@ -210,10 +210,10 @@ export default function DealsEdit() {
   }, []);
 
   useEffect(() => {
-    if (error || locationsError || dealData?.data?.is_expired) {
+    if (error || locationsError || dealData?.deal?.is_expired) {
       navigate('/dashboard/deals/live', { replace: true });
     }
-  }, [error, locationsError, dealData?.data?.is_expired]);
+  }, [error, locationsError, dealData?.deal?.is_expired]);
 
   const { isTablet } = useCustomMediaQueries();
 
@@ -247,9 +247,9 @@ export default function DealsEdit() {
   const breadcrumbs = useMemo(
     () => [
       { name: 'Deals', link: '/dashboard/deals' },
-      { name: dealData?.data.name, link: '/dashboard/deals' }
+      { name: dealData?.deal.name, link: '/dashboard/deals' }
     ],
-    [dealData?.data.name]
+    [dealData?.deal.name]
   );
 
   const dateErrorText = errors?.end_date?.message;
@@ -260,7 +260,7 @@ export default function DealsEdit() {
   };
 
   const onCustomDateRange = () => {
-    const v = data.data.end_date;
+    const v = dealData?.deal.end_date;
     if (v) {
       setValue('end_date', v);
       setDatePickerValue(new Date(v));
@@ -450,9 +450,9 @@ export default function DealsEdit() {
                 submitLoading={formSubmitLoading}
                 isOpen={showConfirmModal}
                 startDate={
-                  dealData?.data.start_date
+                  dealData?.deal.start_date
                     ? format(
-                        new Date(dealData?.data.start_date),
+                        new Date(dealData?.deal.start_date),
                         'EEE do MMM yyyy'
                       )
                     : ''

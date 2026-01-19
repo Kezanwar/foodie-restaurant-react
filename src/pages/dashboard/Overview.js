@@ -140,7 +140,7 @@ export default function Overview() {
     return [];
   }, [data?.data]);
 
-  const restName = rest?.data?.data.name;
+  const restName = rest?.data?.restaurant?.name;
 
   if (isLoading || rest?.isLoading) return <LoadingScreen />;
 

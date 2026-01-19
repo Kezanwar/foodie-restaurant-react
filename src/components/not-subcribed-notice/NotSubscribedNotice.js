@@ -23,8 +23,6 @@ const NotSubscribedNotice = () => {
     user.subscription || user.past_subscriptions.length
   );
 
-  console.log(hasPreviouslySubscribed);
-
   return (
     <NotSubbedContainerStyled>
       <Alert icon={<AnnouncementIcon />} severity={'info'}>

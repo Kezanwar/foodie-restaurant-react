@@ -31,7 +31,7 @@ const ActionsWrapper = styled(Box)(({ theme }) => ({
 const Restaurant = (props) => {
   const navigate = useNavigate();
   const { data, isLoading } = useRestaurantQuery();
-  const restaurant = data?.data;
+  const restaurant = data?.restaurant;
 
   const { company_address, company_name, company_number } =
     restaurant?.company_info || {};

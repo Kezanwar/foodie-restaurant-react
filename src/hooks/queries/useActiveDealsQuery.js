@@ -7,6 +7,7 @@ const useActiveDealsQuery = () => {
     queryKey: [DEALS_QUERY.ACTIVE_DEALS],
     queryFn: getActiveDeals,
     enabled: true,
+    select: (data) => data.data,
     ...cacheValues
   });
 };

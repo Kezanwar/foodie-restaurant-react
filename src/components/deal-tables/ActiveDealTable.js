@@ -213,7 +213,7 @@ export default function ActiveDealTable() {
 
   const { isTablet } = useCustomMediaQueries();
 
-  const deals = dealQuery?.data?.data;
+  const deals = dealQuery?.data?.deals;
   const loading = dealQuery?.isLoading;
 
   if (loading) return <DealTableLoading type={tableType} />;

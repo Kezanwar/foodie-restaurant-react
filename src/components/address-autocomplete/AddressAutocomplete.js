@@ -96,48 +96,47 @@ const AddressAutocomplete = ({ handleOnAddressSelect }) => {
     if (searchTerm === searchTermRef.current) {
       handleShow();
     } else {
-      const isPostcode = !!searchTerm.match(MATCH_POSTCODE);
+      // const isPostcode = !!searchTerm.match(MATCH_POSTCODE);
 
-      switch (isPostcode) {
-        case true:
-          try {
-            setLoading(true);
-            const res = await fetchAddressesPostcodeSearch(searchTerm);
-            setResults(res?.data?.addresses);
-            handleShow();
-            setSearchType(SEARCH_TYPES.POSTCODE);
-          } catch (error) {
-            setResults([]);
-            console.error(error);
-          } finally {
-            setLoading(false);
-            searchTermRef.current = searchTerm;
-          }
+      // switch (isPostcode) {
+      //   case true:
+      // try {
+      //   setLoading(true);
+      //   const res = await fetchAddressesPostcodeSearch(searchTerm);
+      //   setResults(res?.data?.addresses);
+      //   handleShow();
+      //   setSearchType(SEARCH_TYPES.POSTCODE);
+      // } catch (error) {
+      //   setResults([]);
+      //   console.error(error);
+      // } finally {
+      //   setLoading(false);
+      //   searchTermRef.current = searchTerm;
+      // }
 
-          break;
-        case false:
-          try {
-            setLoading(true);
-            const res = await fetchAddressesTextSearch(searchTerm);
-            const resultz = res?.data?.features;
-            const houseNum = res?.data?.query?.parsed?.housenumber;
-            console.log({ res, resultz, houseNum });
-            setResults(resultz?.length ? resultz : []);
-            setHouseNumber(houseNum || '');
-            handleShow();
-            setSearchType(SEARCH_TYPES.ADDRESS);
-          } catch (error) {
-            setResults([]);
-            setHouseNumber('');
-            console.error(error);
-          } finally {
-            setLoading(false);
-            searchTermRef.current = searchTerm;
-          }
-          break;
-        default:
-          break;
+      // break;
+      // case false:
+      try {
+        setLoading(true);
+        const res = await fetchAddressesTextSearch(searchTerm);
+        const resultz = res?.data?.features;
+        const houseNum = res?.data?.query?.parsed?.housenumber;
+        setResults(resultz?.length ? resultz : []);
+        setHouseNumber(houseNum || '');
+        handleShow();
+        setSearchType(SEARCH_TYPES.ADDRESS);
+      } catch (error) {
+        setResults([]);
+        setHouseNumber('');
+        console.error(error);
+      } finally {
+        setLoading(false);
+        searchTermRef.current = searchTerm;
       }
+      // break;
+      // default:
+      // break;
+      // }
     }
   }, [searchTerm]);
 
@@ -180,8 +179,6 @@ const AddressAutocomplete = ({ handleOnAddressSelect }) => {
         suburb,
         timezone
       } = properties;
-
-      console.log(address_line1);
 
       if (handleOnAddressSelect) {
         handleOnAddressSelect({
@@ -234,8 +231,8 @@ const AddressAutocomplete = ({ handleOnAddressSelect }) => {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           variant={'filled'}
-          label={'Quickly search by Postcode or Address'}
-          placeholder="e.g M1 3NF or 21 Burton Street"
+          label={'Quickly search by Address'}
+          placeholder="e.g 21 Burton Street Manchester"
           onChange={handleOnChange}
           onKeyDown={handleKeyDown}
           value={searchTerm}

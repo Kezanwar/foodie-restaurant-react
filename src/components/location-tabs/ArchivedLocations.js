@@ -36,8 +36,8 @@ const ArchivedLocations = () => {
   const nav = useNavigate();
 
   const locations = useMemo(() => {
-    return locQuery?.data?.data?.filter((l) => l.archived) || [];
-  }, [locQuery?.data?.data]);
+    return locQuery?.data?.locations?.filter((l) => l.archived) || [];
+  }, [locQuery?.data]);
 
   const onEditLocationClick = (id) =>
     nav(`${PATH_DASHBOARD.locations_edit}/${id}`);
@@ -64,8 +64,7 @@ const ArchivedLocations = () => {
     try {
       setUnarchiveLocationLoading(true);
       const res = await unarchiveLocation(idToAction.current);
-      const data = res?.data;
-      locQuery.updateQuery(data);
+      locQuery.updateQuery(res);
       enqueueSnackbar('Location unarchived successfully');
       mixpanelTrack(MIXPANEL_EVENTS.unarchive_location_success);
     } catch (error) {
@@ -86,8 +85,7 @@ const ArchivedLocations = () => {
     try {
       setDeleteLocationLoading(true);
       const res = await deleteLocation(idToAction.current);
-      const data = res?.data;
-      locQuery.updateQuery(data);
+      locQuery.updateQuery(res);
       enqueueSnackbar('Location deleted successfully');
       mixpanelTrack(MIXPANEL_EVENTS.delete_location_success);
       dashQuery.invalidateQuery();

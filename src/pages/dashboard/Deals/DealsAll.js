@@ -23,15 +23,15 @@ const DealsAll = () => {
   const limits = useTierLimits();
   const canAddDeal = limits.deals.current < limits.deals.limit;
 
-  const isSubscribed = resQuery.data?.data?.is_subscribed;
+  const isSubscribed = resQuery.data?.restaurant?.is_subscribed;
 
   const disableButton = !canAddDeal || !isSubscribed;
 
   const nav = useNavigate();
 
-  const restaurant = resQuery?.data?.data;
+  const restaurant = resQuery.data?.restaurant;
 
-  const restLoading = resQuery?.isLoading;
+  const restLoading = resQuery.isLoading;
 
   const onCreateDeal = () => nav(PATH_DASHBOARD.deals_create);
 
